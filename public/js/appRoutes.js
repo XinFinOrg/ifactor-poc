@@ -28,6 +28,21 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 			controller: 'GeekController'	
 		})
 
+		.when('/dashboard', {
+			templateUrl: 'views/dashboard.html',
+			controller: 'DashboardController'	
+		})
+
+		.when('/invoice-details', {
+			templateUrl: 'views/invoiceDetails.html',
+			controller: 'DashboardController'	
+		})
+
+		.when('/create-invoice', {
+			templateUrl: 'views/createInvoice.html',
+			controller: 'CreateInvoiceController'	
+		})
+
 		.otherwise({
 			templateUrl: 'views/home.html',
 			controller: 'MainController'
