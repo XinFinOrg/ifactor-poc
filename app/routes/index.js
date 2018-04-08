@@ -2,12 +2,13 @@ var express = require('express');
 var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
 var passport = require('passport');
+var helper = require('./helper');
 //const LocalStrategy = require('passport-local').Strategy;
 var db = require('./../config/db');
 var url = require('url');
 
 router.post('/signup', function(req, res) {
-	let input = req.body.input;
+	let input = req.body;
 	var collection = db.getCollection('users');
 	collection.findOne({email : input.email}, function(err, result) {
 		if (result) {
@@ -27,6 +28,9 @@ router.post('/signup', function(req, res) {
 
 router.post('/createInvoice', function(req, res) {
 	let input = req.body.input;
+	input.email = 'vinod@z.com';
+	input.invoiceState = helper.invoiceStateMap[input.invoiceState];
+
 	input.owners = [];
 	input.owners.push('112344'); //add supplierID
 	var collection = db.getCollection('invoices');
@@ -178,8 +182,9 @@ var getInvoices = function(query, cb) {
 };
 
 router.get('/getSupplierDashboard', function(req, res) {
-	var supplierId = req.query.supplierId;
-	getInvoices({supplierId : supplierId}, function(err, data) {
+	// var email = req.query.email;
+	var email = 'vinod@z.com';
+	getInvoices({email : email}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
@@ -188,8 +193,8 @@ router.get('/getSupplierDashboard', function(req, res) {
 });
 
 router.get('/getBuyerDashboard', function(req, res) {
-	var buyerId = req.query.buyerId;
-	getInvoices({buyerId : buyerId, state : {$ne : 'draft'}}, function(err, data) {
+	var email = req.query.email;
+	getInvoices({email : email, state : {$ne : 'draft'}}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
@@ -198,9 +203,9 @@ router.get('/getBuyerDashboard', function(req, res) {
 });
 
 router.get('/getFinancerDashboard', function(req, res) {
-	var financerId = req.query.financerId;
+	var email = req.query.email;
 	//get all invoices greater than 6;
-	getInvoices({financerId : financerId, stateNo : {$gt : 5}}, function(err, data) {
+	getInvoices({email : email, stateNo : {$gt : 5}}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
@@ -255,8 +260,9 @@ router.post('/login', function(req, res) {
 		if (err || !data.length) {
 			return res.send({status : false})
 		}
+		return res.send({status : 'success', data : {type : data.type}});
 	});
-	return res.send({status : 'success'});
+	// return res.send({status : 'success'});
 });
 
 var autheticate = function (req, res, next) {
