@@ -1,20 +1,31 @@
-angular.module('LoginCtrl', []).controller('LoginController', function($scope, $http) {
+angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$http', 
+			'$location', 'GetPost',  function($scope, $http, $location, GetPost) {
 
 	$scope.tagline = 'To the moon and back!';	
 	$scope.login = function() {
 		console.log('inside a function');
 		var data = {
 			username : $scope.username,
-			password : $scope.password
+			password : $scope.password,
+			url : '/login'
 		}
-		$http.post('/login', data).then(function(response) {
-			console.log('login');
-			$scope.message = response;
-			console.log(response);
-		}, function(response) {
-			console.log('login');
-			console.log(response);
-			$scope.message = response;
-		});
+		// $http.post('/login', data).then(function(response) {
+		// 	$location.path('/dashboard');
+
+		// 	console.log("yo");
+		// 	console.log('login');
+		// 	$scope.message = response;
+		// 	console.log(response);
+		// }, function(response) {
+		// 	console.log("yo22");
+		// 	console.log('login');
+		// 	console.log(response);
+		// 	$location.path('/dashboard');
+		// 	$scope.message = response;
+		// });
+
+		GetPost.post(data, function(err, docs) {
+			$location.path('/dashboard');
+        });
 	}
-});
+}]);
