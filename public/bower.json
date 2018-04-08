@@ -1,0 +1,13 @@
+{
+  "name": "angular",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "latest",
+    "angular": "latest",
+    "angular-route": "latest",
+    "angular-ui-calendar": "latest",
+    "fullcalendar": "latest",
+    "ng-responsive-calendar": "^0.1.19",
+    "angularjs-datepicker": "^2.1.23"
+  }
+}
