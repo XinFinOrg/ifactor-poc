@@ -9,5 +9,9 @@
     "fullcalendar": "latest",
     "ng-responsive-calendar": "^0.1.19",
     "angularjs-datepicker": "^2.1.23"
+  },
+  "resolutions": {
+    "angular": "1.6.9",
+    "moment": "~2.10.3"
   }
 }
