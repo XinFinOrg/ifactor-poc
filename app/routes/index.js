@@ -227,10 +227,9 @@ router.get('/getSupplierDashboard', function(req, res) {
 	console.log(req.isAuthenticated());
 	console.log(req.user);
 	console.log(req.session);
-
-	// var email = req.query.email;
-	var email = 'vinod@z.com';
-	getInvoices({email : email}, function(err, data) {
+	var email = req.user.email;
+	email = 'vinod@z.com';
+	getInvoices({supplierEmail : email}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
@@ -239,8 +238,8 @@ router.get('/getSupplierDashboard', function(req, res) {
 });
 
 router.get('/getBuyerDashboard', function(req, res) {
-	var email = req.query.email;
-	getInvoices({email : email, state : {$ne : 'draft'}}, function(err, data) {
+	var email = req.user.email;
+	getInvoices({buyerEmail : email, state : {$ne : 'draft'}}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
@@ -250,8 +249,9 @@ router.get('/getBuyerDashboard', function(req, res) {
 
 router.get('/getFinancerDashboard', function(req, res) {
 	var email = req.query.email;
+	let list = ['draft', 'invoice_created', 'invoice_rejected', 'invoice_accepted'];
 	//get all invoices greater than 6;
-	getInvoices({email : email, stateNo : {$gt : 5}}, function(err, data) {
+	getInvoices({state : {$nin : list}}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
@@ -271,7 +271,8 @@ router.get('/getInvoices', function(req, res) {
 
 router.get('/getInvoiceDetails', function(req, res) {
 	let invoiceId = req.query.invoiceId;
-	getInvoices({'_id' : new ObjectID(invoiceId)}, function(err, data) {
+	//'invoiceId' : new ObjectID(invoiceId)}
+	getInvoices({'invoiceId' : invoiceId, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data})
 		}
