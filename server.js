@@ -7,6 +7,8 @@ var logger = require('morgan');
 var mongoose       = require('mongoose');
 var methodOverride = require('method-override');
 var passport = require('passport');
+var session = require('express-session');
+var mongoStore = require('connect-mongo')(session);
 
 var index = require('./app/routes/index');
 var users = require('./app/routes/users');
@@ -17,11 +19,37 @@ var url = 'mongodb://localhost:27017/testDb1';
 
 mongoose.connect(url);
 
-/*authLocal.use();
+authLocal.use();
 authLocal.init();
 
+/*app.use(cookieParser('ifactor'));
+app.use(session({
+    secret: 'ifactor',
+    clear_interval: 900,
+    cookie: { maxAge: 2 * 60 * 60 * 1000 },
+    store: new mongoStore({
+     mongooseConnection: mongoose.connection
+    }), 
+    resave: true,
+    saveUninitialized: true
+}));*/
+
+app.use(session({
+    secret: 'a4f8071f-c873-4447-8ee2',
+    cookie: { maxAge: 2628000000 },
+    store: new (require('express-sessions'))({
+        storage: 'mongodb',
+        instance: mongoose, // optional 
+        host: 'localhost', // optional 
+        port: 27017, // optional 
+        db: 'test', // optional 
+        collection: 'sessions', // optional 
+        expire: 86400 // optional 
+    })
+}));
+
 app.use(passport.initialize());
-app.use(passport.session());*/
+app.use(passport.session());
 
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));

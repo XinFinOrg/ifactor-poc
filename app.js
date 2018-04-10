@@ -16,9 +16,20 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(cookieParser());
+app.use(cookieParser('ifactor'));
+app.use(session({
+    secret: 'ifactor',
+    clear_interval: 900,
+    cookie: { maxAge: 2 * 60 * 60 * 1000 },
+    store: new mongoStore({
+     mongooseConnection: mongoose.connection
+    }), 
+    resave: true,
+    saveUninitialized: true
+}));
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
