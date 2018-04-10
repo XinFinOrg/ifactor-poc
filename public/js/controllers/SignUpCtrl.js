@@ -1,14 +1,19 @@
 angular.module('SignUpCtrl', []).controller('SignUpController', function($scope, $http) {
 
 	// $scope.username = 'atul';
+
+	$scope.input = {
+		email : '',
+		password : '',
+		userType : ''
+	}
+
 	console.log('signup');
-	$scope.signup = function() {
+	$scope.signup = function(input) {
+		console.log(input);
 		console.log('inside a function');
-		var data = {
-			email : $scope.email,
-			password : $scope.password
-		}
-		$http.post('/signup', data).then(function(response) {
+		
+		$http.post('/signup', input).then(function(response) {
 			console.log('signup');
 			console.log(response);
 		}, function(response) {

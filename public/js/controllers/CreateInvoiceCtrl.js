@@ -28,11 +28,26 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
 
 	$scope.date = new Date();
 	$scope.eventSources = [];
+	$scope.companyTypeOptions = [];
+
+	// GetPost.get({url : '/getBuyerList'}, function(err, docs) {
+	// 	$scope.companyTypeOptions = docs;
+ //    });
+ 	$scope.companyTypeOptions = [
+		{email : 'a@b.c', firstName : 'infosys', address : 'mumbai'},
+		{email : 'b@b.c', firstName : 'bbb', address : 'mumbai'},
+		{email : 'c@b.c', firstName : 'cc', address : 'mumbai'},
+		{email : 'd@b.c', firstName : 'dd', address : 'mumbai'}
+	];
+
+	$scope.companyNameData = {};
 
 
     $scope.input = {
-    	companyName : "",
+    	companyName : "Company Name",
 		companyType : "Company Type",
+		buyerEmail : '',
+		buyerAddress : '',
 		contactName : "",
 		companyPhone : "",
 		companyEmail : "",
@@ -55,10 +70,22 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
 		//supplierId
     };
 
+    $scope.getBuyerData = function(input) {
+    	
+		input.buyerEmail = $scope.companyNameData.email;
+		input.buyerAddress = $scope.companyNameData.address;
+		input.companyName = $scope.companyNameData.firstName;
+    		
+    	return input;
+    };
+
     $scope.submitInvoice = function (input, type) {
 
-    	console.log(input);
     	$scope.input.invoiceState = type;
+    	$scope.input = $scope.getBuyerData(input);
+    	console.log(input);
+
+
     	var data = {
 			input : $scope.input,
 			url : '/createInvoice'
@@ -68,7 +95,7 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
 			$location.path('/dashboard');
 	    });
 
-    }
+    };
 
     $scope.getDatesDiff = function(date) {
     	var date1 = date;
