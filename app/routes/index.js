@@ -38,15 +38,17 @@ router.post('/signup', function(req, res) {
 	});
 });
 
-router.get('/createInvoice', function(req, res) {
+router.post('/createInvoice', function(req, res) {
 	let input = req.body.input;
-	input.email = 'vinod@z.com';
-	input.invoiceState = helper.invoiceStateMap[input.invoiceState];
-	input.invoiceId = uniqid.uniqid();
-	console.log('uniqid', input.invoiceId);
+	input.supplierEmail = req.user.email;
+	input.supplierAddress = req.user.address;
+	input.state = 'invoice_created'
+	input.invoiceId = uniqid();
+	//console.log('uniqid', input.invoiceId);
 	//input.owners = [];
 	//input.owners.push('112344'); //add supplierID
 	var collection = db.getCollection('invoices');
+	console.log(input)
 	collection.save(input, function (err, docs) {
 	    if (err) {
 			return res.send({status : false, error : {
@@ -228,7 +230,7 @@ router.get('/getSupplierDashboard', function(req, res) {
 	console.log(req.user);
 	console.log(req.session);
 	var email = req.user.email;
-	email = 'vinod@z.com';
+	//email = 'vinod@z.com';
 	getInvoices({supplierEmail : email}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
@@ -272,7 +274,7 @@ router.get('/getInvoices', function(req, res) {
 router.get('/getInvoiceDetails', function(req, res) {
 	let invoiceId = req.query.invoiceId;
 	//'invoiceId' : new ObjectID(invoiceId)}
-	getInvoices({'invoiceId' : invoiceId, function(err, data) {
+	getInvoices({'invoiceId' : invoiceId}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data})
 		}
