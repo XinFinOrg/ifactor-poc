@@ -105,14 +105,21 @@ router.post('/requestFactoring', function(req, res) {
 });
 
 router.post('/factoringProposal', function(req, res) {
-	let input = req.body.invoiceId;
-	let financerId = '12345';
-	let financerAddress = 'avgfhty';
+	let input = req.body.input;
+	/*input :
+		invoiceId : invoiceId
+		platformCharges : '',
+		saftyPercentage : '',
+		acceptFactoringRemark : ''
+	*/
+
 	let updateQuery = {$set : {
 			state : 'ifactor_proposed',
 			financerAddress : req.body.address,
 			financerEmail : req.body.email,
-			factorDetails : {}
+			platformCharges : input.platformCharges,
+			saftyPercentage : input.saftyPercentage,
+			acceptFactoringRemark : input.acceptFactoringRemark
 		}
 	};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function() {
