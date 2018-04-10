@@ -1,20 +1,18 @@
-angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', '$rootScope', '$http', 
+angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',['$scope', '$rootScope', '$http', 
 			'$location', 'GetPost', 'Helper',  function($scope, $rootScope, $http, $location, GetPost,Helper) {
 
 	$scope.urlMap = function(type) {
-		console.log(type);
+		console.log("type :" + type);
 		if (type == 'createInvoice') {
 			$location.path('/create-invoice');
 		}
 		$scope.dashboardUrl = {
-			buyer : '/views/buyer/dashboard.html',
-			financier : '/views/financier/dashboard.html',
-			supplier : '/views/supplier/dashboard.html',
-			supplierApproved : '/views/supplier-approved.html',
-			createInvoice : '/views/createInvoice.html'
+			buyer : '/views/buyer/invoiceDetails.html',
+			financier : '/views/financier/invoiceDetails.html',
+			supplier : '/views/supplier/invoiceDetails.html'
 		};
 
-		$scope.templateUrlDashboard = $scope.dashboardUrl[type];
+		$scope.templateUrlInvoice = $scope.dashboardUrl[type];
 	};
 
 	$scope.urlMap('supplier');
@@ -34,7 +32,6 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 
 	var invoiceStatusMap = Helper.invoiceStatusMap;
 
-	
 	$scope.date = new Date();
 	$scope.eventSources = [];
 
@@ -73,7 +70,8 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
     		console.log(docs);
 			$scope.dashboardData = $scope.setStatusClasses(docs.data);
 			$scope.invoiceData = $scope.dashboardData[$rootScope.mainInvoiceIndex];
-
+			console.log($scope.invoiceData);
+			$scope.invoiceData.invoiceState = 'invoice_accpted';
 	    });
     }
 
@@ -87,16 +85,18 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	    return (diff*360).toFixed(0);
 	};
 
-    $scope.getInvoicesDetails = function (index) {
+	$scope.reqForFactor = function() {
 
-    	$rootScope.mainInvoiceIndex = index;
-    	if ($scope.dashboardData[index].invoiceState == 'Draft') {
-    		$rootScope.fromDashboard = true;
-    		$location.path('./create-invoice');
-    	} else {
-    		$location.path('./invoice-details');
-    	}	
-    };
-	
-	
+		var data = {
+			url : '/getSupplierDashboard',
+			invoiceId : $scope.invoiceData.invoiceNo
+
+		}
+		console.log(data)
+		GetPost.get(data, function(err, docs) {
+    		console.log(docs);
+			
+	    });
+	}
+
 }]);

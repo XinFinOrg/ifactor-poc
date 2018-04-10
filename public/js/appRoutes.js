@@ -35,7 +35,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 
 		.when('/invoice-details', {
 			templateUrl: 'views/invoiceDetails.html',
-			controller: 'DashboardController'	
+			controller: 'InvoiceDetailsController'	
 		})
 
 		.when('/create-invoice', {
