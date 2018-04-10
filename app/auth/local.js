@@ -22,11 +22,11 @@ auth.init = function () {
 
 auth.use = function() {
     passport.use(new LocalStrategy({
-        usernameField: 'username',
-        passwordField: 'password'
+        email: 'email',
+        password: 'password'
     },
-    function(username, password, done) {
-        User.findOne({ username: username}, function(err, user) {
+    function(email, password, done) {
+        User.findOne({ email: email}, function(err, user) {
             if (err) {
                 return done(err, false, 4);
             }
@@ -35,9 +35,6 @@ auth.use = function() {
             }
             if (!user.validPassword(password)) {
                 return done(null, false, 3);
-            }
-            if (!user.verified) {
-                return done(null, user, 5);
             }
             return done(null, user, 1);
         });

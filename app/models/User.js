@@ -2,8 +2,11 @@ var mongoose = require('mongoose');
 //var crypto = require('crypto');
 
 var userSchema = mongoose.Schema({
-    username : String,
+	firstName : String,
+	lastName : String,
+    email : String,
     password : String,
+    type : String
 });
 
 userSchema.methods.validPassword = function (pwd) {
