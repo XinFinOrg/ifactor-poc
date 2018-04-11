@@ -42,7 +42,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 		for (var i = 0; i < data.length; i++) {
 			if (data[i].invoiceState) {
 				data[i].invoiceState = 
-							invoiceStatusMap.supplier[data[i].invoiceState];
+							invoiceStatusMap.supplier[data[i].state];
 				if (data[i].invoiceState == 'Approval Awaited') {
 					data[i].invoiceStateClass = 'labelPending';
 				} else if (data[i].invoiceState == 'Approved') {
