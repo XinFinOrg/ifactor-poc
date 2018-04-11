@@ -238,8 +238,8 @@
                                             <td ng-if="item.payableDate" class="text-right">{{getDatesDiff(item.payableDate)}}</td>
                                             <td ng-if="!item.payableDate" class="text-right">-</td>
 
-                                            <td ng-if="item.invoiceState" class="text-right"><a href=""><span class="label" ng-class="item.invoiceStateClass">{{item.invoiceState}}</span></a></td>
-                                            <td ng-if="!item.invoiceState" class="text-right"><a href="">-</a></td>
+                                            <td ng-if="item.state" class="text-right"><a href=""><span class="label" ng-class="item.stateClass">{{item.state}}</span></a></td>
+                                            <td ng-if="!item.state" class="text-right"><a href="">-</a></td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -5,7 +5,7 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$http',
 	$scope.login = function() {
 		console.log('inside a function');
 		var data = {
-			username : $scope.username,
+			email : $scope.username,
 			password : $scope.password,
 			url : '/login'
 		}

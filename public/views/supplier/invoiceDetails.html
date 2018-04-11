@@ -280,7 +280,11 @@
 
                         <div class="content-body">
                             <div class="row">
-                                <div class="col-md-12" ng-if="invoiceData.invoiceState == 'invoice_accpted'">
+
+                                <!-- Approved By Buyer -->
+                                <!-- supplier-approved.html -->
+                                <!-- need api..used requestFactoring -->
+                                <div class="col-md-12" ng-if="invoiceData.state == 'invoice_accpted'">
                                     <div id="buyer-header-approved">
                                         <i class="fa fa-check icon-rounded icon-primary inviewport"></i>
 
@@ -317,12 +321,15 @@
                                                     <textarea rows="6" class="form-control input-lg" id="description" placeholder="Description*"></textarea>
                                                 </div>
                                             </div>
-                                            <button type="submit" ng-click="reqForFactor()" class="btn btn-lg btn-primary btn-corner btn-block">Factor Now</button>
+                                            <button type="submit" ng-click="requestFactoring()" class="btn btn-lg btn-primary btn-corner btn-block">Factor Now</button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12" ng-if="invoiceData.invoiceState == 'invoie_rejected'">
+                                <!-- Rejected By Financier -->
+                                <!-- supplier-rejected.html -->
+                                <!-- no api -->
+                                <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
                                     <div id="buyer-header-rejected">
                                         <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
 
@@ -341,12 +348,15 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12" ng-if="invoiceData.invoiceState == 'invoie_pending'">
-                                    <div id="buyer-header-pending">
+                                <!-- Sent For Factoring -->
+                                <!-- supplier-pending.html -->
+                                <!-- no api -->
+                                <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposed'">
+                                    <div id="buyer-header-sent">
                                         <i class="fa"><img src="assets/images/dollar-briefcase.png"></i>
 
                                         <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase no-top-marg">Pending For Factoring</h1>
+                                            <h1 class="buyer-title text-uppercase">Sent For Factoring</h1>
 
                                         </div>
                                     </div>
@@ -360,6 +370,7 @@
                                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                                     </div>
                                 </div>
+
 
                             </div>
                             <!-- End .row -->

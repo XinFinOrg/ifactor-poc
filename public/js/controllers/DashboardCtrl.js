@@ -24,13 +24,12 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	// 	if (!resp.status) {
 	// 		$location.path('/login');
 	// 	} else {
+	// 		console.log(resp);
 	// 		$scope.urlMap(resp.userType);
 	// 		$rootScope.userType = resp.userType;
 	// 	}
 
  //    });
-
-    $rootScope.userType = 'supplier';
 
 	var invoiceStatusMap = Helper.invoiceStatusMap;
 
@@ -40,17 +39,17 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 
 	$scope.setStatusClasses = function (data) {
 		for (var i = 0; i < data.length; i++) {
-			if (data[i].invoiceState) {
-				data[i].invoiceState = 
+			if (data[i].state) {
+				data[i].state = 
 							invoiceStatusMap.supplier[data[i].state];
-				if (data[i].invoiceState == 'Approval Awaited') {
-					data[i].invoiceStateClass = 'labelPending';
-				} else if (data[i].invoiceState == 'Approved') {
-					data[i].invoiceStateClass = 'labelApproved';
-				} else if(data[i].invoiceState == 'Draft') {
-					data[i].invoiceStateClass = 'labelDraft';
+				if (data[i].state == 'Approval Awaited') {
+					data[i].stateClass = 'labelPending';
+				} else if (data[i].state == 'Approved') {
+					data[i].stateClass = 'labelApproved';
+				} else if(data[i].state == 'Draft') {
+					data[i].stateClass = 'labelDraft';
 				} else {
-					data[i].invoiceStateClass = 'labelRejected';
+					data[i].stateClass = 'labelRejected';
 				}
 			}
 			continue;
@@ -90,7 +89,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
     $scope.getInvoicesDetails = function (index) {
 
     	$rootScope.mainInvoiceIndex = index;
-    	if ($scope.dashboardData[index].invoiceState == 'Draft') {
+    	if ($scope.dashboardData[index].state == 'Draft') {
     		$rootScope.fromDashboard = true;
     		$location.path('./create-invoice');
     	} else {
