@@ -33,10 +33,10 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));*/
-
+app.use(cookieParser('ifactor'));
 app.use(session({
     secret: 'a4f8071f-c873-4447-8ee2',
-    cookie: { maxAge: 2628000000 },
+    cookie: {},
     store: new (require('express-sessions'))({
         storage: 'mongodb',
         instance: mongoose, // optional 
@@ -45,7 +45,10 @@ app.use(session({
         db: 'test', // optional 
         collection: 'sessions', // optional 
         expire: 86400 // optional 
-    })
+
+    }),
+    resave: true,
+    saveUninitialized: true
 }));
 
 app.use(passport.initialize());

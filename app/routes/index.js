@@ -26,7 +26,6 @@ router.post('/signup', function(req, res) {
 		input.address = address;*/
 		input.address = 'abcdefg';
 		input.phrase = input.password;
-		console.log('address', address);
 		collection.save(input, function (err, docs) {
 		    if (err) {
 				return res.send({status : false, error : {
