@@ -159,7 +159,21 @@ section.box.marginBottom0,
 .no-top-padd {padding-top:0px!important;}
 .no-bottom-padd {padding-bottom:0px!important;}
 
+.p-l-8 {padding-left:8px;}
+.p-l-10 {padding-left:10px;}
+.p-l-15 {padding-left:15px;}
+.p-l-20 {padding-left:20px;}
+
+.f-w-2 {font-weight:200!important;}
+.f-w-4 {font-weight:400!important;}
+.f-w-6 {font-weight:600!important;}
+
+.no-top-border {border-top:none!important;}
+.no-bottom-border {border-bottom:none!important;}
+
 .circle-border {padding:2px; border: 1px solid #cfcfcf;}
+
+.opacity-5 {-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";filter: alpha(opacity=20);-moz-opacity: 0.2;-khtml-opacity: 0.2;opacity: 0.2;}
 
 /*------------ Dashboard Buyer Logo ------------*/
 #buyer-logo {padding: 5px;}
@@ -171,11 +185,12 @@ section.box.marginBottom0,
 /*------------ Dashboard Buyer Logo ------------*/
 
 /*------------ Buyer Details box ------------*/
-#buyer-header {display: block;margin-top:5px;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid #ebeaea;}
+#buyer-header {display: block;margin-top:10px;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid #ebeaea;}
 #buyer-header .buyer-title {font-size:20px;font-weight:600;margin:0px;}
+#buyer-header i {display: block;float:left}
 #buyer-header img {display: block;float:left;max-width:45px;}
 .info-details {display:block;margin-left:60px;}
-.info-details i {margin-right:5px;color:#c2c2c2;}
+.info-details i {margin-top:5px;margin-right:5px;color:#c2c2c2;}
 
 .purchase-details {display: block;padding-bottom:10px;}
 .purchase-details h1{display:block;font-size:20px;font-weight:600;margin:0px;padding-bottom:15px;}
@@ -188,8 +203,9 @@ section.box.marginBottom0,
 .price-badge .period .bold {color:#333333;}
 
 
-.verification-details {display: block;margin-top:30px;padding-top:15px;border-top:1px solid #ebeaea;}
-.verification-details h1{font-size:18px;font-weight:400;word-wrap: break-word;display:block;margin:0px;padding:0px;}
+.verification-details {display: block;margin-top:30px;padding-top:10px;border-top:1px solid #ebeaea;}
+.verification-details h5 {font-size:14px;font-weight:400;color: #777dcb;display:block}
+.verification-details h1 {font-size:18px;font-weight:400;word-wrap: break-word;display:block;margin:0px;padding:0px;}
 .verification-details.box {
     background-color: #ffffff;
     margin: 10px 0 0 0;
@@ -200,6 +216,11 @@ section.box.marginBottom0,
     -webkit-border-radius:5px;  
     padding:15px;
 }
+.verification-details p {font-size:16px;color:#4a4a4a;text-align:justify;margin-bottom:3px;}
+.verification-details p a {font-weight:600;color:#6575d4;transition: all 0.3s ease 0s;}
+.verification-details p a:hover {color:#4a4a4a;}
+.attachment-btn {color:#4a4a4a!important;transition: all 0.3s ease 0s;}
+.attachment-btn:hover {color:#6575d4!important;}
 /*------------ Buyer Details box ------------*/
 
 /*------------ Buyer Approved box ------------*/
@@ -208,8 +229,8 @@ section.box.marginBottom0,
 #buyer-header-approved .buyer-title {font-size:15px;font-weight:400;color: #44e07d;}
 #buyer-header-approved i {display: inline-block;float:left;border-radius: 50%;background-color: #44e07d;color: #FFF;}
 .transaction-details {display: block;padding-bottom:10px;}
-.transaction-details h1{font-size:20px;font-weight:600;word-wrap: break-word;display:block;margin:0px;padding-bottom:15px;}
-.transaction-details h5{font-size:12px;display:block;padding-bottom:10px;}
+.transaction-details h1 {font-size:20px;font-weight:600;word-wrap: break-word;display:block;margin:0px;padding-bottom:15px;}
+.transaction-details h5 {font-size:13px;display:block;padding-bottom:10px;}
 .transaction-details h5 span {font-size:13px;color:#777dcb;float:right;text-transform:lowercase;}
 .transaction-details h5 span a {color:#777dcb;text-decoration:underline;}
 /*------------ Buyer Approved box ------------*/
@@ -220,7 +241,7 @@ section.box.marginBottom0,
 #buyer-header-sent .buyer-title {font-size:15px;font-weight:400;color: #6575d4;}
 #buyer-header-sent i {display: inline-block;float:left;border-radius: 50%;background-color: #6575d4;color: #FFF;}
 #buyer-header-sent i img {width:42px;height:42px;padding:8px;}
-.transaction-details p {text-align:justify;line-height:16px;}
+.transaction-details p {text-align:justify;line-height:20px;margin-bottom: 3px;}
 /*------------ Buyer Sent box ------------*/
 
 /*------------ Buyer Pending box ------------*/
@@ -236,8 +257,66 @@ section.box.marginBottom0,
 #buyer-header-rejected .info-details {display:block;margin-left:50px;}
 #buyer-header-rejected .buyer-title {font-size:15px;font-weight:400;color: #ee5e17;}
 #buyer-header-rejected i {display: inline-block;float:left;border-radius: 50%;background-color: #ee5e17;color: #FFF;}
-#buyer-header-rejected i img {width:42px;height:42px;padding:8px;}
+.transaction-details {display: block;padding-bottom:10px;}
+.transaction-details h1 {font-size:20px;font-weight:600;word-wrap: break-word;display:block;margin:0px;padding-bottom:15px;}
+.transaction-details h5 {font-size:13px;display:block;padding-bottom:10px;}
 /*------------ Buyer Rejected box ------------*/
+
+
+/*------------ box blue ------------*/
+#header-blue {display: inline-block;width:100%;margin-top:5px;margin-bottom:5px;}
+#header-blue:after {content:'';display:block;position:relative;left:16px;top:5px;width:2px;height:15px;background:#979797;}
+#header-blue.no-after:after {content:none;}
+.line-before:before {content:'';display:block;position:relative;left:16px;bottom:5px;width:2px;height:15px;background:#979797;}
+#header-blue .info-details {display:block;margin-left:40px;}
+#header-blue h1 {font-size:15px;font-weight:400;margin:0px;line-height:34px;color: #6575d4!important;}
+#header-blue i {display: inline-block;float:left;border-radius: 50%;background-color: #6575d4!important;color: #FFFFFF!important;padding:10px!important;}
+#header-blue .fa-number {
+    display: inline-block;
+    float:left;
+    border-radius: 50%;
+    background-color: #6575d4!important;
+    color: #FFFFFF!important;
+    padding-top:8px!important;
+    padding-bottom:8px!important;
+    padding-left:12px!important;
+    padding-right:12px!important;
+    font-weight: bold;
+    font-family: 'Open Sans', sans-serif, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    line-height: 18px;
+}
+#header-blue .fa-no-icon {
+    display: inline-block;
+    float:left;
+    border-radius: 50%;
+    background-color: #ffffff!important;
+    border: 2px solid #6575d4!important;
+    padding:4px!important;
+    font-weight: bold;
+    font-family: 'Open Sans', sans-serif, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    line-height: 14px;
+    margin:11px;
+}
+#header-blue i img {width:32px;height:32px;padding:8px;}
+
+
+
+.success {color:#14a15d;font-size:14px!important;line-height:18px;font-weight:400!important;margin-top:5px!important;margin-left:0px!important;}
+.success .fa {font-size:10px!important;}
+.success i {display: inline-block;float:left;border-radius: 50%;background-color: #14a15d!important;color: #FFFFFF!important;padding:4px!important;margin-right:5px;}
+
+
+.rejected {color:#d33a3c;font-size:14px!important;line-height:18px;font-weight:400!important;margin-top:5px!important;margin-left:0px!important;}
+.rejected .fa {font-size:10px!important;}
+.rejected i {display: inline-block;float:left;border-radius: 50%;background-color: #d33a3c!important;color: #FFFFFF!important;padding:4px!important;margin-right:5px;}
+
+
+.pending {color:#fe8b16;font-size:14px!important;line-height:18px;font-weight:400!important;margin-top:5px!important;margin-left:0px!important;}
+.pending .fa {font-size:10px!important;}
+.pending i {display: inline-block;float:left;border-radius: 50%;background-color: #fe8b16!important;color: #FFFFFF!important;padding:4px 8px;!important;margin-right:5px;}
+/*------------ Buyer Pending box ------------*/
 
 
 
@@ -371,34 +450,35 @@ a:hover, a:focus {
 }
 
 .text-dark {
-    color: #333333;
+    color: #333333!important;
+    margin: 0px;
 }
 .text-muted {
-    color: #999999;
+    color: #999999!important;
 }
 .text-primary {
-    color: #777dcb;
+    color: #777dcb!important;
 }
 .text-info {
-    color: #03A9F4;
+    color: #03A9F4!important;
 }
 .text-warning {
-    color: #FFC107;
+    color: #FFC107!important;
 }
 .text-danger {
-    color: #f44336;
+    color: #f44336!important;
 }
 .text-success {
-    color: #c1e917;
+    color: #c1e917!important;
 }
 .text-purple {
-    color: #4bb5ff;
+    color: #4bb5ff!important;
 }
 .text-accent {
-    color: #ff5f74;
+    color: #ff5f74!important;
 }
 .text-light {
-    color: #c2c2c2;
+    color: #c2c2c2!important;
     margin:0px;
 }
 .bg-muted {
@@ -1207,12 +1287,16 @@ input[type=checkbox], input[type=color], input[type=date], input[type=datetime-l
     text-shadow: none;
     transition: all 0.3s ease 0s;
 }
+.btn:hover, .btn:focus {
+    outline: none;
+    border: none;
+}
 .btn.btn-round {
-    border-radius: 50%;
-    -o-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
+    border-radius: 50px;
+    -o-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
 }
 .btn.btn-corner {
     border-radius: 4px;
@@ -1257,9 +1341,14 @@ input[type=checkbox], input[type=color], input[type=date], input[type=datetime-l
     background: transparent;
 }
 .btn.btn-border.btn-primary {
-    border: 2px solid #777dcb;
+    border: 1px solid #777dcb;
     color: #777dcb;
     background: transparent;
+}
+.btn.btn-border.btn-primary:hover, .btn.btn-border.btn-primary.active {
+    border: 1px solid #777dcb;
+    color: #FFFFFF;
+    background: #777dcb;
 }
 .btn.btn-border.btn-secondary {
     border: 2px solid #9e9e9e;
@@ -1303,7 +1392,7 @@ input[type=checkbox], input[type=color], input[type=date], input[type=datetime-l
     color: #ffffff;
 }
 .btn.btn-primary {
-    background: #6274d6;
+    background: #777dcb;
     color: #ffffff;
 }
 .btn.btn-secondary {
@@ -1381,8 +1470,8 @@ input[type=checkbox], input[type=color], input[type=date], input[type=datetime-l
     color: #ffffff;
 }
 .btn-default.active, .btn-default:hover, .btn-default:active, .btn-default:focus {
-    background: #d5d5d5;
-    color: #333333;
+    background: #777dcb;
+    color: #FFFFFF;
 }
 .btn-default:active, .btn-primary:active, .btn-success:active, .btn-info:active, .btn-warning:active, .btn-danger:active, .btn-default.active, .btn-primary.active, .btn-success.active, .btn-info.active, .btn-warning.active, .btn-danger.active {
     box-shadow: none;
@@ -1888,7 +1977,7 @@ ul.states li {
 }
 .tab-content {
     padding: 15px;
-    border: 1px solid #eaeaea;
+    /*border: 1px solid #eaeaea;*/
     background-color: #ffffff;
     border-top: 0px;
 }

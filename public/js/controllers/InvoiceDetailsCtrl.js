@@ -18,17 +18,15 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 	$scope.urlMap('supplier');
 
 
-	// GetPost.get({ url : '/startApp' }, function(err, resp) {
-	// 	if (!resp.status) {
-	// 		$location.path('/login');
-	// 	} else {
-	// 		$scope.urlMap(resp.userType);
-	// 		$rootScope.userType = resp.userType;
-	// 	}
+	GetPost.get({ url : '/startApp' }, function(err, resp) {
+		if (!resp.status) {
+			$location.path('/login');
+		} else {
+			$scope.urlMap(resp.userType);
+			$rootScope.userType = resp.userType;
+		}
 
- //    });
-
-    $rootScope.userType = 'supplier';
+    });
 
 	var invoiceStatusMap = Helper.invoiceStatusMap;
 
@@ -37,17 +35,17 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 
 	$scope.setStatusClasses = function (data) {
 		for (var i = 0; i < data.length; i++) {
-			if (data[i].invoiceState) {
-				data[i].invoiceState = 
-							invoiceStatusMap.supplier[data[i].invoiceState];
-				if (data[i].invoiceState == 'Approval Awaited') {
-					data[i].invoiceStateClass = 'labelPending';
-				} else if (data[i].invoiceState == 'Approved') {
-					data[i].invoiceStateClass = 'labelApproved';
-				} else if(data[i].invoiceState == 'Draft') {
-					data[i].invoiceStateClass = 'labelDraft';
+			if (data[i].state) {
+				data[i].state = 
+							invoiceStatusMap.supplier[data[i].state];
+				if (data[i].state == 'Approval Awaited') {
+					data[i].stateClass = 'labelPending';
+				} else if (data[i].state == 'Approved') {
+					data[i].stateClass = 'labelApproved';
+				} else if(data[i].state == 'Draft') {
+					data[i].stateClass = 'labelDraft';
 				} else {
-					data[i].invoiceStateClass = 'labelRejected';
+					data[i].stateClass = 'labelRejected';
 				}
 			}
 			continue;
@@ -71,7 +69,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 			$scope.dashboardData = $scope.setStatusClasses(docs.data);
 			$scope.invoiceData = $scope.dashboardData[$rootScope.mainInvoiceIndex];
 			console.log($scope.invoiceData);
-			$scope.invoiceData.invoiceState = 'invoice_accpted';
+			$scope.invoiceData.state = 'invoice_accpted';
 	    });
     }
 
@@ -85,18 +83,168 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 	    return (diff*360).toFixed(0);
 	};
 
-	$scope.reqForFactor = function() {
+	
+
+	// invoiceId
+	// use $rootScope.invoiceId
+
+	/***************************supplier api*************************/
+
+	// used
+	$scope.requestFactoring = function (input) {
 
 		var data = {
-			url : '/getSupplierDashboard',
-			invoiceId : $scope.invoiceData.invoiceNo
-
+			url : '/requestFactoring',
+			invoiceId : invoiceId
 		}
-		console.log(data)
-		GetPost.get(data, function(err, docs) {
-    		console.log(docs);
-			
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+    		// 'ifactor_request'
 	    });
-	}
+
+	};
+
+	
+	// used
+	$scope.acceptFactoringProposal = function (input) {
+
+		var data = {
+			url : '/acceptFactoringProposal',
+			invoiceId : invoiceId,
+			remark : remark
+		}
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+    		// 'ifactor_proposal_accpted'
+	    });
+
+	};
+
+	// used
+	$scope.rejectFactoringProposal = function (input) {
+
+		var data = {
+			url : '/rejectFactoringProposal',
+			invoiceId : invoiceId,
+			remark : remark
+		}
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+    		// 'ifactor_proposal_rejected'
+	    });
+
+	};
+	
+
+	/***************************buyer api*************************/
+
+	// used
+	$scope.approveInvoice = function (input) {
+
+		var data = {
+			url : '/approveInvoice',
+			invoiceId : invoiceId
+		}
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+    		// 'invoice_accpted'
+	    });
+
+	};
+
+
+	// used
+	$scope.rejectInvoice = function (input) {
+
+		var data = {
+			url : '/rejectInvoice',
+			invoiceId : invoiceId
+		}
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+    		// invoice_rejected
+	    });
+
+	};
+
+	$scope.payInvoice = function (input) {
+
+		var data = {
+			url : '/payInvoice',
+			invoiceId : invoiceId
+		}
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+    		// 'invoice_paid'
+	    });
+
+	};
+
+
+	/***************************financier api*************************/
+	
+
+	// used
+	$scope.factoringProposal = function (input) {
+
+		/*input :
+			invoiceId : invoiceId
+			platformCharges : '',
+			saftyPercentage : '',
+			acceptFactoringRemark : ''
+		*/
+
+		var data = {
+			url : '/factoringProposal',
+			input : input
+		}
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+    		// 'ifactor_proposed'
+	    });
+
+	};
+
+	// used
+	$scope.rejectFactoringRequest = function (input) {
+
+		var data = {
+			url : '/rejectFactoringRequest',
+			invoiceId : invoiceId,
+			remark : remark
+		}
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+    		// 'ifactor_rejected'
+	    });
+
+	};
+
+	// used
+	$scope.prepaySupplier = function (input) {
+
+		var data = {
+			url : '/prepaySupplier',
+			invoiceId : invoiceId
+		}
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+    		// 'ifactor_prepaid'
+	    });
+
+	};
+
+	$scope.postpaySupplier = function (input) {
+
+		var data = {
+			url : '/postpaySupplier',
+			invoiceId : invoiceId
+		}
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+    		// 'completed'
+	    });
+
+	};
 
 }]);

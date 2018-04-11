@@ -16,8 +16,8 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
             "completed": "Completed"
         },
         "buyer": {
-            "Invoice_created": "Approval Awaited",
-            "Invoice_rejected": "Rejected",
+            "invoice_created": "Approval Awaited",
+            "invoice_rejected": "Rejected",
             "invoice_accepted": "Approved",
             "ifactor_request": "Approved",
             "ifactor_rejected": "Approved",

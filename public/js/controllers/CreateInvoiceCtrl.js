@@ -2,7 +2,7 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
  '$http', '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
  	$http, $location, GetPost, Helper) {
 
-	var invoiceStateMap = Helper.invoiceStateMap;
+	var stateMap = Helper.stateMap;
 
 	$scope.urlMap = function(type) {
 
@@ -64,7 +64,7 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
 		grnNo : "",
 		grnDate : "",
 		grnDocs : "",
-		invoiceState : "invoice_created",
+		state : "invoice_created",
 		grnAmount : ""
 		//buyerId
 		//supplierId
@@ -81,7 +81,7 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
 
     $scope.submitInvoice = function (input, type) {
 
-    	$scope.input.invoiceState = type;
+    	$scope.input.state = type;
     	$scope.input = $scope.getBuyerData(input);
     	console.log(input);
 
