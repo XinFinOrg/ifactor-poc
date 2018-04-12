@@ -213,7 +213,7 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr ng-repeat="item in dashboardData track by $index" ng-click="getInvoicesDetails($index)"  class="cursor-pointer">
+                                        <tr ng-repeat="item in dashboardData track by $index" ng-click="getInvoicesDetails(item, $index)"  class="cursor-pointer">
                                             <td ng-if="item.invoiceNo">{{item.invoiceNo}}</td>
                                             <td ng-if="!item.invoiceNo">-</td>
 
@@ -238,7 +238,7 @@
                                             <td ng-if="item.payableDate" class="text-right">{{getDatesDiff(item.payableDate)}}</td>
                                             <td ng-if="!item.payableDate" class="text-right">-</td>
 
-                                            <td ng-if="item.state" class="text-right"><a href=""><span class="label" ng-class="item.stateClass">{{item.state}}</span></a></td>
+                                            <td ng-if="item.state" class="text-right"><a href=""><span class="label" ng-class="item.stateClass">{{item.status}}</span></a></td>
                                             <td ng-if="!item.state" class="text-right"><a href="">-</a></td>
                                         </tr>
                                     </tbody>

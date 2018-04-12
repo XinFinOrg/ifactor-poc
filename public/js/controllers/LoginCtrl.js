@@ -1,7 +1,7 @@
-angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$http', 
-			'$location', 'GetPost',  function($scope, $http, $location, GetPost) {
+angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootScope', '$http', 
+			'$location', 'GetPost',  function($scope, $rootScope, $http, $location, GetPost) {
 
-	$scope.tagline = 'To the moon and back!';	
+	$scope.tagline = 'To the moon and back!';
 	$scope.login = function() {
 		console.log('inside a function');
 		var data = {
@@ -25,7 +25,9 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$http',
 		// });
 
 		GetPost.post(data, function(err, docs) {
-			$location.path('/dashboard');
+				console.log(docs);
+				$rootScope.userType = docs.data.userType;
+				$location.path('/dashboard');
         });
 	}
 }]);

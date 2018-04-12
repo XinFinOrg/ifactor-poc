@@ -280,17 +280,24 @@
 
                         <div class="content-body">
                             <div class="row">
+                                <div class="col-md-12" ng-show="invoiceData.state == 'invoice_created'">
+                                    <div id="buyer-header-approved">
+                                        <i class="fa fa-check icon-rounded icon-primary inviewport"></i>
 
+                                        <div class="info-details">
+                                            <h1 class="buyer-title text-uppercase">Approval Awaited</h1>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Approved By Buyer -->
                                 <!-- supplier-approved.html -->
                                 <!-- need api..used requestFactoring -->
-                                <div class="col-md-12" ng-if="invoiceData.state == 'invoice_accpted'">
+                                <div class="col-md-12" ng-show="invoiceData.state == 'invoice_accepted'">
                                     <div id="buyer-header-approved">
                                         <i class="fa fa-check icon-rounded icon-primary inviewport"></i>
 
                                         <div class="info-details">
                                             <h1 class="buyer-title text-uppercase">Approved By Buyer</h1>
-
                                         </div>
                                     </div>
                                     <div class="transaction-details">
@@ -322,6 +329,16 @@
                                                 </div>
                                             </div>
                                             <button type="submit" ng-click="requestFactoring()" class="btn btn-lg btn-primary btn-corner btn-block">Factor Now</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_request'">
+                                    <div id="buyer-header-approved">
+                                        <i class="fa fa-check icon-rounded icon-primary inviewport"></i>
+
+                                        <div class="info-details">
+                                            <h1 class="buyer-title text-uppercase">Factoring Requested</h1>
                                         </div>
                                     </div>
                                 </div>

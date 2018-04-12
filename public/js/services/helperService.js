@@ -1,12 +1,12 @@
 angular.module('HelperService', []).factory('Helper', ['$http', function($http) {
 
     var invoiceStatusMap = {
-        "supplier": {
+        "Supplier": {
             "draft": "Draft",
-            "Invoice_created": "Approval Awaited",
-            "Invoice_rejected": "Rejected",
+            "invoice_created": "Approval Awaited",
+            "invoice_rejected": "Rejected",
             "invoice_accepted": "Approved",
-            "ifactor_request": "Factorig Requested",
+            "ifactor_request": "Factoring Requested",
             "ifactor_rejected": "Rejected",
             "ifactor_proposed": "Proposal Received",
             "ifactor_proposal_rejected": "Proposal Rejected",
@@ -15,7 +15,7 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
             "invoice_paid": "In Progress",
             "completed": "Completed"
         },
-        "buyer": {
+        "Buyer": {
             "invoice_created": "Approval Awaited",
             "invoice_rejected": "Rejected",
             "invoice_accepted": "Approved",
@@ -28,7 +28,7 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
             "invoice_paid": "Payment completed",
             "completed": "Completed"
         },
-        "financer": {
+        "Financer": {
             "ifactor_request": "Factorig Requested",
             "ifactor_rejected": "Rejected",
             "ifactor_proposed": "Proposal Received",

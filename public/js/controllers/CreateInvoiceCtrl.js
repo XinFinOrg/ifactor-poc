@@ -30,15 +30,16 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
 	$scope.eventSources = [];
 	$scope.companyTypeOptions = [];
 
-	// GetPost.get({url : '/getBuyerList'}, function(err, docs) {
-	// 	$scope.companyTypeOptions = docs;
- //    });
- 	$scope.companyTypeOptions = [
+	GetPost.get({url : '/getBuyerList'}, function(err, docs) {
+		console.log(docs);
+		$scope.companyTypeOptions = docs.data;
+    });
+ 	/*$scope.companyTypeOptions = [
 		{email : 'a@b.c', firstName : 'infosys', address : 'mumbai'},
 		{email : 'b@b.c', firstName : 'bbb', address : 'mumbai'},
 		{email : 'c@b.c', firstName : 'cc', address : 'mumbai'},
 		{email : 'd@b.c', firstName : 'dd', address : 'mumbai'}
-	];
+	];*/
 
 	$scope.companyNameData = {};
 

@@ -7,17 +7,19 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 			$location.path('/create-invoice');
 		}
 		$scope.dashboardUrl = {
-			buyer : '/views/buyer/dashboard.html',
-			financier : '/views/financier/dashboard.html',
-			supplier : '/views/supplier/dashboard.html',
+			Buyer : '/views/buyer/dashboard.html',
+			Financer : '/views/financier/dashboard.html',
+			Supplier : '/views/supplier/dashboard.html',
 			supplierApproved : '/views/supplier-approved.html',
 			createInvoice : '/views/createInvoice.html'
 		};
 
 		$scope.templateUrlDashboard = $scope.dashboardUrl[type];
+		console.log($scope.templateUrlDashboard);
 	};
 
-	$scope.urlMap('supplier');
+	console.log($rootScope.userType);
+	$scope.urlMap($rootScope.userType);
 
 
 	// GetPost.get({ url : '/startApp' }, function(err, resp) {
@@ -38,22 +40,24 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	$scope.eventSources = [];
 
 	$scope.setStatusClasses = function (data) {
+		var userType = $rootScope.userType;
+		console.log('userType', userType);
 		for (var i = 0; i < data.length; i++) {
 			if (data[i].state) {
-				data[i].state = 
-							invoiceStatusMap.supplier[data[i].state];
-				if (data[i].state == 'Approval Awaited') {
+				console.log('state', data[i].state);
+				data[i].status = 
+							invoiceStatusMap[userType][data[i].state];
+				console.log('status', data[i].status);
+				if (data[i].status == 'Approval Awaited') {
 					data[i].stateClass = 'labelPending';
-				} else if (data[i].state == 'Approved') {
+				} else if (data[i].status == 'Approved') {
 					data[i].stateClass = 'labelApproved';
-				} else if(data[i].state == 'Draft') {
+				} else if(data[i].status == 'Draft') {
 					data[i].stateClass = 'labelDraft';
 				} else {
 					data[i].stateClass = 'labelRejected';
 				}
 			}
-			continue;
-			
 		}
 
 		return data;
@@ -67,12 +71,14 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	$scope.dashboardData = [];
 	$scope.invoiceData = [];
     $scope.getInvoices = function () {
-
-    	GetPost.get({ url : '/getSupplierDashboard' }, function(err, docs) {
+    	var userType = $rootScope.userType;
+    	var url = (userType == 'Supplier') ? 'getSupplierDashboard' :
+    				(userType == 'Buyer') ? 'getBuyerDashboard' :
+    				'getFinancerDashboard';
+    	GetPost.get({ url : '/' + url}, function(err, docs) {
     		console.log(docs);
 			$scope.dashboardData = $scope.setStatusClasses(docs.data);
 			$scope.invoiceData = $scope.dashboardData[$rootScope.mainInvoiceIndex];
-
 	    });
     }
 
@@ -86,10 +92,12 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	    return (diff*360).toFixed(0);
 	};
 
-    $scope.getInvoicesDetails = function (index) {
-
+    $scope.getInvoicesDetails = function (invoice, index) {
     	$rootScope.mainInvoiceIndex = index;
-    	if ($scope.dashboardData[index].state == 'Draft') {
+    	$rootScope.invoiceId = invoice.invoiceId;
+    	console.log('invoice')
+    	console.log(invoice)
+    	if (invoice.state == 'Draft') {
     		$rootScope.fromDashboard = true;
     		$location.path('./create-invoice');
     	} else {

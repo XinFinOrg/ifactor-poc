@@ -1,11 +1,10 @@
 <!-- START TOPBAR -->
 <div class="page-topbar">
-	<div class="container">
+    <div class="container">
     <div class="logo-area">
 
     </div>
     <div class="quick-area">
-        		
         <div class='pull-right'>
             <ul class="info-menu right-links list-inline list-unstyled">                        
                 <li class="notify-toggle-wrapper">
@@ -158,8 +157,8 @@
                         </li>
                     </ul>
                 </li>
-            </ul>			
-        </div>		
+            </ul>           
+        </div>      
     </div>
 
 </div>
@@ -182,21 +181,21 @@
                         <!-- PAGE HEADING TAG - END -->
                     </div>
 
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary btn-corner" ng-click="urlMap('createInvoice')">Create Request</button>
+                    </div>
+
                 </div>
             </div>
             <div class="clearfix"></div>
             <!-- MAIN CONTENT AREA STARTS -->
-
-
-
-
 
             <div class="col-xs-12">
                 <section class="box">
                     <div class="content-body no-top-padd">
                     <div class="row">
                             <div class="col-xs-12">
-                            	<div class="table-responsive" data-pattern="priority-columns">
+                                <div class="table-responsive" data-pattern="priority-columns">
                                 <table id="example-1" class="table table-striped dt-responsive display">
                                     <thead>
                                         <tr>
@@ -210,365 +209,33 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr>
-                                            <td>1000406</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref</span>
-                                            </div>
+                                        <tr ng-repeat="item in dashboardData track by $index" ng-click="getInvoicesDetails(item, $index)"  class="cursor-pointer">
+                                            <td ng-if="item.invoiceNo">{{item.invoiceNo}}</td>
+                                            <td ng-if="!item.invoiceNo">-</td>
+
+                                            <td ng-if="item.companyName">
+                                                <div id="buyer-logo">
+                                                    <i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
+                                                    <span>{{item.companyName}}</span>
+                                                </div>
                                             </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,000</td>
-                                            <td class="text-right">200</td>
-                                            <td class="text-right"><a href=""><span class="label label-pending">Pending</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000799</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref India PVT LTD</span>
-                                            </div>
+                                            <td ng-if="!item.companyName">
+                                                <div id="buyer-logo">
+                                                    <span>-</span>
+                                                </div>
                                             </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 2,00,400</td>
-                                            <td class="text-right">180</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1010500</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-usd" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">350</td>
-                                            <td class="text-right"><a href=""><span class="label label-rejected">Rejected</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1010000</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>MyCompany PVT LTD</span>                                                    </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">250</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1009587</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Cloudhosting</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-usd" aria-hidden="true"></i> 5,000</td>
-                                            <td class="text-right">80</td>
-                                            <td class="text-right"><a href=""><span class="label label-pending">Pending</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000001</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref India PVT LTD</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">111</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1002547</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,44,000</td>
-                                            <td class="text-right">80</td>
-                                            <td class="text-right"><a href=""><span class="label label-rejected">Rejected</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000501</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref India PVT LTD</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 3,00,251</td>
-                                            <td class="text-right">180</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000368</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref India PVT LTD</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 2,00,400</td>
-                                            <td class="text-right">180</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000500</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Club Mahindra</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-usd" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">350</td>
-                                            <td class="text-right"><a href=""><span class="label label-rejected">Rejected</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000689</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>MyCompany PVT LTD</span>                                                    </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">250</td>
-                                            <td class="text-right"><a href=""><span class="label label-rejected">Rejected</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000258</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-usd" aria-hidden="true"></i> 5,000</td>
-                                            <td class="text-right">80</td>
-                                            <td class="text-right"><a href=""><span class="label label-pending">Pending</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000786</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref India PVT LTD</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">111</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1002547</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,44,000</td>
-                                            <td class="text-right">180</td>
-                                            <td class="text-right"><a href=""><span class="label label-rejected">Rejected</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000111</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref India PVT LTD</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 3,00,251</td>
-                                            <td class="text-right">180</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000799</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref India PVT LTD</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 2,00,400</td>
-                                            <td class="text-right">180</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1010500</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-usd" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">350</td>
-                                            <td class="text-right"><a href=""><span class="label label-rejected">Rejected</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1010000</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>MyCompany PVT LTD</span>                                                    </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">250</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1009587</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Cloudhosting</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-usd" aria-hidden="true"></i> 5,000</td>
-                                            <td class="text-right">80</td>
-                                            <td class="text-right"><a href=""><span class="label label-pending">Pending</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>10005478</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref India PVT LTD</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">111</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>12350000</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,44,000</td>
-                                            <td class="text-right">180</td>
-                                            <td class="text-right"><a href=""><span class="label label-rejected">Rejected</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000501</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref India PVT LTD</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 3,00,251</td>
-                                            <td class="text-right">180</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>30000014</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref India PVT LTD</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 2,00,400</td>
-                                            <td class="text-right">180</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000500</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Club Mahindra</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-usd" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">350</td>
-                                            <td class="text-right"><a href=""><span class="label label-rejected">Rejected</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>21587904</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>MyCompany PVT LTD</span>                                                    </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">250</td>
-                                            <td class="text-right"><a href=""><span class="label label-rejected">Rejected</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>23000014</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-usd" aria-hidden="true"></i> 5,000</td>
-                                            <td class="text-right">80</td>
-                                            <td class="text-right"><a href=""><span class="label label-pending">Pending</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1000786</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref-india-pvt-ltd.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref India PVT LTD</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops with Earphones</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,00,000</td>
-                                            <td class="text-right">111</td>
-                                            <td class="text-right"><a href=""><span class="label label-approved">Approved</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>12458790</td>
-                                            <td>
-                                            <div id="buyer-logo">
-                                            	<i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                            	<span>Crossref</span>
-                                            </div>
-                                            </td>
-                                            <td>10 Dell Laptops</td>
-                                            <td class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> 1,44,000</td>
-                                            <td class="text-right">180</td>
-                                            <td class="text-right"><a href=""><span class="label label-rejected">Rejected</span></a></td>
+
+                                            <td ng-if="item.purchaseTitle">{{item.purchaseTitle}}</td>
+                                            <td ng-if="!item.purchaseTitle">-</td>
+
+                                            <td ng-if="item.purchaseAmount" class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> {{item.purchaseAmount}}</td>
+                                            <td ng-if="!item.purchaseAmount" class="text-right">-</td>
+
+                                            <td ng-if="item.payableDate" class="text-right">{{getDatesDiff(item.payableDate)}}</td>
+                                            <td ng-if="!item.payableDate" class="text-right">-</td>
+
+                                            <td ng-if="item.state" class="text-right"><a href=""><span class="label" ng-class="item.stateClass">{{item.status}}</span></a></td>
+                                            <td ng-if="!item.state" class="text-right"><a href="">-</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -586,5 +253,4 @@
 
 </div>
 <!-- END CONTAINER -->
-        
         

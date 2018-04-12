@@ -92,29 +92,29 @@
                             <h1 class="title no-padd text-center">CREATE YOUR IFACTOR ACCOUNT</h1>
                         </header>
                         <div class="content-body">
-                            <form action="" id="signupForm" class="" method="post" enctype="multipart/form-data" accept-charset="utf-8" novalidate="novalidate">
+                            <form action="" id="signupForm" class="" method="post" accept-charset="utf-8" novalidate="novalidate">
                             <!-- START -->
                             <div class="row m-b-10">
                                 <div class="col-xs-12 has-float-label">
-                                    <input class="form-control input-lg" id="firstName" type="text" placeholder="First Name" />
+                                    <input class="form-control input-lg" id="firstName" type="text" placeholder="First Name" ng-model="input.firstName" />
                                     <label for="firstName">First Name*</label>
                                 </div>
                             </div>
                             <div class="row m-b-10">
                                 <div class="col-xs-12 has-float-label">
-                                    <input class="form-control input-lg" id="lastName" type="text" placeholder="last Name" />
+                                    <input class="form-control input-lg" id="lastName" type="text" placeholder="last Name" ng-model="input.lastName" />
                                     <label for="lastName">Last Name*</label>
                                 </div>
                             </div>
                             <div class="row m-b-10">
                                 <div class="col-xs-12 has-float-label">
-                                    <input class="form-control input-lg" id="email" type="email" placeholder="email@example.com" nd-model="input.email" />
+                                    <input class="form-control input-lg" id="email" type="email" placeholder="email@example.com" ng-model="input.email" />
                                     <label for="email">Email Id*</label>
                                 </div>
                             </div>
                             <div class="row m-b-10">
                                 <div class="col-xs-12 has-float-label">
-                                    <input class="form-control input-lg" id="password" type="password" placeholder="Password*" nd-model="input.password" />
+                                    <input class="form-control input-lg" id="password" type="password" placeholder="Password*" ng-model="input.password" />
                                     <label for="password">Password*</label>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                                 <div class="col-sm-4 col-md-4 col-lg-4">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <input type="radio" id="b-option" name="selector" value="buyer" ng-model="input.userType" class="icheck-minimal-purple">
+                                            <input type="radio" id="b-option" name="selector" value="Buyer" ng-model="input.type" class="icheck-minimal-purple">
                                             <label for="b-option" class="iradio-label form-label">Buyer</label>
                                             <div class="check"></div>
                                         </li>
@@ -144,7 +144,7 @@
                                 <div class="col-sm-4 col-md-4 col-lg-4">
                                     <ul class="list-unstyled">
                                          <li>
-                                            <input type="radio" id="s-option" name="selector" value="supplier" ng-model="input.userType" class="icheck-minimal-purple">
+                                            <input type="radio" id="s-option" name="selector" value="Supplier" ng-model="input.type" class="icheck-minimal-purple">
                                             <label for="s-option" class="iradio-label form-label">Supplier</label>
                                             <div class="check"></div>
                                          </li>
@@ -154,7 +154,7 @@
                                 <div class="col-sm-4 col-md-4 col-lg-4">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <input type="radio" id="f-option" name="selector" value="financier" ng-model="input.userType" class="icheck-minimal-purple">
+                                            <input type="radio" id="f-option" name="selector" value="Financier" ng-model="input.type" class="icheck-minimal-purple">
                                             <label for="f-option" class="iradio-label form-label">Financier</label>
                                             <div class="check"></div>
                                         </li>                                        
@@ -165,7 +165,7 @@
                             </div>
                             
                             <div class="row text-center m-t-20">
-                                <button type="submit" class="btn btn-primary btn-corner btn-lg" ng-click="signup(input)">Sign Up</button>
+                                <button type="submit" class="btn btn-primary btn-corner btn-lg" ng-click="signup()">Sign Up</button>
                             </div>
                             
                             <div class="row text-center m-t-20">

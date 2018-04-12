@@ -22,8 +22,8 @@ auth.init = function () {
 
 auth.use = function() {
     passport.use(new LocalStrategy({
-        email: 'email',
-        password: 'password'
+        usernameField : 'email',
+        passwordField : 'password'
     },
     function(email, password, done) {
         User.findOne({ email: email}, function(err, user) {

@@ -10,7 +10,9 @@ var url = require('url');
 var uniqid = require('uniqid');
 
 router.post('/signup', function(req, res) {
+	console.log('inside sugnup');
 	let input = req.body.input;
+	console.log('signup input', input);
 	var collection = db.getCollection('users');
 	collection.findOne({email : input.email}, function(err, result) {
 		if (result) {
@@ -40,6 +42,7 @@ router.post('/signup', function(req, res) {
 router.post('/createInvoice', function(req, res) {
 	let input = req.body.input;
 	input.supplierEmail = req.user.email;
+	input.supplierName = req.user.firstName + '' + req.user.lastName;
 	input.supplierAddress = req.user.address;
 	input.state = 'invoice_created'
 	input.invoiceId = uniqid();
@@ -71,14 +74,17 @@ var updateInvoice = function(query, update, cb) {
 };
 
 router.post('/approveInvoice', function(req, res) {
-	let input = req.body.invoiceId;
-	input.buyerId = ""; //add buyer id
-	let updateQuery = {$set : {state : 'invoice_accpted', buyerId : '123456'}};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function() {
+	console.log('inside approveInvoice');
+	let invoiceId = req.body.invoiceId;
+	console.log('invoiceId', invoiceId)
+	//input.buyerId = ""; //add buyer id
+	let updateQuery = {$set : {state : 'invoice_accepted'}};
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
+		console.log('update', err, data);
 		if (err) {
-			return cb(true, err);
+			return res.send({status : false, error : err});
 		}
-		return cb(false, data);
+		return res.send({status : true, data : {state : ''}});
 	});
 });
 
@@ -86,22 +92,22 @@ router.post('/rejectInvoice', function(req, res) {
 	let input = req.body.invoiceId;
 	input.buyerId = ""; //add buyer id
 	let updateQuery = {$set : {state : 'invoice_rejected', buyerId : '123456'}};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function() {
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
-			return cb(true, err);
+			return res.send({status : false, error : err});
 		}
-		return cb(false, data);
+		return res.send({status : true, data : {state : ''}});
 	});
 });
 
 router.post('/requestFactoring', function(req, res) {
-	let input = req.body.invoiceId;
+	let invoiceId = req.body.invoiceId;
 	let updateQuery = {$set : {state : 'ifactor_request'}};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function() {
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
-			return cb(true, err);
+			return res.send({status : false, error : err});
 		}
-		return cb(false, data);
+		return res.send({status : true, data : {state : ''}});
 	});
 });
 
@@ -123,11 +129,11 @@ router.post('/factoringProposal', function(req, res) {
 			acceptFactoringRemark : input.acceptFactoringRemark
 		}
 	};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function() {
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
-			return cb(true, err);
+			return res.send({status : false, error : err});
 		}
-		return cb(false, data);
+		return res.send({status : true, data : {state : ''}});
 	});
 });
 
@@ -135,23 +141,23 @@ router.post('/rejectFactoringRequest', function(req, res) {
 	let invoiceId = req.body.invoiceId;
 	let remark = req.body.remark;
 	let updateQuery = {$set : {state : 'ifactor_rejected', rejectFactoringRemark : remark}};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function() {
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
-			return cb(true, err);
+			return res.send({status : false, error : err});
 		}
-		return cb(false, data);
+		return res.send({status : true, data : {state : ''}});
 	});
 });
 
 router.post('/acceptFactoringProposal', function(req, res) {
 	let invoiceId = req.body.invoiceId;
 	let remark = req.body.remark;
-	let updateQuery = {$set : {state : 'ifactor_proposal_accpted', acceptProposalRemark : remark}};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function() {
+	let updateQuery = {$set : {state : 'ifactor_proposal_accepted', acceptProposalRemark : remark}};
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
-			return cb(true, err);
+			return res.send({status : false, error : err});
 		}
-		return cb(false, data);
+		return res.send({status : true, data : {state : ''}});
 	});
 });
 
@@ -159,44 +165,44 @@ router.post('/rejectFactoringProposal', function(req, res) {
 	let input = req.body.invoiceId;
 	let remark = req.body.remark;
 	let updateQuery = {$set : {state : 'ifactor_proposal_rejected', rejectProposalRemark : remark}};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function() {
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
-			return cb(true, err);
+			return res.send({status : false, error : err});
 		}
-		return cb(false, data);
+		return res.send({status : true, data : {state : ''}});
 	});
 });
 
 router.post('/payInvoice', function(req, res) {
 	let input = req.body.invoiceId;
 	let updateQuery = {$set : {state : 'invoice_paid'}};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function() {
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
-			return cb(true, err);
+			return res.send({status : false, error : err});
 		}
-		return cb(false, data);
+		return res.send({status : true, data : {state : ''}});
 	});
 });
 
 router.post('/prepaySupplier', function(req, res) {
 	let input = req.body.invoiceId;
 	let updateQuery = {$set : {state : 'ifactor_prepaid'}};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function() {
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
-			return cb(true, err);
+			return res.send({status : false, error : err});
 		}
-		return cb(false, data);
+		return res.send({status : true, data : {state : ''}});
 	});
 });
 
 router.post('/postpaySupplier', function(req, res) {
 	let input = req.body.invoiceId;
 	let updateQuery = {$set : {state : 'completed'}};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function() {
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
-			return cb(true, err);
+			return res.send({status : false, error : err});
 		}
-		return cb(false, data);
+		return res.send({status : true, data : {state : ''}});
 	});
 });
 
@@ -249,8 +255,9 @@ router.get('/getBuyerDashboard', function(req, res) {
 });
 
 router.get('/getFinancerDashboard', function(req, res) {
-	var email = req.query.email;
+	var email = req.user.email;
 	let list = ['draft', 'invoice_created', 'invoice_rejected', 'invoice_accepted'];
+	
 	//get all invoices greater than 6;
 	getInvoices({state : {$nin : list}}, function(err, data) {
 		if (err) {
@@ -270,14 +277,14 @@ router.get('/getInvoices', function(req, res) {
 	});
 });
 
-router.get('/getInvoiceDetails', function(req, res) {
-	let invoiceId = req.query.invoiceId;
+router.post('/getInvoiceDetails', function(req, res) {
+	let invoiceId = req.body.invoiceId;
 	//'invoiceId' : new ObjectID(invoiceId)}
 	getInvoices({'invoiceId' : invoiceId}, function(err, data) {
 		if (err) {
-			return res.send({status : false, msg : data})
+			return res.send({status : false, msg : data});
 		}
-		return res.send({status : true, data : data})
+		return res.send({status : true, data : data[0]});
 	});
 });
 
@@ -303,7 +310,12 @@ router.get('/getUsers', function(req, res) {
 
 var autheticate = function (req, res, next) {
 	console.log('inside authenticate');
+	console.log(req.user);
+	/*if (req.isAuthenticated()) {
+		return next();
+	}*/
     passport.authenticate('local', function (err, user, info) {
+    	console.log(err, user, info)
         if (err) {
         	console.log('err', err)
             return next(err);
@@ -323,7 +335,6 @@ var autheticate = function (req, res, next) {
             req.auth = {};
             req.auth.user = user;
             req.auth.info = info;
-			res.cookie('user', JSON.stringify(user), { maxAge: 2592000000 });
             return next();
         });
     })(req, res, next);
@@ -339,7 +350,8 @@ router.post('/login', autheticate, function(req, res) {
 		if (err || !data.length) {
 			return res.send({status : false})
 		}
-		return res.send({status : 'success', data : {type : data.type}});
+		console.log(JSON.stringify(data, null, 4));
+		return res.send({status : 'success', data : {userType : data[0].type}});
 	});
 	// return res.send({status : 'success'});
 });

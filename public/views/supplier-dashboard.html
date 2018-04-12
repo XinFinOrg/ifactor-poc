@@ -213,7 +213,7 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr ng-repeat="item in dashboardData track by $index" ng-click="getInvoicesDetails($index)"  class="cursor-pointer">
+                                        <tr ng-repeat="item in dashboardData track by $index" ng-click="getInvoicesDetails(item, $index)"  class="cursor-pointer">
                                             <td ng-if="item.invoiceNo">{{item.invoiceNo}}</td>
                                             <td ng-if="!item.invoiceNo">-</td>
 

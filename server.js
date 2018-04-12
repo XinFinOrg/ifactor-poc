@@ -1,10 +1,10 @@
-var express        = require('express');
-var app            = express();
+var express  = require('express');
+var app = express();
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
-var mongoose       = require('mongoose');
+var mongoose = require('mongoose');
 var methodOverride = require('method-override');
 var passport = require('passport');
 var session = require('express-session');
@@ -26,29 +26,28 @@ authLocal.init();
 app.use(session({
     secret: 'ifactor',
     clear_interval: 900,
-    cookie: { maxAge: 2 * 60 * 60 * 1000 },
+    cookie: {},
     store: new mongoStore({
      mongooseConnection: mongoose.connection
-    }), 
+    }),
     resave: true,
     saveUninitialized: true
 }));*/
 app.use(cookieParser('ifactor'));
 app.use(session({
     secret: 'a4f8071f-c873-4447-8ee2',
-    cookie: {},
+    cookie: { maxAge: 2 * 60 * 60 * 1000 },
     store: new (require('express-sessions'))({
         storage: 'mongodb',
         instance: mongoose, // optional 
         host: 'localhost', // optional 
         port: 27017, // optional 
-        db: 'test', // optional 
-        collection: 'sessions', // optional 
+        db: 'testDb1', // optional 
         expire: 86400 // optional 
 
     }),
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false
 }));
 
 app.use(passport.initialize());
