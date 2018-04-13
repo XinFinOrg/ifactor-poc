@@ -10,7 +10,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 			Buyer : '/views/buyer/invoiceDetails.html',
 			Financer : '/views/financier/invoiceDetails.html',
 			Supplier : '/views/supplier/invoiceDetails.html'
-		};
+		}
 
 		$scope.templateUrlInvoice = $scope.dashboardUrl[type];
 	};
