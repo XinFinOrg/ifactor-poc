@@ -175,7 +175,6 @@
                         <h1 class="title">Dashboard <span class="request-details">Request Details #R125638</span> <span class="date-details">21 Dec 2018, 16:14</span></h1>
                         <!-- PAGE HEADING TAG - END -->
                     </div>
-
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -318,14 +317,12 @@
 
             <div class="col-xs-12 col-md-3 col-lg-3">
                 <section class="box">
-
                     <div class="content-body">
                         <div class="row">
-
                             <!-- Factor Now -->
                             <!-- financier-factor-now.html -->
                             <!-- need api..used  factoringProposal-->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
+                            <div class="col-md-12" ng-show="factorFlags.proceedIfactorRequest">
                                 <h3 class="f-w-6">Factor Now</h3>
                                 <p class="f-w-6">Mode</p>
                                 <!-- [ Togglable tabs ] -->
@@ -335,16 +332,34 @@
                                 </div>
 
                                 <!-- Tab panes -->
+<!-- 
+                                acceptFactoringForm.platformCharges : 0,
+                                acceptFactoringForm.saftyPercentage : 0,
+                                acceptFactoringForm.acceptFactoringRemark : ''
+ -->                                
+                                <p class="f-w-6">Factoring charges(%)</p>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" name="charges" ng-model="acceptFactoringForm.platformCharges" class="form-control input-lg"/>
+                                    </div>
+                                </div>
+
+                                <p class="f-w-6"> Factor Range(%)</p>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" name="charges" ng-model="acceptFactoringForm.saftyPercentage" class="form-control input-lg"/>
+                                    </div>
+                                </div>
+
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="first">Factor Range slider will comes here</div>
                                     <div class="tab-pane" id="second">Finance Range slider will comes here</div>
                                 </div>
-
                                 <div class="transaction-details no-bottom-padd">
 
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <textarea rows="3" class="form-control input-lg" id="description" placeholder="Write Terms & Condition"></textarea>
+                                            <textarea ng-model="acceptFactoringForm.remark" rows="3" class="form-control input-lg" id="description" placeholder="Write Terms & Condition"></textarea>
                                         </div>
                                     </div>
 
@@ -367,27 +382,26 @@
                             <!-- What would you like to do factoring for this request? -->
                             <!-- financier-factor-request-from-supplier.html -->
                             <!-- need api..used acceptFactoringProposal, rejectFactoringProposal -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_request'">
+                            <div class="col-md-12" ng-show="isIfactorRequested()">
                                 <div class="transaction-details">
                                     <div class="clearfix"></div>
 
                                     <h1 class="f-w-4">What would you like to do factoring for this request?</h1>
                                     <div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-lg btn-primary btn-corner btn-block" ng-click="acceptFactoringProposal()">Proceed</button>
+                                            <button type="submit" class="btn btn-lg btn-primary btn-corner btn-block" ng-click="proceedRequest()">Proceed</button>
                                         </div>
                                         <div class="form-group no-bottom-marg">
-                                            <button type="submit" class="btn btn-lg btn-border btn-primary btn-corner btn-block" ng-click="rejectFactoringProposal()">Reject</button>
+                                            <button type="submit" class="btn btn-lg btn-border btn-primary btn-corner btn-block" ng-click="rejectRequest()">Reject</button>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
 
                             <!-- rejected by you -->
                             <!-- financier-factor-request-rejected-by-financier.html -->
                             <!-- no api.. -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
+                            <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_rejected'">
                                 <div id="buyer-header-rejected">
                                     <i class="fa fa-times icon-rounded icon-primary inviewport"></i>
 
@@ -408,10 +422,31 @@
                                 </div>
                             </div>
 
+                            <!-- factoring proposed -->
+                            <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_proposed'">
+                                <div id="buyer-header-rejected">
+                                    <i class="fa fa-times icon-rounded icon-primary inviewport"></i>
+
+                                    <div class="info-details">
+                                        <h1 class="buyer-title text-uppercase">Factoring Proposed</h1>
+
+                                    </div>
+                                </div>
+
+                                <div class="transaction-details">
+                                    <h5 class="text-light text-uppercase">Date</h5>
+                                    <div class="clearfix"></div>
+
+                                    <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- pay now -->
                             <!-- financier-pay-now.html -->
                             <!-- need api..used  -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
+                            <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_proposed'">
                                 <div id="buyer-header-sent">
                                     <i class="fa"><img src="assets/images/dollar-briefcase.png"></i>
 
@@ -454,6 +489,23 @@
                                 </div>
                             </div>
 
+                            <!-- reject form -->
+                            <div class="col-md-12" ng-show="factorFlags.rejectIfactorRequest">
+                                <div id="buyer-header-rejected">
+                                    <i class="fa fa-times icon-rounded icon-primary inviewport"></i>
+                                    <div class="info-details">
+                                        <h1 class="buyer-title text-uppercase">Rejected</h1>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <textarea ng-model="rejectFactoringForm" rows="3" class="form-control input-lg" id="description" placeholder="Remark"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" ng-click="rejectFactoringRequest()" class="btn btn-lg btn-primary btn-corner btn-block">Submit Now</button>
+                                </div>
+                            </div>
                         </div>
                         <!-- End .row -->
                     </div>

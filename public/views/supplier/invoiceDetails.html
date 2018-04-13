@@ -338,8 +338,54 @@
                                         <i class="fa fa-check icon-rounded icon-primary inviewport"></i>
 
                                         <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase">Factoring Requested</h1>
+                                            <h1 class="buyer-title text-uppercase">Sent For Factoring</h1>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <!-- Proposal rejected -->
+                                <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposal_rejected'">
+                                    <div id="buyer-header-rejected">
+                                        <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
+
+                                        <div class="info-details">
+                                            <h1 class="buyer-title text-uppercase no-top-marg">Rejected By Financier</h1>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="transaction-details">
+                                        <h5 class="text-light text-uppercase">Date</h5>
+                                        <div class="clearfix"></div>
+
+                                        <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <textarea ng-model="proposalActionForm.remark" rows="3" class="form-control input-lg" id="description" ng-init={{invoiceData.rejectFactoringRemark}} readonly></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Proposal accepted -->
+                                <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposal_accepted'">
+                                    <div id="buyer-header-rejected">
+                                        <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
+
+                                        <div class="info-details">
+                                            <h1 class="buyer-title text-uppercase no-top-marg">Proposal Accepted</h1>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="transaction-details">
+                                        <h5 class="text-light text-uppercase">Date</h5>
+                                        <div class="clearfix"></div>
+
+                                        <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
+                                        <h3 class="f-w-6">Smart Contract Created</h3>
                                     </div>
                                 </div>
 
@@ -373,22 +419,77 @@
                                         <i class="fa"><img src="assets/images/dollar-briefcase.png"></i>
 
                                         <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase">Sent For Factoring</h1>
-
+                                            <h1 class="buyer-title text-uppercase">Proposal Received</h1>
                                         </div>
                                     </div>
+                                <div class="col-md-12">
+                                    <h3 class="f-w-6">Response Now</h3>
+                                    <p class="f-w-6">Mode</p>
+                                    <p class="f-w-6">Factor</p>
 
+                                    <!-- Tab panes -->
+                                    <!-- 
+                                        acceptFactoringForm.platformCharges : 0,
+                                        acceptFactoringForm.saftyPercentage : 0,
+                                        acceptFactoringForm.acceptFactoringRemark : ''
+                                     -->                                
+                                    <p class="f-w-6">Factoring Charges(%)</p>
+                                    <p class="f-w-6">{{invoiceData.platformCharges}}</p>                                
+                                    <!-- <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="number" name="charges" ng-model="acceptFactoringForm.platformCharges" class="form-control input-lg"/>
+                                        </div>
+                                    </div> -->
+
+                                    <p class="f-w-6"> Eligible Amount(%)</p>
+                                    <p class="f-w-6">{{invoiceData.saftyPercentage}}</p>
                                     <div class="transaction-details no-bottom-padd">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            {{invoiceData.acceptFactoringRemark}}
+                                            </div>
+                                        </div>
+
+                                        <div class="m-b-20">
+                                            <p class="text-muted">Attachment</p>
+                                            <div class="form-group">
+
+                                                <button type="button" class="btn btn-default btn-icon btn-round">
+                                                    <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <textarea ng-model="proposalActionForm.remark" rows="3" class="form-control input-lg" id="description" placeholder="remark*"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="transaction-details">
+                                                <div class="clearfix"></div>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-lg btn-primary btn-corner btn-block" ng-click="acceptFactoringProposal()">Accept</button>
+                                                    </div>
+                                                    <div class="form-group no-bottom-marg">
+                                                        <button type="submit" class="btn btn-lg btn-border btn-primary btn-corner btn-block" ng-click="rejectFactoringProposal()">Reject</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <!-- <div class="transaction-details no-bottom-padd">
                                         <h5 class="text-light text-uppercase">Of Amount</h5>
                                         <div class="clearfix"></div>
 
                                         <h1>$ 1,00,000</h1>
                                         <h5 class="text-light text-uppercase p-t-20">Description</h5>
                                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                    </div>
+                                    </div> -->
                                 </div>
-
-
                             </div>
                             <!-- End .row -->
                         </div>

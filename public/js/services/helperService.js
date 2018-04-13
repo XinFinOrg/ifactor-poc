@@ -10,7 +10,7 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
             "ifactor_rejected": "Rejected",
             "ifactor_proposed": "Proposal Received",
             "ifactor_proposal_rejected": "Proposal Rejected",
-            "ifactor_proposal_accpted": "Proposal Accepted",
+            "ifactor_proposal_accepted": "Proposal Accepted",
             "ifactor_prepaid": "In Progress",
             "invoice_paid": "In Progress",
             "completed": "Completed"
@@ -23,7 +23,7 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
             "ifactor_rejected": "Approved",
             "ifactor_proposed": "Approved",
             "ifactor_proposal_rejected": "Approved",
-            "ifactor_proposal_accpted": "Approved",
+            "ifactor_proposal_accepted": "Approved",
             "ifactor_prepaid": "Approved",
             "invoice_paid": "Payment completed",
             "completed": "Completed"
@@ -33,7 +33,7 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
             "ifactor_rejected": "Rejected",
             "ifactor_proposed": "Proposal Received",
             "ifactor_proposal_rejected": "Proposal Rejected",
-            "ifactor_proposal_accpted": "Proposal Accepted",
+            "ifactor_proposal_accepted": "Proposal Accepted",
             "ifactor_prepaid": "In Progress",
             "invoice_paid": "In Progress",
             "completed": "Completed"

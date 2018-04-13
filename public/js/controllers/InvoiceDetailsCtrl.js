@@ -8,7 +8,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		}
 		$scope.dashboardUrl = {
 			Buyer : '/views/buyer/invoiceDetails.html',
-			Financier : '/views/financier/invoiceDetails.html',
+			Financer : '/views/financier/invoiceDetails.html',
 			Supplier : '/views/supplier/invoiceDetails.html'
 		};
 
@@ -19,6 +19,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		if (!resp.status) {
 			$location.path('/login');
 		} else {
+			console.log('userType', $rootScope.userType, 'invoiceId', $rootScope.invoiceId);
 			$scope.urlMap(resp.data.userType);
 			$rootScope.userType = resp.data.userType;
 			console.log('invoiceId', $rootScope.invoiceId)
@@ -110,22 +111,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 	    });
 
 	};
-
 	
-	// used
-	$scope.acceptFactoringProposal = function (input) {
-
-		var data = {
-			url : '/acceptFactoringProposal',
-			invoiceId : $rootScope.invoiceId,
-			remark : remark
-		}
-		GetPost.post(data, function(err, resp) {
-    		console.log(resp);
-    		// 'ifactor_proposal_accpted'
-	    });
-
-	};
 
 	// used
 	$scope.rejectFactoringProposal = function (input) {
@@ -192,39 +178,48 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 	
 
 	// used
-	$scope.factoringProposal = function (input) {
-
-		/*input :
-			invoiceId : $rootScope.invoiceId
-			platformCharges : '',
-			saftyPercentage : '',
+	$scope.acceptFactoringForm = {
+			platformCharges : 0,
+			saftyPercentage : 0,
 			acceptFactoringRemark : ''
-		*/
-
-		var data = {
-			url : '/factoringProposal',
-			input : input
-		}
-		GetPost.post(data, function(err, resp) {
-    		console.log(resp);
-    		// 'ifactor_proposed'
-	    });
-
 	};
 
 	// used
-	$scope.rejectFactoringRequest = function (input) {
+	$scope.factoringProposal = function (input) {
+		var data = {
+			url : '/factoringProposal',
+			invoiceId : $rootScope.invoiceId,
+			input :	$scope.acceptFactoringForm
+		}
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+	    });
+	};
 
+
+	$scope.proposalActionForm = {};
+	// used
+	$scope.rejectFactoringRequest = function () {
 		var data = {
 			url : '/rejectFactoringRequest',
 			invoiceId : $rootScope.invoiceId,
-			remark : remark
+			remark : $scope.proposalActionForm.remark
 		}
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
     		// 'ifactor_rejected'
 	    });
+	};
 
+	$scope.acceptFactoringProposal = function () {
+		var data = {
+				url : '/acceptFactoringProposal',
+				invoiceId : $rootScope.invoiceId,
+				remark : $scope.proposalActionForm.remark
+		}
+		GetPost.post(data, function(err, resp) {
+    		console.log(resp);
+	    });
 	};
 
 	// used
@@ -253,5 +248,25 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 	    });
 
 	};
+
+	$scope.factorFlags = {
+		proceedIfactorRequest : false,
+		rejectIfactorRequest : false
+	}
+
+	$scope.isIfactorRequested = function() {
+		return $scope.invoiceData.state == 'ifactor_request' &&
+			!$scope.factorFlags.proceedIfactorRequest && !$scope.factorFlags.rejectIfactorRequest;
+	}
+
+	$scope.proceedRequest = function() {
+		console.log('proceed Request');
+		$scope.factorFlags.proceedIfactorRequest = true;
+	}
+
+	$scope.rejectRequest = function() {
+		console.log('reject Request');
+		$scope.factorFlags.rejectIfactorRequest = true;
+	}
 
 }]);

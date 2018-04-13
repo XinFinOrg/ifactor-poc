@@ -6,7 +6,8 @@ var userSchema = mongoose.Schema({
 	lastName : String,
     email : String,
     password : String,
-    type : String
+    type : String,
+    address : String
 });
 
 userSchema.methods.validPassword = function (pwd) {
