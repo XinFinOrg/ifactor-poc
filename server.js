@@ -1,4 +1,4 @@
-var express  = require('express');
+\var express  = require('express');
 var app = express();
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -14,7 +14,7 @@ var index = require('./app/routes/index');
 var users = require('./app/routes/users');
 var db = require('./app/config/db');
 var authLocal = require('./app/auth/local');
-var port = process.env.PORT || 8081; // set our port
+var port = process.env.PORT || 6001; // set our port
 var url = 'mongodb://localhost:27017/testDb1';
 
 mongoose.connect(url);
