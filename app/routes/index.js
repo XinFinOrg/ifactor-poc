@@ -89,9 +89,8 @@ router.post('/approveInvoice', function(req, res) {
 });
 
 router.post('/rejectInvoice', function(req, res) {
-	let input = req.body.invoiceId;
-	input.buyerId = ""; //add buyer id
-	let updateQuery = {$set : {state : 'invoice_rejected', buyerId : '123456'}};
+	let invoiceId = req.body.invoiceId;
+	let updateQuery = {$set : {state : 'invoice_rejected'}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
 			return res.send({status : false, error : err});

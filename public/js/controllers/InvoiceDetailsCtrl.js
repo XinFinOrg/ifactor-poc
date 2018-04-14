@@ -71,16 +71,6 @@
 	
 	$scope.dashboardData = [];
 	$scope.invoiceData = [];
-    $scope.getInvoices = function () {
-
-    	GetPost.get({ url : '/getSupplierDashboard' }, function(err, docs) {
-    		console.log(docs);
-			$scope.dashboardData = $scope.setStatusClasses(docs.data);
-			$scope.invoiceData = $scope.dashboardData[$rootScope.mainInvoiceIndex];
-			console.log($scope.invoiceData);
-			$scope.invoiceData.state = 'invoice_accpted';
-	    });
-    }
 
     $scope.getInvoiceDetails = function() {
 		var data = {
@@ -93,8 +83,6 @@
 			$scope.invoiceData = resp.data;
 		});
     }
-
-    //$scope.getInvoices();
 
     $scope.getDatesDiff = function(date) {
     	var date1 = new Date(date);
@@ -289,7 +277,12 @@
 
 	$scope.isBuyerPayable = function() {
 	    var list = ['ifactor_proposal_accepted', 'ifactor_prepaid', 'invoice_paid'];
-	    return list.indexOf(invoiceData.state) >= 0 ? true : false;
+	    var flag = list.indexOf($scope.invoiceData.state) >= 0 ? true : false;
+	    return flag;
 	};
 
+	$scope.isBuyerApproved = function() {
+		var list = ['invoice_accepted', 'ifactor_request', 'ifactor_rejected'];
+	    return list.indexOf($scope.invoiceData.state) >= 0 ? true : false;		
+	}
 }]);

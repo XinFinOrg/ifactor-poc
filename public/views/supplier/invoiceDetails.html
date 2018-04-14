@@ -119,15 +119,18 @@
 
                         <div class="content-body">
                             <div class="row">
+                                <!-- Approval pending -->
                                 <div class="col-md-12" ng-show="invoiceData.state == 'invoice_created'">
-                                    <div id="buyer-header-approved">
-                                        <i class="fa fa-check icon-rounded icon-primary inviewport"></i>
+                                    <div id="buyer-header-pending" class="no-bottom-marg">
+                                        <i class="fa fa-check icon-rounded icon-primary inviewport visible"></i>
 
                                         <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase">Approval Awaited</h1>
+                                            <h1 class="buyer-title text-uppercase no-top-marg">Approval Awaited</h1>
+
                                         </div>
                                     </div>
                                 </div>
+
                                 <!-- Approved By Buyer -->
                                 <!-- supplier-approved.html -->
                                 <!-- need api..used requestFactoring -->
@@ -172,12 +175,30 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_request'">
+                                <!-- <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_request'">
                                     <div id="buyer-header-approved">
                                         <i class="fa fa-check icon-rounded icon-primary inviewport"></i>
 
                                         <div class="info-details">
                                             <h1 class="buyer-title text-uppercase">Sent For Factoring</h1>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                                <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_request'">
+                                    <div id="buyer-header-pending">
+                                        <i class="fa"><img src="assets/images/dollar-briefcase.png"></i>
+
+                                        <div class="info-details">
+                                            <h1 class="buyer-title text-uppercase">Pending For Factoring</h1>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Amount</p>
+                                        <h1 class="f-w-4 no-bottom-padd">$ {{invoiceData.invoiceAmount}}</h1>
+                                        <div>
                                         </div>
                                     </div>
                                 </div>

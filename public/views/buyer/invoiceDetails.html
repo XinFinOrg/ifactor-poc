@@ -169,7 +169,7 @@
                             <!-- Buyer Confirmation -->
                             <!-- buyer-supplier-request-to-buyer.html -->
                             <!-- need api ...used  approveInvoice, rejectInvoice-->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'invoice_created'">
+                            <div class="col-md-12" ng-show="invoiceData.state == 'invoice_created'">
                                 <div id="header-blue">
                                     <i class="fa fa-check icon-rounded icon-primary"></i>
                                     <div class="info-details">
@@ -224,7 +224,7 @@
                             <!-- Buyer Confirmation -->
                             <!-- buyer-approved.html -->
                             <!-- no api -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_accepted'">
+                            <div class="col-md-12" ng-show="isBuyerApproved()">
                                 <div id="header-blue">
                                     <i class="fa fa-check icon-rounded icon-primary"></i>
                                     <div class="info-details">
@@ -269,7 +269,7 @@
                             <!-- buyer rejected -->
                             <!-- buyer-rejected.html -->
                             <!-- no api -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
+                            <div class="col-md-12" ng-show="invoiceData.state == 'invoice_rejected'">
                                 <div id="header-blue">
                                     <i class="fa fa-check icon-rounded icon-primary"></i>
                                     <div class="info-details">
