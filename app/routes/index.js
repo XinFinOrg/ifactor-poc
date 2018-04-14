@@ -177,9 +177,9 @@ router.post('/rejectFactoringProposal', function(req, res) {
 });
 
 router.post('/payInvoice', function(req, res) {
-	let input = req.body.invoiceId;
+	let invoiceId = req.body.invoiceId;
 	let updateQuery = {$set : {state : 'invoice_paid'}};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
+	updateInvoice({'invoiceId' : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
 			return res.send({status : false, error : err});
 		}
@@ -188,8 +188,19 @@ router.post('/payInvoice', function(req, res) {
 });
 
 router.post('/prepaySupplier', function(req, res) {
-	let input = req.body.invoiceId;
+	//'invoiceId' : new ObjectID(invoiceId)}
+	let invoiceId = req.body.invoiceId;
 	let updateQuery = {$set : {state : 'ifactor_prepaid'}};
+	/*getInvoices({'invoiceId' : invoiceId}, function(err, data) {
+		if (err) {
+			return res.send({status : false, msg : data});
+		}
+		var invoice = data[0];
+		invoice.invoiceAmount = !invoice.invoiceAmount ? 0 : invoice.invoiceAmount;
+		var amount = getPrepayAmount(invoice);
+		return res.send({status : true, data : invoice});
+	});*/
+
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
 			return res.send({status : false, error : err});
@@ -199,7 +210,7 @@ router.post('/prepaySupplier', function(req, res) {
 });
 
 router.post('/postpaySupplier', function(req, res) {
-	let input = req.body.invoiceId;
+	let invoiceId = req.body.invoiceId;
 	let updateQuery = {$set : {state : 'completed'}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
@@ -280,14 +291,53 @@ router.get('/getInvoices', function(req, res) {
 	});
 });
 
+
+var getDatesDiff = function(date) {
+	var date1 = new Date(date);
+	var date2 = new Date();
+    var diff = (Math.ceil((date1.getTime() - date2.getTime()) /
+            (1000 * 3600 * 24))/365);
+    return (diff*360).toFixed(0);
+};
+
+var getPrepayAmount = function(invoice) {
+	return (!invoice.saftyPercentage || invoice.saftyPercentage <= 0) ?
+							invoice.invoiceAmount :
+							(invoice.saftyPercentage/100 * invoice.invoiceAmount);
+};
+
+var getCharges = function() {
+	return (!invoice.platformCharges || invoice.platformCharges <=0) ? 0 :
+							(invoice.platformCharges/100 * invoice.invoiceAmount);
+}
+
+var getPostpayAmount = function(invoice) {
+	return  invoice.invoiceAmount - getPrepayAmount(invoice) + getCharges(invoice);
+};
+
+var processInvoiceDetails = function(invoice) {
+	invoice.invoiceAmount = !invoice.invoiceAmount ? 0 : invoice.invoiceAmount;
+	invoice.firstPayment = (!invoice.saftyPercentage || invoice.saftyPercentage <= 0) ?
+							invoice.invoiceAmount :
+							(invoice.saftyPercentage/100 * invoice.invoiceAmount);
+	invoice.charges = (!invoice.platformCharges || invoice.platformCharges <=0) ? 0 :
+							(invoice.platformCharges/100 * invoice.invoiceAmount);
+	invoice.balancePayment =  invoice.invoiceAmount - (invoice.firstPayment + invoice.charges);
+
+	invoice.daysToPayout = getDatesDiff(invoice.payableDate);
+};
+
 router.post('/getInvoiceDetails', function(req, res) {
+	console.log('get invoice details');
 	let invoiceId = req.body.invoiceId;
 	//'invoiceId' : new ObjectID(invoiceId)}
 	getInvoices({'invoiceId' : invoiceId}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
-		return res.send({status : true, data : data[0]});
+		var invoice = data[0];
+		processInvoiceDetails(invoice);
+		return res.send({status : true, data : invoice});
 	});
 });
 

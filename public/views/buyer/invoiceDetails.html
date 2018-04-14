@@ -1,5 +1,3 @@
-
-
 <!-- START CONTAINER -->
 <div class="page-container row-fluid container-fluid">
     <!-- START CONTENT -->
@@ -413,6 +411,64 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <!-- before and after payment -->
+
+                            <div class="content-body" ng-show="isBuyerPayable()">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="header-blue">
+                                            <i class="fa icon-rounded icon-primary fa-no-icon"></i>
+                                            <div class="info-details">
+                                                <h1 class="buyer-title">View Full History</h1>
+                                            </div>
+                                        </div>
+                                        <div id="header-blue">
+                                            <i class="fa fa-check icon-rounded icon-primary"></i>
+                                            <div class="info-details">
+                                                <h1 class="buyer-title">Factoring Request</h1>
+                                            </div>
+                                        </div>
+                                        <div id="header-blue">
+                                            <i class="fa icon-rounded icon-primary fa-number">4</i>
+                                            <div class="info-details">
+                                                <h1 class="buyer-title"><strong>Payment Disbursed</strong></h1>
+                                            </div>
+                                        </div>
+                                        <div class="transaction-details p-l-8">
+                                            <div class="clearfix"></div>
+                                            <div class="transaction-details">
+                                                <h5 class="text-dark">Total Amount <span class="text-dark">$ 1,00,000</span></h5>
+                                                <div class="clearfix"></div>
+                                                <h5 class="text-dark">XDC To USD <span class="text-dark">$ 1</span></h5>
+                                                <div class="clearfix"></div>
+                                                <h5 class="text-dark">Payable XDC <span class="text-dark">1,50,000</span></h5>
+                                                <div class="clearfix"></div>
+                                                <h5 class="text-dark">Days to Payout <span class="text-dark">00</span></h5>
+                                                <div>
+                                                </div>
+                                                
+                                                <div ng-show="invoiceData.state != 'invoice_paid'" class="form-group m-t-10 no-bottom-marg">
+                                                    <button ng-click="payInvoice()" class="btn btn-lg btn-primary btn-corner btn-block">Pay Now</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="opacity-5 line-before">
+
+                                            <div id="header-blue" class="no-after">
+                                                <i class="fa icon-rounded icon-primary fa-number">5</i>
+                                                <div class="info-details">
+                                                    <h1 class="buyer-title">Contract Complete</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- End .row -->
                             </div>
 
                             <!-- Pending For Approval -->

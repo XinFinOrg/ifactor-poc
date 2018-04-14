@@ -1,8 +1,7 @@
-angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',['$scope', '$rootScope', '$http', 
+	angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',['$scope', '$rootScope', '$http', 
 			'$location', 'GetPost', 'Helper',  function($scope, $rootScope, $http, $location, GetPost,Helper) {
 
 	$scope.urlMap = function(type) {
-		console.log('<<<<<<<<<<<<<<<<<<<deep tought>>>>>>>>>>>>>');
 		console.log("type :" + type);
 		if (type == 'createInvoice') {
 			$location.path('/create-invoice');
@@ -28,16 +27,13 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 			$scope.urlMap(resp.data.userType);
 			$rootScope.userType = resp.data.userType;
 			console.log('invoiceId', $rootScope.invoiceId)
-			var data = {
-				url : '/getInvoiceDetails',
-				invoiceId : $rootScope.invoiceId
-			};
-			GetPost.post(data, function(err, resp) {
-				console.log(resp.data)
-				$scope.invoiceData = resp.data;
-			});
+			$scope.getInvoiceDetails();
 		}
     });
+
+	$scope.gotoDashboard = function() {
+		$location.path('/dashboard');
+	}
 
 	var invoiceStatusMap = Helper.invoiceStatusMap;
 
@@ -86,6 +82,18 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 	    });
     }
 
+    $scope.getInvoiceDetails = function() {
+		var data = {
+			url : '/getInvoiceDetails',
+			invoiceId : $rootScope.invoiceId
+		};
+		GetPost.post(data, function(err, resp) {
+			console.log('invoiceDetails response')
+			console.log(resp.data)
+			$scope.invoiceData = resp.data;
+		});
+    }
+
     //$scope.getInvoices();
 
     $scope.getDatesDiff = function(date) {
@@ -113,6 +121,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
     		// 'ifactor_request'
+			$scope.getInvoiceDetails();
 	    });
 
 	};
@@ -129,6 +138,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
     		// 'ifactor_proposal_rejected'
+			$scope.getInvoiceDetails();
 	    });
 
 	};
@@ -146,6 +156,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
     		// 'invoice_accpted'
+			$scope.getInvoiceDetails();
 	    });
 
 	};
@@ -161,12 +172,12 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
     		// invoice_rejected
+			$scope.getInvoiceDetails();
 	    });
 
 	};
 
-	$scope.payInvoice = function (input) {
-
+	$scope.payInvoice = function () {
 		var data = {
 			url : '/payInvoice',
 			invoiceId : $rootScope.invoiceId
@@ -174,6 +185,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
     		// 'invoice_paid'
+			$scope.getInvoiceDetails();
 	    });
 
 	};
@@ -198,6 +210,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		}
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
+			$scope.getInvoiceDetails();
 	    });
 	};
 
@@ -213,6 +226,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
     		// 'ifactor_rejected'
+			$scope.getInvoiceDetails();
 	    });
 	};
 
@@ -224,12 +238,12 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		}
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
+			$scope.getInvoiceDetails();
 	    });
 	};
 
 	// used
 	$scope.prepaySupplier = function (input) {
-
 		var data = {
 			url : '/prepaySupplier',
 			invoiceId : $rootScope.invoiceId
@@ -237,12 +251,11 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
     		// 'ifactor_prepaid'
+			$scope.getInvoiceDetails();
 	    });
-
 	};
 
 	$scope.postpaySupplier = function (input) {
-
 		var data = {
 			url : '/postpaySupplier',
 			invoiceId : $rootScope.invoiceId
@@ -250,8 +263,8 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
     		// 'completed'
+			$scope.getInvoiceDetails();
 	    });
-
 	};
 
 	$scope.factorFlags = {
@@ -273,5 +286,10 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		console.log('reject Request');
 		$scope.factorFlags.rejectIfactorRequest = true;
 	}
+
+	$scope.isBuyerPayable = function() {
+	    var list = ['ifactor_proposal_accepted', 'ifactor_prepaid', 'invoice_paid'];
+	    return list.indexOf(invoiceData.state) >= 0 ? true : false;
+	};
 
 }]);

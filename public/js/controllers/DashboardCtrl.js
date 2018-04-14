@@ -33,7 +33,6 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 
 	var invoiceStatusMap = Helper.invoiceStatusMap;
 
-	
 	$scope.date = new Date();
 	$scope.eventSources = [];
 
@@ -71,19 +70,22 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 		Buyer : 'getBuyerDashboard',
 		Financer : 'getFinancerDashboard',
 	}
+
+	var setInvoices = function() {
+
+	};
+
     $scope.getInvoices = function () {
     	console.log($rootScope.userType);
     	var url = $scope.userTypeUrl[$rootScope.userType]
     	console.log(url);
     	GetPost.get({ url : '/' + url}, function(err, docs) {
     		console.log(docs);
-			// $scope.dashboardData = $scope.setStatusClasses(docs.data);
+			$scope.dashboardData = $scope.setStatusClasses(docs.data);
 			$scope.dashboardData = docs.data;
 			// $scope.invoiceData = $scope.dashboardData[$rootScope.mainInvoiceIndex];
 	    });
-    }
-
-    
+    }  
 
     $scope.getDatesDiff = function(date) {
     	var date1 = new Date(date);
@@ -100,7 +102,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 		console.log('first time>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     	$rootScope.mainInvoiceIndex = index;
     	$rootScope.invoiceId = invoice.invoiceId;
-    	if (invoice.state == 'Draft') {
+    	if (invoice.state == 'draft') {
     		$rootScope.fromDashboard = true;
     		$location.path('./create-invoice');
     	} else {

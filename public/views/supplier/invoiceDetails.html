@@ -11,7 +11,7 @@
 
                         <div class="pull-left">
                             <!-- PAGE HEADING TAG - START -->
-                            <h1 class="title"><a ng-click="getDashboardDetails()">Dashboard</a> <span class="request-details">Request Details #R125638</span> <span class="date-details">21 Dec 2018, 16:14</span></h1>
+                            <h1 class="title"><a href="" ng-click="gotoDashboard()">Dashboard</a> <span class="request-details">Request Details #R125638</span> <span class="date-details">21 Dec 2018, 16:14</span></h1>
                             <!-- PAGE HEADING TAG - END -->
                         </div>
 
@@ -245,6 +245,87 @@
 
                                         <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
 
+                                    </div>
+                                </div>
+
+                                <div class="content-body" ng-show="invoiceData.state == 'completed'">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="buyer-header-approved">
+                                                <i class="fa fa-no-number icon-rounded icon-primary inviewport visible"></i>
+
+                                                <div class="info-details">
+                                                    <h1 class="buyer-title text-uppercase">Payment Received</h1>
+
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="transaction-details no-bottom-padd">
+                                                    <h5 class="text-dark">Total Amount <span class="text-dark">$ {{invoiceData.invoiceAmount}}</span></h5>
+                                                    <div class="clearfix"></div>
+                                                    <h5 class="text-dark">First Payment <span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
+                                                    <div class="clearfix"></div>
+                                                    <h5 class="text-dark">Second Payment <span class="text-dark">$ {{invoiceData.balancePayment}}</span></h5>
+                                                    <div class="clearfix"></div>
+                                                    <h5 class="text-dark">Charges <span class="text-dark">50</span></h5>
+                                                    <hr>
+                                                    <div class="clearfix"></div>
+                                                    <h5 class="text-dark f-w-6">Total Amount <span class="text-dark">$ {{invoiceData.firstPayment + invoiceData.balancePayment}}</span></h5>
+                                                    <div>
+                                                    </div>
+                                                    
+                                                    <p class="f-size-12">Estimated Amount is Balance Amount-Processing Charges ( After deducting Factoring Charges )</p>
+                                                </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- End .row -->
+                                </div>
+
+
+                                <!-- first payment receivced -->
+                                <div class="content-body" ng-show="invoiceData.state == 'ifactor_prepaid'">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <div id="buyer-header-sent">
+                                                <i class="fa fa-number icon-rounded icon-primary inviewport visible">{{invoiceData.daysToPayout}}</i>
+
+                                                <div class="info-details">
+                                                    <h1 class="buyer-title text-uppercase">Days To Payout</h1>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="transaction-details">
+                                                    <h5 class="text-dark">Total Amount <span class="text-dark">${{invoiceData.firstPayment}}</span></h5>
+                                                    <div class="clearfix"></div>
+                                                    <h5 class="text-dark">First Payment <span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
+                                                    <div class="clearfix"></div>
+                                                    <h5 class="text-dark">Charges <span class="text-dark">$ {{invoiceData.charges}}</span></h5>
+                                                    <div class="clearfix"></div>
+                                                    <h5 class="text-dark">Days to Payout <span class="text-dark">{{invoiceData.daysToPayout}}</span></h5>
+                                                    <hr>
+                                                    <div class="clearfix"></div>
+                                                    <h5 class="text-dark f-w-6">Balance Amount <span class="text-dark">${{invoiceData.balancePayment}}</span></h5>
+                                                    <div>
+                                                    </div>
+                                                    
+                                                    <p class="f-size-12">Estimated Amount-Processing Charges ( After deducting Factoring Charges )</p>
+                                                    <div class="clearfix"></div>
+                                                    <hr>
+                                                    <h5 class="text-dark f-w-6">Balance XDC <span class="text-dark">${{invoiceData.balacePayment}}</span></h5>
+                                                </div>
+
+                                            <div class="transaction-details m-b-10">
+                                                <p class="text-muted text-uppercase">Address</p>
+                                                 <h1 class="f-size-14 no-bottom-padd">A36ABGHYTWSDOP3DFRTQAZXCDCE3012A292BC1KLMNBPOTCVFS2C5F163BKLMNPH</h1>
+                                                <div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-lg btn-primary btn-corner btn-block">Request Payment</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
