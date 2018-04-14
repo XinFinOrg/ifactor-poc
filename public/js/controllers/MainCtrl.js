@@ -23,7 +23,7 @@ angular.module('MainCtrl', []).controller('MainController',['$scope', '$rootScop
 			$location.path('/login');
 		} else {
 			$rootScope.userType = resp.data.userType;
-			$location.path('/dashboard');
+			// $location.path('/dashboard');
 		}
     });
 }]);

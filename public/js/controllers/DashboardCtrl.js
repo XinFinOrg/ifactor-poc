@@ -93,7 +93,11 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	    return (diff*360).toFixed(0);
 	};
 
-    $scope.getInvoicesDetails = function (invoice, index) {
+    $scope.getInvoicesDetails = function (invoice, index) {	
+		console.log('ffd');
+		console.log(invoice);
+		console.log(index);
+		console.log('first time>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     	$rootScope.mainInvoiceIndex = index;
     	$rootScope.invoiceId = invoice.invoiceId;
     	if (invoice.state == 'Draft') {

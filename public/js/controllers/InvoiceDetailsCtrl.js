@@ -2,6 +2,7 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 			'$location', 'GetPost', 'Helper',  function($scope, $rootScope, $http, $location, GetPost,Helper) {
 
 	$scope.urlMap = function(type) {
+		console.log('<<<<<<<<<<<<<<<<<<<deep tought>>>>>>>>>>>>>');
 		console.log("type :" + type);
 		if (type == 'createInvoice') {
 			$location.path('/create-invoice');
@@ -13,6 +14,10 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 		}
 
 		$scope.templateUrlInvoice = $scope.dashboardUrl[type];
+	};
+
+	$scope.getDashboardDetails = function () {
+		$location.path('./dashboard');
 	};
 
 	GetPost.get({ url : '/startApp' }, function(err, resp) {
