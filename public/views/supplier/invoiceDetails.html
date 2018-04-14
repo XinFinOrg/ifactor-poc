@@ -175,16 +175,33 @@
                                     </div>
                                 </div>
 
-                                <!-- <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_request'">
-                                    <div id="buyer-header-approved">
-                                        <i class="fa fa-check icon-rounded icon-primary inviewport"></i>
+                                <!-- Invoice Rejected -->
+                                <div class="col-md-12" ng-show="invoiceData.state == 'invoice_rejected'">
+                                    <div id="buyer-header-rejected">
+                                        <i class="fa fa-times icon-rounded icon-primary inviewport visible"></i>
 
                                         <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase">Sent For Factoring</h1>
+                                            <h1 class="buyer-title text-uppercase">Rejected By Buyer</h1>
+
                                         </div>
                                     </div>
-                                </div> -->
 
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Date</p>
+                                        <h1 class="f-w-4 no-bottom-padd">21st Dec 2018, 16:30</h1>
+                                        <div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="transaction-details no-bottom-padd">
+                                        <p class="text-muted text-uppercase">Remark</p>
+                                        <p class="no-bottom-padd">{{invoiceData.remark}}</p>
+                                        <div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ifactor requsted -->
                                 <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_request'">
                                     <div id="buyer-header-pending">
                                         <i class="fa"><img src="assets/images/dollar-briefcase.png"></i>
@@ -350,10 +367,67 @@
                                     </div>
                                 </div>
 
+
+
+                                <!-- factoring proposed -->
+                                <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_proposed'">
+                                    <h4 class="m-b-20 f-w-6 text-uppercase text-primary">Response Now</h4>
+
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Mode</p>
+                                        <h1 class="f-w-4 no-bottom-padd">Factor</h1>
+                                        <div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Factoring Charges/Month (%)</p>
+                                        <h1 class="f-w-4 no-bottom-padd">{{invoiceData.platformCharges}}% ($ {{invoiceData.charges}})</h1>
+                                        <div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Eligible Amount (%)</p>
+                                        <h1 class="f-w-4 no-bottom-padd">{{invoiceData.saftyPercentage}}% ( $ {{invoiceData.firstPayment}} )</h1>
+                                        <div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Terms &amp; Condition</p>
+                                        <p class="no-bottom-padd">{{invoiceData.acceptFactoringRemark}}</p>
+                                        <div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Attachment</p>
+                                        <p class="text-muted"><a href="#" class="attachment-btn"><i class="fa fa-download"></i> Factor.pdf</a></p>
+                                        <div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <textarea rows="6" class="form-control input-lg" id="description" placeholder="Remark*"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button ng-click="acceptFactoringProposal()" class="btn btn-lg btn-primary btn-corner btn-block">Accept</button>
+                                            </div>
+                                            <div class="form-group">
+                                                <button ng-click="rejectFactoringProposal()" class="btn btn-lg btn-border btn-primary btn-corner btn-block">Reject</button>
+                                            </div>
+                                        </div>
+                                </div>
+
+
                                 <!-- Sent For Factoring -->
                                 <!-- supplier-pending.html -->
                                 <!-- no api -->
-                                <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposed'">
+                                <div class="col-md-12" ng-show="false">
                                     <div id="buyer-header-sent">
                                         <i class="fa"><img src="assets/images/dollar-briefcase.png"></i>
 

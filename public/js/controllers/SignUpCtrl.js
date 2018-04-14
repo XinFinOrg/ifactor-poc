@@ -2,17 +2,13 @@ angular.module('SignUpCtrl', []).controller('SignUpController',['$scope', '$root
  '$http', '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
  	$http, $location, GetPost, Helper) {
 
+
 	console.log('signup');
 	$scope.signup = function() {
 		console.log({input : $scope.input});
 		console.log('inside a function');
-
-		var data = {
-			input : $scope.input,
-			url : '/signup'
-		}
-		// $scope.input.url = '/signup';
-		GetPost.post(data, function(err, resp) {
+		$scope.input.url = '/signup';
+		GetPost.post({input : $scope.input}, function(err, resp) {
 			if (!resp.status) {
 				console.log('error')
 			} else {
