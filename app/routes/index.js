@@ -10,7 +10,7 @@ var url = require('url');
 var uniqid = require('uniqid');
 
 router.post('/signup', function(req, res) {
-	console.log('inside sugnup');
+	console.log('inside signup');
 	let input = req.body.input;
 	console.log('signup input', input);
 	var collection = db.getCollection('users');

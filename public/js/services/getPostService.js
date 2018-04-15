@@ -3,14 +3,17 @@ angular.module('GetPostService', []).factory('GetPost', ['$http', function($http
         /* Post data */
         var post  = function(input, cb) {
             // var url = getUrl(input);
-
+            console.log('getpost');
+            console.log(input);
             $http.post(input.url, input)
             .then(function(resp) {
+                console.log('inside getpost post')
                 /* Success */
-                if (!(resp.data && resp.data.success)) {
-                    return cb(1, resp.data);
+                console.log('resp', resp);
+                if (resp.data && resp.data.status) {
+                    return cb(0, resp.data);
                 }
-                return cb(0, resp.data);
+                return cb(1, resp.data);
             }, function(resp) {
                 /* Failure */
                 console.log("post: Error received for ");
