@@ -19,7 +19,6 @@
                                 <span class="small">You have 3 new notifications.</span>
                             </li>
                             <li class="list">
-
                                 <ul class="dropdown-menu-list list-unstyled ps-scrollbar">
                                     <li class="unread available">
                                         <a href="javascript:;">
@@ -208,83 +207,83 @@
                                     <h5 class="text-light pull-left text-uppercase">Buyer</h5>
                                 </header>
 
-                                <div id="buyer-header">
-                                    <img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border">
+                                    <div id="buyer-header">
+                                        <img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border">
 
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Crossref India Pvt. Ltd.</h1>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title">{{invoiceData.companyName}}</h1>
 
-                                        <ul class="list-unstyled list-inline no-bottom-marg">
-                                            <li class="text-muted"><i class="fa fa-user"></i> Soham Khan</li>
-                                            <li class="text-muted"><i class="fa fa-phone"></i> +91 9665664587</li>
-                                            <li><a href="#" class="text-muted"><i class="fa fa-envelope"></i> crossrefindia@gmail.com</a></li>
+                                            <ul class="list-unstyled list-inline no-bottom-marg">
+                                                <li class="text-muted"><i class="fa fa-user"></i> {{invoiceData.contactName}}</li>
+                                                <li class="text-muted"><i class="fa fa-phone"></i> {{invoiceData.companyPhone}}</li>
+                                                <li><a href="#" class="text-muted"><i class="fa fa-envelope"></i> {{invoiceData.companyEmail}}</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="purchase-details">
+                                        <h5 class="text-light text-uppercase">Purchase Details</h5>
+
+                                        <h1>{{invoiceData.purchaseTitle}}</h1>
+                                        <div class="price-badge">
+                                            <div class="amount text-muted">Amount : <span class="bold"><i class="fa fa-inr" aria-hidden="true"></i> {{invoiceData.purchaseAmount}}</span></div>
+                                            <div class="period text-muted">Days to Payout : <span class="bold">{{getDatesDiff(invoiceData.payableDate)}} Days</span></div>
+                                        </div>
+                                    </div>
+
+                            </div>
+
+                                <div class="col-lg-4 col-sm-4 col-xs-12">
+                                    <div class="price-pack">
+                                        <div class="head no-bottom-padd">
+                                            <h3>PO Details</h3>
+                                        </div>
+                                        <ul class="item-list list-unstyled">
+                                            <li>#{{invoiceData.purchaseNo}}</li>
+                                            <li>{{invoiceData.purchaseDate}}</li>
+                                            <li><strong>${{invoiceData.purchaseAmount}}</strong></li>
+
                                         </ul>
 
+                                        <button type="button" class="btn btn-lg btn-icon btn-default btn-block">10delinvoice.pdf <i class="fa fa-download"></i></button>
+
                                     </div>
                                 </div>
 
-                                <div class="purchase-details">
-                                    <h5 class="text-light text-uppercase">Purchase Details</h5>
+                                <div class="col-lg-4 col-sm-4 col-xs-12">
+                                    <div class="price-pack">
+                                        <div class="head no-bottom-padd">
+                                            <h3>Invoice Details</h3>
+                                        </div>
+                                        <ul class="item-list list-unstyled">
+                                            <li>#{{invoiceData.invoiceNo}}</li>
+                                            <li>{{invoiceData.invoiceDate}}</li>
+                                            <li><strong>${{invoiceData.invoiceAmount}}</strong></li>
 
-                                    <h1>10 Dell Laptops with headphones</h1>
-                                    <div class="price-badge">
-                                        <div class="amount text-muted">Amount : <span class="bold"><i class="fa fa-inr" aria-hidden="true"></i> 1,00,000</span></div>
-                                        <div class="period text-muted">Days to Payout : <span class="bold">80 Days</span></div>
+                                        </ul>
+
+                                        <button type="button" class="btn btn-lg btn-icon btn-default btn-block">10delinvoice.pdf <i class="fa fa-download"></i></button>
+
                                     </div>
                                 </div>
 
-                            </div>
+                                <div class="col-lg-4 col-sm-4 col-xs-12">
+                                    <div class="price-pack">
+                                        <div class="head no-bottom-padd">
+                                            <h3>Grn Details</h3>
+                                        </div>
 
-                            <div class="col-lg-4 col-sm-4 col-xs-12">
-                                <div class="price-pack">
-                                    <div class="head no-bottom-padd">
-                                        <h3>PO Details</h3>
+                                        <ul class="item-list list-unstyled">
+                                            <li>#{{invoiceData.grnNo}}</li>
+                                            <li>{{invoiceData.grnDate}}</li>
+                                            <li>{{invoiceData.grnAmount}}</li>
+
+                                        </ul>
+
+                                        <button type="button" class="btn btn-lg btn-icon btn-default btn-block">10delinvoice.pdf <i class="fa fa-download"></i></button>
+
                                     </div>
-                                    <ul class="item-list list-unstyled">
-                                        <li>#12345678</li>
-                                        <li>21 Dec 2018</li>
-                                        <li><strong>$1,00,000</strong></li>
-
-                                    </ul>
-
-                                    <button type="button" class="btn btn-lg btn-icon btn-default btn-block">10delinvoice.pdf <i class="fa fa-download"></i></button>
-
                                 </div>
-                            </div>
-
-                            <div class="col-lg-4 col-sm-4 col-xs-12">
-                                <div class="price-pack">
-                                    <div class="head no-bottom-padd">
-                                        <h3>Invoice Details</h3>
-                                    </div>
-                                    <ul class="item-list list-unstyled">
-                                        <li>#12345678</li>
-                                        <li>21 Dec 2018</li>
-                                        <li><strong>$1,00,000</strong></li>
-
-                                    </ul>
-
-                                    <button type="button" class="btn btn-lg btn-icon btn-default btn-block">10delinvoice.pdf <i class="fa fa-download"></i></button>
-
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-sm-4 col-xs-12">
-                                <div class="price-pack">
-                                    <div class="head no-bottom-padd">
-                                        <h3>Grn Details</h3>
-                                    </div>
-
-                                    <ul class="item-list list-unstyled">
-                                        <li>#12345678</li>
-                                        <li>21 Dec 2018</li>
-
-                                    </ul>
-
-                                    <button type="button" class="btn btn-lg btn-icon btn-default btn-block">10delinvoice.pdf <i class="fa fa-download"></i></button>
-
-                                </div>
-                            </div>
 
                             <div class="clearfix"></div>
 

@@ -42,7 +42,7 @@ router.post('/signup', function(req, res) {
 router.post('/createInvoice', function(req, res) {
 	let input = req.body.input;
 	input.supplierEmail = req.user.email;
-	input.supplierName = req.user.firstName + '' + req.user.lastName;
+	input.supplierName = req.user.firstName + ' ' + req.user.lastName;
 	input.supplierAddress = req.user.address;
 	input.state = 'invoice_created'
 	input.invoiceId = uniqid();

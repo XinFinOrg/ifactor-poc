@@ -35,7 +35,7 @@
                                     <thead>
                                         <tr>
                                             <th>Request No</th>
-                                            <th>Buyer Name</th>
+                                            <th>Supplier Name</th>
                                             <th>PO Title</th>
                                             <th class="text-right">Amount</th>
                                             <th class="text-right">Days to Payout</th>
@@ -51,7 +51,7 @@
                                             <td ng-if="item.companyName">
                                                 <div id="buyer-logo">
                                                     <i><img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border"></i>
-                                                    <span>{{item.companyName}}</span>
+                                                    <span>{{item.supplierName}}</span>
                                                 </div>
                                             </td>
                                             <td ng-if="!item.companyName">
@@ -63,7 +63,7 @@
                                             <td ng-if="item.purchaseTitle">{{item.purchaseTitle}}</td>
                                             <td ng-if="!item.purchaseTitle">-</td>
 
-                                            <td ng-if="item.purchaseAmount" class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> {{item.purchaseAmount}}</td>
+                                            <td ng-if="item.purchaseAmount" class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> {{item.invoiceAmount}}</td>
                                             <td ng-if="!item.purchaseAmount" class="text-right">-</td>
 
                                             <td ng-if="item.payableDate" class="text-right">{{getDatesDiff(item.payableDate)}}</td>
