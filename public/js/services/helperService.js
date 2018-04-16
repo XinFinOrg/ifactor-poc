@@ -40,8 +40,24 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
         }
     };
 
+    var stateOptions = [
+            'draft',
+            'invoice_created',
+            'invoice_rejected',
+            'invoice_accepted',
+            'ifactor_request',
+            'ifactor_rejected',
+            'ifactor_proposed',
+            'ifactor_proposal_accpted',
+            'ifactor_proposal_rejected',
+            'ifactor_prepaid',
+            'invoice_paid',
+            'completed'
+        ];
+
     return {
         invoiceStatusMap : invoiceStatusMap,
+        stateOptions : stateOptions
     }
 
 }]);

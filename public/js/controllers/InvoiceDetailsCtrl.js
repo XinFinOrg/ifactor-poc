@@ -285,4 +285,21 @@
 		var list = ['invoice_accepted', 'ifactor_request', 'ifactor_rejected'];
 	    return list.indexOf($scope.invoiceData.state) >= 0 ? true : false;		
 	}
+
+	$scope.stateOptions = [
+            'draft',
+            'invoice_created',
+            'invoice_rejected',
+            'invoice_accepted',
+            'ifactor_request',
+            'ifactor_rejected',
+            'ifactor_proposed',
+            'ifactor_proposal_accpted',
+            'ifactor_proposal_rejected',
+            'ifactor_prepaid',
+            'invoice_paid',
+            'completed'
+	];
+	console.log($scope.stateOptions);
+
 }]);
