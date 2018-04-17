@@ -129,9 +129,7 @@ var getState = async (function(invoiceId) {
 
 var setState = async (function(invoiceId, state) {
     var mm = await (contractInstance.setState(invoiceId, state, Date.now(),
-          {from: web3.eth.accounts[1], gas:100000}).catch((e)=> {
-            throw e;
-          }));
+          {from: web3.eth.accounts[1], gas:100000}));
     return mm;
 });
 

@@ -89,23 +89,35 @@ router.post('/approveInvoice', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
 	console.log('invoiceId', invoiceId)
 	//input.buyerId = ""; //add buyer id
+
+    try {
+	    var tx = await (web3Helper.setState(invoiceId, 'invoice_accepted'));
+	    console.log('tx', tx);
+    } catch(e) {
+    	console.log(e)
+		return res.send({status : false, message : 'smart contract error'});
+    }
 	let updateQuery = {$set : {state : 'invoice_accepted'}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		console.log('update', err, data);
 		if (err) {
 			return res.send({status : false, error : err});
 		}
-	    try {
-		    var tx = await (setState(invoiceId, 'invoice_accepted'));
-	    } catch(e) {
-			return res.send({status : false, message : 'smart contract error'});
-	    }
 		return res.send({status : true, data : {state : '', tx : tx}});
 	});
 }));
 
 router.post('/rejectInvoice', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
+
+    try {
+	    var tx = await (web3Helper.setState(invoiceId, 'invoice_rejected'));
+	    console.log('tx', tx);
+    } catch(e) {
+    	console.log(e)
+		return res.send({status : false, message : 'smart contract error'});
+    }
+
 	let updateQuery = {$set : {state : 'invoice_rejected'}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
@@ -115,18 +127,28 @@ router.post('/rejectInvoice', async (function(req, res) {
 	});
 }));
 
-router.post('/requestFactoring', function(req, res) {
+router.post('/requestFactoring', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
+
+    try {
+	    var tx = await (web3Helper.setState(invoiceId, 'ifactor_request'));
+	    console.log('tx', tx);
+    } catch(e) {
+    	console.log(e)
+		return res.send({status : false, message : 'smart contract error'});
+    }
+
+
 	let updateQuery = {$set : {state : 'ifactor_request'}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
 			return res.send({status : false, error : err});
 		}
-		return res.send({status : true, data : {state : ''}});
+		return res.send({status : true, data : {state : '', tx : tx}});
 	});
-});
+}));
 
-router.post('/factoringProposal', function(req, res) {
+router.post('/factoringProposal', async (function(req, res) {
 	let input = req.body.input;
 	let invoiceId = req.body.invoiceId;
 	console.log('input', JSON.stringify(input, null, 4));
@@ -137,6 +159,20 @@ router.post('/factoringProposal', function(req, res) {
 		saftyPercentage : '',
 		acceptFactoringRemark : ''
 	*/
+	var invoice = {
+		invoiceId : invoiceId,
+		financerAddress : req.user.address,
+		platformCharges : parseInt(input.platformCharges),
+		saftyPercentage : parseInt(input.saftyPercentage)
+	};
+
+    try {
+	    var tx = await (web3Helper.factoringProposal(invoice));
+	    console.log('ifactor_proposed', tx);
+    } catch(e) {
+    	console.log(e)
+		return res.send({status : false, message : 'smart contract error'});
+    }
 
 	let updateQuery = {$set : {
 			state : 'ifactor_proposed',
@@ -153,7 +189,7 @@ router.post('/factoringProposal', function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
-});
+}));
 
 router.post('/rejectFactoringRequest', function(req, res) {
 	let invoiceId = req.body.invoiceId;
