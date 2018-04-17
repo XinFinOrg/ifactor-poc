@@ -8,8 +8,11 @@ var db = require('./../config/db');
 var url = require('url');
 //var web3Helper = require('./web3Helper');
 var uniqid = require('uniqid');
+var async = require('asyncawait/async');
+var await = require('asyncawait/await');
+var web3Helper = require('./web3Helper');
 
-router.post('/signup', function(req, res) {
+router.post('/signup', (function(req, res) {
 	console.log('inside signup');
 	let input = req.body.input;
 	console.log('signup input', input);
@@ -19,14 +22,9 @@ router.post('/signup', function(req, res) {
 			return res.send({status : false, error : 
 				{errorCode : 'AccountExists', msg : 'Account Already Exists'}});
 		}
-		//create blockchain account
-		/*var address = web3Helper.createAccount(input.password);
-		if (!address) {
-			return res.send({status : false, error : 
-				{errorCode : 'InternalError', msg : 'Internal Error'}});
-		}
-		input.address = address;*/
-		input.address = 'abcdefg';
+
+		input.address = web3Helper.createAccount(input.password);
+		console.log('address', input.address);
 		input.phrase = input.password;
 		collection.save(input, function (err, docs) {
 		    if (err) {
@@ -37,28 +35,41 @@ router.post('/signup', function(req, res) {
 			return res.send({status : true});
 		});
 	});
-});
+}));
 
-router.post('/createInvoice', function(req, res) {
+router.post('/createInvoice', async (function(req, res) {
 	let input = req.body.input;
 	input.supplierEmail = req.user.email;
 	input.supplierName = req.user.firstName + ' ' + req.user.lastName;
 	input.supplierAddress = req.user.address;
-	input.state = 'invoice_created'
+	input.state = 'invoice_created';
 	input.invoiceId = uniqid();
+	input.invoiceNo = parseInt(input.invoiceNo);
+	input.invoiceAmount = parseInt(input.invoiceAmount);
 	//console.log('uniqid', input.invoiceId);
 	//input.owners = [];
 	//input.owners.push('112344'); //add supplierID
 	var collection = db.getCollection('invoices');
 	console.log(input)
+    try {
+	    var tx = await (web3Helper.addInvoice(input));
+	    input.createHash = tx;
+    } catch(e) {
+    	console.log(e);
+		return res.send({status : false, message : e});
+    }
 	collection.save(input, function (err, docs) {
 	    if (err) {
 			return res.send({status : false, error : {
 				errorCode : 'DBError', msg : 'DB Error'
 			}});
 	    }
-		return res.send({status : true});
+		return res.send({status : true, tx : tx});
 	});
+}));
+
+var updateInvoiceBlockchain = async(function(invoiceId, state) {
+
 });
 
 var updateInvoice = function(query, update, cb) {
@@ -73,7 +84,7 @@ var updateInvoice = function(query, update, cb) {
 	});
 };
 
-router.post('/approveInvoice', function(req, res) {
+router.post('/approveInvoice', async (function(req, res) {
 	console.log('inside approveInvoice');
 	let invoiceId = req.body.invoiceId;
 	console.log('invoiceId', invoiceId)
@@ -84,11 +95,16 @@ router.post('/approveInvoice', function(req, res) {
 		if (err) {
 			return res.send({status : false, error : err});
 		}
-		return res.send({status : true, data : {state : ''}});
+	    try {
+		    var tx = await (setState(invoiceId, 'invoice_accepted'));
+	    } catch(e) {
+			return res.send({status : false, message : 'smart contract error'});
+	    }
+		return res.send({status : true, data : {state : '', tx : tx}});
 	});
-});
+}));
 
-router.post('/rejectInvoice', function(req, res) {
+router.post('/rejectInvoice', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
 	let updateQuery = {$set : {state : 'invoice_rejected'}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
@@ -97,7 +113,7 @@ router.post('/rejectInvoice', function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
-});
+}));
 
 router.post('/requestFactoring', function(req, res) {
 	let invoiceId = req.body.invoiceId;

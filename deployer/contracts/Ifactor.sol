@@ -54,6 +54,7 @@ contract Ifactor is StandardToken {
 		inv.supplier = _supplier ;
 		inv.buyer = _buyer;
 		Invoices[_invoice_id] = inv;
+		createInvoice(_invoice_id, _invoice_no, _state, _amount, _supplier, _buyer);
 	}
 
 	function getState(string _invoice_id) public view returns(string) {
@@ -61,9 +62,10 @@ contract Ifactor is StandardToken {
 		return inv.state;
 	}
 
-	function setState(string _invoice_id, string _invoice_state) public {
+	function setState(string _invoice_id, string _invoice_state, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
 		inv.state = _invoice_state;
+		invoiceHistory(_invoice_id, _invoice_state, _created);
 	}
 	
 	function getAmount(string _invoice_id) public constant returns(uint) {
@@ -71,41 +73,52 @@ contract Ifactor is StandardToken {
         return inv.amount;
 	}
 
-	function addFactoring(string _invoice_id, address _financer, uint _factor_charges, uint _factor_interest, uint _factor_safty_percentage) public {
+	function addFactoring(string _invoice_id, address _financer, uint _factor_charges, uint _factor_safty_percentage, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
 		inv.financer = _financer;
 		inv.factorCharges = _factor_charges;
-		inv.factorInterest = _factor_interest;
-		inv.factorSaftyPercentage = _factor_safty_percentage;		
+		inv.factorSaftyPercentage = _factor_safty_percentage;
+        setState(_invoice_id, 'factoring_proposed', _created);
+	    factoringProposal(_invoice_id, _financer, _factor_charges, _factor_safty_percentage, _created);
 	}
 
-	function prepayFactoring(string _invoice_id) public view returns(uint) {
+	function prepayFactoring(string _invoice_id, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
 		uint _value =  inv.amount * inv.factorSaftyPercentage;
 		address _from = inv.financer;
 		address _to = inv.supplier;
-        transferFrom(_from, _to, _value);
+        //transferFrom(_from, _to, _value);
+        setState(_invoice_id, 'ifactor_prepaid', _created);
 	}
 
-    function payInvoice(string _invoice_id) public {
+    function payInvoice(string _invoice_id, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
         address _from = inv.supplier;
         address _to = inv.financer;
         uint _value = inv.amount;
-        transferFrom(_from, _to, _value);
+        //transferFrom(_from, _to, _value);
+        setState(_invoice_id, 'invoice_paid', _created);
     }
 
-	function postpayFactoring(string _invoice_id) public view returns(uint) {
+	function postpayFactoring(string _invoice_id, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
-		uint _value = (inv.amount * (1 - inv.factorSaftyPercentage)) -
-				inv.amount * (inv.factorCharges);
+		uint _value = (inv.amount * 100) -
+						(
+							(inv.amount * inv.factorSaftyPercentage) +
+							(inv.amount * inv.factorCharges)
+						);
 		address _from = inv.financer;
 		address _to = inv.supplier;
-        transferFrom(_from, _to, _value);
+        //transferFrom(_from, _to, _value);
+        setState(_invoice_id, 'invoice_paid', _created);
 	}
 
-    event createInvoice(string invoiceId, address supplier, address buyer, string companyName, string companyType, string contactName, string companyPhone, string companyEmail, uint purchaseTitle, uint purchaseNo, uint purchaseDate, uint purchaseAmount, uint payableDate, uint invoiceNo, uint invoiceDate, uint invoiceAmount, uint grnNo, uint created);
-    event acceptInvoice(uint invoiceNo, string invoiceId, address supplier, address buyer, uint created);
-    event factoringProposal(uint invoiceNo, string invoiceId, string state, address financer, uint factorCharges, uint factorInterest, uint factorSaftyPercentage, uint created);
+
+	event createInvoice(string _invoice_id, uint _invoice_no, string _state, uint _amount,
+						address _supplier, address _buyer);
+	event invoiceHistory(string invoiceId, string state, uint created);
+    event acceptInvoice(string invoiceId, uint created);
+    event rejectInvoice(string invoiceId, uint created);
+    event factoringProposal(string invoiceId, address financer, uint factorCharges, uint factorSaftyPercentage, uint created);
     event factoringAccepted(uint invoiceNo, string invoiceId, string state);
 }
