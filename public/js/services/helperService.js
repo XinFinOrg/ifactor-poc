@@ -48,7 +48,7 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
             'ifactor_request',
             'ifactor_rejected',
             'ifactor_proposed',
-            'ifactor_proposal_accpted',
+            'ifactor_proposal_accepted',
             'ifactor_proposal_rejected',
             'ifactor_prepaid',
             'invoice_paid',

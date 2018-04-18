@@ -4,12 +4,12 @@
     <div class="page-container row-fluid container-fluid">
         <!-- START CONTENT -->
 
-        <!-- <div>
+        <div>
             <div class="col-md-9 has-float-label">
                 <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
                 </select>
             </div>
-        </div> -->
+        </div>
         <section>
             <div class="container wrapper main-wrapper row" style=''>
 
@@ -154,7 +154,7 @@
                                         <h1>#88888888888888888</h1>
                                         <div>
 
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <div class="input-group">
 
                                                     <div class="input-group-btn">
@@ -168,13 +168,13 @@
                                                     <input class="form-control input-lg" id="amount" type="text" placeholder="Amount*" />
 
                                                 </div>
-                                            </div>
+                                            </div> -->
 
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <div class="input-group">
                                                     <textarea rows="6" class="form-control input-lg" id="description" placeholder="Description*"></textarea>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <button type="submit" ng-click="requestFactoring()" class="btn btn-lg btn-primary btn-corner btn-block">Factor Now</button>
                                         </div>
                                     </div>
@@ -200,7 +200,7 @@
                                     
                                     <div class="transaction-details no-bottom-padd">
                                         <p class="text-muted text-uppercase">Remark</p>
-                                        <p class="no-bottom-padd">{{invoiceData.remark}}</p>
+                                        <p class="no-bottom-padd">{{invoiceData.buyerInvoiceRemark}}</p>
                                         <div>
                                         </div>
                                     </div>
@@ -231,7 +231,7 @@
                                         <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
 
                                         <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase no-top-marg">Rejected By Financier</h1>
+                                            <h1 class="buyer-title text-uppercase no-top-marg">Rejected By Financer</h1>
 
                                         </div>
                                     </div>
@@ -241,13 +241,14 @@
                                         <div class="clearfix"></div>
                                         <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <textarea ng-model="proposalActionForm.remark" rows="3" class="form-control input-lg" id="description" ng-init={{invoiceData.rejectFactoringRemark}} readonly></textarea>
+
+                                    <div class="transaction-details no-bottom-padd">
+                                        <p class="text-muted text-uppercase">Remark</p>
+                                        <p class="no-bottom-padd">{{invoiceData.rejectProposalRemark}}</p>
+                                        <div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
                             <!-- Proposal accepted -->
                                 <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposal_accepted'">
@@ -267,6 +268,13 @@
                                         <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
                                         <h3 class="f-w-6">Smart Contract Created</h3>
                                     </div>
+
+                                    <div class="transaction-details no-bottom-padd">
+                                        <p class="text-muted text-uppercase">Remark</p>
+                                        <p class="no-bottom-padd">{{invoiceData.acceptProposalRemark}}</p>
+                                        <div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Rejected By Financier -->
@@ -277,7 +285,7 @@
                                         <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
 
                                         <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase no-top-marg">Rejected By Financier</h1>
+                                            <h1 class="buyer-title text-uppercase no-top-marg">Rejected By Financer</h1>
 
                                         </div>
                                     </div>
@@ -285,9 +293,14 @@
                                     <div class="transaction-details">
                                         <h5 class="text-light text-uppercase">Date</h5>
                                         <div class="clearfix"></div>
-
                                         <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
+                                    </div>
 
+                                    <div class="transaction-details no-bottom-padd">
+                                        <p class="text-muted text-uppercase">Remark</p>
+                                        <p class="no-bottom-padd">{{invoiceData.rejectFactoringRemark}}</p>
+                                        <div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -310,7 +323,7 @@
                                                     <div class="clearfix"></div>
                                                     <h5 class="text-dark">Second Payment <span class="text-dark">$ {{invoiceData.balancePayment}}</span></h5>
                                                     <div class="clearfix"></div>
-                                                    <h5 class="text-dark">Charges <span class="text-dark">50</span></h5>
+                                                    <h5 class="text-dark">Charges <span class="text-dark">{{invoiceData.charges}}</span></h5>
                                                     <hr>
                                                     <div class="clearfix"></div>
                                                     <h5 class="text-dark f-w-6">Total Amount <span class="text-dark">$ {{invoiceData.firstPayment + invoiceData.balancePayment}}</span></h5>
@@ -327,7 +340,7 @@
 
 
                                 <!-- first payment receivced -->
-                                <div class="content-body" ng-show="invoiceData.state == 'ifactor_prepaid'">
+                                <div class="content-body" ng-show="invoiceData.state == 'ifactor_prepaid'|| invoiceData.state == 'invoice_paid'">
                                     <div class="row">
                                         <div class="col-md-12">
 
@@ -361,7 +374,7 @@
 
                                             <div class="transaction-details m-b-10">
                                                 <p class="text-muted text-uppercase">Address</p>
-                                                 <h1 class="f-size-14 no-bottom-padd">A36ABGHYTWSDOP3DFRTQAZXCDCE3012A292BC1KLMNBPOTCVFS2C5F163BKLMNPH</h1>
+                                                 <h1 class="f-size-14 no-bottom-padd">{{invoiceData.financerAddress}}</h1>
                                                 <div>
                                                 </div>
                                             </div>
@@ -416,7 +429,7 @@
                                     <div>
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <textarea rows="6" class="form-control input-lg" id="description" placeholder="Remark*"></textarea>
+                                                    <textarea rows="6" ng-model="proposalActionForm.remark" class="form-control input-lg" id="description" placeholder="Remark*"></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -428,7 +441,7 @@
                                         </div>
                                 </div>
 
-
+                            </div>
                                 <!-- Sent For Factoring -->
                                 <!-- supplier-pending.html -->
                                 <!-- no api -->

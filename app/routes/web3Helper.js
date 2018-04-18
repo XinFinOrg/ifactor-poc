@@ -116,9 +116,7 @@ var payInvoice = async (function(invoiceId) {
 
 var postpayFactoring = async (function(invoiceId) {
     var mm = await (contractInstance.postpayFactoring(invoiceId, Date.now(),
-          {from: web3.eth.accounts[1], gas:100000}).catch((e)=> {
-            throw e;
-          }));
+          {from: web3.eth.accounts[1], gas:100000}));
     return mm;
 });
 

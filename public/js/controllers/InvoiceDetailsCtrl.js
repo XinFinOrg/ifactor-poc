@@ -133,17 +133,17 @@
 	
 
 	/***************************buyer api*************************/
-
+	$scope.invoiceActionForm = {};
 	// used
 	$scope.approveInvoice = function (input) {
 
 		var data = {
 			url : '/approveInvoice',
-			invoiceId : $rootScope.invoiceId
+			invoiceId : $rootScope.invoiceId,
+			buyerInvoiceRemark : $scope.invoiceActionForm.remark
 		}
 		GetPost.post(data, function(err, resp) {
-    		console.log(resp);
-    		// 'invoice_accpted'
+			$scope.invoiceActionForm = {};
 			$scope.getInvoiceDetails();
 	    });
 
@@ -203,9 +203,13 @@
 	};
 
 
-	$scope.proposalActionForm = {};
+	$scope.proposalActionForm = {
+		remark : ''
+	};
 	// used
 	$scope.rejectFactoringRequest = function () {
+		console.log('remark');
+		console.log($scope.proposalActionForm);
 		var data = {
 			url : '/rejectFactoringRequest',
 			invoiceId : $rootScope.invoiceId,
@@ -294,7 +298,7 @@
             'ifactor_request',
             'ifactor_rejected',
             'ifactor_proposed',
-            'ifactor_proposal_accpted',
+            'ifactor_proposal_accepted',
             'ifactor_proposal_rejected',
             'ifactor_prepaid',
             'invoice_paid',

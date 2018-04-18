@@ -9,20 +9,6 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 			password : $scope.password,
 			url : '/login'
 		}
-		// $http.post('/login', data).then(function(response) {
-		// 	$location.path('/dashboard');
-
-		// 	console.log("yo");
-		// 	console.log('login');
-		// 	$scope.message = response;
-		// 	console.log(response);
-		// }, function(response) {
-		// 	console.log("yo22");
-		// 	console.log('login');
-		// 	console.log(response);
-		// 	$location.path('/dashboard');
-		// 	$scope.message = response;
-		// });
 
 		GetPost.post(data, function(err, docs) {
 				console.log(docs);

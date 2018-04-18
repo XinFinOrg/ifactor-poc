@@ -37,6 +37,12 @@ router.post('/signup', (function(req, res) {
 	});
 }));
 
+var getFullName = function(firstName, lastName) {
+	return !firstName && !lastName ? 'Anonymous' : 
+		firstName && lastName ? firstName + ' ' + lastName :
+		firstName ? firstName : lastName;
+}
+
 router.post('/createInvoice', async (function(req, res) {
 	let input = req.body.input;
 	input.supplierEmail = req.user.email;
@@ -46,6 +52,7 @@ router.post('/createInvoice', async (function(req, res) {
 	input.invoiceId = uniqid();
 	input.invoiceNo = parseInt(input.invoiceNo);
 	input.invoiceAmount = parseInt(input.invoiceAmount);
+	input.created = Date.now();
 	//console.log('uniqid', input.invoiceId);
 	//input.owners = [];
 	//input.owners.push('112344'); //add supplierID
@@ -87,7 +94,10 @@ var updateInvoice = function(query, update, cb) {
 router.post('/approveInvoice', async (function(req, res) {
 	console.log('inside approveInvoice');
 	let invoiceId = req.body.invoiceId;
+	let remark = req.body.remark;
+
 	console.log('invoiceId', invoiceId)
+	console.log('remark', remark)
 	//input.buyerId = ""; //add buyer id
 
     try {
@@ -97,7 +107,7 @@ router.post('/approveInvoice', async (function(req, res) {
     	console.log(e)
 		return res.send({status : false, message : 'smart contract error'});
     }
-	let updateQuery = {$set : {state : 'invoice_accepted'}};
+	let updateQuery = {$set : {state : 'invoice_accepted', buyerInvoiceRemark : remark}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		console.log('update', err, data);
 		if (err) {
@@ -109,6 +119,7 @@ router.post('/approveInvoice', async (function(req, res) {
 
 router.post('/rejectInvoice', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
+	let remark = req.body.remark;
 
     try {
 	    var tx = await (web3Helper.setState(invoiceId, 'invoice_rejected'));
@@ -118,7 +129,7 @@ router.post('/rejectInvoice', async (function(req, res) {
 		return res.send({status : false, message : 'smart contract error'});
     }
 
-	let updateQuery = {$set : {state : 'invoice_rejected'}};
+	let updateQuery = {$set : {state : 'invoice_rejected', buyerInvoiceRemark : remark}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
 			return res.send({status : false, error : err});
@@ -153,12 +164,6 @@ router.post('/factoringProposal', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
 	console.log('input', JSON.stringify(input, null, 4));
 	console.log('invoiceId', invoiceId);
-	/*input :
-		invoiceId : invoiceId
-		platformCharges : '',
-		saftyPercentage : '',
-		acceptFactoringRemark : ''
-	*/
 	var invoice = {
 		invoiceId : invoiceId,
 		financerAddress : req.user.address,
@@ -194,6 +199,7 @@ router.post('/factoringProposal', async (function(req, res) {
 router.post('/rejectFactoringRequest', function(req, res) {
 	let invoiceId = req.body.invoiceId;
 	let remark = req.body.remark;
+	console.log('remark', remark);
 	let updateQuery = {$set : {state : 'ifactor_rejected', rejectFactoringRemark : remark}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
