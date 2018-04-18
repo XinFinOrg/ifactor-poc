@@ -3,14 +3,14 @@ var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
 var passport = require('passport');
 var helper = require('./helper');
-//const LocalStrategy = require('passport-local').Strategy;
 var db = require('./../config/db');
 var url = require('url');
-//var web3Helper = require('./web3Helper');
 var uniqid = require('uniqid');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var web3Helper = require('./web3Helper');
+
+
 
 router.post('/signup', (function(req, res) {
 	console.log('inside signup');
@@ -76,7 +76,13 @@ router.post('/createInvoice', async (function(req, res) {
 }));
 
 var updateInvoiceBlockchain = async(function(invoiceId, state) {
-
+    try {
+	    var tx = await (web3Helper.setState(invoiceId, state));
+	    return {status : true, tx : tx};
+    } catch(e) {
+    	console.log('smart contract error : ', e);
+		return {status : false};
+    }
 });
 
 var updateInvoice = function(query, update, cb) {
@@ -162,8 +168,6 @@ router.post('/requestFactoring', async (function(req, res) {
 router.post('/factoringProposal', async (function(req, res) {
 	let input = req.body.input;
 	let invoiceId = req.body.invoiceId;
-	console.log('input', JSON.stringify(input, null, 4));
-	console.log('invoiceId', invoiceId);
 	var invoice = {
 		invoiceId : invoiceId,
 		financerAddress : req.user.address,
@@ -196,10 +200,20 @@ router.post('/factoringProposal', async (function(req, res) {
 	});
 }));
 
-router.post('/rejectFactoringRequest', function(req, res) {
+router.post('/rejectFactoringRequest', async (function(req, res) {
+	console.log('inside rejectFactoringRequest');
 	let invoiceId = req.body.invoiceId;
 	let remark = req.body.remark;
-	console.log('remark', remark);
+
+	var tx;
+	var scResult = await (updateInvoiceBlockchain(invoiceId, 'ifactor_rejected'));
+	if (!scResult.status) {
+		return res.send({status : false, msg : 'smart contract error'});
+	} else {
+		tx = scResult.tx;
+		console.log('rejectfactoring tx', tx);
+	}
+
 	let updateQuery = {$set : {state : 'ifactor_rejected', rejectFactoringRemark : remark}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
@@ -207,10 +221,20 @@ router.post('/rejectFactoringRequest', function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
-});
+}));
 
-router.post('/acceptFactoringProposal', function(req, res) {
+router.post('/acceptFactoringProposal', async(function(req, res) {
+	console.log('acceptFactoringProposal');
 	let invoiceId = req.body.invoiceId;
+	var tx;
+	var scResult = await (updateInvoiceBlockchain(invoiceId, 'ifactor_proposal_accepted'));
+	if (!scResult.status) {
+		return res.send({status : false, msg : 'smart contract error'});
+	} else {
+		tx = scResult.tx;
+		console.log('tx', tx);
+	}
+
 	let remark = req.body.remark;
 	let updateQuery = {$set : {state : 'ifactor_proposal_accepted', acceptProposalRemark : remark}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
@@ -219,10 +243,21 @@ router.post('/acceptFactoringProposal', function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
-});
+}));
 
-router.post('/rejectFactoringProposal', function(req, res) {
+router.post('/rejectFactoringProposal', async(function(req, res) {
+	console.log('inside rejectFactoringProposal');
 	let input = req.body.invoiceId;
+
+	var tx;
+	var scResult = await (updateInvoiceBlockchain(invoiceId, 'ifactor_proposal_rejected'));
+	if (!scResult.status) {
+		return res.send({status : false, msg : 'smart contract error'});
+	} else {
+		tx = scResult.tx;
+		console.log('tx', tx);
+	}
+
 	let remark = req.body.remark;
 	let updateQuery = {$set : {state : 'ifactor_proposal_rejected', rejectProposalRemark : remark}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
@@ -231,43 +266,57 @@ router.post('/rejectFactoringProposal', function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
-});
+}));
 
-router.post('/payInvoice', function(req, res) {
+router.post('/payInvoice', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
 	let updateQuery = {$set : {state : 'invoice_paid'}};
+
+    try {
+	    var tx = await (web3Helper.payInvoice(invoiceId));
+    } catch(e) {
+    	console.log(e);
+		return res.send({status : false, error : 'blockchain error'});
+    }
+
 	updateInvoice({'invoiceId' : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
 			return res.send({status : false, error : err});
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
-});
+}));
 
-router.post('/prepaySupplier', function(req, res) {
+router.post('/prepaySupplier', async(function(req, res) {
 	//'invoiceId' : new ObjectID(invoiceId)}
 	let invoiceId = req.body.invoiceId;
-	let updateQuery = {$set : {state : 'ifactor_prepaid'}};
-	/*getInvoices({'invoiceId' : invoiceId}, function(err, data) {
-		if (err) {
-			return res.send({status : false, msg : data});
-		}
-		var invoice = data[0];
-		invoice.invoiceAmount = !invoice.invoiceAmount ? 0 : invoice.invoiceAmount;
-		var amount = getPrepayAmount(invoice);
-		return res.send({status : true, data : invoice});
-	});*/
 
+    try {
+	    var tx = await (web3Helper.prepayFactoring(invoiceId));
+    } catch(e) {
+    	console.log(e);
+		return res.send({status : false, error : 'blockchain error'});
+    }
+
+	let updateQuery = {$set : {state : 'ifactor_prepaid'}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
 			return res.send({status : false, error : err});
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
-});
+}));
 
-router.post('/postpaySupplier', function(req, res) {
+router.post('/postpaySupplier', async(function(req, res) {
 	let invoiceId = req.body.invoiceId;
+    try {
+	    var tx = await (web3Helper.postpayFactoring(invoiceId));
+	    console.log('tx', tx);
+    } catch(e) {
+    	console.log(e);
+		return res.send({status : false, error : 'blockchain error'});
+    }
+
 	let updateQuery = {$set : {state : 'completed'}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
@@ -275,7 +324,7 @@ router.post('/postpaySupplier', function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
-});
+}));
 
 var getUsers = function(query, cb) {
 	var collection = db.getCollection('users');

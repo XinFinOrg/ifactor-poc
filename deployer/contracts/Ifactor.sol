@@ -38,6 +38,7 @@ contract Ifactor is StandardToken {
 
 	function buyTokens(address _address) {
 	    balances[_address] = 10000;
+	    balances[owner] = balances[owner] - 10000;
 	}
 
     function getBalance(address _address) public view returns(uint) {
@@ -78,16 +79,17 @@ contract Ifactor is StandardToken {
 		inv.financer = _financer;
 		inv.factorCharges = _factor_charges;
 		inv.factorSaftyPercentage = _factor_safty_percentage;
-        setState(_invoice_id, 'factoring_proposed', _created);
+        setState(_invoice_id, 'ifactor_proposed', _created);
 	    factoringProposal(_invoice_id, _financer, _factor_charges, _factor_safty_percentage, _created);
 	}
 
 	function prepayFactoring(string _invoice_id, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
-		uint _value =  inv.amount * inv.factorSaftyPercentage;
+		//uint _value =  inv.amount * inv.factorSaftyPercentage;
+		uint _value =  100;
 		address _from = inv.financer;
 		address _to = inv.supplier;
-        //transferFrom(_from, _to, _value);
+        transferFrom(_from, _to, _value);
         setState(_invoice_id, 'ifactor_prepaid', _created);
 	}
 
@@ -95,21 +97,23 @@ contract Ifactor is StandardToken {
 		Invoice inv = Invoices[_invoice_id];
         address _from = inv.supplier;
         address _to = inv.financer;
-        uint _value = inv.amount;
-        //transferFrom(_from, _to, _value);
+        //uint _value = inv.amount;
+        uint _value = 100;
+        transferFrom(_from, _to, _value);
         setState(_invoice_id, 'invoice_paid', _created);
     }
 
 	function postpayFactoring(string _invoice_id, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
-		uint _value = (inv.amount * 100) -
+		/*uint _value = (inv.amount * 100) -
 						(
 							(inv.amount * inv.factorSaftyPercentage) +
 							(inv.amount * inv.factorCharges)
-						);
+						);*/
+		uint _value = 100;
 		address _from = inv.financer;
 		address _to = inv.supplier;
-        //transferFrom(_from, _to, _value);
+        transferFrom(_from, _to, _value);
         setState(_invoice_id, 'invoice_paid', _created);
 	}
 

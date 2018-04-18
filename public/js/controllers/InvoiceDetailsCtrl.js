@@ -117,12 +117,13 @@
 
 	// used
 	$scope.rejectFactoringProposal = function (input) {
-
+		console.log('rejectFactoringProposal');
 		var data = {
 			url : '/rejectFactoringProposal',
 			invoiceId : $rootScope.invoiceId,
-			remark : remark
+			remark : $scope.proposalActionForm.remark
 		}
+		
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
     		// 'ifactor_proposal_rejected'
