@@ -85,11 +85,11 @@ contract Ifactor is StandardToken {
 
 	function prepayFactoring(string _invoice_id, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
-		//uint _value =  inv.amount * inv.factorSaftyPercentage;
+		//uint _value =  inv.amount * inv.factorSaftyPercentage/;
 		uint _value =  100;
 		address _from = inv.financer;
 		address _to = inv.supplier;
-        transferFrom(_from, _to, _value);
+        transfer(_to, _value);
         setState(_invoice_id, 'ifactor_prepaid', _created);
 	}
 
@@ -99,7 +99,7 @@ contract Ifactor is StandardToken {
         address _to = inv.financer;
         //uint _value = inv.amount;
         uint _value = 100;
-        transferFrom(_from, _to, _value);
+        transfer(_to, _value);
         setState(_invoice_id, 'invoice_paid', _created);
     }
 
@@ -113,7 +113,7 @@ contract Ifactor is StandardToken {
 		uint _value = 100;
 		address _from = inv.financer;
 		address _to = inv.supplier;
-        transferFrom(_from, _to, _value);
+        transfer(_to, _value);
         setState(_invoice_id, 'invoice_paid', _created);
 	}
 
@@ -121,8 +121,6 @@ contract Ifactor is StandardToken {
 	event createInvoice(string _invoice_id, uint _invoice_no, string _state, uint _amount,
 						address _supplier, address _buyer);
 	event invoiceHistory(string invoiceId, string state, uint created);
-    event acceptInvoice(string invoiceId, uint created);
-    event rejectInvoice(string invoiceId, uint created);
     event factoringProposal(string invoiceId, address financer, uint factorCharges, uint factorSaftyPercentage, uint created);
     event factoringAccepted(uint invoiceNo, string invoiceId, string state);
 }

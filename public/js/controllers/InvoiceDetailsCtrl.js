@@ -64,6 +64,13 @@
 		return data;
 	};
 
+	$scope.getInvoiceStatus = function(state) {
+		console.log('this.state.', state);
+		var status = invoiceStatusMap[$rootScope.userType][state];
+		console.log('status', status);
+		return status;
+	}
+
 
 	if (!$rootScope.mainInvoiceIndex) {
 		$rootScope.mainInvoiceIndex = 0;
@@ -71,16 +78,16 @@
 	
 	$scope.dashboardData = [];
 	$scope.invoiceData = [];
-
+	$scope.invoiceTxHistory = [];
     $scope.getInvoiceDetails = function() {
 		var data = {
 			url : '/getInvoiceDetails',
 			invoiceId : $rootScope.invoiceId
 		};
 		GetPost.post(data, function(err, resp) {
-			console.log('invoiceDetails response')
-			console.log(resp.data)
-			$scope.invoiceData = resp.data;
+			console.log('invoiceDetails response');
+			$scope.invoiceData = resp.data.invoice;
+			$scope.invoiceTxHistory = resp.data.invoiceHistory;
 		});
     }
 
