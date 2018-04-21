@@ -5,7 +5,7 @@ import 'zeppelin-solidity/contracts/token/ERC20/StandardToken.sol';
 contract Ifactor is StandardToken {
     struct Invoice {
         string invoiceId;
-        uint invoiceNo;
+        string invoiceNo;
         uint amount;
         address supplier;
         address buyer;
@@ -45,8 +45,8 @@ contract Ifactor is StandardToken {
         return balances[_address];
     }
 
-	function addInvoice(string _invoice_id, uint _invoice_no, string _state, uint _amount,
-						address _supplier, address _buyer) public {
+	function addInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount,
+						address _supplier, address _buyer, uint _created) public {
 		Invoice inv;
 		inv.invoiceId = _invoice_id ;
 		inv.invoiceNo = _invoice_no ;
@@ -55,6 +55,7 @@ contract Ifactor is StandardToken {
 		inv.supplier = _supplier ;
 		inv.buyer = _buyer;
 		Invoices[_invoice_id] = inv;
+		invoiceHistory(_invoice_id, _state, _created);
 		createInvoice(_invoice_id, _invoice_no, _state, _amount, _supplier, _buyer);
 	}
 
@@ -85,11 +86,11 @@ contract Ifactor is StandardToken {
 
 	function prepayFactoring(string _invoice_id, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
-		//uint _value =  inv.amount * inv.factorSaftyPercentage;
+		//uint _value =  inv.amount * inv.factorSaftyPercentage/;
 		uint _value =  100;
 		address _from = inv.financer;
 		address _to = inv.supplier;
-        transferFrom(_from, _to, _value);
+        transfer(_to, _value);
         setState(_invoice_id, 'ifactor_prepaid', _created);
 	}
 
@@ -99,7 +100,7 @@ contract Ifactor is StandardToken {
         address _to = inv.financer;
         //uint _value = inv.amount;
         uint _value = 100;
-        transferFrom(_from, _to, _value);
+        transfer(_to, _value);
         setState(_invoice_id, 'invoice_paid', _created);
     }
 
@@ -113,16 +114,14 @@ contract Ifactor is StandardToken {
 		uint _value = 100;
 		address _from = inv.financer;
 		address _to = inv.supplier;
-        transferFrom(_from, _to, _value);
+        transfer(_to, _value);
         setState(_invoice_id, 'invoice_paid', _created);
 	}
 
 
-	event createInvoice(string _invoice_id, uint _invoice_no, string _state, uint _amount,
+	event createInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount,
 						address _supplier, address _buyer);
 	event invoiceHistory(string invoiceId, string state, uint created);
-    event acceptInvoice(string invoiceId, uint created);
-    event rejectInvoice(string invoiceId, uint created);
     event factoringProposal(string invoiceId, address financer, uint factorCharges, uint factorSaftyPercentage, uint created);
     event factoringAccepted(uint invoiceNo, string invoiceId, string state);
 }

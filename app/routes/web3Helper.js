@@ -81,8 +81,9 @@ var contractInstance = getInstance(invoiceJson);
 var addInvoice = async (function(invoice) {
     var mm = await (contractInstance.addInvoice(
         invoice.invoiceId, invoice.invoiceNo, 'invoice_created', invoice.invoiceAmount,
-        invoice.supplierAddress, invoice.buyerAddress,{from: web3.eth.accounts[1], gas:300000})
-    );
+        invoice.supplierAddress, invoice.buyerAddress, Date.now(),
+        {from: web3.eth.accounts[1], gas:300000}
+    ));
     return mm;
 });
 
@@ -144,23 +145,24 @@ var getAmount = async (function(invoiceId){
     return mm;
 });
 
-var confirmedEvents = function(req, res) {
-  var confirmedEvent = instance.BookingConf({
-      from: web3.eth.coinbase,
-      gas: 70000000}, {
-      fromBlock: 0,
-      toBlock: 'latest'});
+var getInvoiceHistory = function(invoiceId, cb) {
+    var allEvents = contractInstance.invoiceHistory({
+            from: web3.eth.coinbase,
+            gas: 70000000
+        },{
+            fromBlock: 0,
+            toBlock: 'latest'
+        }
+    );
 
-      confirmedEvent.get(function(err,result) {
-      if(!err) {
-      res.json({
-      "status":"success",
-      "message":result});
-      } else {
-      return res.json({"status": "fail"});
-      }
-});
-}
+    allEvents.get(function(err,result) {
+    if(!err) {
+        var result = result.filter(tx => tx.args && tx.args.invoiceId == invoiceId);
+        return cb(false, result);
+    }
+        return cb(true);
+    });
+};
 
 /*var getInstance = async (function() {
     contractInstance = await (selectContractInstance(invoiceJson));
@@ -181,6 +183,6 @@ module.exports = {
     getState : getState,
     setState : setState,
     buyTokens : buyTokens,
-    getAmount : getAmount,  
-    confirmedEvents : confirmedEvents
+    getAmount : getAmount,
+    getInvoiceHistory : getInvoiceHistory
 };

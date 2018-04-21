@@ -9,9 +9,9 @@ var uniqid = require('uniqid');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 
-var web3Conf = false;
+var web3Conf = true;
 if (web3Conf) {
-	var web3Helper = require('./web3Helper');	
+	var web3Helper = require('./web3Helper');
 }
 
 router.post('/signup', (function(req, res) {
@@ -51,16 +51,13 @@ var getFullName = function(firstName, lastName) {
 router.post('/createInvoice', async (function(req, res) {
 	let input = req.body.input;
 	input.supplierEmail = req.user.email;
-	input.supplierName = req.user.firstName + ' ' + req.user.lastName;
+	input.supplierName = getFullName(req.user.firstName, req.user.lastName);
 	input.supplierAddress = req.user.address;
 	input.state = 'invoice_created';
 	input.invoiceId = uniqid();
-	input.invoiceNo = parseInt(input.invoiceNo);
+	input.invoiceNo = input.invoiceNo;
 	input.invoiceAmount = parseInt(input.invoiceAmount);
 	input.created = Date.now();
-	//console.log('uniqid', input.invoiceId);
-	//input.owners = [];
-	//input.owners.push('112344'); //add supplierID
 	var collection = db.getCollection('invoices');
 	console.log(input);
 	var tx;
@@ -159,9 +156,8 @@ router.post('/rejectInvoice', async (function(req, res) {
 
 router.post('/requestFactoring', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
-
 	var tx;
-	if (web3Conf) {	
+	if (web3Conf) {
 	    try {
 		    tx = await (web3Helper.setState(invoiceId, 'ifactor_request'));
 		    console.log('tx', tx);
@@ -171,13 +167,11 @@ router.post('/requestFactoring', async (function(req, res) {
 	    }
 	}
 
-
 	let updateQuery = {$set : {state : 'ifactor_request'}};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
 			return res.send({status : false, error : err});
 		}
-		return res.send({status : true, data : {state : '', tx : tx}});
 	});
 }));
 
@@ -363,7 +357,7 @@ router.post('/postpaySupplier', async(function(req, res) {
 
 var getUsers = function(query, cb) {
 	var collection = db.getCollection('users');
-	collection.find().toArray(function(err, data) {
+	collection.find(query).toArray(function(err, data) {
 		if (err) {
 			return cb(true, err);
 		}
@@ -371,11 +365,21 @@ var getUsers = function(query, cb) {
 	});
 };
 
+var getUserDetails = function(query, cb) {
+	var collection = db.getCollection('users');
+	collection.find(query).toArray(function(err, data) {
+		if (err) {
+			return cb(true, err);
+		}
+		return cb(false, data[0]);
+	});
+};
+
 var getInvoices = function(query, cb) {
 	console.log('inside getInvoices');
 	console.log('user')
 	var collection = db.getCollection('invoices');
-	collection.find(query).toArray(function(err, data) {
+	collection.find(query).sort({'created' : -1}).toArray(function(err, data) {
 		if (err) {
 			console.log('err', err);
 			return cb(true, err);
@@ -412,7 +416,7 @@ router.get('/getBuyerDashboard', function(req, res) {
 router.get('/getFinancerDashboard', function(req, res) {
 	var email = req.user.email;
 	let list = ['draft', 'invoice_created', 'invoice_rejected', 'invoice_accepted'];
-	
+
 	//get all invoices greater than 6;
 	getInvoices({state : {$nin : list}}, function(err, data) {
 		if (err) {
@@ -468,7 +472,17 @@ var processInvoiceDetails = function(invoice) {
 	invoice.daysToPayout = getDatesDiff(invoice.payableDate);
 };
 
-router.post('/getInvoiceDetails', function(req, res) {
+var getInvoiceDates = function(invoiceHistory) {
+	var created = {};
+	for (var i in invoiceHistory) {
+		if (invoiceHistory[i] && invoiceHistory[i].args) {
+			created[invoiceHistory[i].args.state] = invoiceHistory[i].args.created;
+		}
+	}
+	return created;
+}
+
+router.post('/getInvoiceDetails', async(function(req, res) {
 	console.log('get invoice details');
 	let invoiceId = req.body.invoiceId;
 	//'invoiceId' : new ObjectID(invoiceId)}
@@ -476,11 +490,28 @@ router.post('/getInvoiceDetails', function(req, res) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
+		var invoiceHistory = [];
 		var invoice = data[0];
 		processInvoiceDetails(invoice);
-		return res.send({status : true, data : invoice});
+
+		//invoice.supplierData = !userData ? {} : userData;
+
+		getUserDetails({email : invoice.supplierEmail}, function(err, userData) {
+			invoice.supplierData = !err ? userData : {};
+			if (web3Conf) {
+				web3Helper.getInvoiceHistory(invoiceId, function(err, result) {
+					if (!err) {
+						invoiceHistory = result;
+					}
+					invoice.created = getInvoiceDates(invoiceHistory);
+					return res.send({status : true, data : {invoice : invoice, invoiceHistory : invoiceHistory}});
+				});
+			} else {
+				return res.send({status : true, data : {invoice : invoice, invoiceHistory : invoiceHistory}});
+			}
+		});
 	});
-});
+}));
 
 router.get('/getUsers', function(req, res) {
 	getUsers({}, function(err, data) {
@@ -490,17 +521,6 @@ router.get('/getUsers', function(req, res) {
 		return res.send({status : true, data : data})
 	});
 });
-
-
-/*router.post('/login', function(req, res) {
-    passport.authenticate('local', {
-        failureRedirect: '/error';
-    }),
-    function(req, res) {
-        res.redirect('/');
-
-    }
-});*/
 
 var autheticate = function (req, res, next) {
 	console.log('inside authenticate');

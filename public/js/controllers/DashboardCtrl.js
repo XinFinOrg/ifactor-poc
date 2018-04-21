@@ -77,7 +77,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 
     $scope.getInvoices = function () {
     	console.log($rootScope.userType);
-    	var url = $scope.userTypeUrl[$rootScope.userType]
+    	var url = $scope.userTypeUrl[$rootScope.userType];
     	console.log(url);
     	GetPost.get({ url : '/' + url}, function(err, docs) {
     		console.log(docs);
@@ -99,7 +99,6 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 		console.log('ffd');
 		console.log(invoice);
 		console.log(index);
-		console.log('first time>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     	$rootScope.mainInvoiceIndex = index;
     	$rootScope.invoiceId = invoice.invoiceId;
     	if (invoice.state == 'draft') {

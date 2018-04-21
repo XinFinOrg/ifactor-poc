@@ -3,21 +3,20 @@
     <!-- START CONTENT -->
     <section>
         <div class="container wrapper main-wrapper row" style=''>
-        <!-- <div>
+        <div>
             <div class="col-md-9 has-float-label">
                 <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
                 </select>
             </div>
-        </div> -->
+        </div>
             <div class='col-xs-12'>
                 <div class="page-title">
 
                     <div class="pull-left">
                         <!-- PAGE HEADING TAG - START -->
-                        <h1 class="title"><a href="/dashboard">Dashboard</a> <span class="request-details">Request Details #R125638</span> <span class="date-details">21 Dec 2018, 16:14</span></h1>
+                        <h1 class="title"><a href="/dashboard">Dashboard</a> <span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
                         <!-- PAGE HEADING TAG - END -->
                     </div>
-
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -113,47 +112,48 @@
                             <div class="clearfix"></div>
 
                             <div class="col-md-12">
-
                                 <div class="verification-details">
                                     <h5 class="text-uppercase">Verification Details</h5>
                                     <div id="buyer-header" class="no-bottom-border">
                                         <img src="assets/images/logos/buyer/blocks.jpg" alt="" class="img-circle circle-border">
-
-                                        <div class="info-details">
-                                            <h1 class="buyer-title f-w-4">#0x6f331dea30b9cff852cb80e4fc489dbf1c8ff82bd8494850716ba3f106d6bdc0 is <span class="text-primary">published on blockchain</span> at 31st Dec 2018, 16:30</h1>
-
+                                        <div ng-repeat="tx in invoiceTxHistory">
+                                            <div class="info-details">
+                                                <h1 class="buyer-title f-w-4">#{{tx.transactionHash}} is <span class="text-primary">published on blockchain</span> at 31st Dec 2018, 16:30</h1>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="m-b-15">
-                                        <p class="text-muted">Address</p>
-                                        <p>0xa1ff1153f68d8f0a8377f200d59b34034fcf19</p>
-                                    </div>
 
-                                    <div class="m-b-15">
-                                        <p class="text-muted">BlockNumber</p>
-                                        <p>17068</p>
-                                    </div>
+                                    <div ng-repeat="tx in invoiceTxHistory">
+                                        <div class="m-b-15">
+                                            <p class="text-muted">Address</p>
+                                            <p>{{tx.address}}</p>
+                                        </div>
 
-                                    <div class="m-b-15">
-                                        <p class="text-muted">Status</p>
-                                        <p>Approved</p>
-                                    </div>
+                                        <div class="m-b-15">
+                                            <p class="text-muted">BlockNumber</p>
+                                            <p>{{tx.blockNumber}}</p>
+                                        </div>
 
-                                    <div class="m-b-15">
-                                        <p class="text-muted">_id</p>
-                                        <p>17068_0_0</p>
-                                    </div>
+                                        <div class="m-b-15">
+                                            <p class="text-muted">Status</p>
+                                            <p>{{getInvoiceStatus(tx.args.state)}}</p>
+                                        </div>
 
-                                    <div class="m-b-15">
-                                        <p class="text-muted">Time Stamp</p>
-                                        <p>1522811430794832400</p>
-                                    </div>
+                                        <div class="m-b-15">
+                                            <p class="text-muted">_id</p>
+                                            <p>{{tx.arg.invoiceId}}</p>
+                                        </div>
 
-                                    <div class="m-b-15">
-                                        <p class="text-muted">Remark</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-                                    </div>
+                                        <div class="m-b-15">
+                                            <p class="text-muted">Time Stamp</p>
+                                            <p>{{tx.args.created}}</p>
+                                        </div>
 
+                                        <div class="m-b-15">
+                                            <p class="text-muted">Remark</p>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
