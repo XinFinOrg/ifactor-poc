@@ -18,7 +18,7 @@
 
                         <div class="pull-left">
                             <!-- PAGE HEADING TAG - START -->
-                            <h1 class="title"><a href="" ng-click="gotoDashboard()">Dashboard</a> <span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">21 Dec 2018, 16:14</span></h1>
+                            <h1 class="title"><a href="" ng-click="gotoDashboard()">Dashboard</a> <span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
                             <!-- PAGE HEADING TAG - END -->
                         </div>
 
@@ -151,7 +151,7 @@
                                         <h5 class="text-light text-uppercase">Buyer Transaction <span><a href="#">view more</a></span></h5>
                                         <div class="clearfix"></div>
 
-                                        <h1>#88888888888888888</h1>
+                                        <h1>#{{filterTransactionHistory('invoice_accepted', true)}}</h1>
                                         <div>
 
                                             <!-- <div class="form-group">

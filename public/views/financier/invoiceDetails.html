@@ -15,7 +15,7 @@
 
                     <div class="pull-left">
                         <!-- PAGE HEADING TAG - START -->
-                        <h1 class="title"><a ng-href="/dashboard">Dashboard</a><span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">21 Dec 2018, 16:14</span></h1>
+                        <h1 class="title"><a ng-href="/dashboard">Dashboard</a><span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
                         <!-- PAGE HEADING TAG - END -->
                     </div>
                 </div>
@@ -36,12 +36,12 @@
                                     <img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border">
 
                                     <div class="info-details">
-                                        <h1 class="buyer-title">Crossref India Pvt. Ltd.</h1>
+                                        <h1 class="buyer-title">{{invoiceData.supplierName}}</h1>
 
                                         <ul class="list-unstyled list-inline no-bottom-marg">
-                                            <li class="text-muted"><i class="fa fa-user"></i> Soham Khan</li>
+                                            <li class="text-muted"><i class="fa fa-user"></i> {{invoiceData.supplierName}}</li>
                                             <li class="text-muted"><i class="fa fa-phone"></i> +91 9665664587</li>
-                                            <li><a href="#" class="text-muted"><i class="fa fa-envelope"></i> crossrefindia@gmail.com</a></li>
+                                            <li><a href="#" class="text-muted"><i class="fa fa-envelope"></i>{{invoiceData.supplierEmail}}</a></li>
                                         </ul>
 
                                     </div>
@@ -170,8 +170,8 @@
                                 <p class="f-w-6">Mode</p>
                                 <!-- [ Togglable tabs ] -->
                                 <div class="btn-group" data-toggle="btns">
-                                    <a class="btn btn-round btn-border btn-lg btn-primary active" href="#first" data-toggle="tab">Factor</a>
-                                    <a class="btn btn-round btn-border btn-lg btn-primary" href="#second" data-toggle="tab">Finance</a>
+                                    <a class="btn btn-round btn-border btn-lg btn-primary active" data-toggle="tab">Factor</a>
+                                    <a class="btn btn-round btn-border btn-lg btn-primary" data-toggle="tab">Finance</a>
                                 </div>
 
                                 <!-- Tab panes -->
@@ -250,15 +250,14 @@
 
                                     <div class="info-details">
                                         <h1 class="buyer-title text-uppercase">Rejected By You</h1>
-
+                                        <p class="f-w-6">{{invoiceData.rejectFactoringRemark}}</p>
                                     </div>
                                 </div>
 
                                 <div class="transaction-details">
                                     <h5 class="text-light text-uppercase">Date</h5>
                                     <div class="clearfix"></div>
-
-                                    <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
+                                    <h1 class="no-bottom-padd">{{invoiceData.created.ifactor_rejected | date : "dd MMM y, hh:mm"}}</h1>
                                     <div>
                                     </div>
 
@@ -280,7 +279,7 @@
                                     <h5 class="text-light text-uppercase">Date</h5>
                                     <div class="clearfix"></div>
 
-                                    <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
+                                    <h1 class="no-bottom-padd">{{invoiceData.created.ifactor_proposed | date : "dd MMM y, hh:mm"}}</h1>
                                     <div>
                                     </div>
                                 </div>
@@ -317,7 +316,7 @@
 
                                     <div class="m-b-20">
                                         <p class="text-muted text-uppercase">Terms &amp; Condition</p>
-                                        <p class="f-w-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+                                        <p class="f-w-6">{{invoiceData.acceptFactoringRemark}}</p>
                                     </div>
 
                                     <div class="m-b-20">
@@ -345,7 +344,7 @@
                                             </div>
      
                                             <div class="transaction-details m-b-10">
-                                                <p class="text-muted text-uppercase">Eligible Amount (80%)</p>
+                                                <p class="text-muted text-uppercase">Eligible Amount ({{invoiceData.saftyPercentage}})</p>
                                                 <h1 class="f-w-4 no-bottom-padd">{{invoiceData.firstPayment}}</h1>
                                             </div>
 
@@ -370,14 +369,18 @@
                             </div>
 
                             <!-- prepayment done -->
-                            <div class="content-body" ng-show="invoiceData.state == 'ifactor_prepaid'||invoiceData.state == 'invoice_paid'">
+                            <div class="content-body" ng-show="invoiceData.state == 'ifactor_prepaid'||invoiceData.state == 'invoice_paid' || invoiceData.state == 'completed'">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div id="buyer-header-approved">
+                                        <div id="buyer-header-approved" ng-show="invoiceData.state == 'invoice_paid'">
                                             <i class="fa fa-times icon-rounded icon-primary inviewport visible"></i>
 
-                                            <h4 ng-show="invoiceData.state == 'invoice_paid'" class="m-b-20 f-w-6 text-uppercase text-primary">Pay Now</h4>
-                                            <div class="info-details" ng-show="invoiceData.state == 'ifactor_prepaid'">
+                                            <h4 class="m-b-20 f-w-6 text-uppercase text-primary">Pay Now</h4>
+                                        </div>
+
+                                        <div id="buyer-header-approved" ng-show="invoiceData.state == 'ifactor_prepaid'">
+                                            <i class="fa fa-times icon-rounded icon-primary inviewport visible"></i>
+                                            <div class="info-details">
                                                 <h1 class="buyer-title text-uppercase">Payment Successful</h1>
                                             </div>
                                         </div>
@@ -399,19 +402,19 @@
                                                 <p class="f-size-12">Estimated Amount-Processing Charges ( After deducting Factoring Charges )</p>
                                                 <div class="clearfix"></div>
                                                 <hr>
-                                                <h5 class="text-dark f-w-6">Balance XDC <span class="text-dark">${{invoiceData.balacePayment}}</span></h5>
+                                                <h5 class="text-dark f-w-6">Balance XDC <span class="text-dark">${{invoiceData.balancePayment}}</span></h5>
                                             </div>
 
                                         <div class="transaction-details m-b-10">
                                             <p class="text-muted text-uppercase">Address</p>
-                                             <h1 class="f-size-14 no-bottom-padd">A36ABGHYTWSDOP3DFRTQAZXCDCE3012A292BC1KLMNBPOTCVFS2C5F163BKLMNPH</h1>
+                                             <h1 class="f-size-14 no-bottom-padd">{{invoiceData.buyerAddress}}</h1>
                                             <div>
                                             </div>
                                         </div>
                                         <div class="form-group" ng-show="invoiceData.state == 'ifactor_prepaid'">
                                             <button type="submit" class="btn btn-lg btn-primary btn-corner btn-block">Request Payment</button>
                                         </div>
-                                        <div class="form-group" ng-show="invoiceData.state == 'invoice_paid'">
+                                        <div class="form-group" ng-show="invoiceData.state == 'invoice_paid' && invoiceData.state != 'completed'">
                                             <button type="submit" class="btn btn-lg btn-primary btn-corner btn-block" ng-click="postpaySupplier()">Pay Now</button>
                                         </div>
                                     </div>

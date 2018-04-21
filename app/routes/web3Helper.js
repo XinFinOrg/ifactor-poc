@@ -81,8 +81,9 @@ var contractInstance = getInstance(invoiceJson);
 var addInvoice = async (function(invoice) {
     var mm = await (contractInstance.addInvoice(
         invoice.invoiceId, invoice.invoiceNo, 'invoice_created', invoice.invoiceAmount,
-        invoice.supplierAddress, invoice.buyerAddress,{from: web3.eth.accounts[1], gas:300000})
-    );
+        invoice.supplierAddress, invoice.buyerAddress, Date.now(),
+        {from: web3.eth.accounts[1], gas:300000}
+    ));
     return mm;
 });
 

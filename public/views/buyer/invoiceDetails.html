@@ -3,21 +3,20 @@
     <!-- START CONTENT -->
     <section>
         <div class="container wrapper main-wrapper row" style=''>
-        <!-- <div>
+        <div>
             <div class="col-md-9 has-float-label">
                 <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
                 </select>
             </div>
-        </div> -->
+        </div>
             <div class='col-xs-12'>
                 <div class="page-title">
 
                     <div class="pull-left">
                         <!-- PAGE HEADING TAG - START -->
-                        <h1 class="title"><a href="/dashboard">Dashboard</a> <span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">21 Dec 2018, 16:14</span></h1>
+                        <h1 class="title"><a href="/dashboard">Dashboard</a> <span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
                         <!-- PAGE HEADING TAG - END -->
                     </div>
-
                 </div>
             </div>
             <div class="clearfix"></div>

@@ -55,7 +55,7 @@ router.post('/createInvoice', async (function(req, res) {
 	input.supplierAddress = req.user.address;
 	input.state = 'invoice_created';
 	input.invoiceId = uniqid();
-	input.invoiceNo = parseInt(input.invoiceNo);
+	input.invoiceNo = input.invoiceNo;
 	input.invoiceAmount = parseInt(input.invoiceAmount);
 	input.created = Date.now();
 	var collection = db.getCollection('invoices');
@@ -379,7 +379,7 @@ var getInvoices = function(query, cb) {
 	console.log('inside getInvoices');
 	console.log('user')
 	var collection = db.getCollection('invoices');
-	collection.find(query).toArray(function(err, data) {
+	collection.find(query).sort({'created' : -1}).toArray(function(err, data) {
 		if (err) {
 			console.log('err', err);
 			return cb(true, err);
@@ -472,6 +472,15 @@ var processInvoiceDetails = function(invoice) {
 	invoice.daysToPayout = getDatesDiff(invoice.payableDate);
 };
 
+var getInvoiceDates = function(invoiceHistory) {
+	var created = {};
+	for (var i in invoiceHistory) {
+		if (invoiceHistory[i] && invoiceHistory[i].args) {
+			created[invoiceHistory[i].args.state] = invoiceHistory[i].args.created;
+		}
+	}
+	return created;
+}
 
 router.post('/getInvoiceDetails', async(function(req, res) {
 	console.log('get invoice details');
@@ -494,6 +503,7 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 					if (!err) {
 						invoiceHistory = result;
 					}
+					invoice.created = getInvoiceDates(invoiceHistory);
 					return res.send({status : true, data : {invoice : invoice, invoiceHistory : invoiceHistory}});
 				});
 			} else {

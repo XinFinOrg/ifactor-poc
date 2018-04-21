@@ -5,7 +5,7 @@ import 'zeppelin-solidity/contracts/token/ERC20/StandardToken.sol';
 contract Ifactor is StandardToken {
     struct Invoice {
         string invoiceId;
-        uint invoiceNo;
+        string invoiceNo;
         uint amount;
         address supplier;
         address buyer;
@@ -45,8 +45,8 @@ contract Ifactor is StandardToken {
         return balances[_address];
     }
 
-	function addInvoice(string _invoice_id, uint _invoice_no, string _state, uint _amount,
-						address _supplier, address _buyer) public {
+	function addInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount,
+						address _supplier, address _buyer, uint _created) public {
 		Invoice inv;
 		inv.invoiceId = _invoice_id ;
 		inv.invoiceNo = _invoice_no ;
@@ -55,6 +55,7 @@ contract Ifactor is StandardToken {
 		inv.supplier = _supplier ;
 		inv.buyer = _buyer;
 		Invoices[_invoice_id] = inv;
+		invoiceHistory(_invoice_id, _state, _created);
 		createInvoice(_invoice_id, _invoice_no, _state, _amount, _supplier, _buyer);
 	}
 
@@ -118,7 +119,7 @@ contract Ifactor is StandardToken {
 	}
 
 
-	event createInvoice(string _invoice_id, uint _invoice_no, string _state, uint _amount,
+	event createInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount,
 						address _supplier, address _buyer);
 	event invoiceHistory(string invoiceId, string state, uint created);
     event factoringProposal(string invoiceId, address financer, uint factorCharges, uint factorSaftyPercentage, uint created);
