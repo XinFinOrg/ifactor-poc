@@ -41,16 +41,16 @@
                             </div>
                             <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-6 has-float-label">
-                                    <input class="form-control input-lg" placeholder="Contact Name*"  ng-model="input.contactName" />
-                                    
+                                    <input class="form-control input-lg"  ng-model="input.contactName"  placeholder="Contact Name"/>
+                                    <label for="conatctName">Contact Name</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" placeholder="Phone*"  ng-model="input.companyPhone" />
-                                    
+                                    <input class="form-control input-lg"  ng-model="input.companyPhone" placeholder="Company Phone"/>
+                                    <label for="ComapnyPhone">Company Phone</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" placeholder="Email*"  ng-model="input.companyEmail" />
-                                    
+                                    <input class="form-control input-lg"  ng-model="input.companyEmail" placeholder="Company Email"/>
+                                    <label for="CompanyEmail">Company Email</label>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +65,8 @@
                             <div class="col-md-12 invoice-supplier-buy">Purchase Details</div>
                             <div class="row col-md-12">
                                 <div class="col-md-9 has-float-label">
-                                    <input class="form-control input-lg" placeholder="PO Title*"  ng-model="input.purchaseTitle" />
+                                    <input class="form-control input-lg" ng-model="input.purchaseTitle" placeholder="PO Title*" />
+                                    <label for="potitle">PO Title*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <!-- <datepicker>
@@ -74,6 +75,7 @@
                                     <datepicker date-format="yyyy-MM-dd" selector="form-control">
                                         <div class="input-group">
                                             <input class="form-control input-lg" ng-model="input.payableDate" placeholder="Payble Date"/>
+                                            <label for="payable">Payble Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
                                             <i class="fa fa-lg fa-calendar"></i>
                                             </span>
@@ -84,12 +86,14 @@
                             <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-12 label-invoice">PO</div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" placeholder="PO No*" ng-model="input.purchaseNo" />
+                                    <input class="form-control input-lg" ng-model="input.purchaseNo" placeholder="PO No*" />
+                                    <label for="CompanyEmail">PO No*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <datepicker date-format="yyyy-MM-dd" selector="form-control">
                                         <div class="input-group">
-                                            <input class="form-control input-lg" ng-model="input.purchaseDate" placeholder="PO Date"/>
+                                            <input class="form-control input-lg" ng-model="input.purchaseDate" />
+                                            <label for="po date">PO Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
                                             <i class="fa fa-lg fa-calendar"></i>
                                             </span>
@@ -98,17 +102,20 @@
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <input class="form-control input-lg" placeholder="Amount*"  ng-model="input.purchaseAmount" />
+                                    <label for="amount">Amount*</label>
                                 </div>
                             </div>
                             <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-12 label-invoice">Invoice</div>
                                 <div class="col-md-3 has-float-label">
                                     <input class="form-control input-lg" placeholder="Invoice No*" ng-model="input.invoiceNo" />
+                                    <label for="invoice">Invoice No*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <datepicker date-format="yyyy-MM-dd" selector="form-control">
                                         <div class="input-group">
-                                            <input class="form-control input-lg" ng-model="input.invoiceDate" placeholder="Invoice Date"/>
+                                            <input class="form-control input-lg" ng-model="input.invoiceDate" />
+                                            <label for="invoice">Invoice Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
                                             <i class="fa fa-lg fa-calendar"></i>
                                             </span>
@@ -116,18 +123,21 @@
                                     </datepicker>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" placeholder="Amount*"  ng-model="input.invoiceAmount" />
+                                    <input class="form-control input-lg"  ng-model="input.invoiceAmount" placeholder="Amount*" />
+                                    <label for="amount">Amount*</label>
                                 </div>
                             </div>
                             <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-12 label-invoice">GRN</div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" placeholder="GRN No*" ng-model="input.grnNo" />
+                                    <input class="form-control input-lg" ng-model="input.grnNo" placeholder="GRN No*" />
+                                    <label for="CompanyEmail">GRN No*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <datepicker date-format="yyyy-MM-dd" selector="form-control">
                                         <div class="input-group">
-                                            <input class="form-control input-lg" ng-model="input.grnDate" placeholder="GRN Date"/>
+                                            <input class="form-control input-lg" ng-model="input.grnDate" placeholder="GRN Date" />
+                                            <label for="grn">GRN Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
                                             <i class="fa fa-lg fa-calendar"></i>
                                             </span>
@@ -135,7 +145,8 @@
                                     </datepicker>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" placeholder="Amount*"  ng-model="input.grnAmount" />
+                                    <input class="form-control input-lg" ng-model="input.grnAmount" placeholder="Amount*" />
+                                    <label for="amount">Amount*</label>
                                 </div>
                             </div>
                         </div>

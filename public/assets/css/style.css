@@ -3979,3 +3979,28 @@ table.dataTable tfoot th select, table.dataTable tfoot td select{
 table.dataTable.display tbody tr:first-child td {
     /*border-top: 1px solid #f6fafd;*/
 }
+
+.input-lg {
+    height: 60px !important;
+}
+
+.has-float-label .form-control:placeholder-shown:not(:focus)+* {
+    font-size: 12px !important;
+    font-weight: 200;
+    opacity: 1 !important;
+    top: 1.8em !important;
+    color: #767bcc !important;
+}
+
+.has-float-label label::after, .has-float-label>span::after{
+    content: " ";
+    display: block;
+    position: absolute;
+    background: #fff;
+    height: 2px;
+    top: 50%;
+    left: -.2em;
+    right: -.2em;
+    z-index: -1;
+    display: none !important;
+}
