@@ -9,7 +9,7 @@ var uniqid = require('uniqid');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 
-var web3Conf = true;
+var web3Conf = false;
 if (web3Conf) {
 	var web3Helper = require('./web3Helper');
 }
@@ -486,12 +486,15 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 	console.log('get invoice details');
 	let invoiceId = req.body.invoiceId;
 	//'invoiceId' : new ObjectID(invoiceId)}
+
 	getInvoices({'invoiceId' : invoiceId}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
 		var invoiceHistory = [];
 		var invoice = data[0];
+		console.log('invoivce');
+		console.log(invoice);
 		processInvoiceDetails(invoice);
 
 		//invoice.supplierData = !userData ? {} : userData;

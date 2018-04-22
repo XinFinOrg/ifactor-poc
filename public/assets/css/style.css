@@ -185,8 +185,8 @@ section.box.marginBottom0,
 /*------------ Dashboard Buyer Logo ------------*/
 
 /*------------ Buyer Details box ------------*/
-#buyer-header {display: block;margin-top:10px;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid #ebeaea;}
-#buyer-header .buyer-title {font-size:20px;font-weight:600;margin:0px;}
+#buyer-header {display: block;margin-top:10px;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid #ebeaea; }
+#buyer-header .buyer-title {font-size:16px;font-weight:600;margin:0px; text-transform: capitalize;}
 #buyer-header i {display: block;float:left}
 #buyer-header img {display: block;float:left;max-width:45px;}
 .info-details {display:block;margin-left:60px;}
@@ -538,6 +538,7 @@ a:hover, a:focus {
 .page-topbar {
     min-height: 60px;
     width: 100%;
+    position:fixed;
     background-color: #777dcb;
     top: 0px;
     left: 0px;
@@ -957,7 +958,9 @@ section.box {
     border: 1px solid #FFFFFF;
     border-radius:5px;
     -moz-border-radius:5px;
-    -webkit-border-radius:5px;  
+    -webkit-border-radius:5px; 
+    width:80%; 
+        margin: auto;
 }
 section header {
     width: 100%;
@@ -1316,6 +1319,7 @@ input[type=checkbox], input[type=color], input[type=date], input[type=datetime-l
     -ms-border-radius: 4px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
+    width:93%;
 }
 .btn.btn-border {
     border: 2px solid #eaeaea;
@@ -2475,7 +2479,7 @@ ul.states li {
 .price-pack ul {
     padding: 15px;
     margin-bottom: 0px;
-    min-height:120px;
+    min-height:115px;
 }
 .price-pack ul li {
     margin-bottom: 8px;
@@ -3982,6 +3986,8 @@ table.dataTable.display tbody tr:first-child td {
 
 .input-lg {
     height: 60px !important;
+    border-radius: 0px !important;
+    border-bottom: 0px !important;
 }
 
 .has-float-label .form-control:placeholder-shown:not(:focus)+* {
@@ -4003,4 +4009,61 @@ table.dataTable.display tbody tr:first-child td {
     right: -.2em;
     z-index: -1;
     display: none !important;
+}
+
+.buyer-top {
+    color: #777dcb !important;
+    border-left: 3px solid #777dcb;
+    padding: 0px 12px;
+    margin: 2px -16px;
+    font-weight: 600;
+}
+.buyer-published {
+    text-align: right;
+    font-size: 14px;
+    font-weight: 600;
+    color: #777dcb !important;
+    line-height: 2.2;
+}
+.buyer-title-set {
+    font-size: 14px;
+    padding: 0px 6px 0px 6px;
+}
+.buyer-dated {
+    padding: 0px 8px;
+}
+.blockchain-titles {
+    font-size: 14px;
+    font-weight: 500;
+    color: #999;
+}
+.blockchain-content {
+    font-size: 14px;
+    color: #666;
+}
+.padd_top_15{
+    padding:15px;
+}
+.padd_15 {
+    padding: 0px 15px;
+}
+.padd_bottom_15{
+    padding:15px;
+}
+.padd_max{
+    padding:0px !important;
+}
+.padd_10{
+    padding: 10px 0px;
+}
+.blockchain-titles.blockchain-box {
+    text-transform: uppercase;
+    font-weight: 900;
+    text-align: left;
+    color: #666;
+}
+.sign-msg {
+    font-size: 17px;
+    padding: 8px 20px;
+    text-align: center;
 }
