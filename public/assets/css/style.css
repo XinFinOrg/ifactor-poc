@@ -959,6 +959,23 @@ section.box {
     border-radius:5px;
     -moz-border-radius:5px;
     -webkit-border-radius:5px; 
+    width:100%;
+}
+.input-lg-login {
+    height: 60px !important;
+    border-radius: 0px !important;
+    border-bottom: 0px !important;
+}
+section.loginbox{
+        background-color: #ffffff;
+    margin: 15px 0;
+    -webkit-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.1);  
+    border: 1px solid #FFFFFF;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px; 
     width:80%; 
         margin: auto;
 }
@@ -1314,6 +1331,13 @@ input[type=checkbox], input[type=color], input[type=date], input[type=datetime-l
     -webkit-border-radius: 50px;
 }
 .btn.btn-corner {
+    border-radius: 4px;
+    -o-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+.btn.btn-corner-login {
     border-radius: 4px;
     -o-border-radius: 4px;
     -ms-border-radius: 4px;
@@ -3986,8 +4010,6 @@ table.dataTable.display tbody tr:first-child td {
 
 .input-lg {
     height: 60px !important;
-    border-radius: 0px !important;
-    border-bottom: 0px !important;
 }
 
 .has-float-label .form-control:placeholder-shown:not(:focus)+* {
