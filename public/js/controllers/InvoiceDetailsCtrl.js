@@ -35,7 +35,8 @@
 		$location.path('/dashboard');
 	}
 
-	var invoiceStatusMap = Helper.invoiceStatusMap;
+	var invoiceStatusMap
+	 = Helper.invoiceStatusMap;
 
 	$scope.date = new Date();
 	$scope.eventSources = [];
@@ -88,6 +89,7 @@
 			console.log('invoiceDetails response');
 			$scope.invoiceData = resp.data.invoice;
 			$scope.invoiceTxHistory = resp.data.invoiceHistory;
+			$scope.setCurrentStage();
 		});
     }
 
@@ -326,6 +328,123 @@
             'invoice_paid',
             'completed'
 	];
+
+	$scope.stageOptions = [
+		'goods_delivered',
+		'buyer_confirmation',
+		'factoring_request',
+		'payment_disbursed',
+		'contract_complete'
+	];
+
 	console.log($scope.stateOptions);
 
+	var invoiceStages = {
+		goods_delivered : 1,
+		buyer_confirmation : 2,
+		factoring_request : 3,
+		payment_disbursed : 4,
+		contract_complete : 5
+	};
+
+	var invoiceStates = {
+	    draft : 1,
+	    Invoice_created : 2,
+	    Invoice_rejected : 3,
+	    invoice_accepted : 4,
+	    ifactor_request : 5,
+	    ifactor_rejected : 6,
+	    ifactor_proposed : 7,
+	    ifactor_proposal_accpted : 9,
+	    ifactor_proposal_rejected : 8,
+	    ifactor_prepaid : 10,
+	    invoice_paid : 11,
+	    completed : 12
+	};
+
+	$scope.invoiceStageMap = {
+		'Buyer' : {
+			goods_delivered : [],
+			buyer_confirmation : ['invoice_created', 'invoice_accepted', 'invoice_rejected'],
+			factoring_request : ['ifactor_request', 'ifactor_rejected', 'ifactor_proposed',
+				'ifactor_proposal_accepted', 'ifactor_proposal_rejected'
+			],
+			payment_disbursed : ['ifactor_prepaid'],
+			contract_complete : ['invoice_paid', 'completed']
+		},
+		'Supplier' : {
+			goods_delivered : [],
+			buyer_confirmation : ['invoice_created', 'invoice_rejected'],
+			factoring_request : ['invoice_accepted', 'ifactor_request', 'ifactor_rejected', 'ifactor_proposed',
+				'ifactor_proposal_rejected'
+			],
+			payment_disbursed : ['ifactor_proposal_accepted', 'ifactor_prepaid', 'invoice_paid'],
+			contract_complete : ['completed']
+		},
+		'Financer' : {
+			goods_delivered : [],
+			buyer_confirmation : ['invoice_created', 'invoice_rejected', 'invoice_accepted'],
+			factoring_request : ['ifactor_request', 'ifactor_rejected', 'ifactor_proposed',
+				'ifactor_proposal_rejected'
+			],
+			payment_disbursed : ['ifactor_proposal_accepted', 'ifactor_prepaid', 'invoice_paid'],
+			contract_complete : ['completed']
+		}
+	};
+
+	$scope.setCurrentStage = function() {
+		//var userType = $scope.userType;
+		var userType = $scope.userType;
+		var currentState = $scope.invoiceData.state;
+		var stageMap = $scope.invoiceStageMap[userType];
+		for (var stageKey in stageMap) {
+			if (stageMap[stageKey].indexOf(currentState) != -1) {
+				$scope.currentStage = stageKey;
+			}
+		}
+	};
+
+	$scope.isStageEnabled = function(stage) {
+		var currentStage = $scope.currentStage;
+		var stageNo = invoiceStages[stage];
+		var currentStageNo = invoiceStages[currentStage];
+		console.log('isStageEnabled', stage, stageNo, currentStageNo, (stageNo > (currentStageNo - 2)));
+		return $scope.showHistoryFlag || (stageNo > (currentStageNo - 2));
+	}
+
+	$scope.isStageOpaque = function(stage) {
+		var currentStage = $scope.currentStage;
+		var stageNo = invoiceStages[stage];
+		var currentStageNo = invoiceStages[currentStage];
+		console.log('isStageOpaque', stage, stageNo, currentStageNo, (stageNo > currentStageNo));
+		return stageNo > currentStageNo;
+	}
+
+	$scope.isCurrentStage = function(stage) {
+		console.log('isCurrentStage', stage, $scope.currentStage, (stage == $scope.currentStage));
+		return stage == $scope.currentStage;
+	}
+
+	$scope.isOldStage = function(stage) {
+		var currentStage = $scope.currentStage;
+		var stageNo = invoiceStages[stage];
+		var currentStageNo = invoiceStages[currentStage];
+		return (stageNo < currentStageNo);
+	}
+
+	$scope.isHistoryBarEnabled = function(stage) {
+		if ($scope.showHistoryFlag) {
+			return false;
+		}
+		var currentStage = $scope.currentStage;
+		var stageNo = invoiceStages[stage];
+		var currentStageNo = invoiceStages[currentStage];
+		console.log('isHistoryBarEnabled', stage, stageNo, currentStageNo, (stageNo == (currentStageNo-1)));
+		return (stageNo == (currentStageNo-2));
+	};
+
+	$scope.showHistoryFlag = false;
+	$scope.showHistory = function() {
+		$scope.showHistoryFlag = true;
+	}
 }]);

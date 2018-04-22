@@ -9,6 +9,13 @@
                 </select>
             </div>
         </div>
+        <div>
+            <div class="col-md-9 has-float-label">
+                <select class="soflow form-control input-lg" ng-model="currentStage" ng-options=" x for x in stageOptions">
+                </select>
+            </div>
+            <input type="button" class="btn btn-primary" ng-click="apply()">Submit</input>
+        </div>
             <div class='col-xs-12'>
                 <div class="page-title">
 
@@ -170,23 +177,32 @@
                     <div class="content-body">
                         <div class="row">
 
-                            <!-- Buyer Confirmation -->
-                            <!-- buyer-supplier-request-to-buyer.html -->
-                            <!-- need api ...used  approveInvoice, rejectInvoice-->
-                            <div class="col-md-12" ng-show="invoiceData.state == 'invoice_created'">
-                                <div id="header-blue">
-                                    <i class="fa fa-check icon-rounded icon-primary"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Goods Delivered</h1>
+                            <div class="col-md-12">
+                                <div id="header-blue" ng-show="isStageEnabled('goods_delivered')">
+                                    <div ng-class="{'opacity-5' : isStageOpaque('goods_delivered')}">
+                                        <i class="fa icon-rounded icon-primary" ng-class="isOldStage('goods_delivered') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('goods_delivered')">1</span></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title">Goods Delivered</h1>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-number">2</i>
+                                <div id="header-blue" ng-show="isHistoryBarEnabled('goods_delivered')">
+                                    <i class="fa icon-rounded icon-primary fa-no-icon"></i>
                                     <div class="info-details">
-                                        <h1 class="buyer-title"><strong>Buyer Confirmation</strong></h1>
+                                        <h1 class="buyer-title" ng-click="showHistory()">View Full History</h1>
                                     </div>
                                 </div>
-                                <div class="transaction-details">
+                                <div class="opacity-5 line-before" ng-show="isCurrentStage('goods_delivered')"></div>
+                                <div id="header-blue" ng-show="isStageEnabled('buyer_confirmation')">
+                                    <div ng-class="{'opacity-5' : isStageOpaque('buyer_confirmation')}">
+                                        <i class="fa icon-rounded icon-primary" ng-class="isOldStage('buyer_confirmation') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('buyer_confirmation')">2</span></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('buyer_confirmation')}">Buyer Confirmation</h1>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="transaction-details" ng-show="invoiceData.state == 'invoice_created'">
                                     <div class="clearfix"></div>
                                     <h1 class="f-w-4">Respond Now</h1>
                                     <div>
@@ -203,393 +219,91 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="opacity-5 line-before">
-                                <div id="header-blue">
-                                <i class="fa icon-rounded icon-primary fa-number">3</i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Factoring Request</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-number">4</i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Payment Disbursed</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue" class="no-after">
-                                    <i class="fa icon-rounded icon-primary fa-number">5</i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Contract Complete</h1>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
 
-                            <!-- Buyer Confirmation -->
-                            <!-- buyer-approved.html -->
-                            <!-- no api -->
-                            <div class="col-md-12" ng-show="isBuyerApproved()">
-                                <div id="header-blue">
-                                    <i class="fa fa-check icon-rounded icon-primary"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Goods Delivered</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-number">2</i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title"><strong>Buyer Confirmation</strong></h1>
-                                    </div>
-                                </div>
-                                <div class="transaction-details p-l-8">
+                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'invoice_accepted'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Success</h1>
                                     <p>Your Transaction is published on Blockchain</p>
                                     <p>31 Dec 2018, 16:30</p>
                                 </div>
-                                <div class="opacity-5 line-before">
-                                    <div id="header-blue">
-                                        <i class="fa icon-rounded icon-primary fa-number">3</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Factoring Request</h1>
-                                        </div>
-                                    </div>
-                                    <div id="header-blue">
-                                        <i class="fa icon-rounded icon-primary fa-number">4</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Payment Disbursed</h1>
-                                        </div>
-                                    </div>
-                                    <div id="header-blue" class="no-after">
-                                        <i class="fa icon-rounded icon-primary fa-number">5</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Contract Complete</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- buyer rejected -->
-                            <!-- buyer-rejected.html -->
-                            <!-- no api -->
-                            <div class="col-md-12" ng-show="invoiceData.state == 'invoice_rejected'">
-                                <div id="header-blue">
-                                    <i class="fa fa-check icon-rounded icon-primary"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Goods Delivered</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-number">2</i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title"><strong>Buyer Confirmation</strong></h1>
-                                    </div>
-                                </div>
-                                <div class="transaction-details p-l-8">
+                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'invoice_rejected'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected</h1>
                                     <p>31 Dec 2018, 16:30</p>
                                 </div>
 
-                                <div class="opacity-5 line-before">
-                                    <div id="header-blue">
-                                        <i class="fa icon-rounded icon-primary fa-number">3</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Factoring Request</h1>
-                                        </div>
-                                    </div>
-                                    <div id="header-blue">
-                                        <i class="fa icon-rounded icon-primary fa-number">4</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Payment Disbursed</h1>
-                                        </div>
-                                    </div>
-                                    <div id="header-blue" class="no-after">
-                                        <i class="fa icon-rounded icon-primary fa-number">5</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Contract Complete</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- Submited For Factoring -->
-                            <!-- buyer-pending-from-supplier-for-approval.html -->
-                            <!-- no api -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposed'">
-                                <div id="header-blue">
+                                <div id="header-blue" ng-show="isHistoryBarEnabled('buyer_confirmation')">
                                     <i class="fa icon-rounded icon-primary fa-no-icon"></i>
                                     <div class="info-details">
-                                        <h1 class="buyer-title">View Full History</h1>
+                                        <h1 class="buyer-title" ng-click="showHistory()">View Full History</h1>
                                     </div>
                                 </div>
-                                <div id="header-blue">
-                                    <i class="fa fa-check icon-rounded icon-primary"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Buyer Confirmation</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                        <i class="fa icon-rounded icon-primary fa-number">3</i>
+                                <div class="opacity-5 line-before" ng-show="isCurrentStage('buyer_confirmation')"></div>
+                                <div id="header-blue" ng-show="isStageEnabled('factoring_request')">
+                                    <div ng-class="{'opacity-5' : isStageOpaque('factoring_request')}">
+                                        <i class="fa icon-rounded icon-primary" ng-class="isOldStage('factoring_request') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('factoring_request')">3</span></i>
                                         <div class="info-details">
-                                            <h1 class="buyer-title"><strong>Factoring Request</strong></h1>
+                                            <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('factoring_request')}">Factoring Request</h1>
                                         </div>
                                     </div>
-                                <div class="transaction-details p-l-8">
+                                </div>
+
+                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_request'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Submited For Factoring</h1>
                                     <p>31 Dec 2018, 16:30</p>
                                 </div>
 
-                                <div class="opacity-5 line-before">
-                                    
-                                    <div id="header-blue">
-                                        <i class="fa icon-rounded icon-primary fa-number">4</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Payment Disbursed</h1>
-                                        </div>
-                                    </div>
-                                    <div id="header-blue" class="no-after">
-                                        <i class="fa icon-rounded icon-primary fa-number">5</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Contract Complete</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Smart Contract Created -->
-                            <!-- buyer-smart-contract-created.html -->
-                            <!-- no api -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-no-icon"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">View Full History</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                    <i class="fa fa-check icon-rounded icon-primary"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Buyer Confirmation</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-number">3</i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title"><strong>Factoring Request</strong></h1>
-                                    </div>
-                                </div>
-                                <div class="transaction-details p-l-8">
+                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_rejected'">
                                     <div class="clearfix"></div>
 
-                                    <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Smart Contract Created</h1>
-                                    <div class="transaction-details">
-                                        <h5 class="text-dark">Eligible Amount <span class="text-dark">$ 80,000</span></h5>
-                                        <div class="clearfix"></div>
-                                        <h5 class="text-dark">XDC To USD <span class="text-dark">$ 1</span></h5>
-                                        <div class="clearfix"></div>
-                                        <h5 class="text-dark f-w-6">Pending XDC <span class="text-dark">1,15,000</span></h5>
-                                        <div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="opacity-5 line-before">
-
-                                    <div id="header-blue">
-                                        <i class="fa icon-rounded icon-primary fa-number">4</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Payment Disbursed</h1>
-                                        </div>
-                                    </div>
-                                    <div id="header-blue" class="no-after">
-                                        <i class="fa icon-rounded icon-primary fa-number">5</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Contract Complete</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- before and after payment -->
-
-                            <div class="content-body" ng-show="isBuyerPayable()">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div id="header-blue">
-                                            <i class="fa icon-rounded icon-primary fa-no-icon"></i>
-                                            <div class="info-details">
-                                                <h1 class="buyer-title">View Full History</h1>
-                                            </div>
-                                        </div>
-                                        <div id="header-blue">
-                                            <i class="fa fa-check icon-rounded icon-primary"></i>
-                                            <div class="info-details">
-                                                <h1 class="buyer-title">Factoring Request</h1>
-                                            </div>
-                                        </div>
-                                        <div id="header-blue">
-                                            <i class="fa icon-rounded icon-primary fa-number">4</i>
-                                            <div class="info-details">
-                                                <h1 class="buyer-title"><strong>Payment Disbursed</strong></h1>
-                                            </div>
-                                        </div>
-                                        <div class="transaction-details p-l-8">
-                                            <div class="clearfix"></div>
-                                            <div class="transaction-details">
-                                                <h5 class="text-dark">Total Amount <span class="text-dark">$ 1,00,000</span></h5>
-                                                <div class="clearfix"></div>
-                                                <h5 class="text-dark">XDC To USD <span class="text-dark">$ 1</span></h5>
-                                                <div class="clearfix"></div>
-                                                <h5 class="text-dark">Payable XDC <span class="text-dark">1,50,000</span></h5>
-                                                <div class="clearfix"></div>
-                                                <h5 class="text-dark">Days to Payout <span class="text-dark">00</span></h5>
-                                                <div>
-                                                </div>
-                                                
-                                                <div ng-show="invoiceData.state != 'invoice_paid'" class="form-group m-t-10 no-bottom-marg">
-                                                    <button ng-click="payInvoice()" class="btn btn-lg btn-primary btn-corner btn-block">Pay Now</button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="opacity-5 line-before">
-
-                                            <div id="header-blue" class="no-after">
-                                                <i class="fa icon-rounded icon-primary fa-number">5</i>
-                                                <div class="info-details">
-                                                    <h1 class="buyer-title">Contract Complete</h1>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <!-- End .row -->
-                            </div>
-
-                            <!-- Pending For Approval -->
-                            <!-- buyer-pending-from-supplier.html -->
-                            <!-- no api -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposed'">
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-no-icon"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">View Full History</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                    <i class="fa fa-check icon-rounded icon-primary"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Buyer Confirmation</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-number">3</i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title"><strong>Factoring Request</strong></h1>
-                                    </div>
-                                </div>
-                                <div class="transaction-details p-l-8">
-                                    <div class="clearfix"></div>
-
-                                    <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Pending For Approval</h1>
+                                    <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Rejected By Financer</h1>
                                     <p>31 Dec 2018, 16:30</p>
                                 </div>
 
-                                <div class="opacity-5 line-before">
-
-                                    <div id="header-blue">
-                                        <i class="fa icon-rounded icon-primary fa-number">4</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Payment Disbursed</h1>
-                                        </div>
-                                    </div>
-                                    <div id="header-blue" class="no-after">
-                                        <i class="fa icon-rounded icon-primary fa-number">5</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Contract Complete</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Submission pending -->
-                            <!-- buyer-pending-from-financier.html -->
-                            <!-- no api -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-no-icon"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">View Full History</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                    <i class="fa fa-check icon-rounded icon-primary"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Buyer Confirmation</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                        <i class="fa icon-rounded icon-primary fa-number">3</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title"><strong>Factoring Request</strong></h1>
-                                        </div>
-                                    </div>
-                                <div class="transaction-details p-l-8">
+                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposed'">
                                     <div class="clearfix"></div>
 
-                                    <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Submission pending</h1>
+                                    <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Proposal submitted by financer</h1>
                                     <p>31 Dec 2018, 16:30</p>
                                 </div>
 
-                                <div class="opacity-5 line-before">
-                                    
-                                    <div id="header-blue">
-                                        <i class="fa icon-rounded icon-primary fa-number">4</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Payment Disbursed</h1>
-                                        </div>
-                                    </div>
-                                    <div id="header-blue" class="no-after">
-                                        <i class="fa icon-rounded icon-primary fa-number">5</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Contract Complete</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposal_rejected'">
+                                    <div class="clearfix"></div>
 
-                            <!-- Payment Disbursed -->
-                            <!-- buyer-payout-days-left.html -->
-                            <!-- no api -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
-                                <div id="header-blue">
+                                    <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Proposal rejected By Supplier</h1>
+                                    <p>31 Dec 2018, 16:30</p>
+                                </div>
+
+                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposal_accepted'">
+                                    <div class="clearfix"></div>
+
+                                    <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Smart contract created</h1>
+                                    <p>31 Dec 2018, 16:30</p>
+                                </div>
+
+                               <div id="header-blue" ng-show="isHistoryBarEnabled('factoring_request')">
                                     <i class="fa icon-rounded icon-primary fa-no-icon"></i>
                                     <div class="info-details">
-                                        <h1 class="buyer-title">View Full History</h1>
+                                        <h1 class="buyer-title" ng-click="showHistory()">View Full History</h1>
                                     </div>
                                 </div>
-                                <div id="header-blue">
-                                    <i class="fa fa-check icon-rounded icon-primary"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Factoring Request</h1>
+                                <div class="opacity-5 line-before" ng-show="isCurrentStage('factoring_request')"></div>
+                                <div id="header-blue" ng-show="isStageEnabled('payment_disbursed')">
+                                    <div ng-class="{'opacity-5' : isStageOpaque('payment_disbursed')}">
+                                        <i class="fa icon-rounded icon-primary" ng-class="isOldStage('payment_disbursed') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('payment_disbursed')">4</span></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('payment_disbursed')}">Payment Disbursed</h1>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-number">4</i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title"><strong>Payment Disbursed</strong></h1>
-                                    </div>
-                                </div>
-                                <div class="transaction-details p-l-8">
+
+                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_prepaid'">
                                     <div class="clearfix"></div>
                                     <div class="transaction-details">
                                         <h5 class="text-dark">Total Amount <span class="text-dark">$ 1,00,000</span></h5>
@@ -598,103 +312,48 @@
                                         <div class="clearfix"></div>
                                         <h5 class="text-dark">Payable XDC <span class="text-dark">1,50,000</span></h5>
                                         <div class="clearfix"></div>
-                                        <h5 class="text-dark">Days to Payout <span class="text-dark">50</span></h5>
+                                        <h5 class="text-dark">Days to Payout <span class="text-dark">00</span></h5>
                                         <div>
                                         </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="opacity-5 line-before">
-
-                                    <div id="header-blue" class="no-after">
-                                        <i class="fa icon-rounded icon-primary fa-number">5</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Contract Complete</h1>
+                                        
+                                        <div class="form-group m-t-10 no-bottom-marg">
+                                            <button ng-click="payInvoice()" class="btn btn-lg btn-primary btn-corner btn-block">Pay Now</button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- payment succesful -->
-                            <!-- buyer-payment-successful.html -->
-                            <!-- no api -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-no-icon"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">View Full History</h1>
+                                <div class="opacity-5 line-before" ng-show="isCurrentStage('payment_disbursed')"></div>
+                                <div id="header-blue" class="no-after" ng-show="isStageEnabled('contract_complete')">
+                                    <div ng-class="{'opacity-5' : isStageOpaque('contract_complete')}">
+                                        <i class="fa icon-rounded icon-primary" ng-class="isOldStage('contract_complete') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('contract_complete')">5</span></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('contract_complete')}">Contract Complete</h1>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="header-blue">
-                                    <i class="fa fa-check icon-rounded icon-primary"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Factoring Request</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-number">4</i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title"><strong>Payment Disbursed</strong></h1>
-                                    </div>
-                                </div>
-                                <div class="transaction-details p-l-8">
+
+                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'invoice_paid'">
                                     <div class="clearfix"></div>
-
-                                    <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Payment Successful</h1>
                                     <div class="transaction-details">
                                         <h5 class="text-dark">Total Amount <span class="text-dark">$ 1,00,000</span></h5>
                                         <div class="clearfix"></div>
-                                        <h5 class="text-dark">Date <span class="text-dark">31 Dec 2018, 16:30</span></h5>
+                                        <h5 class="text-dark">XDC To USD <span class="text-dark">$ 1</span></h5>
+                                        <div class="clearfix"></div>
+                                        <h5 class="text-dark">Payable XDC <span class="text-dark">1,50,000</span></h5>
+                                        <div class="clearfix"></div>
                                         <div>
                                         </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="opacity-5 line-before">
-
-                                    <div id="header-blue" class="no-after">
-                                        <i class="fa icon-rounded icon-primary fa-number">5</i>
-                                        <div class="info-details">
-                                            <h1 class="buyer-title">Contract Complete</h1>
-                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- contract complete -->
-                            <!-- buyer-contract-complete.html -->
-                            <!-- no api -->
-                            <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-no-icon"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">View Full History</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                    <i class="fa fa-check icon-rounded icon-primary"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title">Payment Disbursed</h1>
-                                    </div>
-                                </div>
-                                <div id="header-blue">
-                                    <i class="fa icon-rounded icon-primary fa-number">5</i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title"><strong>Contract Complete</strong></h1>
-                                    </div>
-                                </div>
-                                <div class="transaction-details p-l-8">
+                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'completed'">
                                     <div class="clearfix"></div>
 
-                                    <p class="m-t-5">31 Dec 2018, 16:30</p>
-
+                                    <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Contract Completed</h1>
+                                    <p>31 Dec 2018, 16:30</p>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
                         <!-- End .row -->
                     </div>

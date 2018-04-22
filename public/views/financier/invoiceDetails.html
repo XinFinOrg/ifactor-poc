@@ -162,6 +162,74 @@
                 <section class="box">
                     <div class="content-body">
                         <div class="row">
+
+
+
+                            <div class="col-md-12">
+                                <div id="header-blue" ng-show="isStageEnabled('goods_delivered')">
+                                    <div ng-class="{'opacity-5' : isStageOpaque('goods_delivered')}">
+                                        <i class="fa icon-rounded icon-primary" ng-class="isOldStage('goods_delivered') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('goods_delivered')">1</span></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title">Goods Delivered</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="header-blue" ng-show="isHistoryBarEnabled('goods_delivered')">
+                                    <i class="fa icon-rounded icon-primary fa-no-icon"></i>
+                                    <div class="info-details">
+                                        <h1 class="buyer-title" ng-click="showHistory()">View Full History</h1>
+                                    </div>
+                                </div>
+                                <div class="opacity-5 line-before" ng-show="isCurrentStage('goods_delivered')"></div>
+                                <div id="header-blue" ng-show="isStageEnabled('buyer_confirmation')">
+                                    <div ng-class="{'opacity-5' : isStageOpaque('buyer_confirmation')}">
+                                        <i class="fa icon-rounded icon-primary" ng-class="isOldStage('buyer_confirmation') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('buyer_confirmation')">2</span></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('buyer_confirmation')}">Buyer Confirmation</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="header-blue" ng-show="isHistoryBarEnabled('buyer_confirmation')">
+                                    <i class="fa icon-rounded icon-primary fa-no-icon"></i>
+                                    <div class="info-details">
+                                        <h1 class="buyer-title" ng-click="showHistory()">View Full History</h1>
+                                    </div>
+                                </div>
+                                <div class="opacity-5 line-before" ng-show="isCurrentStage('buyer_confirmation')"></div>
+                                <div id="header-blue" ng-show="isStageEnabled('factoring_request')">
+                                    <div ng-class="{'opacity-5' : isStageOpaque('factoring_request')}">
+                                        <i class="fa icon-rounded icon-primary" ng-class="isOldStage('factoring_request') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('factoring_request')">3</span></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('factoring_request')}">Factoring Request</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                               <div id="header-blue" ng-show="isHistoryBarEnabled('factoring_request')">
+                                    <i class="fa icon-rounded icon-primary fa-no-icon"></i>
+                                    <div class="info-details">
+                                        <h1 class="buyer-title" ng-click="showHistory()">View Full History</h1>
+                                    </div>
+                                </div>
+                                <div class="opacity-5 line-before" ng-show="isCurrentStage('factoring_request')"></div>
+                                <div id="header-blue" ng-show="isStageEnabled('payment_disbursed')">
+                                    <div ng-class="{'opacity-5' : isStageOpaque('payment_disbursed')}">
+                                        <i class="fa icon-rounded icon-primary" ng-class="isOldStage('payment_disbursed') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('payment_disbursed')">4</span></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('payment_disbursed')}">Payment Disbursed</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="opacity-5 line-before" ng-show="isCurrentStage('payment_disbursed')"></div>
+                                <div id="header-blue" class="no-after" ng-show="isStageEnabled('contract_complete')">
+                                    <div ng-class="{'opacity-5' : isStageOpaque('contract_complete')}">
+                                        <i class="fa icon-rounded icon-primary" ng-class="isOldStage('contract_complete') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('contract_complete')">5</span></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('contract_complete')}">Contract Complete</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Factor Now -->
                             <!-- financier-factor-now.html -->
                             <!-- need api..used  factoringProposal-->

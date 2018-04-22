@@ -241,403 +241,301 @@
 
                         <div class="content-body">
                             <div class="row">
-                                <!-- Approval pending -->
-                                <div class="col-md-12" ng-show="invoiceData.state == 'invoice_created'">
-                                    <div id="buyer-header-pending" class="no-bottom-marg">
-                                        <i class="fa fa-check icon-rounded icon-primary inviewport visible"></i>
 
-                                        <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase no-top-marg">Approval Awaited</h1>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Approved By Buyer -->
-                                <!-- supplier-approved.html -->
-                                <!-- need api..used requestFactoring -->
-                                <div class="col-md-12" ng-show="invoiceData.state == 'invoice_accepted'">
-                                    <div id="buyer-header-approved">
-                                        <i class="fa fa-check icon-rounded icon-primary inviewport"></i>
-
-                                        <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase">Approved By Buyer</h1>
-                                        </div>
-                                    </div>
-                                    <div class="transaction-details">
-                                        <h5 class="text-light text-uppercase">Buyer Transaction <span><a href="#">view more</a></span></h5>
-                                        <div class="clearfix"></div>
-
-                                        <h1>#{{filterTransactionHistory('invoice_accepted', true)}}</h1>
-                                        <div>
-
-                                            <!-- <div class="form-group">
-                                                <div class="input-group">
-
-                                                    <div class="input-group-btn">
-                                                        <select class="form-control input-lg" style="font-family:'FontAwesome';">
-                                                            <option>&#xf155;</option>
-                                                            <option>&#xf156;</option>
-                                                            <option>&#xf153;</option>
-                                                            <option>&#xf157;</option>
-                                                        </select>
-                                                    </div>
-                                                    <input class="form-control input-lg" id="amount" type="text" placeholder="Amount*" />
-
-                                                </div>
-                                            </div> -->
-
-                                            <!-- <div class="form-group">
-                                                <div class="input-group">
-                                                    <textarea rows="6" class="form-control input-lg" id="description" placeholder="Description*"></textarea>
-                                                </div>
-                                            </div> -->
-                                            <button type="submit" ng-click="requestFactoring()" class="btn btn-lg btn-primary btn-corner btn-block">Factor Now</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Invoice Rejected -->
-                                <div class="col-md-12" ng-show="invoiceData.state == 'invoice_rejected'">
-                                    <div id="buyer-header-rejected">
-                                        <i class="fa fa-times icon-rounded icon-primary inviewport visible"></i>
-
-                                        <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase">Rejected By Buyer</h1>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="transaction-details m-b-10">
-                                        <p class="text-muted text-uppercase">Date</p>
-                                        <h1 class="f-w-4 no-bottom-padd">21st Dec 2018, 16:30</h1>
-                                        <div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="transaction-details no-bottom-padd">
-                                        <p class="text-muted text-uppercase">Remark</p>
-                                        <p class="no-bottom-padd">{{invoiceData.buyerInvoiceRemark}}</p>
-                                        <div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- ifactor requsted -->
-                                <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_request'">
-                                    <div id="buyer-header-pending">
-                                        <i class="fa"><img src="assets/images/dollar-briefcase.png"></i>
-
-                                        <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase">Pending For Factoring</h1>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="transaction-details m-b-10">
-                                        <p class="text-muted text-uppercase">Amount</p>
-                                        <h1 class="f-w-4 no-bottom-padd">$ {{invoiceData.invoiceAmount}}</h1>
-                                        <div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Proposal rejected -->
-                                <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposal_rejected'">
-                                    <div id="buyer-header-rejected">
-                                        <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
-
-                                        <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase no-top-marg">Rejected By Financer</h1>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="transaction-details">
-                                        <h5 class="text-light text-uppercase">Date</h5>
-                                        <div class="clearfix"></div>
-                                        <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
-                                    </div>
-
-                                    <div class="transaction-details no-bottom-padd">
-                                        <p class="text-muted text-uppercase">Remark</p>
-                                        <p class="no-bottom-padd">{{invoiceData.rejectProposalRemark}}</p>
-                                        <div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            <!-- Proposal accepted -->
-                                <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposal_accepted'">
-                                    <div id="buyer-header-rejected">
-                                        <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
-
-                                        <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase no-top-marg">Proposal Accepted</h1>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="transaction-details">
-                                        <h5 class="text-light text-uppercase">Date</h5>
-                                        <div class="clearfix"></div>
-
-                                        <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
-                                        <h3 class="f-w-6">Smart Contract Created</h3>
-                                    </div>
-
-                                    <div class="transaction-details no-bottom-padd">
-                                        <p class="text-muted text-uppercase">Remark</p>
-                                        <p class="no-bottom-padd">{{invoiceData.acceptProposalRemark}}</p>
-                                        <div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Rejected By Financier -->
-                                <!-- supplier-rejected.html -->
-                                <!-- no api -->
-                                <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
-                                    <div id="buyer-header-rejected">
-                                        <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
-
-                                        <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase no-top-marg">Rejected By Financer</h1>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="transaction-details">
-                                        <h5 class="text-light text-uppercase">Date</h5>
-                                        <div class="clearfix"></div>
-                                        <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
-                                    </div>
-
-                                    <div class="transaction-details no-bottom-padd">
-                                        <p class="text-muted text-uppercase">Remark</p>
-                                        <p class="no-bottom-padd">{{invoiceData.rejectFactoringRemark}}</p>
-                                        <div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="content-body" ng-show="invoiceData.state == 'completed'">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div id="buyer-header-approved">
-                                                <i class="fa fa-no-number icon-rounded icon-primary inviewport visible"></i>
-
-                                                <div class="info-details">
-                                                    <h1 class="buyer-title text-uppercase">Payment Received</h1>
-
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="transaction-details no-bottom-padd">
-                                                    <h5 class="text-dark">Total Amount <span class="text-dark">$ {{invoiceData.invoiceAmount}}</span></h5>
-                                                    <div class="clearfix"></div>
-                                                    <h5 class="text-dark">First Payment <span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
-                                                    <div class="clearfix"></div>
-                                                    <h5 class="text-dark">Second Payment <span class="text-dark">$ {{invoiceData.balancePayment}}</span></h5>
-                                                    <div class="clearfix"></div>
-                                                    <h5 class="text-dark">Charges <span class="text-dark">{{invoiceData.charges}}</span></h5>
-                                                    <hr>
-                                                    <div class="clearfix"></div>
-                                                    <h5 class="text-dark f-w-6">Total Amount <span class="text-dark">$ {{invoiceData.firstPayment + invoiceData.balancePayment}}</span></h5>
-                                                    <div>
-                                                    </div>
-                                                    
-                                                    <p class="f-size-12">Estimated Amount is Balance Amount-Processing Charges ( After deducting Factoring Charges )</p>
-                                                </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- End .row -->
-                                </div>
-
-
-                                <!-- first payment receivced -->
-                                <div class="content-body" ng-show="invoiceData.state == 'ifactor_prepaid'|| invoiceData.state == 'invoice_paid'">
-                                    <div class="row">
-                                        <div class="col-md-12">
-
-                                            <div id="buyer-header-sent">
-                                                <i class="fa fa-number icon-rounded icon-primary inviewport visible">{{invoiceData.daysToPayout}}</i>
-
-                                                <div class="info-details">
-                                                    <h1 class="buyer-title text-uppercase">Days To Payout</h1>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="transaction-details">
-                                                    <h5 class="text-dark">Total Amount <span class="text-dark">${{invoiceData.firstPayment}}</span></h5>
-                                                    <div class="clearfix"></div>
-                                                    <h5 class="text-dark">First Payment <span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
-                                                    <div class="clearfix"></div>
-                                                    <h5 class="text-dark">Charges <span class="text-dark">$ {{invoiceData.charges}}</span></h5>
-                                                    <div class="clearfix"></div>
-                                                    <h5 class="text-dark">Days to Payout <span class="text-dark">{{invoiceData.daysToPayout}}</span></h5>
-                                                    <hr>
-                                                    <div class="clearfix"></div>
-                                                    <h5 class="text-dark f-w-6">Balance Amount <span class="text-dark">${{invoiceData.balancePayment}}</span></h5>
-                                                    <div>
-                                                    </div>
-                                                    
-                                                    <p class="f-size-12">Estimated Amount-Processing Charges ( After deducting Factoring Charges )</p>
-                                                    <div class="clearfix"></div>
-                                                    <hr>
-                                                    <h5 class="text-dark f-w-6">Balance XDC <span class="text-dark">${{invoiceData.balacePayment}}</span></h5>
-                                                </div>
-
-                                            <div class="transaction-details m-b-10">
-                                                <p class="text-muted text-uppercase">Address</p>
-                                                 <h1 class="f-size-14 no-bottom-padd">{{invoiceData.financerAddress}}</h1>
-                                                <div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-lg btn-primary btn-corner btn-block">Request Payment</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <!-- factoring proposed -->
-                                <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_proposed'">
-                                    <h4 class="m-b-20 f-w-6 text-uppercase text-primary">Response Now</h4>
-
-                                    <div class="transaction-details m-b-10">
-                                        <p class="text-muted text-uppercase">Mode</p>
-                                        <h1 class="f-w-4 no-bottom-padd">Factor</h1>
-                                        <div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="transaction-details m-b-10">
-                                        <p class="text-muted text-uppercase">Factoring Charges/Month (%)</p>
-                                        <h1 class="f-w-4 no-bottom-padd">{{invoiceData.platformCharges}}% ($ {{invoiceData.charges}})</h1>
-                                        <div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="transaction-details m-b-10">
-                                        <p class="text-muted text-uppercase">Eligible Amount (%)</p>
-                                        <h1 class="f-w-4 no-bottom-padd">{{invoiceData.saftyPercentage}}% ( $ {{invoiceData.firstPayment}} )</h1>
-                                        <div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="transaction-details m-b-10">
-                                        <p class="text-muted text-uppercase">Terms &amp; Condition</p>
-                                        <p class="no-bottom-padd">{{invoiceData.acceptFactoringRemark}}</p>
-                                        <div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="transaction-details m-b-10">
-                                        <p class="text-muted text-uppercase">Attachment</p>
-                                        <p class="text-muted"><a href="#" class="attachment-btn"><i class="fa fa-download"></i> Factor.pdf</a></p>
-                                        <div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div>
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <textarea rows="6" ng-model="proposalActionForm.remark" class="form-control input-lg" id="description" placeholder="Remark*"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <button ng-click="acceptFactoringProposal()" class="btn btn-lg btn-primary btn-corner btn-block">Accept</button>
-                                            </div>
-                                            <div class="form-group">
-                                                <button ng-click="rejectFactoringProposal()" class="btn btn-lg btn-border btn-primary btn-corner btn-block">Reject</button>
-                                            </div>
-                                        </div>
-                                </div>
-
-                            </div>
-                                <!-- Sent For Factoring -->
-                                <!-- supplier-pending.html -->
-                                <!-- no api -->
-                                <div class="col-md-12" ng-show="false">
-                                    <div id="buyer-header-sent">
-                                        <i class="fa"><img src="assets/images/dollar-briefcase.png"></i>
-
-                                        <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase">Proposal Received</h1>
-                                        </div>
-                                    </div>
                                 <div class="col-md-12">
-                                    <h3 class="f-w-6">Response Now</h3>
-                                    <p class="f-w-6">Mode</p>
-                                    <p class="f-w-6">Factor</p>
-
-                                    <!-- Tab panes -->
-                                    <!-- 
-                                        acceptFactoringForm.platformCharges : 0,
-                                        acceptFactoringForm.saftyPercentage : 0,
-                                        acceptFactoringForm.acceptFactoringRemark : ''
-                                     -->                                
-                                    <p class="f-w-6">Factoring Charges(%)</p>
-                                    <p class="f-w-6">{{invoiceData.platformCharges}}</p>                                
-                                    <!-- <div class="form-group">
-                                        <div class="input-group">
-                                            <input type="number" name="charges" ng-model="acceptFactoringForm.platformCharges" class="form-control input-lg"/>
-                                        </div>
-                                    </div> -->
-
-                                    <p class="f-w-6"> Eligible Amount(%)</p>
-                                    <p class="f-w-6">{{invoiceData.saftyPercentage}}</p>
-                                    <div class="transaction-details no-bottom-padd">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                            {{invoiceData.acceptFactoringRemark}}
-                                            </div>
-                                        </div>
-
-                                        <div class="m-b-20">
-                                            <p class="text-muted">Attachment</p>
-                                            <div class="form-group">
-
-                                                <button type="button" class="btn btn-default btn-icon btn-round">
-                                                    <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <textarea ng-model="proposalActionForm.remark" rows="3" class="form-control input-lg" id="description" placeholder="remark*"></textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="transaction-details">
-                                                <div class="clearfix"></div>
-                                                <div>
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn btn-lg btn-primary btn-corner btn-block" ng-click="acceptFactoringProposal()">Accept</button>
-                                                    </div>
-                                                    <div class="form-group no-bottom-marg">
-                                                        <button type="submit" class="btn btn-lg btn-border btn-primary btn-corner btn-block" ng-click="rejectFactoringProposal()">Reject</button>
-                                                    </div>
-                                                </div>
+                                    <div id="header-blue" ng-show="isStageEnabled('goods_delivered')">
+                                        <div ng-class="{'opacity-5' : isStageOpaque('goods_delivered')}">
+                                            <i class="fa icon-rounded icon-primary" ng-class="isOldStage('goods_delivered') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('goods_delivered')">1</span></i>
+                                            <div class="info-details">
+                                                <h1 class="buyer-title">Goods Delivered</h1>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                    <!-- <div class="transaction-details no-bottom-padd">
-                                        <h5 class="text-light text-uppercase">Of Amount</h5>
+
+
+
+                                    <div id="header-blue" ng-show="isHistoryBarEnabled('goods_delivered')">
+                                        <i class="fa icon-rounded icon-primary fa-no-icon"></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title" ng-click="showHistory()">View Full History</h1>
+                                        </div>
+                                    </div>
+                                    <div class="opacity-5 line-before" ng-show="isCurrentStage('goods_delivered')"></div>
+                                    <div id="header-blue" ng-show="isStageEnabled('buyer_confirmation')">
+                                        <div ng-class="{'opacity-5' : isStageOpaque('buyer_confirmation')}">
+                                            <i class="fa icon-rounded icon-primary" ng-class="isOldStage('buyer_confirmation') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('buyer_confirmation')">2</span></i>
+                                            <div class="info-details">
+                                                <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('buyer_confirmation')}">Buyer Confirmation</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'invoice_created'">
                                         <div class="clearfix"></div>
 
-                                        <h1>$ 1,00,000</h1>
-                                        <h5 class="text-light text-uppercase p-t-20">Description</h5>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                    </div> -->
+                                        <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Approval Awaited</h1>
+                                        <p>31 Dec 2018, 16:30</p>
+                                    </div>
+
+                                    <div class="col-md-12" ng-show="invoiceData.state == 'invoice_rejected'">
+                                        <div class="transaction-details p-l-8">
+                                            <div class="clearfix"></div>
+
+                                            <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected</h1>
+                                            <p>31 Dec 2018, 16:30</p>
+                                        </div>
+                                        
+                                        <div class="transaction-details no-bottom-padd">
+                                            <p class="text-muted text-uppercase">Remark</p>
+                                            <p class="no-bottom-padd">{{invoiceData.buyerInvoiceRemark}}</p>
+                                            <div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" ng-show="invoiceData.state == 'invoice_accepted'">
+                                        <div class="transaction-details p-l-8">
+                                            <div class="clearfix"></div>
+
+                                            <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Approved By Buyer</h1>
+                                            <p>Your Transaction is published on Blockchain</p>
+                                            <p>31 Dec 2018, 16:30</p>
+                                        </div>
+                                        <div class="transaction-details">
+                                            <h5 class="text-light text-uppercase">Buyer Transaction <span><a href="#">view more</a></span></h5>
+                                            <div class="clearfix"></div>
+
+                                            <h1>#{{filterTransactionHistory('invoice_accepted', true)}}</h1>
+                                            <div>
+                                                <button type="submit" ng-click="requestFactoring()" class="btn btn-lg btn-primary btn-corner btn-block">Factor Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="header-blue" ng-show="isHistoryBarEnabled('buyer_confirmation')">
+                                        <i class="fa icon-rounded icon-primary fa-no-icon"></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title" ng-click="showHistory()">View Full History</h1>
+                                        </div>
+                                    </div>
+                                    <div class="opacity-5 line-before" ng-show="isCurrentStage('buyer_confirmation')"></div>
+                                    <div id="header-blue" ng-show="isStageEnabled('factoring_request')">
+                                        <div ng-class="{'opacity-5' : isStageOpaque('factoring_request')}">
+                                            <i class="fa icon-rounded icon-primary" ng-class="isOldStage('factoring_request') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('factoring_request')">3</span></i>
+                                            <div class="info-details">
+                                                <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('factoring_request')}">Factoring Request</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_request'">
+                                        <!-- <div id="buyer-header-pending">
+                                            <i class="fa"><img src="assets/images/dollar-briefcase.png"></i>
+                                            <div class="info-details">
+                                                <h1 class="buyer-title text-uppercase">Pending For Factoring</h1>
+                                            </div>
+                                        </div> -->
+                                        <div class="transaction-details p-l-8">
+                                            <div class="clearfix"></div>
+
+                                            <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Pending For Factoring</h1>
+                                            <p>31 Dec 2018, 16:30</p>
+                                        </div>
+                                        <div class="transaction-details m-b-10">
+                                            <p class="text-muted text-uppercase">Amount</p>
+                                            <h1 class="f-w-4 no-bottom-padd">$ {{invoiceData.invoiceAmount}}</h1>
+                                            <div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_rejected'">
+                                        <div class="transaction-details p-l-8">
+                                            <div class="clearfix"></div>
+
+                                            <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected By Financer</h1>
+                                            <p>31 Dec 2018, 16:30</p>
+                                        </div>
+
+                                        <div class="transaction-details no-bottom-padd">
+                                            <p class="text-muted text-uppercase">Remark</p>
+                                            <p class="no-bottom-padd">{{invoiceData.rejectFactoringRemark}}</p>
+                                            <div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposal_rejected'">
+                                        <!-- <div id="buyer-header-rejected">
+                                            <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
+
+                                            <div class="info-details">
+                                                <h1 class="buyer-title text-uppercase no-top-marg">Rejected By Financer</h1>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="transaction-details">
+                                            <h5 class="text-light text-uppercase">Date</h5>
+                                            <div class="clearfix"></div>
+                                            <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
+                                        </div> -->
+
+                                        <div class="transaction-details p-l-8">
+                                            <div class="clearfix"></div>
+
+                                            <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected By You</h1>
+                                            <p>31 Dec 2018, 16:30</p>
+                                        </div>
+
+                                        <div class="transaction-details no-bottom-padd">
+                                            <p class="text-muted text-uppercase">Remark</p>
+                                            <p class="no-bottom-padd">{{invoiceData.rejectProposalRemark}}</p>
+                                            <div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposal_accepted'">
+                                        <!-- <div id="buyer-header-rejected">
+                                            <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
+
+                                            <div class="info-details">
+                                                <h1 class="buyer-title text-uppercase no-top-marg">Proposal Accepted</h1>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="transaction-details">
+                                            <h5 class="text-light text-uppercase">Date</h5>
+                                            <div class="clearfix"></div>
+
+                                            <h1 class="no-bottom-padd">21st Dec 2018, 16:30</h1>
+                                            <h3 class="f-w-6">Smart Contract Created</h3>
+                                        </div> -->
+
+                                        <div class="transaction-details p-l-8">
+                                            <div class="clearfix"></div>
+
+                                            <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Smart Contract Created</h1>
+                                            <p>Your Transaction is published on Blockchain</p>
+                                            <p>31 Dec 2018, 16:30</p>
+                                        </div>
+
+                                        <div class="transaction-details no-bottom-padd">
+                                            <p class="text-muted text-uppercase">Remark</p>
+                                            <p class="no-bottom-padd">{{invoiceData.acceptProposalRemark}}</p>
+                                            <div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                   <div id="header-blue" ng-show="isHistoryBarEnabled('factoring_request')">
+                                        <i class="fa icon-rounded icon-primary fa-no-icon"></i>
+                                        <div class="info-details">
+                                            <h1 class="buyer-title" ng-click="showHistory()">View Full History</h1>
+                                        </div>
+                                    </div>
+                                    <div class="opacity-5 line-before" ng-show="isCurrentStage('factoring_request')"></div>
+                                    <div id="header-blue" ng-show="isStageEnabled('payment_disbursed')">
+                                        <div ng-class="{'opacity-5' : isStageOpaque('payment_disbursed')}">
+                                            <i class="fa icon-rounded icon-primary" ng-class="isOldStage('payment_disbursed') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('payment_disbursed')">4</span></i>
+                                            <div class="info-details">
+                                                <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('payment_disbursed')}">Payment Disbursed</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_prepaid'|| invoiceData.state == 'invoice_paid'">
+
+                                        <div id="buyer-header-sent">
+                                            <i class="fa fa-number icon-rounded icon-primary inviewport visible">{{invoiceData.daysToPayout}}</i>
+
+                                            <div class="info-details">
+                                                <h1 class="buyer-title text-uppercase">Days To Payout</h1>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="transaction-details">
+                                                <h5 class="text-dark">Total Amount <span class="text-dark">${{invoiceData.firstPayment}}</span></h5>
+                                                <div class="clearfix"></div>
+                                                <h5 class="text-dark">First Payment <span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
+                                                <div class="clearfix"></div>
+                                                <h5 class="text-dark">Charges <span class="text-dark">$ {{invoiceData.charges}}</span></h5>
+                                                <div class="clearfix"></div>
+                                                <h5 class="text-dark">Days to Payout <span class="text-dark">{{invoiceData.daysToPayout}}</span></h5>
+                                                <hr>
+                                                <div class="clearfix"></div>
+                                                <h5 class="text-dark f-w-6">Balance Amount <span class="text-dark">${{invoiceData.balancePayment}}</span></h5>
+                                                <div>
+                                                </div>
+                                                
+                                                <p class="f-size-12">Estimated Amount-Processing Charges ( After deducting Factoring Charges )</p>
+                                                <div class="clearfix"></div>
+                                                <hr>
+                                                <h5 class="text-dark f-w-6">Balance XDC <span class="text-dark">${{invoiceData.balacePayment}}</span></h5>
+                                            </div>
+
+                                        <div class="transaction-details m-b-10">
+                                            <p class="text-muted text-uppercase">Address</p>
+                                             <h1 class="f-size-14 no-bottom-padd">{{invoiceData.financerAddress}}</h1>
+                                            <div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-lg btn-primary btn-corner btn-block">Request Payment</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="opacity-5 line-before" ng-show="isCurrentStage('payment_disbursed')"></div>
+                                    <div id="header-blue" class="no-after" ng-show="isStageEnabled('contract_complete')">
+                                        <div ng-class="{'opacity-5' : isStageOpaque('contract_complete')}">
+                                            <i class="fa icon-rounded icon-primary" ng-class="isOldStage('contract_complete') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('contract_complete')">5</span></i>
+                                            <div class="info-details">
+                                                <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('contract_complete')}">Contract Complete</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" ng-show="invoiceData.state == 'completed'">
+                                        <div id="buyer-header-approved">
+                                            <i class="fa fa-no-number icon-rounded icon-primary inviewport visible"></i>
+
+                                            <div class="info-details">
+                                                <h1 class="buyer-title text-uppercase">Payment Received</h1>
+
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="transaction-details p-l-8">
+                                            <div class="clearfix"></div>
+
+                                            <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i>Payment Received</h1>
+                                            <p>Your Transaction is published on Blockchain</p>
+                                            <p>31 Dec 2018, 16:30</p>
+                                        </div> -->
+                                        
+                                        <div class="transaction-details no-bottom-padd">
+                                                <h5 class="text-dark">Total Amount <span class="text-dark">$ {{invoiceData.invoiceAmount}}</span></h5>
+                                                <div class="clearfix"></div>
+                                                <h5 class="text-dark">First Payment <span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
+                                                <div class="clearfix"></div>
+                                                <h5 class="text-dark">Second Payment <span class="text-dark">$ {{invoiceData.balancePayment}}</span></h5>
+                                                <div class="clearfix"></div>
+                                                <h5 class="text-dark">Charges <span class="text-dark">{{invoiceData.charges}}</span></h5>
+                                                <hr>
+                                                <div class="clearfix"></div>
+                                                <h5 class="text-dark f-w-6">Total Amount <span class="text-dark">$ {{invoiceData.firstPayment + invoiceData.balancePayment}}</span></h5>
+                                                <div>
+                                                </div>
+                                                
+                                                <p class="f-size-12">Estimated Amount is Balance Amount-Processing Charges ( After deducting Factoring Charges )</p>
+                                            </div>
+                                    </div>
+
                                 </div>
+
                             </div>
                             <!-- End .row -->
                         </div>
