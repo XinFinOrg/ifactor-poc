@@ -1,13 +1,14 @@
 <!-- START CONTAINER -->
 <div class="page-container row-fluid container-fluid">
     <!-- START CONTENT -->
-        <div>
-            <div class="col-md-9 has-float-label">
-                <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
-                </select>
-            </div>
-        </div>
+
     <section>
+                <div>
+                    <div class="col-md-9 has-float-label">
+                        <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
+                        </select>
+                    </div>
+                </div>
         <div class="container wrapper main-wrapper row" style=''>
 
             <div class='col-xs-12'>
@@ -254,43 +255,44 @@
                                     </div>
                                 </div>
 
-                            <div class="col-md-12" ng-show="factorFlags.proceedIfactorRequest">
-                                <h3 class="f-w-6">Factor Now</h3>
-                                <p class="f-w-6">Mode</p>
-                                <!-- [ Togglable tabs ] -->
-                                <div class="btn-group" data-toggle="btns">
-                                    <a class="btn btn-round btn-border btn-lg btn-primary active" data-toggle="tab">Factor</a>
-                                    <a class="btn btn-round btn-border btn-lg btn-primary" data-toggle="tab">Finance</a>
+                            <div class="col-md-12 padd_0" ng-show="factorFlags.proceedIfactorRequest">
+                                <h4 class=" f-w-6 text-uppercase text-primary response-now">Factor Now</h4>
+                                <div class="transaction-details">
+                                    <div class="blockchain-titles text-uppercase">Mode</div>
                                 </div>
-
-                                <p class="f-w-6">Factoring charges(%)</p>
+                                <!-- [ Togglable tabs ] -->
+                                <div class="btn-group m-b-20" data-toggle="btns">
+                                    <a class="btn btn-round btn-border btn-lg btn-primary active deep" data-toggle="tab">Factor</a>
+                                    <a class="btn btn-round btn-border btn-lg btn-primary deep" data-toggle="tab">Finance</a>
+                                </div>
+                                <div class="transaction-details">
+                                    <div class="blockchain-titles text-uppercase">Factoring charges(%)</div>
+                                </div>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <input type="number" name="charges" ng-model="acceptFactoringForm.platformCharges" class="form-control input-lg"/>
                                     </div>
                                 </div>
-
-                                <p class="f-w-6"> Factor Range(%)</p>
+                                <div class="transaction-details">
+                                    <div class="blockchain-titles text-uppercase">Factor Range(%)</div>
+                                </div>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <input type="number" name="charges" ng-model="acceptFactoringForm.saftyPercentage" class="form-control input-lg"/>
                                     </div>
                                 </div>
-
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="first">Factor Range slider will comes here</div>
-                                    <div class="tab-pane" id="second">Finance Range slider will comes here</div>
-                                </div>
                                 <div class="transaction-details no-bottom-padd">
 
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <textarea ng-model="acceptFactoringForm.remark" rows="3" class="form-control input-lg" id="description" placeholder="Write Terms & Condition"></textarea>
+                                            <textarea ng-model="acceptFactoringForm.remark" style="height:150px !important" class="form-control input-lg" id="description" placeholder="Write Terms & Condition"></textarea>
                                         </div>
                                     </div>
 
                                     <div class="m-b-20">
-                                        <p class="text-muted">Attachment</p>
+                                <div class="transaction-details">
+                                    <div class="blockchain-titles text-uppercase">Attachment</div>
+                                </div>
                                         <div class="form-group">
 
                                             <button type="button" class="btn btn-default btn-icon btn-round">
@@ -306,15 +308,17 @@
                             </div>
 
                             <div class="col-md-12" ng-show="isIfactorRequested()">
+                                <h4 class="f-w-6 text-primary response-now">Response Now</h4>
+
                                 <div class="transaction-details">
                                     <div class="clearfix"></div>
 
-                                    <h1 class="f-w-4">What would you like to do factoring for this request?</h1>
+                                    <div class="blockchain-titles m-b-15">What would you like to do factoring for this request?</div>
                                     <div>
-                                        <div class="form-group">
+                                        <div class="form-group form-group-bottom">
                                             <button class="btn btn-lg btn-primary btn-corner btn-block" ng-click="proceedRequest()">Proceed</button>
                                         </div>
-                                        <div class="form-group no-bottom-marg">
+                                        <div class="form-group no-bottom-marg form-group-bottom">
                                             <button type="submit" class="btn btn-lg btn-border btn-primary btn-corner btn-block" ng-click="rejectRequest()">Reject</button>
                                         </div>
                                     </div>
@@ -333,7 +337,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group form-group-bottom">
                                     <button type="submit" ng-click="rejectFactoringRequest()" class="btn btn-lg btn-primary btn-corner btn-block">Submit Now</button>
                                 </div>
                             </div>
@@ -374,51 +378,53 @@
 
                                     </div>
                                 </div>
-
-                                <div class="transaction-details">
-                                    <h5 class="text-light text-uppercase">Date</h5>
-                                    <div class="clearfix"></div>
-
-                                    <h1 class="no-bottom-padd">{{invoiceData.created.ifactor_proposed | date : "dd MMM y, hh:mm"}}</h1>
-                                    <div>
+                                <div class="transaction-details m-b-10">
+                                    <div class="blockchain-titles text-uppercase">Date</div>
+                                    <div class="blockchain-content">{{invoiceData.created.ifactor_proposed | date : "dd MMM y, hh:mm"}}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_proposed'">
                                 <div id="buyer-header-sent">
-                                    <i class="fa"><img src="assets/images/dollar-briefcase.png"></i>
-
+                                    <i class="fa fa-briefcase"></i>
                                     <div class="info-details">
                                         <h1 class="buyer-title text-uppercase">Factoring Details</h1>
 
                                     </div>
                                 </div>
                                 <div class="transaction-details no-bottom-padd">
-
-                                    <div class="m-b-20">
-                                        <p class="text-muted text-uppercase">Mode</p>
-                                        <p class="f-w-6">Factor</p>
+                                    <div class="transaction-details m-b-10">
+                                        <div class="blockchain-titles text-uppercase">Mode</div>
+                                        <div class="blockchain-content">Factor
+                                        </div>
                                     </div>
-
-                                    <div class="m-b-20">
-                                        <p class="text-muted text-uppercase">Factoring Charges/Month (%)</p>
-                                        <p class="f-w-6">{{invoiceData.charges}}</p>
+                                    <div class="transaction-details m-b-10">
+                                        <div class="blockchain-titles text-uppercase">Factoring Charges/Month (%)</div>
+                                        <div class="blockchain-content">{{invoiceData.charges}}
+                                        </div>
                                     </div>
-
-                                    <div class="m-b-20">
-                                        <p class="text-muted text-uppercase">Eligible Amount (%)</p>
-                                        <p class="f-w-6">{{invoiceData.firstPayment}}</p>
+                                    <div class="transaction-details m-b-10">
+                                        <div class="blockchain-titles text-uppercase">Eligible Amount (%)</div>
+                                        <div class="blockchain-content">{{invoiceData.firstPayment}}
+                                        </div>
                                     </div>
-
-                                    <div class="m-b-20">
-                                        <p class="text-muted text-uppercase">Terms &amp; Condition</p>
-                                        <p class="f-w-6">{{invoiceData.acceptFactoringRemark}}</p>
+                                    <div class="transaction-details m-b-10">
+                                        <div class="blockchain-titles text-uppercase">Terms &amp; Condition</div>
+                                        <div class="blockchain-content">{{invoiceData.firstPayment}}
+                                            </div>
                                     </div>
-
-                                    <div class="m-b-20">
-                                        <p class="text-muted text-uppercase">Attachment</p>
-                                        <p class="f-w-6"><a href="#" class="attachment-btn">Factor.pdf <i class="fa fa-download"></i></a></p>
+                                    <div class="transaction-details m-b-10">
+                                        <div class="blockchain-titles text-uppercase"></div>
+                                        <div class="blockchain-content">{{invoiceData.acceptFactoringRemark}}
+                                        </div>
+                                    </div>
+                                    <div class="transaction-details m-b-10">
+                                        <div class="blockchain-titles text-uppercase">Attachment</div>
+                                        <div class="blockchain-content"><a href="#" class="attachment-btn">Factor.pdf
+                                            <i class="fa fa-download"></i>
+                                        </a>
+                                        </div>
                                     </div>
 
                                     <!-- <div class="form-group">

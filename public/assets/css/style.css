@@ -1330,6 +1330,13 @@ input[type=checkbox], input[type=color], input[type=date], input[type=datetime-l
     -moz-border-radius: 50px;
     -webkit-border-radius: 50px;
 }
+.btn.deep{
+    border-radius: 0px !important;
+    -o-border-radius: 0px;
+    -ms-border-radius: 0px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+}
 .btn.btn-corner {
     border-radius: 4px;
     -o-border-radius: 4px;
@@ -4088,4 +4095,28 @@ table.dataTable.display tbody tr:first-child td {
     font-size: 17px;
     padding: 8px 20px;
     text-align: center;
+}
+.padd_0{
+    padding:0px !important;
+}
+.response-now {
+        padding: 10px 0px 0px 0px;
+    font-size: 16px;
+    letter-spacing: 1px;
+        text-transform: capitalize;
+}
+.btn-blockchange-model{
+    padding: 8px 0px !important;
+    font-size: 17px !important;
+    line-height: 23px !important;
+    border-radius: 4px !important;
+}
+.form-group-bottom{
+    margin-bottom:8px !important;
+}
+.padd_10_0{
+    padding:10px 0px;
+}
+.m-b-15{
+    margin-bottom: 15px;
 }
