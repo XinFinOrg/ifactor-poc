@@ -164,10 +164,57 @@ var getInvoiceHistory = function(invoiceId, cb) {
     });
 };
 
-/*var getInstance = async (function() {
-    contractInstance = await (selectContractInstance(invoiceJson));
-});
-getInstance();*/
+var getTransferEvents = function(invoiceId, cb) {
+    var allEvents = contractInstance.Transfer({
+            from: web3.eth.coinbase,
+            gas: 70000000
+        },{
+            fromBlock: 0,
+            toBlock: 'latest'
+        }
+    );
+
+    allEvents.get(function(err,result) {
+    if(!err) {
+        //var result = result.filter(tx => tx.args && tx.args.invoiceId == invoiceId);
+        console.log('getTransferEvents', JSON.stringify(result, null, 4));
+        return cb(false, result);
+    }
+        return cb(true);
+    });
+};
+
+var getAllEvents = function(invoiceId, cb) {
+    web3.eth.filter({
+      from: 1,
+      to: 'latest'
+    }).get(function (err, result) {
+        console.log('allEventsrrr', JSON.stringify(result, null, 4));
+    })
+
+
+
+
+    contractInstance.allEvents({}).get((e, res) => console.log('allEvents', JSON.stringify(res, null, 4)));
+
+    var allEvents = contractInstance.allEvents({
+            from: web3.eth.coinbase,
+            gas: 70000000
+        },{
+            fromBlock: 0,
+            toBlock: 'latest'
+        }
+    );
+
+    allEvents.get(function(err,result) {
+    if(!err) {
+        console.log('allEvents2', JSON.stringify(result, null, 4));
+        //var result = result.filter(tx => tx.args && tx.args.invoiceId == invoiceId);
+        return cb(false, result);
+    }
+        return cb(true);
+    });
+};
 
 module.exports = {
     createAccount : createAccount,
@@ -184,5 +231,7 @@ module.exports = {
     setState : setState,
     buyTokens : buyTokens,
     getAmount : getAmount,
-    getInvoiceHistory : getInvoiceHistory
+    getInvoiceHistory : getInvoiceHistory,
+    getAllEvents : getAllEvents,
+    getTransferEvents : getTransferEvents
 };

@@ -42,15 +42,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 			if (data[i].state) {
 				data[i].status = 
 							invoiceStatusMap[userType][data[i].state];
-				if (data[i].status == 'Approval Awaited') {
-					data[i].stateClass = 'labelPending';
-				} else if (data[i].status == 'Approved') {
-					data[i].stateClass = 'labelApproved';
-				} else if(data[i].status == 'Draft') {
-					data[i].stateClass = 'labelDraft';
-				} else {
-					data[i].stateClass = 'labelRejected';
-				}
+				data[i].stateClass = Helper.statusClassMap[data[i].state];
 			}
 		}
 

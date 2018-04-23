@@ -491,7 +491,8 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
-		var invoiceHistory = [];
+		//var invoiceHistory = [];
+		var invoiceHistory = dummyTx;
 		var invoice = data[0];
 		console.log('invoivce');
 		console.log(invoice);
@@ -502,6 +503,9 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 		getUserDetails({email : invoice.supplierEmail}, function(err, userData) {
 			invoice.supplierData = !err ? userData : {};
 			if (web3Conf) {
+				web3Helper.getTransferEvents(invoiceId, function(err, result) {});
+				web3Helper.getAllEvents(invoiceId, function(err, result) {});
+
 				web3Helper.getInvoiceHistory(invoiceId, function(err, result) {
 					if (!err) {
 						invoiceHistory = result;

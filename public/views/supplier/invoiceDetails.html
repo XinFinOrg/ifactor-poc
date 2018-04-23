@@ -1,16 +1,15 @@
-
-
     <!-- START CONTAINER -->
     <div class="page-container row-fluid container-fluid">
         <!-- START CONTENT -->
+        <section>
 
         <div>
             <div class="col-md-9 has-float-label">
                 <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
                 </select>
             </div>
-        </div>
-        <section>
+        </div>  
+
             <div class="container wrapper main-wrapper row" style=''>
 
                 <div class='col-xs-12'>
@@ -129,18 +128,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- End .row -->
                         </div>
                     </section>
-                    <section class="box">
+                    <section class="box" ng-repeat="tx in invoiceTxHistory">
                         <div class="content-body">
                             <div class="panel_header">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <div class="text-light pull-left text-uppercase buyer-top">VERIFICATION DETAIL</div>
+                                        <div class="text-light pull-left text-uppercase buyer-top">{{tx.eventDName}}</div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <!-- <div class="col-lg-6">
                                         <div class="buyer-published">Published on Blockchain</div>
+                                    </div> -->
+                                    <div class="col-lg-6">
+                                        <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">{{tx.status}}</button></div>
                                     </div>
                                 </div>
                             </div>
@@ -150,39 +151,37 @@
                                         <img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border">
                     
                                         <div class="info-details">
-                                            <div class="buyer-title-set">#3434343#%BBCNFJDKKSKSJHDHDHDHHDHJJJJNDHDH**DJDDNDNNDNDNDNND</div>
-                                            <div class="buyer-dated"><i class="fa fa-calendar"></i> 31st Dec 2018, 16:30</div>
+                                            <div class="buyer-title-set">#{{tx.transactionHash}}</div>
+                                            <div class="buyer-dated"><i class="fa fa-calendar"></i> {{tx.args.created | date : "dd MMM y, hh:mm"}}</div>
                                         </div>
                                     </div>
-                    
                                 </div>
                                 <div class="col-md-12 padd_top_15">
                                     <div class="blockchain-titles">Address</div>
-                                    <div class="blockchain-content">gsdsddshjfjhsjfsjfjnsjnfsnjfjnsfjnsnjjnsfjnsjnfjnsfjnsjnf</div>
+                                    <div class="blockchain-content">{{tx.address}}</div>
                                 </div>
                                 <div class="col-md-12 padd_15">
                                     <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
                                         <div class="blockchain-titles">Block Number</div>
-                                        <div class="blockchain-content">17068</div>
+                                        <div class="blockchain-content">{{tx.blockNumber}}</div>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
                                         <div class="blockchain-titles">_id</div>
-                                        <div class="blockchain-content">17084_0_1</div>
+                                        <div class="blockchain-content">{{tx.args.invoiceId}}</div>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
                                         <div class="blockchain-titles">Time Stamp</div>
-                                        <div class="blockchain-content">1323435356363636</div>
+                                        <div class="blockchain-content">{{tx.args.created}}</div>
                                     </div>
                                 </div>
                                 <div class="col-md-12 padd_bottom_15">
                                     <div class="blockchain-titles">Remark</div>
-                                    <div class="blockchain-content">gsdsddshjfjhsjfsjfjnsjnfsnjfjnsfjnsnjjnsfjnsjnfjnsfjnsjnf dfsdjbf sdfgjjdskfdsjf fsdjfbds xfbsdhfj xcshdjbfdsmnc  sfbhjdbfhsdf cvjsndkfdskdf ksdjfsdf</div>
+                                    <div class="blockchain-content">{{tx.args.state}}</div>
                                 </div>
                             </div>
-                            <!-- End .row -->
                         </div>
                     </section>
-                    <section class="box">
+                    <!-- <section class="box">
                         <div class="content-body">
                             <div class="panel_header">
                                 <div class="row">
@@ -231,9 +230,8 @@
                                         sfbhjdbfhsdf cvjsndkfdskdf ksdjfsdf</div>
                                 </div>
                             </div>
-                            <!-- End .row -->
                         </div>
-                    </section>
+                    </section> -->
                 </div>
 
                 <div class="col-xs-12 col-md-3 col-lg-3">
@@ -275,7 +273,7 @@
                                         <div class="clearfix"></div>
 
                                         <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Approval Awaited</h1>
-                                        <p>31 Dec 2018, 16:30</p>
+                                        <p>{{ invoiceData.created.invoice_created | date : "dd MMM y hh:mm"}}</p>
                                     </div>
 
                                     <div class="col-md-12" ng-show="invoiceData.state == 'invoice_rejected'">
@@ -283,7 +281,7 @@
                                             <div class="clearfix"></div>
 
                                             <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected</h1>
-                                            <p>31 Dec 2018, 16:30</p>
+                                            <p>{{ invoiceData.created.invoice_rejected | date : "dd MMM y hh:mm"}}</p>
                                         </div>
                                         
                                         <div class="transaction-details no-bottom-padd">
@@ -300,7 +298,7 @@
 
                                             <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Approved By Buyer</h1>
                                             <p>Your Transaction is published on Blockchain</p>
-                                            <p>31 Dec 2018, 16:30</p>
+                                            <p>{{ invoiceData.created.invoice_accepted | date : "dd MMM y hh:mm"}}</p>
                                         </div>
                                         <div class="transaction-details">
                                             <h5 class="text-light text-uppercase">Buyer Transaction <span><a href="#">view more</a></span></h5>
@@ -340,7 +338,7 @@
                                             <div class="clearfix"></div>
 
                                             <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Pending For Factoring</h1>
-                                            <p>31 Dec 2018, 16:30</p>
+                                            <p>{{ invoiceData.created.ifactor_request | date : "dd MMM y hh:mm"}}</p>
                                         </div>
                                         <div class="transaction-details m-b-10">
                                             <p class="text-muted text-uppercase">Amount</p>
@@ -355,7 +353,7 @@
                                             <div class="clearfix"></div>
 
                                             <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected By Financer</h1>
-                                            <p>31 Dec 2018, 16:30</p>
+                                            <p>{{ invoiceData.created.ifactor_rejected | date : "dd MMM y hh:mm"}}</p>
                                         </div>
 
                                         <div class="transaction-details no-bottom-padd">
@@ -365,6 +363,60 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                <!-- factoring proposed -->
+                                <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_proposed'">
+                                    <h4 class="m-b-20 f-w-6 text-uppercase text-primary">Response Now</h4>
+
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Mode</p>
+                                        <h1 class="f-w-4 no-bottom-padd">Factor</h1>
+                                        <div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Factoring Charges/Month (%)</p>
+                                        <h1 class="f-w-4 no-bottom-padd">{{invoiceData.platformCharges}}% ($ {{invoiceData.charges}})</h1>
+                                        <div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Eligible Amount (%)</p>
+                                        <h1 class="f-w-4 no-bottom-padd">{{invoiceData.saftyPercentage}}% ( $ {{invoiceData.firstPayment}} )</h1>
+                                        <div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Terms &amp; Condition</p>
+                                        <p class="no-bottom-padd">{{invoiceData.acceptFactoringRemark}}</p>
+                                        <div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Attachment</p>
+                                        <p class="text-muted"><a href="#" class="attachment-btn"><i class="fa fa-download"></i> Factor.pdf</a></p>
+                                        <div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <textarea rows="6" ng-model="proposalActionForm.remark" class="form-control input-lg" id="description" placeholder="Remark*"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button ng-click="acceptFactoringProposal()" class="btn btn-lg btn-primary btn-corner btn-block">Accept</button>
+                                            </div>
+                                            <div class="form-group">
+                                                <button ng-click="rejectFactoringProposal()" class="btn btn-lg btn-border btn-primary btn-corner btn-block">Reject</button>
+                                            </div>
+                                        </div>
+                                </div>
 
                                     <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposal_rejected'">
                                         <!-- <div id="buyer-header-rejected">
@@ -386,7 +438,7 @@
                                             <div class="clearfix"></div>
 
                                             <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected By You</h1>
-                                            <p>31 Dec 2018, 16:30</p>
+                                            <p>{{ invoiceData.created.ifactor_proposal_rejected | date : "dd MMM y hh:mm"}}</p>
                                         </div>
 
                                         <div class="transaction-details no-bottom-padd">
@@ -420,7 +472,7 @@
 
                                             <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Smart Contract Created</h1>
                                             <p>Your Transaction is published on Blockchain</p>
-                                            <p>31 Dec 2018, 16:30</p>
+                                            <p>{{ invoiceData.created.ifactor_proposal_accepted | date : "dd MMM y hh:mm"}}</p>
                                         </div>
 
                                         <div class="transaction-details no-bottom-padd">
@@ -444,6 +496,23 @@
                                             <div class="info-details">
                                                 <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('payment_disbursed')}">Payment Disbursed</h1>
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_proposal_accepted'">
+                                        <div class="transaction-details">
+                                            <div class="clearfix"></div>
+                                            <h5 class="text-dark">Eligible Amount <span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
+                                            <div class="clearfix"></div>
+                                            <h5 class="text-dark"> XDC to USD <span class="text-dark">$1 </span></h5>
+                                            <div class="clearfix"></div>
+                                            <h5 class="text-dark f-w-6"> Pending XDC <span class="text-dark">${{invoiceData.firstPayment}}</span></h5>
+                                            <div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-lg btn-primary btn-corner btn-block">Request Payment</button>
                                         </div>
                                     </div>
 

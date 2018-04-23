@@ -19,12 +19,12 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
             "invoice_created": "Approval Awaited",
             "invoice_rejected": "Rejected",
             "invoice_accepted": "Approved",
-            "ifactor_request": "Approved",
-            "ifactor_rejected": "Approved",
-            "ifactor_proposed": "Approved",
-            "ifactor_proposal_rejected": "Approved",
-            "ifactor_proposal_accepted": "Approved",
-            "ifactor_prepaid": "Approved",
+            "ifactor_request": "Factoring Requested",
+            "ifactor_rejected": "Rejected",
+            "ifactor_proposed": "Proposal Received",
+            "ifactor_proposal_rejected": "Proposal Rejected",
+            "ifactor_proposal_accepted": "Proposal Accepted",
+            "ifactor_prepaid": "In Progress",
             "invoice_paid": "Payment completed",
             "completed": "Completed"
         },
@@ -55,9 +55,25 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
             'completed'
         ];
 
+    var statusClassMap = {
+        'draft' : 'labelDraft',
+        'invoice_created' : 'labelPending',
+        'invoice_rejected' : 'labelRejected',
+        'invoice_accepted' : 'labelApproved',
+        'ifactor_request' : 'labelPending',
+        'ifactor_rejected' : 'labelRejected',
+        'ifactor_proposed' : 'labelPending',
+        'ifactor_proposal_accepted' : 'labelApproved',
+        'ifactor_proposal_rejected' : 'labelRejected',
+        'ifactor_prepaid' : 'labelApproved',
+        'invoice_paid' : 'labelApproved',
+        'completed' : 'labelApproved'
+    };
+
     return {
         invoiceStatusMap : invoiceStatusMap,
-        stateOptions : stateOptions
+        stateOptions : stateOptions,
+        statusClassMap : statusClassMap
     }
 
 }]);

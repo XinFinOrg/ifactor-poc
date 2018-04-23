@@ -2,7 +2,6 @@
 			'$location', 'GetPost', 'Helper',  function($scope, $rootScope, $http, $location, GetPost,Helper) {
 
 	$scope.urlMap = function(type) {
-		console.log("type :" + type);
 		if (type == 'createInvoice') {
 			$location.path('/create-invoice');
 		}
@@ -35,30 +34,17 @@
 		$location.path('/dashboard');
 	}
 
-	var invoiceStatusMap
-	 = Helper.invoiceStatusMap;
+	var invoiceStatusMap = Helper.invoiceStatusMap;
 
 	$scope.date = new Date();
 	$scope.eventSources = [];
 
 	$scope.setStatusClasses = function (data) {
 		var userType = $rootScope.userType;
-		console.log('userType', userType);
 		for (var i = 0; i < data.length; i++) {
 			if (data[i].state) {
-				console.log('state', data[i].state);
-				data[i].status = 
-							invoiceStatusMap[userType][data[i].state];
-				console.log('status', data[i].status);
-				if (data[i].status == 'Approval Awaited') {
-					data[i].stateClass = 'labelPending';
-				} else if (data[i].status == 'Approved') {
-					data[i].stateClass = 'labelApproved';
-				} else if(data[i].status == 'Draft') {
-					data[i].stateClass = 'labelDraft';
-				} else {
-					data[i].stateClass = 'labelRejected';
-				}
+				data[i].status = invoiceStatusMap[userType][data[i].state];
+				data[i].stateClass = Helper.statusClassMap[data[i].state];
 			}
 		}
 
@@ -68,7 +54,6 @@
 	$scope.getInvoiceStatus = function(state) {
 		console.log('this.state.', state);
 		var status = invoiceStatusMap[$rootScope.userType][state];
-		console.log('status', status);
 		return status;
 	}
 
@@ -89,9 +74,25 @@
 			console.log('invoiceDetails response');
 			$scope.invoiceData = resp.data.invoice;
 			$scope.invoiceTxHistory = resp.data.invoiceHistory;
+			mapInvoiceHistory($scope.invoiceTxHistory);
 			$scope.setCurrentStage();
 		});
     }
+
+
+    var mapInvoiceHistory = function(invoiceHistory) {
+    	var tx;
+		for (var i in invoiceHistory) {
+			tx = invoiceHistory[i];
+			switch(tx.event) {
+				case 'invoiceHistory' :
+					tx.eventDName = 'Invoice History',
+					tx.status = invoiceStatusMap[$scope.userType][tx.args.state];
+			}
+		}
+		invoiceHistory.reverse();
+    };
+
 
     $scope.getDatesDiff = function(date) {
     	var date1 = new Date(date);
@@ -147,8 +148,6 @@
 		}
 		
 		GetPost.post(data, function(err, resp) {
-    		console.log(resp);
-    		// 'ifactor_proposal_rejected'
 			$scope.getInvoiceDetails();
 	    });
 
@@ -349,8 +348,8 @@
 
 	var invoiceStates = {
 	    draft : 1,
-	    Invoice_created : 2,
-	    Invoice_rejected : 3,
+	    invoice_created : 2,
+	    invoice_rejected : 3,
 	    invoice_accepted : 4,
 	    ifactor_request : 5,
 	    ifactor_rejected : 6,

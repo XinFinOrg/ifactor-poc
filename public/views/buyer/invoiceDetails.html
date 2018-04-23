@@ -118,7 +118,7 @@
 
                             <div class="clearfix"></div>
 
-                            <div class="col-md-12">
+                            <!-- <div class="col-md-12">
                                 <div class="verification-details">
                                     <h5 class="text-uppercase">Verification Details</h5>
                                     <div id="buyer-header" class="no-bottom-border">
@@ -162,13 +162,63 @@
                                         </div>
                                     </div>
                                 </div>
-
-                            </div>
+                            </div> -->
 
                         </div>
                         <!-- End .row -->
                     </div>
                 </section>
+                    <section class="box" ng-repeat="tx in invoiceTxHistory">
+                        <div class="content-body">
+                            <div class="panel_header">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="text-light pull-left text-uppercase buyer-top">{{tx.eventDName}}</div>
+                                    </div>
+                                    <!-- <div class="col-lg-6">
+                                        <div class="buyer-published">Published on Blockchain</div>
+                                    </div> -->
+                                    <div class="col-lg-6">
+                                        <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">{{tx.status}}</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="buyer-header">
+                                        <img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border">
+                    
+                                        <div class="info-details">
+                                            <div class="buyer-title-set">#{{tx.transactionHash}}</div>
+                                            <div class="buyer-dated"><i class="fa fa-calendar"></i> {{tx.args.created | date : "dd MMM y, hh:mm"}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 padd_top_15">
+                                    <div class="blockchain-titles">Address</div>
+                                    <div class="blockchain-content">{{tx.address}}</div>
+                                </div>
+                                <div class="col-md-12 padd_15">
+                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">Block Number</div>
+                                        <div class="blockchain-content">{{tx.blockNumber}}</div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">_id</div>
+                                        <div class="blockchain-content">{{tx.args.invoiceId}}</div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">Time Stamp</div>
+                                        <div class="blockchain-content">{{tx.args.created}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 padd_bottom_15">
+                                    <div class="blockchain-titles">Remark</div>
+                                    <div class="blockchain-content">{{tx.args.state}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
             </div>
 
             <div class="col-xs-12 col-md-3 col-lg-3">
@@ -225,14 +275,14 @@
 
                                     <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Success</h1>
                                     <p>Your Transaction is published on Blockchain</p>
-                                    <p>31 Dec 2018, 16:30</p>
+                                    <p>{{ invoiceData.created.invoice_accepted | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
                                 <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'invoice_rejected'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected</h1>
-                                    <p>31 Dec 2018, 16:30</p>
+                                    <p>{{ invoiceData.created.invoice_rejected | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
 
@@ -256,35 +306,35 @@
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Submited For Factoring</h1>
-                                    <p>31 Dec 2018, 16:30</p>
+                                    <p>{{ invoiceData.created.ifactor_request | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
                                 <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_rejected'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Rejected By Financer</h1>
-                                    <p>31 Dec 2018, 16:30</p>
+                                    <p>{{ invoiceData.created.ifactor_rejected | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
                                 <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposed'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Proposal submitted by financer</h1>
-                                    <p>31 Dec 2018, 16:30</p>
+                                    <p>{{ invoiceData.created.ifactor_proposed | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
                                 <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposal_rejected'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Proposal rejected By Supplier</h1>
-                                    <p>31 Dec 2018, 16:30</p>
+                                    <p>{{ invoiceData.created.ifactor_proposal_rejected | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
                                 <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposal_accepted'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Smart contract created</h1>
-                                    <p>31 Dec 2018, 16:30</p>
+                                    <p>{{ invoiceData.created.ifactor_proposal_accepted | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
                                <div id="header-blue" ng-show="isHistoryBarEnabled('factoring_request')">
@@ -335,11 +385,11 @@
                                 <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'invoice_paid'">
                                     <div class="clearfix"></div>
                                     <div class="transaction-details">
-                                        <h5 class="text-dark">Total Amount <span class="text-dark">$ 1,00,000</span></h5>
+                                        <h5 class="text-dark">Total Amount <span class="text-dark">${{invoiceData.invoiceAmount}}</span></h5>
                                         <div class="clearfix"></div>
                                         <h5 class="text-dark">XDC To USD <span class="text-dark">$ 1</span></h5>
                                         <div class="clearfix"></div>
-                                        <h5 class="text-dark">Payable XDC <span class="text-dark">1,50,000</span></h5>
+                                        <h5 class="text-dark">Payable XDC <span class="text-dark">{{invoiceData.invoiceAmount}}</span></h5>
                                         <div class="clearfix"></div>
                                         <div>
                                         </div>
@@ -350,7 +400,7 @@
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Contract Completed</h1>
-                                    <p>31 Dec 2018, 16:30</p>
+                                    <p>{{ invoiceData.created.completed | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
                             </div>
