@@ -9,7 +9,7 @@ var uniqid = require('uniqid');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 
-var web3Conf = false;
+var web3Conf = true;
 if (web3Conf) {
 	var web3Helper = require('./web3Helper');
 }
@@ -21,7 +21,7 @@ router.post('/signup', (function(req, res) {
 	var collection = db.getCollection('users');
 	collection.findOne({email : input.email}, function(err, result) {
 		if (result) {
-			return res.send({status : false, error : 
+			return res.send({status : false, error :
 				{errorCode : 'AccountExists', msg : 'Account Already Exists'}});
 		}
 
@@ -63,6 +63,7 @@ router.post('/createInvoice', async (function(req, res) {
 	var tx;
 	if (web3Conf) {
 	    try {
+			web3Helper.addInvoiceEvent(function(err, result) {});
 		    tx = await (web3Helper.addInvoice(input));
 		    input.createHash = tx;
 	    } catch(e) {
@@ -161,6 +162,17 @@ router.post('/requestFactoring', async (function(req, res) {
 	    try {
 		    tx = await (web3Helper.setState(invoiceId, 'ifactor_request'));
 		    console.log('tx', tx);
+
+				var postpayamount = await(web3Helper.getPostpayAmount(invoiceId));
+				console.log('postpayamount', postpayamount.toNumber());
+				var mm = await(web3Helper.getPrepayAmount(invoiceId));
+				console.log('getPrepayAmount', mm.toNumber());
+				var mm = await(web3Helper.getSupplier(invoiceId));
+				console.log('getAddresses', mm);
+				var mm = await(web3Helper.getInvoiceAmount(invoiceId));
+				console.log('getInvoiceAmount', mm.toNumber());
+				//web3Helper.getBalance(address)
+
 	    } catch(e) {
 	    	console.log(e)
 			return res.send({status : false, message : 'smart contract error'});
@@ -312,10 +324,25 @@ router.post('/payInvoice', async (function(req, res) {
 router.post('/prepaySupplier', async(function(req, res) {
 	//'invoiceId' : new ObjectID(invoiceId)}
 	let invoiceId = req.body.invoiceId;
-
-	var tx;
+	let buyerAddress = req.body.buyerAddress;
+	let supplierAddress = req.body.supplierAddress;
+	let financerAddress = req.body.financerAddress;
+	console.log(supplierAddress, buyerAddress, financerAddress);
+	var tx, tx1;
 	if (web3Conf) {
 	    try {
+
+		    /*tx1 = await (web3Helper.buyTokens(financerAddress));
+		    tx1 = await (web3Helper.buyTokens(supplierAddress));
+		    tx1 = await (web3Helper.buyTokens(buyerAddress));*/
+
+		    /*tx1 = await (web3Helper.getBalance(financerAddress));
+		    console.log('financerAddress', tx1.toNumber())*/
+
+			var prepayAmount = await(web3Helper.getPrepayAmount(invoiceId));
+			console.log('getPrepayAmount', mm.toNumber());
+		    tx1 = await (web3Helper.sendTokens(financerAddress, supplierAddress, prepayAmount));
+		    console.log('sendTokens', tx1);
 		    tx = await (web3Helper.prepayFactoring(invoiceId));
 	    } catch(e) {
 	    	console.log(e);
@@ -483,22 +510,24 @@ var getInvoiceDates = function(invoiceHistory) {
 }
 
 router.post('/getInvoiceDetails', async(function(req, res) {
-	console.log('get invoice details');
 	let invoiceId = req.body.invoiceId;
 	//'invoiceId' : new ObjectID(invoiceId)}
+	/*var mm = await(web3Helper.getProps(invoiceId));
+	console.log('state', mm);*/
+	var mm = await(web3Helper.getBalance('0x477364fd3005497ae87f3855f7dd8f892ac1f462'));
+	console.log('getBalance', mm);
+	/*var mm = await(web3Helper.getAddresses(invoiceId));
+	console.log('address', mm);*/
+
+
 
 	getInvoices({'invoiceId' : invoiceId}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
-		//var invoiceHistory = [];
-		var invoiceHistory = dummyTx;
+		var invoiceHistory = helper.dummyTx;
 		var invoice = data[0];
-		console.log('invoivce');
-		console.log(invoice);
 		processInvoiceDetails(invoice);
-
-		//invoice.supplierData = !userData ? {} : userData;
 
 		getUserDetails({email : invoice.supplierEmail}, function(err, userData) {
 			invoice.supplierData = !err ? userData : {};

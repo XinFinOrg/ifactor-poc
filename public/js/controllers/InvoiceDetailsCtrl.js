@@ -188,9 +188,15 @@
 	};
 
 	$scope.payInvoice = function () {
+			console.log('supplierAddress : ', $scope.invoiceData.supplierAddress);
+			console.log('financerAddress : ', $scope.invoiceData.financerAddress);
+			console.log('buyerAddress : ', $scope.invoiceData.buyerAddress)
 		var data = {
 			url : '/payInvoice',
-			invoiceId : $rootScope.invoiceId
+			invoiceId : $rootScope.invoiceId,
+			supplierAddress : $scope.invoiceData.supplierAddress,
+			financerAddress : $scope.invoiceData.financerAddress,
+			buyerAddress : $scope.invoiceData.buyerAddress
 		}
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
@@ -261,7 +267,10 @@
 	$scope.prepaySupplier = function (input) {
 		var data = {
 			url : '/prepaySupplier',
-			invoiceId : $rootScope.invoiceId
+			invoiceId : $rootScope.invoiceId,
+			supplierAddress : $scope.invoiceData.supplierAddress,
+			financerAddress : $scope.invoiceData.financerAddress,
+			buyerAddress : $scope.invoiceData.buyerAddress
 		}
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
@@ -273,7 +282,10 @@
 	$scope.postpaySupplier = function (input) {
 		var data = {
 			url : '/postpaySupplier',
-			invoiceId : $rootScope.invoiceId
+			invoiceId : $rootScope.invoiceId,
+			supplierAddress : $scope.invoiceData.supplierAddress,
+			financerAddress : $scope.invoiceData.financerAddress,
+			buyerAddress : $scope.invoiceData.buyerAddress
 		}
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);

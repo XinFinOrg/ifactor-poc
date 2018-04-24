@@ -23,6 +23,8 @@ var createAccount = function(phrase) {
     return web3.personal.newAccount();
 }
 
+console.log(web3.eth.accounts);
+
 var unlock = function (address, phrase) {
     return new Promise((resolve, reject) => {
         web3.personal.unlockAccount(address, phrase, function (error, result) {
@@ -134,14 +136,65 @@ var setState = async (function(invoiceId, state) {
 
 var buyTokens = async (function(address) {
     var mm = await (contractInstance.buyTokens(address,
-          {from: web3.eth.accounts[1], gas:100000}).catch((e)=> {
-            throw e;
-          }));
+          {from: web3.eth.accounts[1], gas:100000}));
     return mm;
 });
 
 var getAmount = async (function(invoiceId){
     var mm = await (contractInstance.getAmount.call(invoiceId));
+    return mm;
+});
+
+var getPostpayAmount = async (function(invoiceId){
+    var mm = await (contractInstance.getPostpayAmount.call(invoiceId));
+    return mm;
+});
+
+var getPrepayAmount = async (function(invoiceId){
+    var mm = await (contractInstance.getPrepayAmount.call(invoiceId));
+    return mm;
+});
+
+var getAddresses = async (function(invoiceId){
+    var mm = await (contractInstance.getAddresses(invoiceId));
+    return mm;
+});
+
+var getFinancer = async (function(invoiceId){
+    var mm = await (contractInstance.getFinancer(invoiceId));
+    return mm;
+});
+
+var getSupplier = async (function(invoiceId){
+    console.log('invoiceId', invoiceId)
+    var mm = await (contractInstance.getSupplier(invoiceId));
+    return mm;
+});
+
+var getBuyer = async (function(invoiceId){
+    var mm = await (contractInstance.getBuyer(invoiceId));
+    return mm;
+});
+
+var getProps = async (function(invoiceId){
+    var mm = await (contractInstance.getProps(invoiceId));
+    return mm;
+});
+
+var getInvoiceAmount = async (function(invoiceId){
+    var mm = await (contractInstance.getInvoiceAmount.call(invoiceId));
+    return mm;
+});
+
+var getBalance = async (function(address){
+    var mm = await (contractInstance.getBalance.call(address));
+    return mm;
+});
+
+var sendTokens = async(function(acc1, acc2, value) {
+    value = 50;
+    var mm = await (contractInstance.transfer(acc2, value, 
+          {from: acc1, gas:100000}));
     return mm;
 });
 
@@ -182,6 +235,16 @@ var getTransferEvents = function(invoiceId, cb) {
     }
         return cb(true);
     });
+};
+
+var addInvoiceEvent = function(invoiceId, cb) {
+    return contractInstance.createInvoice({}).get(function(e, res) {
+        if(!err) {
+            var result = result.filter(tx => tx.args && tx.args._invoice_id == invoiceId);
+            return cb(false, result);
+        }
+        return cb(true);
+    })
 };
 
 var getAllEvents = function(invoiceId, cb) {
@@ -233,5 +296,17 @@ module.exports = {
     getAmount : getAmount,
     getInvoiceHistory : getInvoiceHistory,
     getAllEvents : getAllEvents,
-    getTransferEvents : getTransferEvents
+    getTransferEvents : getTransferEvents,
+    getPostpayAmount : getPostpayAmount,
+    getPrepayAmount : getPrepayAmount,
+    getAddresses : getAddresses,
+    getInvoiceAmount : getInvoiceAmount,
+    getBalance : getBalance,
+    sendTokens : sendTokens,
+    getSupplier : getSupplier,
+    getBuyer : getBuyer,
+    getFinancer : getFinancer,
+    addInvoiceEvent : addInvoiceEvent,
+    getProps : getProps,
+    getEthBalance : getEthBalance
 };

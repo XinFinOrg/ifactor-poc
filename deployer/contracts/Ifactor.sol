@@ -14,7 +14,7 @@ contract Ifactor is StandardToken {
         address[] owners;
     	uint factorCharges;
     	uint factorInterest;
-    	uint factorSaftyPercentage;        
+    	uint factorSaftyPercentage;
     }
     
     address owner;
@@ -40,6 +40,11 @@ contract Ifactor is StandardToken {
 	    balances[_address] = 10000;
 	    balances[owner] = balances[owner] - 10000;
 	}
+
+    function getProps(string _invoice_id) public returns(Invoice) {
+    	Invoice inv = Invoices[_invoice_id];
+    	return inv;
+    }
 
     function getBalance(address _address) public view returns(uint) {
         return balances[_address];
@@ -118,6 +123,51 @@ contract Ifactor is StandardToken {
         setState(_invoice_id, 'invoice_paid', _created);
 	}
 
+    function getPostpayAmount(string _invoice_id) public returns(uint) {
+		Invoice inv = Invoices[_invoice_id];
+		uint _value = (inv.amount * 100) -
+						(
+							(inv.amount * inv.factorSaftyPercentage) +
+							(inv.amount * inv.factorCharges)
+						);
+        _value = _value/100;
+		return _value;
+    }
+
+    function getPrepayAmount(string _invoice_id) public returns(uint) {
+		Invoice inv = Invoices[_invoice_id];
+		uint _value =  inv.amount * inv.factorSaftyPercentage/100;
+		return _value;
+    }
+
+   function getAddresses(string _invoice_id) public view returns(address[]) {
+        address[] entities;
+        Invoice inv = Invoices[_invoice_id];
+        entities.push(inv.supplier);
+        entities.push(inv.buyer);
+        entities.push(inv.financer);
+        return entities;
+    }
+
+   function getSupplier(string _invoice_id) public view returns(address) {
+        Invoice inv = Invoices[_invoice_id];
+        return inv.supplier;
+    }
+
+   function getBuyer(string _invoice_id) public view returns(address) {
+        Invoice inv = Invoices[_invoice_id];
+        return inv.buyer;
+    }
+
+   function getFinancer(string _invoice_id) public view returns(address) {
+        Invoice inv = Invoices[_invoice_id];
+        return inv.financer;
+    }
+
+    function getInvoiceAmount(string _invoice_id) public returns(uint){
+		Invoice inv = Invoices[_invoice_id];
+		return inv.amount;
+    }
 
 	event createInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount,
 						address _supplier, address _buyer);
