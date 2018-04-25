@@ -70,7 +70,7 @@
 
                                         <h1>{{invoiceData.purchaseTitle}}</h1>
                                         <div class="price-badge">
-                                            <div class="amount text-muted">Amount : <span class="bold"><i class="fa fa-inr" aria-hidden="true"></i> {{invoiceData.purchaseAmount}}</span></div>
+                                            <div class="amount text-muted">Amount : <span class="bold"><i class="fa fa-inr" aria-hidden="true"></i> {{invoiceData.invoiceAmount}}</span></div>
                                             <div class="period text-muted">Days to Payout : <span class="bold">{{getDatesDiff(invoiceData.payableDate)}} Days</span></div>
                                         </div>
                                     </div>
@@ -131,7 +131,7 @@
 
                             <div class="clearfix"></div>
 
-                            <div class="col-md-12">
+                            <!-- <div class="col-md-12">
 
                                 <div class="verification-details">
                                     <h5 class="text-uppercase">Verification Details</h5>
@@ -150,7 +150,7 @@
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
                                 </div>
 
-                            </div>
+                            </div> -->
 
                         </div>
                         <!-- End .row -->
@@ -460,7 +460,7 @@
                                     </div>
 
                                     <div class="transaction-details m-b-10">
-                                        <p class="text-muted text-uppercase">Eligible Amount ({{invoiceData.saftyPercentage}})</p>
+                                        <p class="text-muted text-uppercase">Eligible Amount ({{invoiceData.saftyPercentage}}%)</p>
                                         <h1 class="f-w-4 no-bottom-padd">{{invoiceData.firstPayment}}</h1>
                                     </div>
 
@@ -498,7 +498,7 @@
                                 </div>
                                 
                                 <div class="transaction-details">
-                                        <h5 class="text-dark">Total Amount <span class="text-dark">${{invoiceData.firstPayment}}</span></h5>
+                                        <h5 class="text-dark">Total Amount <span class="text-dark">${{invoiceData.invoiceAmount}}</span></h5>
                                         <div class="clearfix"></div>
                                         <h5 class="text-dark">First Payment <span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
                                         <div class="clearfix"></div>

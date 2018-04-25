@@ -68,7 +68,7 @@
                                             <td ng-if="item.purchaseTitle">{{item.purchaseTitle}}</td>
                                             <td ng-if="!item.purchaseTitle">-</td>
 
-                                            <td ng-if="item.purchaseAmount" class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> {{item.purchaseAmount}}</td>
+                                            <td ng-if="item.purchaseAmount" class="text-right"><i class="fa fa-inr" aria-hidden="true"></i> {{item.invoiceAmount}}</td>
                                             <td ng-if="!item.purchaseAmount" class="text-right">-</td>
 
                                             <td ng-if="item.payableDate" class="text-right">{{getDatesDiff(item.payableDate)}}</td>

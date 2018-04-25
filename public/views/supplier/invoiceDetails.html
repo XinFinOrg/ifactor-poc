@@ -3,12 +3,16 @@
         <!-- START CONTENT -->
         <section>
 
-        <div>
+        <!-- <div>
+            <img src="assets/images/loader1.gif">
+        </div> -->
+
+        <!-- <div>
             <div class="col-md-9 has-float-label">
                 <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
                 </select>
             </div>
-        </div>  
+        </div> -->  
 
             <div class="container wrapper main-wrapper row" style=''>
 
@@ -68,7 +72,7 @@
                                 <div class="col-md-12 padd_10">
                                     <div class="col-lg-6">
                                         <div class="blockchain-titles">Amount</div>
-                                        <div class="blockchain-content"><i class="fa fa-inr" aria-hidden="true"></i> {{invoiceData.purchaseAmount}}</div>
+                                        <div class="blockchain-content"><i class="fa fa-inr" aria-hidden="true"></i> {{invoiceData.invoiceAmount}}</div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="blockchain-titles">Days to Payout</div>
@@ -301,10 +305,10 @@
                                             <p>{{ invoiceData.created.invoice_accepted | date : "dd MMM y hh:mm"}}</p>
                                         </div>
                                         <div class="transaction-details">
-                                            <h5 class="text-light text-uppercase">Buyer Transaction <span><a href="#">view more</a></span></h5>
-                                            <div class="clearfix"></div>
+                                            <!-- <h5 class="text-light text-uppercase">Buyer Transaction <span><a href="#">view more</a></span></h5>
+                                            <div class="clearfix"></div> -->
 
-                                            <h1>#{{filterTransactionHistory('invoice_accepted', true)}}</h1>
+                                           <!--  <h1>#{{filterTransactionHistory('invoice_accepted', true)}}</h1> -->
                                             <div>
                                                 <button type="submit" ng-click="requestFactoring()" class="btn btn-lg btn-primary btn-corner btn-block">Factor Now</button>
                                             </div>
@@ -541,7 +545,7 @@
                                                 <p class="f-size-12">Estimated Amount-Processing Charges ( After deducting Factoring Charges )</p>
                                                 <div class="clearfix"></div>
                                                 <hr>
-                                                <h5 class="text-dark f-w-6">Balance XDC <span class="text-dark">${{invoiceData.balacePayment}}</span></h5>
+                                                <h5 class="text-dark f-w-6">Balance XDC <span class="text-dark">${{invoiceData.balancePayment}}</span></h5>
                                             </div>
 
                                         <div class="transaction-details m-b-10">

@@ -61,7 +61,7 @@ router.post('/createInvoice', async (function(req, res) {
 	var collection = db.getCollection('invoices');
 	console.log(input);
 	var tx;
-	if (web3Conf) {
+	/*if (web3Conf) {
 	    try {
 			web3Helper.addInvoiceEvent(function(err, result) {});
 		    tx = await (web3Helper.addInvoice(input));
@@ -70,7 +70,7 @@ router.post('/createInvoice', async (function(req, res) {
 	    	console.log(e);
 			return res.send({status : false, message : e});
 	    }
-	}
+	}*/
 	collection.save(input, function (err, docs) {
 	    if (err) {
 			return res.send({status : false, error : {
@@ -163,14 +163,14 @@ router.post('/requestFactoring', async (function(req, res) {
 		    tx = await (web3Helper.setState(invoiceId, 'ifactor_request'));
 		    console.log('tx', tx);
 
-				var postpayamount = await(web3Helper.getPostpayAmount(invoiceId));
+				/*var postpayamount = await(web3Helper.getPostpayAmount(invoiceId));
 				console.log('postpayamount', postpayamount.toNumber());
 				var mm = await(web3Helper.getPrepayAmount(invoiceId));
 				console.log('getPrepayAmount', mm.toNumber());
 				var mm = await(web3Helper.getSupplier(invoiceId));
 				console.log('getAddresses', mm);
 				var mm = await(web3Helper.getInvoiceAmount(invoiceId));
-				console.log('getInvoiceAmount', mm.toNumber());
+				console.log('getInvoiceAmount', mm.toNumber());*/
 				//web3Helper.getBalance(address)
 
 	    } catch(e) {
@@ -250,6 +250,26 @@ router.post('/rejectFactoringRequest', async (function(req, res) {
 	});
 }));
 
+router.get('/getBalance', async (function(req, res) {
+	console.log('getBalance')
+	if (!req.isAuthenticated()) {
+		return res.send({status : true, data : {balance : 0}});
+	}
+	var address = req.user.address;
+	if (web3Conf) {
+		try {
+		    result = await (web3Helper.getBalance(address));
+		    console.log(result.toNumber());
+			return res.send({status : true, data : {balance : result.toNumber()}});
+		} catch(e) {
+			return res.send({status : true, data : {balance : 0}});
+	    }
+	} else {
+		return res.send({status : true, data : {balance : 0}});
+	}
+}));
+
+
 router.post('/acceptFactoringProposal', async(function(req, res) {
 	console.log('acceptFactoringProposal');
 	let invoiceId = req.body.invoiceId;
@@ -302,11 +322,19 @@ router.post('/rejectFactoringProposal', async(function(req, res) {
 router.post('/payInvoice', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
 	let updateQuery = {$set : {state : 'invoice_paid'}};
-
+	let buyerAddress = req.body.buyerAddress;
+	let supplierAddress = req.body.supplierAddress;
+	let financerAddress = req.body.financerAddress;
+	let invoiceAmount = req.body.invoiceAmount;
+	console.log(supplierAddress, buyerAddress, financerAddress);
 	var tx;
 	if (web3Conf) {
 	    try {
-		    tx = await (web3Helper.payInvoice(invoiceId));
+	    	tx = await(web3Helper.etherTransfer(buyerAddress));
+			var postpayamount = invoiceAmount;
+			console.log('getPrepayAmount', postpayamount);
+		    var tx1 = await (web3Helper.sendTokens(buyerAddress, financerAddress, postpayamount));
+		    //tx = await (web3Helper.payInvoice(invoiceId));
 	    } catch(e) {
 	    	console.log(e);
 			return res.send({status : false, error : 'blockchain error'});
@@ -332,6 +360,8 @@ router.post('/prepaySupplier', async(function(req, res) {
 	if (web3Conf) {
 	    try {
 
+	    	tx1 = await(web3Helper.etherTransfer(supplierAddress));
+	    	console.log('etherTransfer', tx1)
 		    /*tx1 = await (web3Helper.buyTokens(financerAddress));
 		    tx1 = await (web3Helper.buyTokens(supplierAddress));
 		    tx1 = await (web3Helper.buyTokens(buyerAddress));*/
@@ -340,10 +370,11 @@ router.post('/prepaySupplier', async(function(req, res) {
 		    console.log('financerAddress', tx1.toNumber())*/
 
 			var prepayAmount = await(web3Helper.getPrepayAmount(invoiceId));
-			console.log('getPrepayAmount', mm.toNumber());
+			prepayAmount = prepayAmount.toNumber();
+			console.log('getPrepayAmount', prepayAmount);
 		    tx1 = await (web3Helper.sendTokens(financerAddress, supplierAddress, prepayAmount));
 		    console.log('sendTokens', tx1);
-		    tx = await (web3Helper.prepayFactoring(invoiceId));
+		    //tx = await (web3Helper.prepayFactoring(invoiceId));
 	    } catch(e) {
 	    	console.log(e);
 			return res.send({status : false, error : 'blockchain error'});
@@ -361,11 +392,19 @@ router.post('/prepaySupplier', async(function(req, res) {
 
 router.post('/postpaySupplier', async(function(req, res) {
 	let invoiceId = req.body.invoiceId;
-
+	let buyerAddress = req.body.buyerAddress;
+	let supplierAddress = req.body.supplierAddress;
+	let financerAddress = req.body.financerAddress;
+	console.log(supplierAddress, buyerAddress, financerAddress);
 	var tx;
 	if (web3Conf) {
 	    try {
-		    tx = await (web3Helper.postpayFactoring(invoiceId));
+	    	tx = await(web3Helper.etherTransfer(financerAddress));
+			var postpayamount = await(web3Helper.getPostpayAmount(invoiceId));
+			postpayamount = postpayamount.toNumber();
+			console.log('getPrepayAmount', postpayamount);
+		    tx1 = await (web3Helper.sendTokens(financerAddress, supplierAddress, postpayamount));
+		    //tx = await (web3Helper.postpayFactoring(invoiceId));
 		    console.log('tx', tx);
 	    } catch(e) {
 	    	console.log(e);
@@ -512,14 +551,11 @@ var getInvoiceDates = function(invoiceHistory) {
 router.post('/getInvoiceDetails', async(function(req, res) {
 	let invoiceId = req.body.invoiceId;
 	//'invoiceId' : new ObjectID(invoiceId)}
-	/*var mm = await(web3Helper.getProps(invoiceId));
-	console.log('state', mm);*/
-	var mm = await(web3Helper.getBalance('0x477364fd3005497ae87f3855f7dd8f892ac1f462'));
-	console.log('getBalance', mm);
-	/*var mm = await(web3Helper.getAddresses(invoiceId));
-	console.log('address', mm);*/
 
-
+	if (web3Conf) {
+	    var balance = await (web3Helper.getBalance(req.user.address));
+	    balance = balance.toNumber();
+	}
 
 	getInvoices({'invoiceId' : invoiceId}, function(err, data) {
 		if (err) {
@@ -540,7 +576,7 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 						invoiceHistory = result;
 					}
 					invoice.created = getInvoiceDates(invoiceHistory);
-					return res.send({status : true, data : {invoice : invoice, invoiceHistory : invoiceHistory}});
+					return res.send({status : true, data : {invoice : invoice, invoiceHistory : invoiceHistory, balance : balance}});
 				});
 			} else {
 				return res.send({status : true, data : {invoice : invoice, invoiceHistory : invoiceHistory}});

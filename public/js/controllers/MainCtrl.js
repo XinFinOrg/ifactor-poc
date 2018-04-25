@@ -24,6 +24,14 @@ angular.module('MainCtrl', []).controller('MainController',['$scope', '$rootScop
 		} else {
 			$rootScope.userType = resp.data.userType;
 			//$location.path('/dashboard');
+			console.log('hgfthjghj,,jk.')
+			GetPost.get({ url : '/getBalance' }, function(err, resp) {
+				if (resp.status) {
+					$rootScope.balance = resp.data.balance;
+					console.log('balance', $scope.balance)
+				}
+		    });
 		}
     });
+
 }]);

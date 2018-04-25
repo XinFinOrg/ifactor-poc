@@ -29,7 +29,10 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
             "completed": "Completed"
         },
         "Financer": {
-            "ifactor_request": "Factorig Requested",
+            "invoice_created": "Approval Awaited",
+            "invoice_rejected": "Rejected",
+            "invoice_accepted": "Approved",
+            "ifactor_request": "Factoring Requested",
             "ifactor_rejected": "Rejected",
             "ifactor_proposed": "Proposal Received",
             "ifactor_proposal_rejected": "Proposal Rejected",
@@ -77,3 +80,4 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
     }
 
 }]);
+

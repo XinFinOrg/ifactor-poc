@@ -91,11 +91,7 @@ contract Ifactor is StandardToken {
 
 	function prepayFactoring(string _invoice_id, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
-		//uint _value =  inv.amount * inv.factorSaftyPercentage/;
 		uint _value =  100;
-		address _from = inv.financer;
-		address _to = inv.supplier;
-        transfer(_to, _value);
         setState(_invoice_id, 'ifactor_prepaid', _created);
 	}
 
@@ -105,7 +101,6 @@ contract Ifactor is StandardToken {
         address _to = inv.financer;
         //uint _value = inv.amount;
         uint _value = 100;
-        transfer(_to, _value);
         setState(_invoice_id, 'invoice_paid', _created);
     }
 
@@ -119,7 +114,6 @@ contract Ifactor is StandardToken {
 		uint _value = 100;
 		address _from = inv.financer;
 		address _to = inv.supplier;
-        transfer(_to, _value);
         setState(_invoice_id, 'invoice_paid', _created);
 	}
 

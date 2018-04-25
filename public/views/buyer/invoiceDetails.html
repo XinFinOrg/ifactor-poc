@@ -3,19 +3,18 @@
     <!-- START CONTENT -->
     <section>
         <div class="container wrapper main-wrapper row" style=''>
-        <div>
+        <!-- <div>
             <div class="col-md-9 has-float-label">
                 <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
                 </select>
             </div>
-        </div>
-        <div>
+        </div> -->
+        <!-- <div>
             <div class="col-md-9 has-float-label">
                 <select class="soflow form-control input-lg" ng-model="currentStage" ng-options=" x for x in stageOptions">
                 </select>
             </div>
-            <input type="button" class="btn btn-primary" ng-click="apply()">Submit</input>
-        </div>
+        </div> -->
             <div class='col-xs-12'>
                 <div class="page-title">
 
@@ -57,7 +56,7 @@
 
                                     <h1>{{invoiceData.purchaseTitle}}</h1>
                                     <div class="price-badge">
-                                        <div class="amount text-muted">Amount : <span class="bold"><i class="fa fa-inr" aria-hidden="true"></i> {{invoiceData.purchaseAmount}}</span></div>
+                                        <div class="amount text-muted">Amount : <span class="bold"><i class="fa fa-inr" aria-hidden="true"></i> {{invoiceData.invoiceAmount}}</span></div>
                                         <div class="period text-muted">Days to Payout : <span class="bold">{{getDatesDiff(invoiceData.payableDate)}} Days</span></div>
                                     </div>
                                 </div>
@@ -356,13 +355,13 @@
                                 <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_prepaid'">
                                     <div class="clearfix"></div>
                                     <div class="transaction-details">
-                                        <h5 class="text-dark">Total Amount <span class="text-dark">$ 1,00,000</span></h5>
+                                        <h5 class="text-dark">Total Amount <span class="text-dark">$ {{invoiceData.invoiceAmount}}</span></h5>
                                         <div class="clearfix"></div>
                                         <h5 class="text-dark">XDC To USD <span class="text-dark">$ 1</span></h5>
                                         <div class="clearfix"></div>
-                                        <h5 class="text-dark">Payable XDC <span class="text-dark">1,50,000</span></h5>
+                                        <h5 class="text-dark">Payable XDC <span class="text-dark">{{invoiceData.invoiceAmount}}</span></h5>
                                         <div class="clearfix"></div>
-                                        <h5 class="text-dark">Days to Payout <span class="text-dark">00</span></h5>
+                                        <h5 class="text-dark">Days to Payout <span class="text-dark">{{getDatesDiff(invoiceData.payableDate)}}</span></h5>
                                         <div>
                                         </div>
                                         

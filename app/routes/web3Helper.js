@@ -238,7 +238,7 @@ var getTransferEvents = function(invoiceId, cb) {
 };
 
 var addInvoiceEvent = function(invoiceId, cb) {
-    return contractInstance.createInvoice({}).get(function(e, res) {
+    return contractInstance.createInvoice({}).get(function(err, res) {
         if(!err) {
             var result = result.filter(tx => tx.args && tx.args._invoice_id == invoiceId);
             return cb(false, result);

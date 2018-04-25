@@ -73,6 +73,7 @@
 		GetPost.post(data, function(err, resp) {
 			console.log('invoiceDetails response');
 			$scope.invoiceData = resp.data.invoice;
+			$rootScope.balance = resp.data.balance;
 			$scope.invoiceTxHistory = resp.data.invoiceHistory;
 			mapInvoiceHistory($scope.invoiceTxHistory);
 			$scope.setCurrentStage();
@@ -196,7 +197,8 @@
 			invoiceId : $rootScope.invoiceId,
 			supplierAddress : $scope.invoiceData.supplierAddress,
 			financerAddress : $scope.invoiceData.financerAddress,
-			buyerAddress : $scope.invoiceData.buyerAddress
+			buyerAddress : $scope.invoiceData.buyerAddress,
+			invoiceAmount : $scope.invoiceData.invoiceAmount
 		}
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
