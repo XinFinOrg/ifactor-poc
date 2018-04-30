@@ -80,41 +80,38 @@ contract Ifactor is StandardToken {
         return inv.amount;
 	}
 
-	function addFactoring(string _invoice_id, address _financer, uint _factor_charges, uint _factor_safty_percentage, uint _created) public {
+	function addFactoring(string _invoice_id, address _financer, uint _factor_charges, uint _factor_safty_percentage, uint _amount, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
 		inv.financer = _financer;
 		inv.factorCharges = _factor_charges;
 		inv.factorSaftyPercentage = _factor_safty_percentage;
         setState(_invoice_id, 'ifactor_proposed', _created);
-	    factoringProposal(_invoice_id, _financer, _factor_charges, _factor_safty_percentage, _created);
+	    factoringProposal(_invoice_id, _factor_charges, _factor_safty_percentage, _amount, _created);
 	}
 
-	function prepayFactoring(string _invoice_id, uint _created) public {
+	function requestFactoring(string _invoice_id, string _invoice_state, uint _amount, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
-		uint _value =  100;
+		inv.state = _invoice_state;
+        factoringRequest(_invoice_id, _amount, _created);
+		invoiceHistory(_invoice_id, _invoice_state, _created);
+	}
+
+	function prepayFactoring(string _invoice_id, uint _amount, uint _created) public {
+		Invoice inv = Invoices[_invoice_id];
         setState(_invoice_id, 'ifactor_prepaid', _created);
+        ifactorTransfer(_invoice_id, 'ifactor_prepaid', _amount, _created);
 	}
 
-    function payInvoice(string _invoice_id, uint _created) public {
+    function payInvoice(string _invoice_id, uint _amount, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
-        address _from = inv.supplier;
-        address _to = inv.financer;
-        //uint _value = inv.amount;
-        uint _value = 100;
         setState(_invoice_id, 'invoice_paid', _created);
+        ifactorTransfer(_invoice_id, 'invoice_paid', _amount, _created);
     }
 
-	function postpayFactoring(string _invoice_id, uint _created) public {
+	function postpayFactoring(string _invoice_id, uint _amount, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
-		/*uint _value = (inv.amount * 100) -
-						(
-							(inv.amount * inv.factorSaftyPercentage) +
-							(inv.amount * inv.factorCharges)
-						);*/
-		uint _value = 100;
-		address _from = inv.financer;
-		address _to = inv.supplier;
         setState(_invoice_id, 'invoice_paid', _created);
+        ifactorTransfer(_invoice_id, 'ifactor_postpaid', _amount, _created);
 	}
 
     function getPostpayAmount(string _invoice_id) public returns(uint) {
@@ -166,6 +163,7 @@ contract Ifactor is StandardToken {
 	event createInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount,
 						address _supplier, address _buyer);
 	event invoiceHistory(string invoiceId, string state, uint created);
-    event factoringProposal(string invoiceId, address financer, uint factorCharges, uint factorSaftyPercentage, uint created);
-    event factoringAccepted(uint invoiceNo, string invoiceId, string state);
+	event factoringRequest(string invoiceId, uint amount, uint created);
+	event factoringProposal(string invoiceId, uint factorCharges, uint factorSaftyPercentage, uint amount, uint created);
+   	event ifactorTransfer(string invoiceId, string transferType, uint amount, uint created);
 }

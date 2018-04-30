@@ -1,5 +1,5 @@
 	angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',['$scope', '$rootScope', '$http', 
-			'$location', 'GetPost', 'Helper',  function($scope, $rootScope, $http, $location, GetPost,Helper) {
+			'$location', 'GetPost', 'Helper', '$routeParams',  function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams) {
 
 	$scope.urlMap = function(type) {
 		if (type == 'createInvoice') {
@@ -68,7 +68,7 @@
     $scope.getInvoiceDetails = function() {
 		var data = {
 			url : '/getInvoiceDetails',
-			invoiceId : $rootScope.invoiceId
+			invoiceId : $rootScope.invoiceId || $routeParams.invoiceId
 		};
 		GetPost.post(data, function(err, resp) {
 			console.log('invoiceDetails response');
@@ -128,7 +128,8 @@
 
 		var data = {
 			url : '/requestFactoring',
-			invoiceId : $rootScope.invoiceId
+			invoiceId : $rootScope.invoiceId,
+			invoiceAmount : $scope.invoiceData.invoiceAmount
 		}
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);

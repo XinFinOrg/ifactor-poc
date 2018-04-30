@@ -33,7 +33,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 			controller: 'DashboardController'	
 		})
 
-		.when('/invoice-details', {
+		.when('/invoice-details/:invoiceId', {
 			templateUrl: 'views/invoiceDetails.html',
 			controller: 'InvoiceDetailsController'	
 		})

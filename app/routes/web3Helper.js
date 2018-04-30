@@ -93,32 +93,29 @@ var factoringProposal = async (function(invoice) {
     var mm = await (contractInstance.addFactoring(
         invoice.invoiceId,
         invoice.financerAddress,
-        invoice.platformCharges,
-        invoice.saftyPercentage,
+        parseInt(invoice.platformCharges),
+        parseInt(invoice.saftyPercentage),
+        parseInt(invoice.invoiceAmount),
         Date.now(),
         {from: web3.eth.accounts[1], gas:300000}
     ));
     return mm;
 });
 
-var prepayFactoring = async (function(invoiceId) {
-    var mm = await (contractInstance.prepayFactoring(invoiceId, Date.now(),
-          {from: web3.eth.accounts[1], gas:100000}).catch((e)=> {
-            throw e;
-          }));
+var prepayFactoring = async (function(invoiceId, amount) {
+    var mm = await (contractInstance.prepayFactoring(invoiceId, amount, Date.now(),
+          {from: web3.eth.accounts[1], gas:100000}));
     return mm;
 });
 
-var payInvoice = async (function(invoiceId) {
-    var mm = await (contractInstance.payInvoice(invoiceId, Date.now(),
-          {from: web3.eth.accounts[1], gas:100000}).catch((e)=> {
-            throw e;
-          }));
+var payInvoice = async (function(invoiceId, amount) {
+    var mm = await (contractInstance.payInvoice(invoiceId, amount, Date.now(),
+          {from: web3.eth.accounts[1], gas:100000}));
     return mm;
 });
 
-var postpayFactoring = async (function(invoiceId) {
-    var mm = await (contractInstance.postpayFactoring(invoiceId, Date.now(),
+var postpayFactoring = async (function(invoiceId, amount) {
+    var mm = await (contractInstance.postpayFactoring(invoiceId, amount, Date.now(),
           {from: web3.eth.accounts[1], gas:100000}));
     return mm;
 });
@@ -130,6 +127,13 @@ var getState = async (function(invoiceId) {
 
 var setState = async (function(invoiceId, state) {
     var mm = await (contractInstance.setState(invoiceId, state, Date.now(),
+          {from: web3.eth.accounts[1], gas:100000}));
+    return mm;
+});
+
+var requestFactoring = async (function(invoiceId, state, amount) {
+    console.log(invoiceId, state, amount)
+    var mm = await (contractInstance.requestFactoring(invoiceId, state, parseInt(amount), Date.now(),
           {from: web3.eth.accounts[1], gas:100000}));
     return mm;
 });
@@ -192,10 +196,73 @@ var getBalance = async (function(address){
 });
 
 var sendTokens = async(function(acc1, acc2, value) {
+    //console.log(acc1, acc2);
+    //web3.personal.unlockAccount(acc1,"password",15000);
     value = 50;
     var mm = await (contractInstance.transfer(acc2, value, 
-          {from: acc1, gas:100000}));
+          {from : acc1, gas:100000}));
     return mm;
+});
+
+
+const Promisify = (inner) =>
+    new Promise((resolve, reject) =>
+        inner((err, res) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(res);
+            }
+        })
+    );
+
+
+var processEventBigNumbers = function(allEvents) {
+    var event, obj;
+    for (var i in allEvents) {
+        event = allEvents[i];
+        obj = event.args;
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key) && obj[key] && typeof obj[key] == 'object') {
+                obj[key] = obj[key].toNumber();
+            }
+        }
+    }
+};
+
+var getAllEvents = async(function(invoiceId) {
+    let eventInstance, events;
+    let allEvents = []; 
+    let f1 = {
+            from: web3.eth.coinbase,
+            gas: 70000000
+        };
+    let f2 = {
+            fromBlock: 0,
+            toBlock: 'latest'
+        };
+
+    eventInstance = contractInstance.invoiceHistory(f1, f2);
+    events = await (Promisify(cb => eventInstance.get(cb)));
+    allEvents = allEvents.concat(events);
+    eventInstance = contractInstance.factoringRequest(f1, f2);
+    events = await (Promisify(cb => eventInstance.get(cb)));
+    allEvents = allEvents.concat(events);
+    eventInstance = contractInstance.factoringProposal(f1, f2);
+    events = await (Promisify(cb => eventInstance.get(cb)));
+    allEvents = allEvents.concat(events);
+    eventInstance = contractInstance.ifactorTransfer(f1, f2);
+    events = await (Promisify(cb => eventInstance.get(cb)));
+    allEvents = allEvents.concat(events);
+    allEvents = allEvents.filter(tx => tx.args && tx.args.invoiceId == invoiceId);
+    //handle bignumbers
+    processEventBigNumbers(allEvents);
+    //sort events by timeline
+    allEvents.sort(function(x, y){
+        return x.args.created - y.args.created;
+    })
+    console.log('allEvents', allEvents)
+    return allEvents;
 });
 
 var getInvoiceHistory = function(invoiceId, cb) {
@@ -247,7 +314,7 @@ var addInvoiceEvent = function(invoiceId, cb) {
     })
 };
 
-var getAllEvents = function(invoiceId, cb) {
+var getAllEvents2 = function(invoiceId, cb) {
     web3.eth.filter({
       from: 1,
       to: 'latest'
@@ -308,5 +375,6 @@ module.exports = {
     getFinancer : getFinancer,
     addInvoiceEvent : addInvoiceEvent,
     getProps : getProps,
-    getEthBalance : getEthBalance
+    getEthBalance : getEthBalance,
+    requestFactoring : requestFactoring
 };

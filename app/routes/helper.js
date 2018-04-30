@@ -76,5 +76,48 @@ var dummyTx = [
     }
 ];
 
-exports.invoiceStateMap = invoiceStateMap;
-exports.dummyTx = dummyTx;
+var eventDNames = {
+    invoiceHistory : 'Invoice History',
+    factoringRequest : 'Factoring Request Details',
+    factoringProposal : 'Factoring Terms',
+    ifactorTransfer : 'Payment Details'
+};
+
+var getPrepayAmount = function(saftyPercentage, invoiceAmount) {
+    return (!saftyPercentage || saftyPercentage <= 0) ?
+        (!invoiceAmount ? 0 : invoiceAmount) :
+        (saftyPercentage/100 * invoiceAmount);
+};
+
+var getCharges = function(platformCharges, invoiceAmount) {
+    return (!platformCharges || platformCharges <=0) ? 0 :
+            (platformCharges/100 * invoiceAmount);
+}
+
+var getPostpayAmount = function(invoice) {
+    return  invoiceAmount - getPrepayAmount(invoice) + getCharges(invoice);
+};
+
+var processEvents = function(allEvents) {
+    var event, ev;
+    for (var i in allEvents) {
+        event = allEvents[i];
+        event.eventDName = eventDNames[event.event];
+        if (event.event == 'factoringProposal') {
+            console.log('factoringProposal')
+            ev = event.args;
+            ev.firstPayment = getPrepayAmount(ev.factorSaftyPercentage, ev.amount);
+            ev.charges = getCharges(ev.factorCharges, ev.amount);
+            ev.balancePayment = (ev.amount - (ev.firstPayment + ev.charges));
+            console.log(ev);
+        }
+    }
+};
+
+
+module.exports = {
+    invoiceStateMap : invoiceStateMap,
+    dummyTx : dummyTx,
+    eventDNames : eventDNames,
+    processEvents : processEvents
+}

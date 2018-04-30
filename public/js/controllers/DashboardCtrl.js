@@ -97,7 +97,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
     		$rootScope.fromDashboard = true;
     		$location.path('./create-invoice');
     	} else {
-    		$location.path('./invoice-details');
+    		$location.path('./invoice-details/' + $rootScope.invoiceId);
     	}	
     };
 	
