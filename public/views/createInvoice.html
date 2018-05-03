@@ -25,17 +25,12 @@
                             <div class="col-md-12 invoice-supplier-buy">Buyer Details</div>
                             <div class="row col-md-12">
                                 <div class="col-md-9 has-float-label">
-                                    <select class="soflow form-control input-lg" ng-model="companyNameData" ng-options="x.firstName for x in companyTypeOptions">
+                                    <select class="soflow form-control input-lg" ng-model="companyNameData" ng-options="x.firstName for x in companyOptions">
                                     </select>
                                     
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                        <select class="soflow form-control input-lg"
-                                        ng-model="input.companyType">
-                                            <option value="Company Type">Company Type</option>
-                                            <option value="A">A</option>
-                                            <option value="B">B</option>
-                                            <option value="C">C</option>
+                                        <select class="soflow form-control input-lg" ng-model="input.companyType" ng-options="x for x in companyTypeOptions">
                                         </select>
                                 </div>
                             </div>
@@ -72,7 +67,7 @@
                                     <!-- <datepicker>
                                       <input ng-model="date" placeholder="Payble Date" type="text"/>
                                     </datepicker> -->
-                                    <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                                    <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control">
                                         <div class="input-group">
                                             <input class="form-control input-lg" ng-model="input.payableDate" placeholder="Payble Date"/>
                                             <label for="payable">Payble Date</label>
@@ -105,8 +100,8 @@
                                     <label for="amount">Amount*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" type="file" placeholder="Amount*"  ng-model="input.purchaseAmount" />
-                                    <label for="amount">Upload*</label>
+                                    <input type="file" ngf-select="ngf-select" ng-model="poDocs" name="poDocs" id="poDocs" required="required" />
+                                     <img style="width:60px;" ngf-thumbnail="poDocs || '/thumb.jpg'"/>
                                 </div>
                             </div>
                             <div class="row col-md-12 marg_t-20">
@@ -130,6 +125,14 @@
                                     <input class="form-control input-lg"  ng-model="input.invoiceAmount" placeholder="Amount*" />
                                     <label for="amount">Amount*</label>
                                 </div>
+                                    <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file" 
+                                     ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB" />
+                                        Image thumbnail: <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/thumb.jpg'"/>
+                                        <i ng-show="invoiceDocs.$error.required">*required</i><br>
+                                        <i ng-show="invoiceDocs.$error.maxSize">File too large 
+                                        {{up.file.size / 1000000|number:1}}MB: max 20M</i>
+                                        <p>{{up.progress}}</p>
+                                </div>
                             </div>
                             <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-12 label-invoice">GRN</div>
@@ -151,6 +154,10 @@
                                 <div class="col-md-3 has-float-label">
                                     <input class="form-control input-lg" ng-model="input.grnAmount" placeholder="Amount*" />
                                     <label for="amount">Amount*</label>
+                                </div>
+                                <div class="col-md-3 has-float-label">
+                                    <input type="file" ngf-select="ngf-select" ng-model="grnDocs" name="grnDocs" id="grnDocs" required="required" />
+                                     <img style="width:60px;" ngf-thumbnail="grnDocs || '/thumb.jpg'"/>
                                 </div>
                             </div>
                         </div>

@@ -8,16 +8,72 @@ var url = require('url');
 var uniqid = require('uniqid');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
-
+var fs = require('fs');
+var PATH = require('path');
 var web3Conf = true;
 if (web3Conf) {
 	var web3Helper = require('./web3Helper');
 }
 
+var multer  = require('multer')
+var upload = multer({ dest: './public/tmp/'});
+
+var imgUpload = upload.fields([
+		{name : 'poDocs'},
+		{name : 'invoiceDocs'},
+		{name : 'grnDocs'}
+	]);
+
+
+var moveImages = function (file, path, cb) {
+	//path = PATH.join(__dirname, '../../' + path);
+	console.log(file,path)
+   fs.readFile(path, function (err, data) {
+        fs.writeFile(file, data, function (err) {
+         if ( err ) {
+              response = {
+                   message: 'Sorry, file couldn\'t be uploaded.',
+                   filename: file,
+                   oldFile : path
+              };
+              return cb(1, response);
+         } else {
+               response = {
+                   message: 'File uploaded successfully',
+                   filename: file,
+                   oldFile : path
+              };
+              return cb(0, response);
+          }
+       });
+   });
+};
+
+var uploadUserDocs = function(invoiceId, files, cb) {
+    var filePaths = {};
+    for (var key in files) {
+        var dirName =  '../../public/uploads/invoices/' + invoiceId;
+        dirName = PATH.join(__dirname, dirName);
+        var newFile = dirName + '/' + Date.now() + '_' + files[key][0].originalname;
+        //creates dynamic folder each for user
+        if (!fs.existsSync(dirName)) {
+            try {
+              fs.mkdirSync(dirName);
+            } catch(e) {
+              if ( e.code != 'EEXIST' ) throw e;
+            }
+        }
+        filePaths[key] = newFile;
+        var oldFile = PATH.join(__dirname, '../../' + files[key][0].path)
+        moveImages(newFile, oldFile, function(err, resp) {
+            fs.unlink(resp.oldFile);
+        });
+    }
+    return cb(filePaths);
+};
+
 router.post('/signup', (function(req, res) {
-	console.log('inside signup');
 	let input = req.body.input;
-	console.log('signup input', input);
 	var collection = db.getCollection('users');
 	collection.findOne({email : input.email}, function(err, result) {
 		if (result) {
@@ -48,7 +104,7 @@ var getFullName = function(firstName, lastName) {
 		firstName ? firstName : lastName;
 };
 
-router.post('/createInvoice', async (function(req, res) {
+router.post('/createInvoice', imgUpload, async (function(req, res) {
 	let input = req.body.input;
 	input.supplierEmail = req.user.email;
 	input.supplierName = getFullName(req.user.firstName, req.user.lastName);
@@ -59,7 +115,6 @@ router.post('/createInvoice', async (function(req, res) {
 	input.invoiceAmount = parseInt(input.invoiceAmount);
 	input.created = Date.now();
 	var collection = db.getCollection('invoices');
-	console.log(input);
 	var tx;
 	if (web3Conf) {
 	    try {
@@ -71,13 +126,19 @@ router.post('/createInvoice', async (function(req, res) {
 			return res.send({status : false, message : e});
 	    }
 	}
-	collection.save(input, function (err, docs) {
-	    if (err) {
-			return res.send({status : false, error : {
-				errorCode : 'DBError', msg : 'DB Error'
-			}});
-	    }
-		return res.send({status : true, tx : tx});
+    //upload files
+	uploadUserDocs(input.invoiceId, req.files, function(filePaths) {
+		for (var key in filePaths) {
+			input[key] = !filePaths[key] ? (input[key] ? input[key] : '') :   filePaths[key];
+		}
+		collection.save(input, function (err, docs) {
+		    if (err) {
+				return res.send({status : false, error : {
+					errorCode : 'DBError', msg : 'DB Error'
+				}});
+		    }
+			return res.send({status : true, tx : tx});
+		});
 	});
 }));
 
@@ -130,6 +191,22 @@ router.post('/approveInvoice', async (function(req, res) {
 		return res.send({status : true, data : {state : '', tx : tx}});
 	});
 }));
+
+router.get('/downloadInvoiceDocs', function(req, res) {
+	let filePath = req.query.docUrl;
+	console.log('filePath', filePath);
+	let fileName = req.body.name;
+	//let fileName = 'abcd';
+	//var mime = require('mime');
+	//var mimetype = mime.lookup(file);
+	res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
+ 
+	//res.set('Content-type', mime.lookup(filePath));
+	res.setHeader('Content-type', 'application/octet-stream');
+	res.download(filePath, fileName, function(err) {
+		console.log(err);
+	});
+});
 
 router.post('/rejectInvoice', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;

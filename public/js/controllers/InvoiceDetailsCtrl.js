@@ -91,7 +91,7 @@
 					tx.status = invoiceStatusMap[$scope.userType][tx.args.state];
 			}
 		}
-		invoiceHistory.reverse();
+		//invoiceHistory.reverse();
     };
 
 
@@ -116,6 +116,22 @@
 	        }
 	    }
 	    return {};
+	};
+
+	$scope.downloadDocs = function(docField) {
+		console.log('downloadDocs : inside downloadDocs');
+		console.log(docField, $scope.invoiceData[docField])
+    	var data = {
+			docUrl : $scope.invoiceData[docField],
+			name : docField + '.pdf',
+			url : '/downloadInvoiceDocs'
+		}
+		window.open('/downloadInvoiceDocs?docUrl='+
+			$scope.invoiceData[docField] + '&name=' + data.name, '_blank');
+		/*GetPost.post(data, function(err, docs) {
+			window.open(docs);
+	    });*/
+
 	};
 
 	// invoiceId
@@ -422,7 +438,7 @@
 		var currentStage = $scope.currentStage;
 		var stageNo = invoiceStages[stage];
 		var currentStageNo = invoiceStages[currentStage];
-		console.log('isStageEnabled', stage, stageNo, currentStageNo, (stageNo > (currentStageNo - 2)));
+		//console.log('isStageEnabled', stage, stageNo, currentStageNo, (stageNo > (currentStageNo - 2)));
 		return $scope.showHistoryFlag || (stageNo > (currentStageNo - 2));
 	}
 
@@ -430,12 +446,12 @@
 		var currentStage = $scope.currentStage;
 		var stageNo = invoiceStages[stage];
 		var currentStageNo = invoiceStages[currentStage];
-		console.log('isStageOpaque', stage, stageNo, currentStageNo, (stageNo > currentStageNo));
+		//console.log('isStageOpaque', stage, stageNo, currentStageNo, (stageNo > currentStageNo));
 		return stageNo > currentStageNo;
 	}
 
 	$scope.isCurrentStage = function(stage) {
-		console.log('isCurrentStage', stage, $scope.currentStage, (stage == $scope.currentStage));
+		//console.log('isCurrentStage', stage, $scope.currentStage, (stage == $scope.currentStage));
 		return stage == $scope.currentStage;
 	}
 
@@ -453,7 +469,7 @@
 		var currentStage = $scope.currentStage;
 		var stageNo = invoiceStages[stage];
 		var currentStageNo = invoiceStages[currentStage];
-		console.log('isHistoryBarEnabled', stage, stageNo, currentStageNo, (stageNo == (currentStageNo-1)));
+		//console.log('isHistoryBarEnabled', stage, stageNo, currentStageNo, (stageNo == (currentStageNo-1)));
 		return (stageNo == (currentStageNo-2));
 	};
 

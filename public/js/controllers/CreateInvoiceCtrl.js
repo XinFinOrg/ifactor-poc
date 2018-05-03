@@ -1,6 +1,6 @@
 angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$scope', '$rootScope',
- '$http', '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
- 	$http, $location, GetPost, Helper) {
+ '$http', '$location', 'GetPost', 'Helper', 'Upload',  function($scope, $rootScope,  
+ 	$http, $location, GetPost, Helper, Upload) {
 
 	var stateMap = Helper.stateMap;
 
@@ -28,21 +28,16 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
 
 	$scope.date = new Date();
 	$scope.eventSources = [];
-	$scope.companyTypeOptions = [];
+	$scope.companyOptions = [];
+ 	$scope.companyTypeOptions = Helper.companyTypeOptions();
 
 	GetPost.get({url : '/getBuyerList'}, function(err, docs) {
 		console.log(docs);
-		$scope.companyTypeOptions = docs.data;
+		$scope.companyOptions = docs.data;
     });
- 	/*$scope.companyTypeOptions = [
-		{email : 'a@b.c', firstName : 'infosys', address : 'mumbai'},
-		{email : 'b@b.c', firstName : 'bbb', address : 'mumbai'},
-		{email : 'c@b.c', firstName : 'cc', address : 'mumbai'},
-		{email : 'd@b.c', firstName : 'dd', address : 'mumbai'}
-	];*/
 
 	$scope.companyNameData = {};
-
+	$scope.minPayableDate = new Date().toDateString();
 
     $scope.input = {
     	companyName : "Company Name",
@@ -80,7 +75,7 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
     	return input;
     };
 
-    $scope.submitInvoice = function (input, type) {
+    $scope.submitInvoice2 = function (input, type) {
 
     	$scope.input.state = type;
     	$scope.input = $scope.getBuyerData(input);
@@ -113,7 +108,6 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
 
 	$scope.dashboardData = [];
     $scope.getInvoices = function () {
-
     	var data = {
 			url : '/getSupplierDashboard'
 		}
@@ -128,6 +122,56 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
     	$rootScope.fromDashboard = false;
     }
     
+    //upload file
+    $scope.poDocs = null;
+    $scope.grnDocs  = null;
+    $scope.invoiceDocs = null;
 
+    $scope.submitInvoice = function (input, type) {
+    	$scope.input.state = type;
+    	$scope.input = $scope.getBuyerData(input);
+    	console.log(input);
+	    Upload.upload({
+	        url: '/createInvoice',
+            method : 'POST',
+            headers: { 'Content-Type': 'multipart/form-data' },
+            arrayKey : '',
+	        data : {
+	        	input : $scope.input,
+	        	poDocs : $scope.poDocs,
+	        	invoiceDocs : $scope.invoiceDocs,
+	        	grnDocs : $scope.grnDocs
+	        }
+	    }).then(function (resp) {
+	    	console.log(resp);
+			$location.path('/dashboard');
+	    }, function (resp) {
+	        console.log('Error status: ' + resp.status);
+	    }, function (evt) { 
+	        console.log(evt);
+	        /*var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+	        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+	        $scope.vm.progress = 'progress: ' + progressPercentage + '% ';*/
+	    });
+	};
+
+	$scope.uploadImages = function (file) {
+	    Upload.upload({
+	        url: '/upload',
+            method : 'POST',
+            headers: { 'Content-Type': 'multipart/form-data' },
+            arrayKey : '',
+	        data:{file:file}
+	    }).then(function (resp) {
+	    	console.log(resp);
+	    }, function (resp) {
+	        console.log('Error status: ' + resp.status);
+	    }, function (evt) { 
+	        console.log(evt);
+	        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+	        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+	        $scope.vm.progress = 'progress: ' + progressPercentage + '% ';
+	    });
+	};
 	
 }]);
