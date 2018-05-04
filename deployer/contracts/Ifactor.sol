@@ -36,9 +36,9 @@ contract Ifactor is StandardToken {
 		totalSupply_ = _amt;
 	}
 
-	function buyTokens(address _address) {
-	    balances[_address] = 10000;
-	    balances[owner] = balances[owner] - 10000;
+	function buyTokens(address _address, uint _value) {
+	    balances[_address] = _value;
+	    balances[owner] = balances[owner] - _value;
 	}
 
     function getProps(string _invoice_id) public returns(Invoice) {

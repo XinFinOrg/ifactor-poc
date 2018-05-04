@@ -13,6 +13,7 @@ var mongoStore = require('connect-mongo')(session);
 var index = require('./app/routes/index');
 var users = require('./app/routes/users');
 var db = require('./app/config/db');
+var config = require('./app/config/config');
 var authLocal = require('./app/auth/local');
 var port = process.env.PORT || 6001; // set our port
 var url = 'mongodb://localhost:27017/testDb1';
@@ -49,7 +50,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
-
+ENV = config.ENV;
 app.use(passport.initialize());
 app.use(passport.session());
 

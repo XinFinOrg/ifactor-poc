@@ -4,6 +4,7 @@ var ObjectID = require('mongodb').ObjectID;
 var passport = require('passport');
 var helper = require('./helper');
 var db = require('./../config/db');
+var config = require('./../config/config');
 var url = require('url');
 var uniqid = require('uniqid');
 var async = require('asyncawait/async');
@@ -17,7 +18,6 @@ if (web3Conf) {
 
 var multer  = require('multer')
 var upload = multer({ dest: './public/tmp/'});
-
 var imgUpload = upload.fields([
 		{name : 'poDocs'},
 		{name : 'invoiceDocs'},
@@ -154,8 +154,16 @@ var updateInvoiceBlockchain = async(function(invoiceId, state) {
 
 var updateInvoice = function(query, update, cb) {
 	var collection = db.getCollection('invoices');
-	/*query = {invoiceNo : 12345}
-	update = {$set : {state : 'approved'}}*/
+	collection.update(query, update, function(err, data) {
+		if (err) {
+			return cb(true, err);
+		}
+		return cb(false, data);
+	});
+};
+
+var updateUser = function(query, update, cb) {
+	var collection = db.getCollection('users');
 	collection.update(query, update, function(err, data) {
 		if (err) {
 			return cb(true, err);
@@ -408,9 +416,12 @@ router.post('/payInvoice', async (function(req, res) {
 	var tx;
 	if (web3Conf) {
 	    try {
-	    	tx = await(web3Helper.etherTransfer(buyerAddress));
+	    	//tx = await(web3Helper.etherTransfer(buyerAddress));
 			var postpayamount = invoiceAmount;
 			console.log('getPrepayAmount', postpayamount);
+			if (ENV == 'prod') {
+				web3Helper.unlockSync(req.user.address, req.user.password);
+			}
 		    var tx1 = await (web3Helper.sendTokens(buyerAddress, financerAddress, postpayamount));
 		    tx = await (web3Helper.payInvoice(invoiceId, invoiceAmount));
 	    } catch(e) {
@@ -437,15 +448,11 @@ router.post('/prepaySupplier', async(function(req, res) {
 	var tx, tx1;
 	if (web3Conf) {
 	    try {
-
-	    	tx1 = await(web3Helper.etherTransfer(financerAddress));
-	    	console.log('etherTransfer', tx1)
-
-			    tx1 = await (web3Helper.buyTokens(financerAddress));
-			    tx1 = await (web3Helper.buyTokens(supplierAddress));
-			    tx1 = await (web3Helper.buyTokens(buyerAddress));
-			    tx1 = await (web3Helper.getBalance(financerAddress));
-			    console.log('financerAddress', tx1.toNumber())
+		    /*tx1 = await (web3Helper.buyTokens(financerAddress));
+		    tx1 = await (web3Helper.buyTokens(supplierAddress));
+		    tx1 = await (web3Helper.buyTokens(buyerAddress));
+		    tx1 = await (web3Helper.getBalance(financerAddress));*/
+		    console.log('financerAddress', tx1.toNumber())
 
 			var prepayAmount = await(web3Helper.getPrepayAmount(invoiceId));
 			prepayAmount = prepayAmount.toNumber();
@@ -477,7 +484,7 @@ router.post('/postpaySupplier', async(function(req, res) {
 	var tx;
 	if (web3Conf) {
 	    try {
-	    	tx = await(web3Helper.etherTransfer(financerAddress));
+	    	//tx = await(web3Helper.etherTransfer(financerAddress));
 			var postpayamount = await(web3Helper.getPostpayAmount(invoiceId));
 			postpayamount = postpayamount.toNumber();
 			console.log('getPrepayAmount', postpayamount);
@@ -670,9 +677,6 @@ router.get('/getUsers', function(req, res) {
 var autheticate = function (req, res, next) {
 	console.log('inside authenticate');
 	console.log(req.user);
-	/*if (req.isAuthenticated()) {
-		return next();
-	}*/
     passport.authenticate('local', function (err, user, info) {
     	console.log(err, user, info)
         if (err) {
@@ -699,21 +703,36 @@ var autheticate = function (req, res, next) {
     })(req, res, next);
 };
 
-router.post('/login', autheticate, function(req, res) {
-	console.log('inside login');
-	console.log('user info', req.user)
-
+router.post('/login', autheticate, async (function(req, res) {
 	var [email, password] = [req.body.email, req.body.password];
-	var collection = db.getCollection('users');
+	var collection = db.getCollection('users');	
 	collection.find({email : email, password : password}).toArray(function(err, data) {
 		if (err || !data.length) {
 			return res.send({status : false})
 		}
-		console.log(JSON.stringify(data, null, 4));
+
+		var address = req.user.address;
+		var userType = req.user.type;
+		if (web3Conf && ENV == 'dev') {
+			var accounts = web3Helper.getAccounts();
+			var accAddress = '';
+			accAddress = (userType == 'Supplier') ? accounts[9] :
+					(userType == 'Buyer' ) ? accounts[8] : accounts[7];
+			if (address != accAddress) {
+				updateUser({email : req.user.email}, {$set : {address : accAddress}}, function(err, data) {
+					console.log('address updated, new Address : ', accAddress);
+					try {
+				    	var tx1 = await(web3Helper.etherTransfer(accAddress));
+					    tx1 = await (web3Helper.buyTokens(accAddress));
+					} catch(e) {
+						console.log('blockchain error', e);
+					}
+				});
+			}
+		}
 		return res.send({status : 'success', data : {userType : data[0].type}});
 	});
-	// return res.send({status : 'success'});
-});
+}));
 
 router.get('/startApp', function(req, res) {
 	if (!req.isAuthenticated()) {

@@ -23,7 +23,12 @@ var createAccount = function(phrase) {
     return web3.personal.newAccount();
 }
 
-console.log(web3.eth.accounts);
+
+var getAccounts = function() {
+    console.log(web3.eth.accounts);
+    return web3.eth.accounts;
+};
+
 
 var unlock = function (address, phrase) {
     return new Promise((resolve, reject) => {
@@ -37,7 +42,7 @@ var unlock = function (address, phrase) {
     })
 }
 
-var unlockSync = function(address, phrase) {    
+var unlockSync = function(address, phrase) {
     return web3.personal.unlockAccount(address, phrase);
 };
 
@@ -138,7 +143,8 @@ var requestFactoring = async (function(invoiceId, state, amount) {
     return mm;
 });
 
-var buyTokens = async (function(address) {
+var buyTokens = async (function(address, amount) {
+    amount = !amount ? 10000 : amount;
     var mm = await (contractInstance.buyTokens(address,
           {from: web3.eth.accounts[1], gas:100000}));
     return mm;
@@ -196,9 +202,12 @@ var getBalance = async (function(address){
 });
 
 var sendTokens = async(function(acc1, acc2, value) {
-    //console.log(acc1, acc2);
-    //web3.personal.unlockAccount(acc1,"password",15000);
-    value = 50;
+    if (ENV == 'dev') {
+        value = 50;
+    }
+    if (!parseInt(value)) {
+        value = 0;
+    }
     var mm = await (contractInstance.transfer(acc2, value, 
           {from : acc1, gas:100000}));
     return mm;
@@ -376,5 +385,6 @@ module.exports = {
     addInvoiceEvent : addInvoiceEvent,
     getProps : getProps,
     getEthBalance : getEthBalance,
-    requestFactoring : requestFactoring
+    requestFactoring : requestFactoring,
+    getAccounts : getAccounts
 };

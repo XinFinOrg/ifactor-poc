@@ -126,12 +126,12 @@
 			name : docField + '.pdf',
 			url : '/downloadInvoiceDocs'
 		}
+		if (!data.docUrl) {
+			console.log('no documents to download');
+			return;
+		}
 		window.open('/downloadInvoiceDocs?docUrl='+
 			$scope.invoiceData[docField] + '&name=' + data.name, '_blank');
-		/*GetPost.post(data, function(err, docs) {
-			window.open(docs);
-	    });*/
-
 	};
 
 	// invoiceId
