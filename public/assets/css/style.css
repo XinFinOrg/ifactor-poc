@@ -138,7 +138,7 @@ section.box.marginBottom0,
 .m-t-20 {margin-top:20px;}
 
 .m-b-5 {margin-bottom:5px;}
-.m-b-10 {margin-bottom:10px;}
+/*.m-b-10 {margin-bottom:10px;}*/
 .m-b-15 {margin-bottom:15px;}
 .m-b-20 {margin-bottom:20px;}
 
@@ -159,7 +159,7 @@ section.box.marginBottom0,
 .no-top-padd {padding-top:0px!important;}
 .no-bottom-padd {padding-bottom:0px!important;}
 
-.p-l-8 {padding-left:8px;}
+/*.p-l-8 {padding-left:8px;}*/
 .p-l-10 {padding-left:10px;}
 .p-l-15 {padding-left:15px;}
 .p-l-20 {padding-left:20px;}
@@ -189,7 +189,7 @@ section.box.marginBottom0,
 #buyer-header .buyer-title {font-size:16px;font-weight:600;margin:0px; text-transform: capitalize;}
 #buyer-header i {display: block;float:left}
 #buyer-header img {display: block;float:left;max-width:45px;}
-.info-details {display:block;margin-left:60px;}
+.info-details {display:block;}
 .info-details i {margin-top:5px;margin-right:5px;color:#c2c2c2;}
 
 .purchase-details {display: block;padding-bottom:10px;}
@@ -224,12 +224,12 @@ section.box.marginBottom0,
 /*------------ Buyer Details box ------------*/
 
 /*------------ Buyer Approved box ------------*/
-#buyer-header-approved {display: inline-block;margin-top:5px;margin-bottom:15px;}
-#buyer-header-approved .info-details {display:block;margin-left:50px;}
-#buyer-header-approved .buyer-title {font-size:15px;font-weight:400;color: #44e07d;}
+#buyer-header-approved {display: inline-block;margin-top:5px;width: 100%;margin-bottom:5px;}
+#buyer-header-approved .info-details {display:block;}
+#buyer-header-approved .buyer-title {font-size:13px;font-weight:400;color: #44e07d;}
 #buyer-header-approved i {display: inline-block;float:left;border-radius: 50%;background-color: #44e07d;color: #FFF;}
 .transaction-details {display: block;padding-bottom:10px;}
-.transaction-details h1 {font-size:20px;font-weight:600;word-wrap: break-word;display:block;margin:0px;padding-bottom:15px;}
+.transaction-details h1 {font-size:20px;font-weight:600;word-wrap: break-word;display:block;margin:0px;}
 .transaction-details h5 {font-size:13px;display:block;padding-bottom:10px;}
 .transaction-details h5 span {font-size:13px;color:#777dcb;float:right;text-transform:lowercase;}
 .transaction-details h5 span a {color:#777dcb;text-decoration:underline;}
@@ -258,7 +258,7 @@ section.box.marginBottom0,
 #buyer-header-rejected .buyer-title {font-size:15px;font-weight:400;color: #ee5e17;}
 #buyer-header-rejected i {display: inline-block;float:left;border-radius: 50%;background-color: #ee5e17;color: #FFF;}
 .transaction-details {display: block;padding-bottom:10px;}
-.transaction-details h1 {font-size:20px;font-weight:600;word-wrap: break-word;display:block;margin:0px;padding-bottom:15px;}
+.transaction-details h1 {font-size:20px;font-weight:600;word-wrap: break-word;display:block;margin:0px;}
 .transaction-details h5 {font-size:13px;display:block;padding-bottom:10px;}
 /*------------ Buyer Rejected box ------------*/
 
@@ -268,7 +268,7 @@ section.box.marginBottom0,
 #header-blue:after {content:'';display:block;position:relative;left:16px;top:5px;width:2px;height:15px;background:#979797;}
 #header-blue.no-after:after {content:none;}
 .line-before:before {content:'';display:block;position:relative;left:16px;bottom:5px;width:2px;height:15px;background:#979797;}
-#header-blue .info-details {display:block;margin-left:40px;}
+#header-blue .info-details {display:block;margin-left:40px; cursor: pointer;}
 #header-blue h1 {font-size:15px;font-weight:400;margin:0px;line-height:34px;color: #6575d4!important;}
 #header-blue i {display: inline-block;float:left;border-radius: 50%;background-color: #6575d4!important;color: #FFFFFF!important;padding:10px!important;}
 #header-blue .fa-number {
@@ -4062,7 +4062,7 @@ table.dataTable.display tbody tr:first-child td {
     padding: 0px 8px;
 }
 .blockchain-titles {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     color: #999;
 }
@@ -4104,6 +4104,7 @@ table.dataTable.display tbody tr:first-child td {
     font-size: 16px;
     letter-spacing: 1px;
         text-transform: capitalize;
+        margin-bottom: 5px;
 }
 .btn-blockchange-model{
     padding: 8px 0px !important;

@@ -7,12 +7,12 @@
             <img src="assets/images/loader1.gif">
         </div> -->
 
-        <div>
+        <!-- <div>
             <div class="col-md-9 has-float-label">
                 <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
                 </select>
             </div>
-        </div>  
+        </div>   -->
 
             <div class="container wrapper main-wrapper row" style=''>
 
@@ -356,7 +356,7 @@
                                         <div class="transaction-details p-l-8">
                                             <div class="clearfix"></div>
 
-                                            <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected By Financer</h1>
+                                            <h1 class="rejected"><i class="fa fa-close icon-rounded icon-primary"></i> Rejected By Financer</h1>
                                             <p>{{ invoiceData.created.ifactor_rejected | date : "dd MMM y hh:mm"}}</p>
                                         </div>
 
@@ -479,7 +479,7 @@
                                             <div>
                                             </div>
                                         </div>
-                                    </div>
+                                    <!-- </div> -->
 
                                    <div id="header-blue" ng-show="isHistoryBarEnabled('factoring_request')">
                                         <i class="fa icon-rounded icon-primary fa-no-icon"></i>
@@ -488,6 +488,7 @@
                                         </div>
                                     </div>
                                     <div class="opacity-5 line-before" ng-show="isCurrentStage('factoring_request')"></div>
+                                </div>
                                     <div class="col-md-12">
                                     <div id="header-blue" ng-show="isStageEnabled('payment_disbursed')">
                                         <div ng-class="{'opacity-5' : isStageOpaque('payment_disbursed')}">
@@ -569,10 +570,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <hr>
                                     </div>
                                     <div class="col-md-12" ng-show="invoiceData.state == 'completed'">
                                         <div id="buyer-header-approved">
-                                            <i class="fa fa-no-number icon-rounded icon-primary inviewport visible"></i>
+                                            <i class="fa fa-check icon-rounded icon-primary inviewport visible"></i>
 
                                             <div class="info-details">
                                                 <h1 class="buyer-title text-uppercase">Payment Received</h1>

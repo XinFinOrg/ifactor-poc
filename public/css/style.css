@@ -283,7 +283,7 @@ hr {border: 0;border-bottom: 1px dashed #ebeaea;background: #ffffff;margin-top: 
 #header-blue:after {content:'';display:block;position:relative;left:16px;top:5px;width:2px;height:15px;background:#979797;}
 #header-blue.no-after:after {content:none;}
 .line-before:before {content:'';display:block;position:relative;left:16px;bottom:5px;width:2px;height:15px;background:#979797;}
-#header-blue .info-details {display:block;margin-left:40px;}
+#header-blue .info-details {display:block;margin-left:40px;cursor: pointer !important;}
 #header-blue h1 {font-size:15px;font-weight:400;margin:0px;line-height:34px;color: #6575d4!important;}
 #header-blue i {display: inline-block;float:left;border-radius: 50%;background-color: #6575d4!important;color: #FFFFFF!important;padding:10px!important;}
 #header-blue .fa-number {
