@@ -1,6 +1,9 @@
 	angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',['$scope', '$rootScope', '$http', 
 			'$location', 'GetPost', 'Helper', '$routeParams',  function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams) {
 
+
+	$scope.priceSlider = 100;
+
 	$scope.urlMap = function(type) {
 		if (type == 'createInvoice') {
 			$location.path('/create-invoice');
