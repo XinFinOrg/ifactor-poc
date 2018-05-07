@@ -1,9 +1,10 @@
 	angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',['$scope', '$rootScope', '$http', 
-			'$location', 'GetPost', 'Helper', '$routeParams',  function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams) {
+			'$location', 'GetPost', 'Helper', '$routeParams', 'ngToast',
+			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast) {
 
-
+	ngToast.create('a toast message hgju  gjumgykmuygk hmjhmhk');
 	$scope.priceSlider = 100;
-
+	//PNotify.alert('Notice me, senpai!');
 	$scope.urlMap = function(type) {
 		if (type == 'createInvoice') {
 			$location.path('/create-invoice');
