@@ -1,4 +1,14 @@
+<style>
+.input-lg{
+    border-radius: 0;
+}
+select.soflow, select.soflow-color
+{
+    border-radius: 0;
+}
+</style>
 <!-- START CONTAINER -->
+
 <div class="page-container row-fluid container-fluid">
     <!-- START CONTENT -->
     <section>
@@ -25,13 +35,15 @@
                             <div class="col-md-12 invoice-supplier-buy">Buyer Details</div>
                             <div class="row col-md-12">
                                 <div class="col-md-9 has-float-label">
+                                
                                     <select class="soflow form-control input-lg" ng-model="companyNameData" ng-options="x.firstName for x in companyOptions">
                                     </select>
-                                    
+                                    <label for="companyNameData">Buyer Name</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                         <select class="soflow form-control input-lg" ng-model="input.companyType" ng-options="x for x in companyTypeOptions">
                                         </select>
+                                        <label for="companyOptions">Company Type</label>
                                 </div>
                             </div>
                             <div class="row col-md-12 marg_t-20">
@@ -102,8 +114,17 @@
                                 <div class="col-md-3 has-float-label">
                                     <button type="button" class="btn btn-default btn-icon btn-round">
                                                 <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
-                                            </button>
-                                </div>
+                                    </button>
+                               
+                                    <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file" 
+                                     ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB" style="display: none"  />
+                                        Image thumbnail: <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/thumb.jpg'"/>
+                                        <i ng-show="invoiceDocs.$error.required">*required</i><br>
+                                        <i ng-show="invoiceDocs.$error.maxSize">File too large 
+                                        {{up.file.size / 1000000|number:1}}MB: max 20M</i>
+                                        <p>{{up.progress}}</p>
+                                         </div>
+                                
                             </div>
                             <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-12 label-invoice">Invoice</div>
@@ -126,16 +147,21 @@
                                     <input class="form-control input-lg"  ng-model="input.invoiceAmount" placeholder="Amount*" />
                                     <label for="amount">Amount*</label>
                                 </div>
+                                 <div class="col-md-3 has-float-label">
+                                    <button type="button" class="btn btn-default btn-icon btn-round">
+                                                <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
+                                    </button>
+                               
                                     <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file" 
-                                     ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB" />
+                                     ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB" style="display: none"  />
                                         Image thumbnail: <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/thumb.jpg'"/>
                                         <i ng-show="invoiceDocs.$error.required">*required</i><br>
                                         <i ng-show="invoiceDocs.$error.maxSize">File too large 
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>
                                         <p>{{up.progress}}</p>
+                                         </div>
                                 </div>
-                            </div>
-                            <div class="row col-md-12 marg_t-20">
+                                <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-12 label-invoice">GRN</div>
                                 <div class="col-md-3 has-float-label">
                                     <input class="form-control input-lg" ng-model="input.grnNo" placeholder="GRN No*" />
@@ -157,17 +183,31 @@
                                     <label for="amount">Amount*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input type="file" ngf-select="ngf-select" ng-model="grnDocs" name="grnDocs" id="grnDocs" required="required" />
-                                     <img style="width:60px;" ngf-thumbnail="grnDocs || '/thumb.jpg'"/>
+                                    <button type="button" class="btn btn-default btn-icon btn-round">
+                                                <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
+                                    </button>
+                               
+                                    <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file" 
+                                     ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB" style="display: none"  />
+                                        Image thumbnail: <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/thumb.jpg'"/>
+                                        <i ng-show="invoiceDocs.$error.required">*required</i><br>
+                                        <i ng-show="invoiceDocs.$error.maxSize">File too large 
+                                        {{up.file.size / 1000000|number:1}}MB: max 20M</i>
+                                        <p>{{up.progress}}</p>
+                                         </div>
                                 </div>
                             </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </section>
             </div>
+            <div class="container">
             <div class="pull-right marg_r_10">
                 <button type="submit" class="btn btn-primary btn-corner" ng-click="submitInvoice(input, 'draft')">Save Now</button>
                 <button type="submit" class="btn btn-primary btn-corner" ng-click="submitInvoice(input, 'Invoice_created')">Submit Now</button>
+            </div>
             </div>
             <!-- MAIN CONTENT AREA ENDS -->
         </div>

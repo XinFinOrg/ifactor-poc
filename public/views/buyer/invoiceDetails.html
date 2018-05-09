@@ -117,42 +117,47 @@
 
                             <div class="clearfix"></div>
 
-                            <!-- <div class="col-md-12">
+                            <div class="col-md-12">
                                 <div class="verification-details">
                                     <h5 class="text-uppercase">Verification Details</h5>
-                                    <div id="buyer-header" class="no-bottom-border">
-                                        <img src="assets/images/logos/buyer/blocks.jpg" alt="" class="img-circle circle-border">
-                                        <div ng-repeat="tx in invoiceTxHistory">
+                                    <div id="buyer-header">
+                                       
                                             <div class="info-details">
-                                                <h1 class="buyer-title f-w-4">#{{tx.transactionHash}} is <span class="text-primary">published on blockchain</span> at 31st Dec 2018, 16:30</h1>
+                                             <img src="assets/images/VerificationDetails_icon.svg" alt="" class="img-circle circle-border">
+
+                                                <h1 class="buyer-title f-w-4">#123 </h1>
+                                                <ul class="list-unstyled list-inline no-bottom-marg">
+                                                    <li class="text-muted"><i class="fa fa-calendar"></i> 31st Dec 2018, 16:30</li>
+                                                </ul>
                                             </div>
-                                        </div>
                                     </div>
 
-                                    <div ng-repeat="tx in invoiceTxHistory">
-                                        <div class="m-b-15">
+                                    <div>
+                                        <div class="col-md-12 m-b-15">
                                             <p class="text-muted">Address</p>
-                                            <p>{{tx.address}}</p>
+                                            <p>123</p>
                                         </div>
+                                    </div>
+                                    <div>    
 
-                                        <div class="m-b-15">
+                                        <div class="col-md-3 m-b-15">
                                             <p class="text-muted">BlockNumber</p>
-                                            <p>{{tx.blockNumber}}</p>
+                                            <p>456</p>
                                         </div>
 
-                                        <div class="m-b-15">
+                                        <div class="col-md-3 m-b-15">
                                             <p class="text-muted">Status</p>
-                                            <p>{{getInvoiceStatus(tx.args.state)}}</p>
+                                            <p>789</p>
                                         </div>
 
-                                        <div class="m-b-15">
+                                        <div class="col-md-3 m-b-15">
                                             <p class="text-muted">_id</p>
-                                            <p>{{tx.arg.invoiceId}}</p>
+                                            <p>87t85</p>
                                         </div>
 
-                                        <div class="m-b-15">
+                                        <div class="col-md-3 m-b-15">
                                             <p class="text-muted">Time Stamp</p>
-                                            <p>{{tx.args.created}}</p>
+                                            <p>test</p>
                                         </div>
 
                                         <div class="m-b-15">
@@ -161,63 +166,63 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
 
                         </div>
                         <!-- End .row -->
                     </div>
                 </section>
-                    <section class="box" ng-repeat="tx in invoiceTxHistory">
-                        <div class="content-body">
-                            <div class="panel_header">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="text-light pull-left text-uppercase buyer-top">{{tx.eventDName}}</div>
-                                    </div>
-                                    <!-- <div class="col-lg-6">
-                                        <div class="buyer-published">Published on Blockchain</div>
-                                    </div> -->
-                                    <div class="col-lg-6">
-                                        <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">{{tx.status}}</button></div>
-                                    </div>
-                                </div>
-                            </div>
+                <section class="box" ng-repeat="tx in invoiceTxHistory">
+                    <div class="content-body">
+                        <div class="panel_header">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div id="buyer-header">
-                                        <img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border">
-                    
-                                        <div class="info-details">
-                                            <div class="buyer-title-set">#{{tx.transactionHash}}</div>
-                                            <div class="buyer-dated"><i class="fa fa-calendar"></i> {{tx.args.created | date : "dd MMM y, hh:mm"}}</div>
-                                        </div>
-                                    </div>
+                                <div class="col-lg-6">
+                                    <div class="text-light pull-left text-uppercase buyer-top">{{tx.eventDName}}</div>
                                 </div>
-                                <div class="col-md-12 padd_top_15">
-                                    <div class="blockchain-titles">Address</div>
-                                    <div class="blockchain-content">{{tx.address}}</div>
-                                </div>
-                                <div class="col-md-12 padd_15">
-                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Block Number</div>
-                                        <div class="blockchain-content">{{tx.blockNumber}}</div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">_id</div>
-                                        <div class="blockchain-content">{{tx.args.invoiceId}}</div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Time Stamp</div>
-                                        <div class="blockchain-content">{{tx.args.created}}</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 padd_bottom_15">
-                                    <div class="blockchain-titles">Remark</div>
-                                    <div class="blockchain-content">{{tx.args.state}}</div>
+                                <!-- <div class="col-lg-6">
+                                    <div class="buyer-published">Published on Blockchain</div>
+                                </div> -->
+                                <div class="col-lg-6">
+                                    <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">{{tx.status}}</button></div>
                                 </div>
                             </div>
                         </div>
-                    </section>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="buyer-header">
+                                    <img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border">
+                
+                                    <div class="info-details">
+                                        <div class="buyer-title-set">#{{tx.transactionHash}}</div>
+                                        <div class="buyer-dated"><i class="fa fa-calendar"></i> {{tx.args.created | date : "dd MMM y, hh:mm"}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 padd_top_15">
+                                <div class="blockchain-titles">Address</div>
+                                <div class="blockchain-content">{{tx.address}}</div>
+                            </div>
+                            <div class="col-md-12 padd_15">
+                                <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">Block Number</div>
+                                    <div class="blockchain-content">{{tx.blockNumber}}</div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">_id</div>
+                                    <div class="blockchain-content">{{tx.args.invoiceId}}</div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">Time Stamp</div>
+                                    <div class="blockchain-content">{{tx.args.created}}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 padd_bottom_15">
+                                <div class="blockchain-titles">Remark</div>
+                                <div class="blockchain-content">{{tx.args.state}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
 
             <div class="col-xs-12 col-md-3 col-lg-3">

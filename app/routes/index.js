@@ -641,7 +641,7 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 				var allEvents = await (web3Helper.getAllEvents(invoiceId));
 	        	console.log(allEvents)				
 				helper.processEvents(allEvents);
-				var invoiceHistory = allEvents.filter(x => x.event == 'invoiceHistory');
+				invoiceHistory = allEvents.filter(x => x.event == 'invoiceHistory');
 				invoice.created = getInvoiceDates(invoiceHistory);
 				var tarnsferEvents = allEvents.filter(x => x.event == 'ifactorTransfer');
 				var otherEvents = allEvents.filter(x => x.event != 'ifactorTransfer');
@@ -659,6 +659,7 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 					return res.send({status : true, data : {invoice : invoice, invoiceHistory : invoiceHistory, balance : balance}});
 				});*/
 			} else {
+				console.log('invoiceHistory', invoiceHistory)
 				return res.send({status : true, data : {invoice : invoice, invoiceHistory : invoiceHistory}});
 			}
 		}));
