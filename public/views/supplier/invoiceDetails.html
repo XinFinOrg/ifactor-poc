@@ -1,3 +1,15 @@
+    <style>
+    .inv>tbody>tr>td
+    {
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+    }
+    .amount
+    {
+        text-align: right;
+    }
+    </style>
+
     <!-- START CONTAINER -->
     <div class="page-container row-fluid container-fluid">
         <!-- START CONTENT -->
@@ -15,9 +27,7 @@
         </div>   -->
 
 
-            <div class="col-md-6">
-                <rzslider rz-slider-model="priceSlider"></rzslider>
-            </div>
+           
             <div class="col-md-6">
                 <jk-rating-stars max-rating="5" rating="ctrl.rating" read-only="ctrl.readOnly" on-rating="ctrl.onRating(rating)" >
                 </jk-rating-stars>
@@ -193,57 +203,205 @@
                             </div>
                         </div>
                     </section>
-                    <!-- <section class="box">
+                    <section class="box" >
                         <div class="content-body">
                             <div class="panel_header">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <div class="text-light pull-left text-uppercase buyer-top">VERIFICATION DETAIL</div>
+                                        <div class="text-light pull-left text-uppercase buyer-top">Verificaton Details</div>
                                     </div>
+                                    <!-- <div class="col-lg-6">
+                                        <div class="buyer-published">Published on Blockchain</div>
+                                    </div> -->
                                     <div class="col-lg-6">
-                                        <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Approved</button></div>
+                                        <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Published on Blockchain</button></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div id="buyer-header">
-                                        <img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border">
+                                        <img src="assets/images/VerificationDetails_icon.svg" alt="" class="img-circle circle-border">
                     
                                         <div class="info-details">
-                                            <div class="buyer-title-set">#3434343#%BBCNFJDKKSKSJHDHDHDHHDHJJJJNDHDH**DJDDNDNNDNDNDNND</div>
-                                            <div class="buyer-dated">
-                                                <i class="fa fa-calendar"></i> 31st Dec 2018, 16:30</div>
+                                            <div class="buyer-title-set">#123sdfsdfaf16682</div>
+                                            <div class="buyer-dated"><i class="fa fa-calendar"></i> 20 Apr 2019, 18:44</div>
                                         </div>
                                     </div>
-                    
                                 </div>
                                 <div class="col-md-12 padd_top_15">
                                     <div class="blockchain-titles">Address</div>
-                                    <div class="blockchain-content">gsdsddshjfjhsjfsjfjnsjnfsnjfjnsfjnsnjjnsfjnsjnfjnsfjnsjnf</div>
+                                    <div class="blockchain-content">0clksfgasf6464331asdfas</div>
                                 </div>
                                 <div class="col-md-12 padd_15">
                                     <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
                                         <div class="blockchain-titles">Block Number</div>
-                                        <div class="blockchain-content">17068</div>
+                                        <div class="blockchain-content">12</div>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
                                         <div class="blockchain-titles">_id</div>
-                                        <div class="blockchain-content">17084_0_1</div>
+                                        <div class="blockchain-content">adfs3213454</div>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
                                         <div class="blockchain-titles">Time Stamp</div>
-                                        <div class="blockchain-content">1323435356363636</div>
+                                        <div class="blockchain-content">13245654</div>
                                     </div>
                                 </div>
                                 <div class="col-md-12 padd_bottom_15">
                                     <div class="blockchain-titles">Remark</div>
-                                    <div class="blockchain-content">gsdsddshjfjhsjfsjfjnsjnfsnjfjnsfjnsnjjnsfjnsjnfjnsfjnsjnf dfsdjbf sdfgjjdskfdsjf fsdjfbds xfbsdhfj xcshdjbfdsmnc
-                                        sfbhjdbfhsdf cvjsndkfdskdf ksdjfsdf</div>
+                                    <div class="blockchain-content">Lorem epsum test</div>
                                 </div>
                             </div>
                         </div>
-                    </section> -->
+                    </section>
+                    <section class="box" >
+                        <div class="content-body">
+                            <div class="panel_header">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="text-light pull-left text-uppercase buyer-top">Factoring Request Details</div>
+                                    </div>
+                                    <!-- <div class="col-lg-6">
+                                        <div class="buyer-published">Published on Blockchain</div>
+                                    </div> -->
+                                    <div class="col-lg-6">
+                                        <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Approved</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col-md-12 padd_15">
+                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">Amount</div>
+                                        <div class="blockchain-content">12</div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">Request Date</div>
+                                        <div class="blockchain-content">20 Apr 2019, 18:44</div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-md-12 padd_bottom_15">
+                                    <div class="blockchain-titles">Description</div>
+                                    <div class="blockchain-content">Lorem epsum test</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="box" >
+                        <div class="content-body">
+                            <div class="panel_header">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="text-light pull-left text-uppercase buyer-top">Factoring Terms</div>
+                                    </div>
+                                    <!-- <div class="col-lg-6">
+                                        <div class="buyer-published">Published on Blockchain</div>
+                                    </div> -->
+                                    <div class="col-lg-6">
+                                        <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Approved</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                               
+                                <div class="col-md-12 padd_top_15">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">Mode</div>
+                                        <div class="blockchain-content">Factor</div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">Eligible Amount</div>
+                                        <div class="blockchain-content">80% (<span>&#36;</span>80,000)</div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">Approval Date</div>
+                                        <div class="blockchain-content">20 Apr 2019, 18:44</div>
+                                    </div>
+                                </div>
+                                 <div class="col-md-12 padd_15">
+                                     <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">Charges/Month</div>
+                                        <div class="blockchain-content"><strong>10% (<span>&#36;</span>3000)</strong></div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
+                                        <strong>=</strong>                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">Platform Charge</div>
+                                        <div class="blockchain-content"><strong>5% (<span>&#36;</span>1500)</strong></div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
+                                        <strong>+</strong>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">Processing Charges</div>
+                                        <div class="blockchain-content"><strong>3% (<span>&#36;</span>1000)</strong></div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
+                                        <strong>+</strong>                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
+                                        <div class="blockchain-titles">Interest Charges</div>
+                                        <div class="blockchain-content"><strong>2% (<span>&#36;</span>500)</strong></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 padd_bottom_15">
+                                    <div class="blockchain-titles">Terms & Conditions</div>
+                                    <div class="blockchain-content">Lorem epsum test</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="box" >
+                        <div class="content-body">
+                            <div class="panel_header">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="text-light pull-left text-uppercase buyer-top">Payment Details</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                               
+                                <div class="col-md-12 padd_top_15">
+                                    <table class="table inv">
+                                        <thead>
+                                          <tr>
+                                            <th>Transaction Info</th>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                            <th>Conversion</th>
+                                            <th class="amount">XDC</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td>First Payment Financier to Supplier</td>
+                                            <td>31 Dec 2016, 16:30</td>
+                                            <td class="amount"><span>&#36;</span>80,000</td>
+                                            <td><span>&#36;</span>1 = XDC10</td>
+                                            <td class="amount"><span>&#36;</span>XDC 1,50,000</td>
+                                          </tr>
+                                          <tr>
+                                            <td>Final Payment Financier to Supplier</td>
+                                            <td>31 Dec 2016, 16:30</td>
+                                            <td class="amount"><span>&#36;</span>17,000</td>
+                                            <td><span>&#36;</span>1 = XDC10</td>
+                                            <td class="amount"><span>&#36;</span>XDC 50,000</td>
+                                          </tr>
+                                          <tr>
+                                            <td>Charges to Supplier</td>
+                                            <td>31 Dec 2016, 16:30</td>
+                                            <td class="amount"><span>&#36;</span>3,000</td>
+                                            <td><span>&#36;</span>1 = XDC10</td>
+                                            <td class="amount"><span>&#36;</span>XDC 20,000</td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
 
                 <div class="col-xs-12 col-md-3 col-lg-3">
