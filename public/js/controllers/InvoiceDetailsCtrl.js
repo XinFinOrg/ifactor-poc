@@ -38,6 +38,11 @@
 		$location.path('/dashboard');
 	}
 
+	$scope.toastReqPayment = function() {
+		console.log('payment request')
+		ngToast.create('Your payment request is submitted successfully');
+	}
+
 	var invoiceStatusMap = Helper.invoiceStatusMap;
 
 	$scope.date = new Date();
