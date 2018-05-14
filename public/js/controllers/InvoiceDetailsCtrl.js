@@ -4,7 +4,14 @@
 
 	ngToast.create('a toast message hgju  gjumgykmuygk hmjhmhk');
 	$scope.priceSlider = 100;
+       $scope.factorSliderOptions = {
+            floor: 0,
+            ceil: 100
+        };
+
 	//PNotify.alert('Notice me, senpai!');
+
+	$rootScope.invoiceId = $rootScope.invoiceId || $routeParams.invoiceId;
 	$scope.urlMap = function(type) {
 		if (type == 'createInvoice') {
 			$location.path('/create-invoice');
@@ -84,6 +91,8 @@
 			$scope.invoiceData = resp.data.invoice;
 			$rootScope.balance = resp.data.balance;
 			$scope.invoiceTxHistory = resp.data.invoiceHistory;
+			$scope.allEvents = resp.data.otherEvents;
+			$scope.transferEvents = resp.data.tarnsferEvents;
 			mapInvoiceHistory($scope.invoiceTxHistory);
 			$scope.setCurrentStage();
 		});

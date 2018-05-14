@@ -145,7 +145,7 @@ var requestFactoring = async (function(invoiceId, state, amount) {
 
 var buyTokens = async (function(address, amount) {
     amount = !amount ? 10000 : amount;
-    var mm = await (contractInstance.buyTokens(address,
+    var mm = await (contractInstance.buyTokens(address, amount,
           {from: web3.eth.accounts[1], gas:100000}));
     return mm;
 });

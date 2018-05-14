@@ -49,7 +49,7 @@
                 <section class="box">
                     <div class="content-body">
                         <header class="panel_header">
-                            <h5 class="text-light pull-left text-uppercase">Buyer</h5>
+                            <h5 class="text-light pull-left text-uppercase buyer-top">Supplier</h5>
                         </header>
                         <div class="row">
                             <div class="col-md-12">
@@ -57,80 +57,91 @@
                                     <img src="assets/images/logos/buyer/crossref.jpg" alt="" class="img-circle circle-border">
 
                                     <div class="info-details">
-                                        <h1 class="buyer-title">{{invoiceData.companyName}}</h1>
+                                        <h1 class="buyer-title">{{invoiceData.supplierName}}</h1>
 
                                         <ul class="list-unstyled list-inline no-bottom-marg">
-                                            <li class="text-muted"><i class="fa fa-user"></i> {{invoiceData.contactName}}</li>
-                                            <li class="text-muted"><i class="fa fa-phone"></i> {{invoiceData.companyPhone}}</li>
-                                            <li><a href="#" class="text-muted"><i class="fa fa-envelope"></i> {{invoiceData.companyEmail}}</a></li>
+                                            <li class="text-muted"><i class="fa fa-user"></i> {{invoiceData.supplierName}}</li>
+                                            <li class="text-muted"><i class="fa fa-phone"></i> +91 9665664587</li>
+                                            <li><a href="#" class="text-muted"><i class="fa fa-envelope"></i>{{invoiceData.supplierEmail}}</a></li>
                                         </ul>
 
                                     </div>
                                 </div>
 
-                                <div class="purchase-details">
-                                    <h5 class="text-light text-uppercase">Purchase Details</h5>
-
-                                    <h1>{{invoiceData.purchaseTitle}}</h1>
-                                    <div class="price-badge">
-                                        <div class="amount text-muted">Amount : <span class="bold"><i class="fa fa-inr" aria-hidden="true"></i> {{invoiceData.invoiceAmount}}</span></div>
-                                        <div class="period text-muted">Days to Payout : <span class="bold">{{getDatesDiff(invoiceData.payableDate)}} Days</span></div>
+                            <div class="panel_header">
+                                <div class="col-lg-6">
+                                    <div class="text-light text-uppercase buyer-top">Purchase Details</div>
+                                    <div class="blockchain-content">{{invoiceData.purchaseTitle}}</div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="buyer-published">
+                                        <button class="btn btn-sm btn-primary btn-blockchain">Approved</button>
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="col-md-12 padd_10">
+                                <div class="col-lg-6">
+                                    <div class="blockchain-titles">Amount</div>
+                                    <div class="blockchain-content"><i class="fa fa-inr" aria-hidden="true"></i> {{invoiceData.invoiceAmount}}</div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="blockchain-titles">Days to Payout</div>
+                                    <div class="blockchain-content">{{getDatesDiff(invoiceData.payableDate)}} Days</div>
+                                </div>
                             </div>
 
-                                <div class="col-lg-4 col-sm-4 col-xs-12">
-                                    <div class="price-pack">
-                                        <div class="head no-bottom-padd">
-                                            <h3>PO Details</h3>
-                                        </div>
-                                        <ul class="item-list list-unstyled">
-                                            <li>#{{invoiceData.purchaseNo}}</li>
-                                            <li>{{invoiceData.purchaseDate}}</li>
-                                            <li><strong>${{invoiceData.purchaseAmount}}</strong></li>
-
-                                        </ul>
-
-                                        <button type="button" class="btn btn-lg btn-icon btn-default btn-block">10delinvoice.pdf <i class="fa fa-download"></i></button>
-
+                            </div>
+                            <div class="col-lg-4 col-sm-4 col-xs-12">
+                                <div class="price-pack">
+                                    <div class="head no-bottom-padd">
+                                        <div class="blockchain-titles blockchain-box">PO Details</div>
                                     </div>
+                                    <ul class="item-list list-unstyled">
+                                        <li class="blockchain-content">#{{invoiceData.purchaseNo}}</li>
+                                        <li class="blockchain-content">{{invoiceData.purchaseDate}}</li>
+                                        <li class="blockchain-content"><strong>${{invoiceData.purchaseAmount}}</strong></li>
+
+                                    </ul>
+
+                                    <button type="button" ng-click="downloadDocs('poDocs')" class="btn btn-lg btn-icon btn-default btn-block">PO Documents <i class="fa fa-download"></i></button>
+
                                 </div>
+                            </div>
 
-                                <div class="col-lg-4 col-sm-4 col-xs-12">
-                                    <div class="price-pack">
-                                        <div class="head no-bottom-padd">
-                                            <h3>Invoice Details</h3>
-                                        </div>
-                                        <ul class="item-list list-unstyled">
-                                            <li>#{{invoiceData.invoiceNo}}</li>
-                                            <li>{{invoiceData.invoiceDate}}</li>
-                                            <li><strong>${{invoiceData.invoiceAmount}}</strong></li>
-
-                                        </ul>
-
-                                        <button type="button" class="btn btn-lg btn-icon btn-default btn-block">10delinvoice.pdf <i class="fa fa-download"></i></button>
-
+                            <div class="col-lg-4 col-sm-4 col-xs-12">
+                                <div class="price-pack">
+                                    <div class="head no-bottom-padd">
+                                    <div class="blockchain-titles blockchain-box">Invoice Details</div>
                                     </div>
+                                    <ul class="item-list list-unstyled">
+                                        <li class="blockchain-content">#{{invoiceData.invoiceNo}}</li>
+                                        <li class="blockchain-content">{{invoiceData.invoiceDate}}</li>
+                                        <li class="blockchain-content"><strong>${{invoiceData.invoiceAmount}}</strong></li>
+
+                                    </ul>
+
+                                    <button type="button" ng-click="downloadDocs('invoiceDocs')" class="btn btn-lg btn-icon btn-default btn-block">Invoice Documents <i class="fa fa-download"></i></button>
+
                                 </div>
+                            </div>
 
-                                <div class="col-lg-4 col-sm-4 col-xs-12">
-                                    <div class="price-pack">
-                                        <div class="head no-bottom-padd">
-                                            <h3>Grn Details</h3>
-                                        </div>
-
-                                        <ul class="item-list list-unstyled">
-                                            <li>#{{invoiceData.grnNo}}</li>
-                                            <li>{{invoiceData.grnDate}}</li>
-                                            <li>{{invoiceData.grnAmount}}</li>
-
-                                        </ul>
-
-                                        <button type="button" class="btn btn-lg btn-icon btn-default btn-block">10delinvoice.pdf <i class="fa fa-download"></i></button>
-
+                            <div class="col-lg-4 col-sm-4 col-xs-12">
+                                <div class="price-pack">
+                                    <div class="head no-bottom-padd">
+                                        <div class="blockchain-titles blockchain-box">Grn Details</div>
                                     </div>
+
+                                    <ul class="item-list list-unstyled">
+                                        <li class="blockchain-content">#{{invoiceData.grnNo}}</li>
+                                        <li class="blockchain-content">{{invoiceData.grnDate}}</li>
+                                        <li class="blockchain-content">${{invoiceData.grnAmount}}</li>
+
+                                    </ul>
+
+                                    <button type="button" ng-click="downloadDocs('grnDocs')" class="btn btn-lg btn-icon btn-default btn-block">GRN Docs <i class="fa fa-download"></i></button>
+
                                 </div>
+                            </div>
 
                             <div class="clearfix"></div>
 
@@ -138,8 +149,8 @@
                         <!-- End .row -->
                     </div>
                 </section>
-                <section class="box" ng-repeat="tx in invoiceTxHistory">
-                    <div class="content-body">
+                <section class="box" ng-repeat="tx in allEvents">
+                    <div class="content-body" ng-if="tx.event=='invoiceHistory'">
                         <div class="panel_header">
                             <div class="row">
                                 <div class="col-lg-6">
@@ -149,7 +160,7 @@
                                     <div class="buyer-published">Published on Blockchain</div>
                                 </div> -->
                                 <div class="col-lg-6">
-                                    <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">{{tx.status}}</button></div>
+                                    <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">{{getInvoiceStatus(tx.args.state)}}</button></div>
                                 </div>
                             </div>
                         </div>
@@ -188,211 +199,137 @@
                             </div>
                         </div>
                     </div>
-                </section>
-                <section class="box" >
-                        <div class="content-body">
-                            <div class="panel_header">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="text-light pull-left text-uppercase buyer-top">Verificaton Details</div>
-                                    </div>
-                                    <!-- <div class="col-lg-6">
-                                        <div class="buyer-published">Published on Blockchain</div>
-                                    </div> -->
-                                    <div class="col-lg-6">
-                                        <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Published on Blockchain</button></div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="content-body" ng-if="tx.event=='factoringRequest'">
+                        <div class="panel_header">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div id="buyer-header">
-                                        <img src="assets/images/VerificationDetails_icon.svg" alt="" class="img-circle circle-border">
-                    
-                                        <div class="info-details">
-                                            <div class="buyer-title-set">#123sdfsdfaf16682</div>
-                                            <div class="buyer-dated"><i class="fa fa-calendar"></i> 20 Apr 2019, 18:44</div>
-                                        </div>
-                                    </div>
+                                <div class="col-lg-6">
+                                    <div class="text-light pull-left text-uppercase buyer-top">{{tx.eventDName}}</div>
                                 </div>
-                                <div class="col-md-12 padd_top_15">
-                                    <div class="blockchain-titles">Address</div>
-                                    <div class="blockchain-content">0clksfgasf6464331asdfas</div>
-                                </div>
-                                <div class="col-md-12 padd_15">
-                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Block Number</div>
-                                        <div class="blockchain-content">12</div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">_id</div>
-                                        <div class="blockchain-content">adfs3213454</div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Time Stamp</div>
-                                        <div class="blockchain-content">13245654</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 padd_bottom_15">
-                                    <div class="blockchain-titles">Remark</div>
-                                    <div class="blockchain-content">Lorem epsum test</div>
+                                <div class="col-lg-6">
+                                    <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Factoring Requested</button></div>
                                 </div>
                             </div>
                         </div>
-                    </section>
-                    <section class="box" >
-                        <div class="content-body">
-                            <div class="panel_header">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="text-light pull-left text-uppercase buyer-top">Factoring Request Details</div>
-                                    </div>
-                                    <!-- <div class="col-lg-6">
-                                        <div class="buyer-published">Published on Blockchain</div>
-                                    </div> -->
-                                    <div class="col-lg-6">
-                                        <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Approved</button></div>
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-12 padd_15">
+                                <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">Amount</div>
+                                    <div class="blockchain-content"><strong>{{tx.args.amount}}</strong></div>
                                 </div>
-                            </div>
-                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">Request Date</div>
+                                    <div class="blockchain-content"><strong>{{tx.args.created | date : "dd MMM y, hh:mm"}}</strong></div>
+                                </div>
                                 
-                                <div class="col-md-12 padd_15">
-                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Amount</div>
-                                        <div class="blockchain-content"><strong>12</strong></div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Request Date</div>
-                                        <div class="blockchain-content"><strong>20 Apr 2019, 18:44</strong></div>
-                                    </div>
-                                    
-                                </div>
-                                <div class="col-md-12 padd_bottom_15">
-                                    <div class="blockchain-titles">Description</div>
-                                    <div class="blockchain-content">Lorem epsum test</div>
-                                </div>
+                            </div>
+                            <div class="col-md-12 padd_bottom_15">
+                                <div class="blockchain-titles">Description</div>
+                                <div class="blockchain-content">ifactor_request</div>
                             </div>
                         </div>
-                    </section>
-                    <section class="box" >
-                        <div class="content-body">
-                            <div class="panel_header">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="text-light pull-left text-uppercase buyer-top">Factoring Terms</div>
-                                    </div>
-                                    <!-- <div class="col-lg-6">
-                                        <div class="buyer-published">Published on Blockchain</div>
-                                    </div> -->
-                                    <div class="col-lg-6">
-                                        <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Approved</button></div>
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="content-body" ng-if="tx.event=='factoringProposal'">
+                        <div class="panel_header">
                             <div class="row">
-                               
-                                <div class="col-md-12 padd_top_15">
-                                    <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Mode</div>
-                                        <div class="blockchain-content">Factor</div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Eligible Amount</div>
-                                        <div class="blockchain-content">80% (<span>&#36;</span>80,000)</div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Approval Date</div>
-                                        <div class="blockchain-content">20 Apr 2019, 18:44</div>
-                                    </div>
+                                <div class="col-lg-6">
+                                    <div class="text-light pull-left text-uppercase buyer-top">{{tx.eventDName}}</div>
                                 </div>
-                                 <div class="col-md-12 padd_15">
-                                     <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Charges/Month</div>
-                                        <div class="blockchain-content"><strong>10% (<span>&#36;</span>3000)</strong></div>
-                                    </div>
-                                    <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
-                                        <strong>=</strong>                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Platform Charge</div>
-                                        <div class="blockchain-content"><strong>5% (<span>&#36;</span>1500)</strong></div>
-                                    </div>
-                                    <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
-                                        <strong>+</strong>
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Processing Charges</div>
-                                        <div class="blockchain-content"><strong>3% (<span>&#36;</span>1000)</strong></div>
-                                    </div>
-                                    <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
-                                        <strong>+</strong>                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
-                                        <div class="blockchain-titles">Interest Charges</div>
-                                        <div class="blockchain-content"><strong>2% (<span>&#36;</span>500)</strong></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 padd_bottom_15">
-                                    <div class="blockchain-titles">Terms & Conditions</div>
-                                    <div class="blockchain-content">Lorem epsum test</div>
+                                <!-- <div class="col-lg-6">
+                                    <div class="buyer-published">Published on Blockchain</div>
+                                </div> -->
+                                <div class="col-lg-6">
+                                    <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Factoring Proposed</button></div>
                                 </div>
                             </div>
                         </div>
-                    </section>
-                    <section class="box" >
-                        <div class="content-body">
-                            <div class="panel_header">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="text-light pull-left text-uppercase buyer-top">Payment Details</div>
-                                    </div>
+                        <div class="row">
+                           
+                            <div class="col-md-12 padd_top_15">
+                                <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">Mode</div>
+                                    <div class="blockchain-content">Factor</div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">Eligible Amount</div>
+                                    <div class="blockchain-content">{{tx.args.factorCharges}}% (<span>&#36;</span>{{tx.args.firstPayment}})</div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">Approval Date</div>
+                                    <div class="blockchain-content">20 Apr 2019, 18:44</div>
                                 </div>
                             </div>
+                             <div class="col-md-12 padd_15">
+                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">Total Amount</div>
+                                    <div class="blockchain-content"><strong><span>&#36;</span>{{tx.args.amount}}</strong></div>
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
+                                    <strong>=</strong>                                    </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">First Payment</div>
+                                    <div class="blockchain-content"><strong>{{tx.args.factorCharges}}% (<span>&#36;</span>{{tx.args.firstPayment}})</strong></div>
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
+                                    <strong>+</strong>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">Final Payment</div>
+                                    <div class="blockchain-content"><strong>{{100 - (tx.args.factorCharges + tx.args.factorSaftyPercentage)}}% (<span>&#36;</span>{{tx.args.balancePayment}})</strong></div>
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
+                                    <strong>+</strong>                                    </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
+                                    <div class="blockchain-titles">Interest Charges</div>
+                                    <div class="blockchain-content"><strong>{{tx.args.factorSaftyPercentage}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 padd_bottom_15">
+                                <div class="blockchain-titles">Terms & Conditions</div>
+                                <div class="blockchain-content">ifactor_proposed</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="box" >
+                    <div class="content-body">
+                        <div class="panel_header">
                             <div class="row">
-                               
-                                <div class="col-md-12 padd_top_15">
-                                    <table class="table inv">
-                                        <thead>
-                                          <tr>
-                                            <th>Transaction Info</th>
-                                            <th>Date</th>
-                                            <th>Amount</th>
-                                            <th>Conversion</th>
-                                            <th class="amount">XDC</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <tr>
-                                            <td>First Payment Financier to Supplier</td>
-                                            <td>31 Dec 2016, 16:30</td>
-                                            <td class="amount"><span>&#36;</span>80,000</td>
-                                            <td><span>&#36;</span>1 = XDC10</td>
-                                            <td class="amount"><span>&#36;</span>XDC 1,50,000</td>
-                                          </tr>
-                                          <tr>
-                                            <td>Final Payment Financier to Supplier</td>
-                                            <td>31 Dec 2016, 16:30</td>
-                                            <td class="amount"><span>&#36;</span>17,000</td>
-                                            <td><span>&#36;</span>1 = XDC10</td>
-                                            <td class="amount"><span>&#36;</span>XDC 50,000</td>
-                                          </tr>
-                                          <tr>
-                                            <td>Charges to Supplier</td>
-                                            <td>31 Dec 2016, 16:30</td>
-                                            <td class="amount"><span>&#36;</span>3,000</td>
-                                            <td><span>&#36;</span>1 = XDC10</td>
-                                            <td class="amount"><span>&#36;</span>XDC 20,000</td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
+                                <div class="col-lg-6">
+                                    <div class="text-light pull-left text-uppercase buyer-top">Payment Details</div>
                                 </div>
                             </div>
                         </div>
-                    </section>
+                        <div class="row">
+                            <div class="col-md-12 padd_top_15">
+                                <table class="table inv">
+                                    <thead>
+                                      <tr>
+                                        <th>Transaction Info</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Conversion</th>
+                                        <th class="amount">XDC</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr ng-repeat="tx in transferEvents">
+                                        <td>{{tx.args.txDType}}</td>
+                                        <td>{{tx.args.created | date : "dd MMM y, hh:mm"}}</td>
+                                        <td class="amount"><span>&#36;</span>{{tx.args.amount}}</td>
+                                        <td><span>&#36;</span>1 = XDC 1</td>
+                                        <td class="amount"><span>&#36;</span>XDC {{tx.args.amount}}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
 
             <div class="col-xs-12 col-md-3 col-lg-3">
                 <section class="box">
-
                     <div class="content-body">
                         <div class="row">
 

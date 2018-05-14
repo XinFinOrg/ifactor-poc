@@ -11,7 +11,7 @@ var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var fs = require('fs');
 var PATH = require('path');
-var web3Conf = false;
+var web3Conf = true;
 if (web3Conf) {
 	var web3Helper = require('./web3Helper');
 }
@@ -413,6 +413,7 @@ router.post('/payInvoice', async (function(req, res) {
 	let supplierAddress = req.body.supplierAddress;
 	let financerAddress = req.body.financerAddress;
 	let invoiceAmount = req.body.invoiceAmount;
+	console.log(supplierAddress, buyerAddress, financerAddress);
 	var tx;
 	if (web3Conf) {
 	    try {
@@ -422,7 +423,7 @@ router.post('/payInvoice', async (function(req, res) {
 			if (ENV == 'prod') {
 				web3Helper.unlockSync(req.user.address, req.user.password);
 			}
-		    var tx1 = await (web3Helper.sendTokens(buyerAddress, financerAddress, postpayamount));
+		    var tx1 = await (web3Helper.sendTokens(buyerAddress, financerAddress, parseInt(postpayamount)));
 		    tx = await (web3Helper.payInvoice(invoiceId, invoiceAmount));
 	    } catch(e) {
 	    	console.log(e);
@@ -444,7 +445,7 @@ router.post('/prepaySupplier', async(function(req, res) {
 	let buyerAddress = req.body.buyerAddress;
 	let supplierAddress = req.body.supplierAddress;
 	let financerAddress = req.body.financerAddress;
-	console.log(supplierAddress, buyerAddress, financerAddress);
+	console.log('address', supplierAddress, buyerAddress, financerAddress);
 	var tx, tx1;
 	if (web3Conf) {
 	    try {
@@ -452,7 +453,7 @@ router.post('/prepaySupplier', async(function(req, res) {
 		    tx1 = await (web3Helper.buyTokens(supplierAddress));
 		    tx1 = await (web3Helper.buyTokens(buyerAddress));
 		    tx1 = await (web3Helper.getBalance(financerAddress));*/
-		    console.log('financerAddress', tx1.toNumber())
+		    //console.log('financerAddress', tx1.toNumber())
 
 			var prepayAmount = await(web3Helper.getPrepayAmount(invoiceId));
 			prepayAmount = prepayAmount.toNumber();
@@ -639,13 +640,13 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 			invoice.supplierData = !err ? userData : {};
 			if (web3Conf) {
 				var allEvents = await (web3Helper.getAllEvents(invoiceId));
-	        	console.log(allEvents)				
+	        	//console.log(allEvents)
 				helper.processEvents(allEvents);
 				invoiceHistory = allEvents.filter(x => x.event == 'invoiceHistory');
 				invoice.created = getInvoiceDates(invoiceHistory);
 				var tarnsferEvents = allEvents.filter(x => x.event == 'ifactorTransfer');
 				var otherEvents = allEvents.filter(x => x.event != 'ifactorTransfer');
-				console.log(otherEvents);
+				console.log(tarnsferEvents);
 				return res.send({status : true, data : {
 					invoice : invoice, invoiceHistory : invoiceHistory,
 					tarnsferEvents : tarnsferEvents, otherEvents : otherEvents,
@@ -720,15 +721,15 @@ router.post('/login', autheticate, async (function(req, res) {
 			accAddress = (userType == 'Supplier') ? accounts[9] :
 					(userType == 'Buyer' ) ? accounts[8] : accounts[7];
 			if (address != accAddress) {
-				updateUser({email : req.user.email}, {$set : {address : accAddress}}, function(err, data) {
+				updateUser({email : req.user.email}, {$set : {address : accAddress}}, async (function(err, data) {
 					console.log('address updated, new Address : ', accAddress);
 					try {
 				    	var tx1 = await(web3Helper.etherTransfer(accAddress));
-					    tx1 = await (web3Helper.buyTokens(accAddress));
+					    var tx2 = await (web3Helper.buyTokens(accAddress));
 					} catch(e) {
 						console.log('blockchain error', e);
 					}
-				});
+				}));
 			}
 		}
 		return res.send({status : 'success', data : {userType : data[0].type}});

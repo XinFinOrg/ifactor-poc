@@ -111,6 +111,17 @@ var processEvents = function(allEvents) {
             ev.balancePayment = (ev.amount - (ev.firstPayment + ev.charges));
             console.log(ev);
         }
+        if (event.event == 'ifactorTransfer') {
+            ev = event.args;
+            switch(ev.transferType) {
+                case 'ifactor_prepaid' : ev.txDType = 'First Payment Financier to Supplier';
+                    break;
+                case 'invoice_paid' : ev.txDType = 'Invoice Payment Buyer to Financer';
+                    break;
+                case 'ifactor_postpaid' : ev.txDType = 'Final Payment Financier to Supplier'
+            }
+            
+        }
     }
 };
 
