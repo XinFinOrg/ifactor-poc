@@ -108,6 +108,7 @@ font-size: 13px;
                             </div>
                             <div class="col-md-12 padd_10">
                                 <div class="col-lg-6">
+
                                     <div class="blockchain-titles">Amount</div>
                                     <div class="blockchain-content"><i class="fa fa-inr" aria-hidden="true"></i> {{invoiceData.invoiceAmount}}</div>
                                 </div>
@@ -530,8 +531,8 @@ font-size: 13px;
                                         <p>{{ invoiceData.created.ifactor_request | date : "dd MMM y hh:mm"}}</p>
                                     </div>
                                     <div class="transaction-details m-b-10">
-                                        <p class="text-muted text-uppercase">Amount</p>
-                                        <h1 class="f-w-4 no-bottom-padd">$ {{invoiceData.invoiceAmount}}</h1>
+                                        <p class="text-muted text-uppercase" style="font-size: 14px;">Amount</p>
+                                        <h1 class="f-w-4 no-bottom-padd" style="font-size: 16px">$ {{invoiceData.invoiceAmount}}</h1>
                                         <div>
                                         </div>
                                     </div>
@@ -601,7 +602,7 @@ font-size: 13px;
                                     </div>
                             </div>
 
-                                <div class="col-md-12 padd_0" ng-if="invoiceData.state == 'ifactor_proposal_rejected'">
+                                <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposal_rejected'">
                                     <!-- <div id="buyer-header-rejected">
                                         <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
 
@@ -620,7 +621,7 @@ font-size: 13px;
                                     <div class="transaction-details p-l-8">
                                         <div class="clearfix"></div>
 
-                                        <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected By You</h1>
+                                        <h1 class="rejected"><i class="fa fa-times icon-rounded icon-primary"></i> Rejected By You</h1>
                                         <p>{{ invoiceData.created.ifactor_proposal_rejected | date : "dd MMM y hh:mm"}}</p>
                                     </div>
 
@@ -632,7 +633,7 @@ font-size: 13px;
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 padd_0" ng-if="invoiceData.state == 'ifactor_proposal_accepted'">
+                                <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposal_accepted'">
                                     <!-- <div id="buyer-header-rejected">
                                         <i class="fa fa-close icon-rounded icon-primary inviewport"></i>
 
@@ -673,7 +674,7 @@ font-size: 13px;
                                     </div>
                                 </div>
                                 <div class="opacity-5 line-before" ng-show="isCurrentStage('factoring_request')"></div>
-                                <div class="col-md-12">
+                                <!-- <div class="col-md-12"> -->
                                 <div id="header-blue" ng-show="isStageEnabled('payment_disbursed')">
                                     <div ng-class="{'opacity-5' : isStageOpaque('payment_disbursed')}">
                                         <i class="fa icon-rounded icon-primary" ng-class="isOldStage('payment_disbursed') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('payment_disbursed')">4</span></i>
@@ -682,7 +683,7 @@ font-size: 13px;
                                         </div>
                                     </div>
                                 </div>
-                                </div>
+                                <!-- </div> -->
 
                                 <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_proposal_accepted'">
                                     <div class="transaction-details p-l-8">
@@ -705,13 +706,13 @@ font-size: 13px;
 
                                 <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_prepaid'|| invoiceData.state == 'invoice_paid'">
 
-                                    <div id="buyer-header-sent">
-                                        <i class="fa fa-number icon-rounded icon-primary inviewport visible">{{invoiceData.daysToPayout}}</i>
+                                   <!--  <div id="buyer-header-sent">
+                                        <i class="fa fa-number icon-rounded icon-primary ">{{invoiceData.daysToPayout}}</i>
 
                                         <div class="info-details">
                                             <h1 class="buyer-title text-uppercase">Days To Payout</h1>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     
                                     <div class="transaction-details">
                                             <h5 class="text-dark">Total Amount <span class="text-dark">${{invoiceData.firstPayment}}</span></h5>
@@ -749,7 +750,7 @@ font-size: 13px;
                                 </div>
 
                                 <div class="opacity-5 line-before" ng-show="isCurrentStage('payment_disbursed')"></div>
-                                <div class="col-md-12">
+                                <!-- <div class="col-md-12"> -->
                                 <div id="header-blue" class="no-after" ng-show="isStageEnabled('contract_complete')">
                                     <div ng-class="{'opacity-5' : isStageOpaque('contract_complete')}">
                                         <i class="fa icon-rounded icon-primary" ng-class="isOldStage('contract_complete') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('contract_complete')">5</span></i>
@@ -757,7 +758,7 @@ font-size: 13px;
                                             <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('contract_complete')}">Contract Complete</h1>
                                         </div>
                                     </div>
-                                </div>
+                                <!-- </div> -->
                                 <hr>
                                 </div>
                                 <div class="col-md-12" ng-show="invoiceData.state == 'completed'">

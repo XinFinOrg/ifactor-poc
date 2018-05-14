@@ -187,7 +187,7 @@ section.box.marginBottom0,
 /*------------ Buyer Details box ------------*/
 #buyer-header {display: block;margin-top:10px;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid #ebeaea; }
 #buyer-header .buyer-title {font-size:16px;font-weight:600;margin:0px; text-transform: capitalize;}
-#buyer-header i {display: block;float:left}
+#buyer-header i {display: block;float:left; padding-top: 5px;}
 #buyer-header img {display: block;float:left;max-width:45px;}
 .info-details {display:block;}
 /*.info-details i {margin-top:5px;margin-right:5px;color:#c2c2c2;}*/
@@ -236,7 +236,7 @@ section.box.marginBottom0,
 /*------------ Buyer Approved box ------------*/
 
 /*------------ Buyer Sent box ------------*/
-#buyer-header-sent {display: inline-block;margin-top:5px;margin-bottom:15px;}
+#buyer-header-sent {display: inline-block;margin-top:5px;margin-bottom:15px;width: 100%}
 #buyer-header-sent .info-details {display:block;}
 #buyer-header-sent .buyer-title {font-size:15px;font-weight:400;color: #6575d4;}
 #buyer-header-sent i {display: inline-block;float:left;border-radius: 50%;background-color: #6575d4;color: #FFF;}
@@ -258,7 +258,7 @@ section.box.marginBottom0,
 #buyer-header-rejected .buyer-title {font-size:15px;font-weight:400;color: #ee5e17;}
 #buyer-header-rejected i {display: inline-block;float:left;border-radius: 50%;background-color: #ee5e17;color: #FFF;}
 .transaction-details {display: block;padding-bottom:10px;}
-.transaction-details h1 {font-size:20px;font-weight:600;word-wrap: break-word;display:block;margin:0px;}
+.transaction-details h1 {font-size:20px;font-weight:600;word-wrap: break-word;display:block;margin:0px;padding-top: 5px}
 .transaction-details h5 {font-size:13px;display:block;padding-bottom:10px;}
 /*------------ Buyer Rejected box ------------*/
 
