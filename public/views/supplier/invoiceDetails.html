@@ -37,12 +37,12 @@ font-size: 13px;
         <img src="assets/images/loader1.gif">
     </div> -->
 
-    <!-- <div>
+    <div>
         <div class="col-md-9 has-float-label">
             <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
             </select>
         </div>
-    </div> -->  
+    </div>  
 
     <toast> </toast>
 
@@ -723,11 +723,10 @@ font-size: 13px;
                                             <h5 class="text-dark">Days to Payout <span class="text-dark">{{invoiceData.daysToPayout}}</span></h5>
                                             <hr>
                                             <div class="clearfix"></div>
-                                            <h5 class="text-dark f-w-6">Balance Amount <span class="text-dark">${{invoiceData.balancePayment}}</span></h5>
+                                            <h5 class="text-dark f-w-6"><strong>Final Amount </strong><span class="text-dark"><strong>${{invoiceData.balancePayment}}</strong></span></h5>
                                             <div>
                                             </div>
                                             
-                                            <p class="f-size-12">Estimated Amount-Processing Charges ( After deducting Factoring Charges )</p>
                                             <div class="clearfix"></div>
                                             <hr>
                                             <h5 class="text-dark f-w-6">Balance XDC <span class="text-dark">${{invoiceData.balancePayment}}</span></h5>
