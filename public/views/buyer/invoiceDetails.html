@@ -18,13 +18,13 @@
 <div class="page-container row-fluid container-fluid">
     <!-- START CONTENT -->
     <section>
-        <!-- <div class="container wrapper main-wrapper row" style=''>
+        <!-- <div class="container wrapper main-wrapper row" style=''> -->  
            <div>
             <div class="col-md-9 has-float-label">
                 <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
                 </select>
             </div>
-        </div> -->
+        </div>
             <!-- div>
                 <div class="col-md-9 has-float-label">
                     <select class="soflow form-control input-lg" ng-model="currentStage" ng-options=" x for x in stageOptions">
@@ -376,21 +376,22 @@
                                     </div>
                                 </div>
 
-                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'invoice_accepted'">
+
+                                <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'invoice_accepted'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Success</h1>
                                     <p>Your Transaction is published on Blockchain</p>
                                     <p>{{ invoiceData.created.invoice_accepted | date : "dd MMM y hh:mm"}}</p>
                                 </div>
-
+                                <div class="col-md-12">
                                 <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'invoice_rejected'">
                                     <div class="clearfix"></div>
 
-                                    <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected</h1>
+                                    <h1 class="rejected"><i class="fa fa-times icon-rounded icon-primary"></i> Rejected</h1>
                                     <p>{{ invoiceData.created.invoice_rejected | date : "dd MMM y hh:mm"}}</p>
                                 </div>
-
+                                </div>
 
                                 <div id="header-blue" ng-show="isHistoryBarEnabled('buyer_confirmation')">
                                     <i class="fa icon-rounded icon-primary fa-no-icon"></i>
@@ -408,35 +409,35 @@
                                     </div>
                                 </div>
 
-                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_request'">
+                                <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_request'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Submited For Factoring</h1>
                                     <p>{{ invoiceData.created.ifactor_request | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
-                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_rejected'">
+                                <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_rejected'">
                                     <div class="clearfix"></div>
 
-                                    <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Rejected By Financer</h1>
+                                    <h1 class="rejected""><i class="fa fa-times icon-rounded icon-primary"></i> Rejected By Financer</h1>
                                     <p>{{ invoiceData.created.ifactor_rejected | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
-                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposed'">
+                                <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposed'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Proposal submitted by financer</h1>
                                     <p>{{ invoiceData.created.ifactor_proposed | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
-                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposal_rejected'">
+                                <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposal_rejected'">
                                     <div class="clearfix"></div>
 
-                                    <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Proposal rejected By Supplier</h1>
+                                    <h1 class="rejected"><i class="fa fa-times icon-rounded icon-primary"></i> Proposal rejected By Supplier</h1>
                                     <p>{{ invoiceData.created.ifactor_proposal_rejected | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
-                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposal_accepted'">
+                                <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposal_accepted'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Smart contract created</h1>
@@ -502,7 +503,7 @@
                                     </div>
                                 </div>
 
-                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'completed'">
+                                <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'completed'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Contract Completed</h1>
