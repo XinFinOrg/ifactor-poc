@@ -18,13 +18,17 @@ angular.module('MainCtrl', []).controller('MainController',['$scope', '$rootScop
 		$scope.templateUrlDashboard = $scope.dashboardUrl[type];
 	};
 
+	$scope.gotoDashboard = function() {
+			console.log('inside gotoDashboard');
+			$location.path('/dashboard');		
+	};
+ 
 	GetPost.get({ url : '/startApp' }, function(err, resp) {
 		if (!resp.status) {
 			$location.path('/login');
 		} else {
 			$rootScope.userType = resp.data.userType;
 			//$location.path('/dashboard');
-			console.log('hgfthjghj,,jk.')
 			GetPost.get({ url : '/getBalance' }, function(err, resp) {
 				if (resp.status) {
 					$rootScope.balance = resp.data.balance;

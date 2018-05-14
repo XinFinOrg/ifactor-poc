@@ -31,6 +31,13 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 
     });
 
+
+	GetPost.get({ url : '/getBalance' }, function(err, resp) {
+		if (resp.status) {
+			$rootScope.balance = resp.data.balance;
+		}
+    });
+
 	var invoiceStatusMap = Helper.invoiceStatusMap;
 
 	$scope.date = new Date();

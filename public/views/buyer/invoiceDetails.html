@@ -291,7 +291,7 @@
                     </div>
                 </section>
                 
-                <section class="box" >
+                <section class="box" ng-show="isTransferEvents()">
                     <div class="content-body">
                         <div class="panel_header">
                             <div class="row">
@@ -516,7 +516,7 @@
                     </div>
                 </section>
             </div>
-            <div class="col-xs-12 col-md-3 col-lg-3">
+            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.state == 'completed'">
                 <section class="box">
                     <div class="content-body">
                         <div class="row">
@@ -535,7 +535,7 @@
                 </section>
             <!-- MAIN CONTENT AREA ENDS -->
             </div>
-            <div class="col-xs-12 col-md-3 col-lg-3">
+            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.state == 'completed'">
                 <section class="box">
                     <div class="content-body">
                         <div class="row">

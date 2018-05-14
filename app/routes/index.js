@@ -620,6 +620,22 @@ var getInvoiceDates = function(invoiceHistory) {
 	return created;
 }
 
+
+router.get('/getBalance', async(function(req, res) {
+	if (!req.user || !web3Conf) {
+		return {status : true, data : {balance : 0}};
+	}
+	if (web3Conf) {
+		try {
+		    var balance = await (web3Helper.getBalance(req.user.address));
+		    balance = balance.toNumber();
+			return {status : true, data : {balance : 0}};
+		} catch(e) {
+			return {status : false, error : 'blockchain error'};
+		}
+	}
+}));
+
 router.post('/getInvoiceDetails', async(function(req, res) {
 	let invoiceId = req.body.invoiceId;
 	//'invoiceId' : new ObjectID(invoiceId)}

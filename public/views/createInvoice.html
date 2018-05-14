@@ -6,6 +6,30 @@ select.soflow, select.soflow-color
 {
     border-radius: 0;
 }
+.myLabel {
+    position: relative;
+}
+.myLabel input {
+    position: absolute;
+    z-index: 2;
+    opacity: 0;
+    width:100%;
+    height:100%;
+}
+.myLabel {
+    border: 2px solid #AAA;
+    border-radius: 4px;
+    padding: 2px 5px;
+    margin: 2px;
+    background: #DDD;
+    display: inline-block;
+}
+.myLabel:hover {
+    background: #CCC;
+}
+.myLabel:active {
+    background: #CCF;
+}
 </style>
 <!-- START CONTAINER -->
 
@@ -48,15 +72,15 @@ select.soflow, select.soflow-color
                             </div>
                             <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-6 has-float-label">
-                                    <input class="form-control input-lg"  ng-model="input.contactName"  placeholder="Contact Name"/>
+                                    <input class="form-control input-lg"  ng-model="input.contactName"  placeholder=" "/>
                                     <label for="conatctName">Contact Name</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg"  ng-model="input.companyPhone" placeholder="Company Phone"/>
+                                    <input class="form-control input-lg"  ng-model="input.companyPhone" placeholder=" "/>
                                     <label for="ComapnyPhone">Company Phone</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg"  ng-model="input.companyEmail" placeholder="Company Email"/>
+                                    <input class="form-control input-lg"  ng-model="input.companyEmail" placeholder=" "/>
                                     <label for="CompanyEmail">Company Email</label>
                                 </div>
                             </div>
@@ -72,16 +96,16 @@ select.soflow, select.soflow-color
                             <div class="col-md-12 invoice-supplier-buy">Purchase Details</div>
                             <div class="row col-md-12">
                                 <div class="col-md-9 has-float-label">
-                                    <input class="form-control input-lg" ng-model="input.purchaseTitle" placeholder="PO Title*" />
+                                    <input class="form-control input-lg" ng-model="input.purchaseTitle" placeholder=" " />
                                     <label for="potitle">PO Title*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <!-- <datepicker>
-                                      <input ng-model="date" placeholder="Payble Date" type="text"/>
+                                      <input ng-model="date" placeholder=" " type="text"/>
                                     </datepicker> -->
                                     <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control">
                                         <div class="input-group">
-                                            <input class="form-control input-lg" ng-model="input.payableDate" placeholder="Payble Date"/>
+                                            <input class="form-control input-lg" ng-model="input.payableDate" placeholder=" "/>
                                             <label for="payable">Payble Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
                                             <i class="fa fa-lg fa-calendar"></i>
@@ -93,7 +117,7 @@ select.soflow, select.soflow-color
                             <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-12 label-invoice">PO</div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" ng-model="input.purchaseNo" placeholder="PO No*" />
+                                    <input class="form-control input-lg" ng-model="input.purchaseNo" placeholder=" " />
                                     <label for="CompanyEmail">PO No*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
@@ -108,19 +132,21 @@ select.soflow, select.soflow-color
                                     </datepicker>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" placeholder="Amount*"  ng-model="input.purchaseAmount" />
+                                    <input class="form-control input-lg" placeholder=" "  ng-model="input.purchaseAmount" />
                                     <label for="amount">Amount*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <button type="button" class="btn btn-default btn-icon btn-round">
+                                    <!-- <button type="button" class="btn btn-default btn-icon btn-round">
                                                 <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
-                                    </button>
-                               
-                                    <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file" 
-                                     ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB" style="display: none"  />
-                                        Image thumbnail: <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/thumb.jpg'"/>
-                                        <i ng-show="invoiceDocs.$error.required">*required</i><br>
-                                        <i ng-show="invoiceDocs.$error.maxSize">File too large 
+                                    </button> -->
+                                    <div class="myLabel">
+                                        <input type="file" ngf-select="ngf-select" ng-model="poDocs" name="file" 
+                                     ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB" />
+                                         <span>Upload File</span>
+                                     </div>
+                                        <img style="width:20px;" ngf-thumbnail="poDocs || '/thumb.jpg'"/>
+                                        <i ng-show="poDocs.$error.required">*required</i><br>
+                                        <i ng-show="poDocs.$error.maxSize">File too large 
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>
                                         <p>{{up.progress}}</p>
                                          </div>
@@ -129,7 +155,7 @@ select.soflow, select.soflow-color
                             <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-12 label-invoice">Invoice</div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" placeholder="Invoice No*" ng-model="input.invoiceNo" />
+                                    <input class="form-control input-lg" placeholder=" " ng-model="input.invoiceNo" />
                                     <label for="invoice">Invoice No*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
@@ -144,17 +170,19 @@ select.soflow, select.soflow-color
                                     </datepicker>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg"  ng-model="input.invoiceAmount" placeholder="Amount*" />
+                                    <input class="form-control input-lg"  ng-model="input.invoiceAmount" placeholder=" " />
                                     <label for="amount">Amount*</label>
                                 </div>
                                  <div class="col-md-3 has-float-label">
-                                    <button type="button" class="btn btn-default btn-icon btn-round">
+                                    <!-- <button type="button" class="btn btn-default btn-icon btn-round">
                                                 <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
-                                    </button>
-                               
-                                    <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file" 
-                                     ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB" style="display: none"  />
-                                        Image thumbnail: <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/thumb.jpg'"/>
+                                    </button> -->
+
+                                    <div class="myLabel">
+                                        <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file" ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"/>
+                                         <span>Upload File</span>
+                                     </div>
+                                        <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/thumb.jpg'"/>
                                         <i ng-show="invoiceDocs.$error.required">*required</i><br>
                                         <i ng-show="invoiceDocs.$error.maxSize">File too large 
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>
@@ -164,13 +192,13 @@ select.soflow, select.soflow-color
                                 <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-12 label-invoice">GRN</div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" ng-model="input.grnNo" placeholder="GRN No*" />
+                                    <input class="form-control input-lg" ng-model="input.grnNo" placeholder=" " />
                                     <label for="CompanyEmail">GRN No*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <datepicker date-format="yyyy-MM-dd" selector="form-control">
                                         <div class="input-group">
-                                            <input class="form-control input-lg" ng-model="input.grnDate" placeholder="GRN Date" />
+                                            <input class="form-control input-lg" ng-model="input.grnDate" placeholder=" " />
                                             <label for="grn">GRN Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
                                             <i class="fa fa-lg fa-calendar"></i>
@@ -179,22 +207,24 @@ select.soflow, select.soflow-color
                                     </datepicker>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" ng-model="input.grnAmount" placeholder="Amount*" />
+                                    <input class="form-control input-lg" ng-model="input.grnAmount" placeholder=" " />
                                     <label for="amount">Amount*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <button type="button" class="btn btn-default btn-icon btn-round">
+                                    <!-- <button type="button" class="btn btn-default btn-icon btn-round">
                                                 <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
-                                    </button>
-                               
-                                    <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file" 
-                                     ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB" style="display: none"  />
-                                        Image thumbnail: <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/thumb.jpg'"/>
-                                        <i ng-show="invoiceDocs.$error.required">*required</i><br>
-                                        <i ng-show="invoiceDocs.$error.maxSize">File too large 
+                                    </button> -->
+
+                                    <div class="myLabel">
+                                        <input type="file" ngf-select="ngf-select" ng-model="grnDocs" name="file"ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"/>
+                                         <span>Upload File</span>
+                                     </div>
+                                        <img style="width:20px;" ngf-thumbnail="grnDocs || '/thumb.jpg'"/>
+                                        <i ng-show="grnDocs.$error.required">*required</i><br>
+                                        <i ng-show="grnDocs.$error.maxSize">File too large 
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>
                                         <p>{{up.progress}}</p>
-                                         </div>
+                                    </div>
                                 </div>
                             </div>
                             </div>

@@ -42,6 +42,7 @@
     });
 
 	$scope.gotoDashboard = function() {
+		console.log('gotoDashboard')
 		$location.path('/dashboard');
 	}
 
@@ -221,6 +222,14 @@
 			$scope.getInvoiceDetails();
 	    });
 
+	};
+
+	$scope.isTransferEvents = function() {
+		var events = $scope.transferEvents;
+		if (!events || events.length < 1) {
+			return false;
+		}
+		return true;
 	};
 
 	$scope.payInvoice = function () {
