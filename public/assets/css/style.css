@@ -303,13 +303,15 @@ section.box.marginBottom0,
 
 .trans_det{margin-top: 5px;}
 
+.button-group{margin-bottom: 10px !important;}
+
 hr {margin-top: 15px; margin-bottom: 15px;}
 
 .success {color:#14a15d;font-size:14px!important;line-height:18px;font-weight:400!important;margin-top:15px!important;margin-left:0px!important;}
 .success .fa {font-size:10px!important;}
 .success i {display: inline-block;float:left;border-radius: 50%;background-color: #14a15d!important;color: #FFFFFF!important;padding:4px!important;margin-right:5px;}
 
-.success-response i{background-color: #777dcb!important;}
+.success-response i{background-color: #777dcb!important; padding: 4px 6px!important;}
 .success-response {color:#777dcb !important;}
 .rejected {color:#d33a3c;font-size:14px!important;line-height:18px;font-weight:400!important;margin-top:5px!important;margin-left:0px!important;}
 .rejected .fa {font-size:10px!important;}

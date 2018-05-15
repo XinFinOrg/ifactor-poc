@@ -358,19 +358,21 @@
                                     </div>
                                 </div>
 
-                                <div class="transaction-details" ng-show="invoiceData.state == 'invoice_created'">
+                                <div class="col-md-12 transaction-details" ng-show="invoiceData.state == 'invoice_created'">
                                     <div class="clearfix"></div>
-                                    <h1 class="f-w-4">Respond Now</h1>
+                                    <h1 class="text-uppercase success-response success"><i class="fa fa-question icon-rounded icon-primary"></i>Respond Now</h1>
                                     <div>
+                                    <br>
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <textarea rows="6" class="form-control input-lg" id="description" ng-model="invoiceActionForm.remark" placeholder="Description*"></textarea>
+                                                <!-- <textarea rows="6" class="form-control input-lg" id="description" ng-model="invoiceActionForm.remark" placeholder="Description*"></textarea> -->
+                                                <textarea ng-model="invoiceActionForm.remark" style="height:150px !important" class="form-control input-lg" id="description" placeholder="Remarks*"></textarea>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group button-group">
                                             <button type="submit" class="btn btn-lg btn-primary btn-corner btn-block" ng-click="approveInvoice()">Approve</button>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group button-group">
                                             <button type="submit" class="btn btn-lg btn-border btn-primary btn-corner btn-block" ng-click="rejectInvoice()">Reject</button>
                                         </div>
                                     </div>
@@ -460,7 +462,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_prepaid'">
+                                <div class="col-md-12 transaction-details trans_det p-l-8" ng-show="invoiceData.state == 'ifactor_prepaid'">
                                     <div class="clearfix"></div>
                                     <div class="transaction-details">
                                         <h5 class="text-dark">Total Amount <span class="text-dark">$ {{invoiceData.invoiceAmount}}</span></h5>
