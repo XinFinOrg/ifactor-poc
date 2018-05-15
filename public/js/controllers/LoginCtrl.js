@@ -16,4 +16,13 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 				$location.path('/dashboard');
         });
 	}
+	$scope.isShowPassword = false;
+	$scope.showHideText = 'SHOW';
+	$scope.showHideType = 'password';
+	$scope.togglePasswordField = function() {
+		$scope.isShowPassword = !$scope.isShowPassword;
+		$scope.showHideText = !$scope.isShowPassword ? 'SHOW' : 'HIDE';			
+		$scope.showHideType = !$scope.isShowPassword ? 'password' : 'text';
+	}
+
 }]);

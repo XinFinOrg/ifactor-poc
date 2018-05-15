@@ -654,16 +654,16 @@ font-size: 13px;
                                             <h5 class="text-dark no-bottom-padd">Days to Payout <span class="text-dark">{{invoiceData.daysToPayout}}</span></h5>
                                             <hr>
                                             <div class="clearfix"></div>
-                                            <h5 class="text-dark"><strong>Final Amount </strong><span class="text-dark"><strong>$17,000</strong></span></h5>
+                                            <h5 class="text-dark"><strong>Final Amount </strong><span class="text-dark"><strong>${{invoiceData.balancePayment}}</strong></span></h5>
                                             <div>
                                             </div>
                                              <h5 class="text-dark">XDC to USD<span class="text-dark">$1</span></h5>
                                             <div>
                                             </div>
-                                            <h5 class="text-dark">Payable XDC<span class="text-dark">30,000</span></h5>
+                                            <h5 class="text-dark">Payable XDC<span class="text-dark">{{invoiceData.balancePayment}}</span></h5>
                                             <div>
                                             </div>
-                                            <h5 class="text-dark">Date<span class="text-dark">31 Dec 2018, 16:30</span></h5>
+                                            <h5 class="text-dark">Date<span class="text-dark">{{invoiceData.payableDate | date : "dd MMM y, hh:mm"}}</span></h5>
                                             <div>
                                             </div>
                                         </div>
