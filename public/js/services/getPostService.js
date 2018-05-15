@@ -1,4 +1,4 @@
-angular.module('GetPostService', []).factory('GetPost', ['$http', '$rootScope', function($http, $rootScope) {
+angular.module('GetPostService', []).factory('GetPost', ['$http', '$rootScope', 'ngToast', function($http, $rootScope, ngToast) {
 
         /* Post data */
         var post  = function(input, cb) {

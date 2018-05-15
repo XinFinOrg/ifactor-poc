@@ -1,4 +1,4 @@
-angular.module('HelperService', []).factory('Helper', ['$http', function($http) {
+angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', function($http, ngToast) {
 
     var invoiceStatusMap = {
         "Supplier": {
@@ -209,11 +209,45 @@ angular.module('HelperService', []).factory('Helper', ['$http', function($http) 
         ];
     };
 
+    var alertData = {
+        'request_payment' : {
+            msg : 'Your payment request is submitted successfully',
+            class : 'success'
+        },
+
+        'signup' : {
+            msg : 'Congratulations, your account is created successfully',
+            class : 'success'
+        },
+        'submit_invoice' :{
+            msg : 'Invoice is created successfully',
+            class : 'success'
+        },
+        'save_invoice' : {
+            msg : 'Invoice is saved',
+            class : 'success'
+        }   
+    };
+
+    var createToast = function(msg, className='success') {
+        ngToast.create({
+            className: className, // "success", "info", "warning" or "danger"
+            content: msg
+        });
+    };
+
+    var showAlert = function(type) {
+        var alert = alertData[type] || {msg : '', class : 'success'};
+        createToast(alert.msg, alert.class);
+    };
+
     return {
         invoiceStatusMap : invoiceStatusMap,
         stateOptions : stateOptions,
         statusClassMap : statusClassMap,
-        companyTypeOptions : companyTypeOptions
+        companyTypeOptions : companyTypeOptions,
+        showAlert : showAlert,
+        createToast : createToast
     }
 
 }]);

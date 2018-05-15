@@ -9,6 +9,7 @@ angular.module('SignUpCtrl', []).controller('SignUpController',['$scope', '$root
 			if (!resp.status) {
 				console.log('error')
 			} else {
+				Helper.showAlert('signup');
 				$location.path('/login');
 			}
 	    });

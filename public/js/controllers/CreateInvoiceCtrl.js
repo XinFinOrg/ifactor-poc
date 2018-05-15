@@ -144,6 +144,11 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
 	        }
 	    }).then(function (resp) {
 	    	console.log(resp);
+	    	if (type == 'draft') {
+				Helper.showAlert('save_invoice');
+	    	} else {
+				Helper.showAlert('submit_invoice');
+	    	}
 			$location.path('/dashboard');
 	    }, function (resp) {
 	        console.log('Error status: ' + resp.status);

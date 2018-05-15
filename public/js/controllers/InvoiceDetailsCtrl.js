@@ -45,19 +45,17 @@
 		$location.path('/dashboard');
 	}
 
-	var showAlert = function(msg, className='success') {
+	/*var showAlert = function(msg, className='success') {
 		ngToast.create({
 			className: className, // "success", "info", "warning" or "danger"
 			horizontalPosition : 'center',
 			content: msg
 		});
-	};
+	};*/
 
 	$scope.toastReqPayment = function() {
 		console.log('payment request')
-		//ngToast.create('Your payment request is submitted successfully');
-		var msg = 'Your payment request is submitted successfully';
-		showAlert(msg);
+		Helper.showAlert('request_payment');
 	}
 
 	var invoiceStatusMap = Helper.invoiceStatusMap;
