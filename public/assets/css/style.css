@@ -190,8 +190,8 @@ section.box.marginBottom0,
 #buyer-header i {display: block;float:left; padding-top: 5px;}
 #buyer-header img {display: block;float:left;max-width:45px;}
 .info-details {display:block;}
-.label-header{padding-left: 50px;}
-.label-header-title{padding-left: 5px;}
+.label-header{padding-left: 50px; }
+.label-header-title{padding-left: 5px; }
 /*.info-details i {margin-top:5px;margin-right:5px;color:#c2c2c2;}*/
 
 .purchase-details {display: block;padding-bottom:10px;}
