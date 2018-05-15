@@ -190,8 +190,8 @@ section.box.marginBottom0,
 #buyer-header i {display: block;float:left; padding-top: 5px;}
 #buyer-header img {display: block;float:left;max-width:45px;}
 .info-details {display:block;}
-.label-header{padding-left: 50px; }
-.label-header-title{padding-left: 5px; }
+.label-header{padding-left: 55px; }
+/*.label-header-title{padding-left: 5px; }*/
 /*.info-details i {margin-top:5px;margin-right:5px;color:#c2c2c2;}*/
 
 .purchase-details {display: block;padding-bottom:10px;}
@@ -255,7 +255,7 @@ section.box.marginBottom0,
 /*------------ Buyer Pending box ------------*/
 
 /*------------ Buyer Rejected box ------------*/
-#buyer-header-rejected {display: inline-block;margin-top:5px;margin-bottom:15px;}
+#buyer-header-rejected {display: inline-block;margin-top:5px;}
 #buyer-header-rejected .info-details {display:block;}
 #buyer-header-rejected .buyer-title {font-size:15px;font-weight:400;color: #ee5e17;}
 #buyer-header-rejected i {display: inline-block;float:left;border-radius: 50%;background-color: #ee5e17;color: #FFF;}
@@ -320,7 +320,7 @@ hr {margin-top: 15px; margin-bottom: 15px;}
 .rejected i {display: inline-block;float:left;border-radius: 50%;background-color: #d33a3c!important;color: #FFFFFF!important;padding:4px!important;margin-right:5px;}
 
 
-.pending {color:#fe8b16;font-size:14px!important;line-height:18px;font-weight:400!important;margin-top:5px!important;margin-left:0px!important;}
+.pending {color:#fe8b16;font-size:14px!important;line-height:18px;font-weight:400!important;margin-left:0px!important;}
 .pending .fa {font-size:10px!important;}
 .pending i {display: inline-block;float:left;border-radius: 50%;background-color: #fe8b16!important;color: #FFFFFF!important;padding:4px 8px;!important;margin-right:5px;}
 /*------------ Buyer Pending box ------------*/

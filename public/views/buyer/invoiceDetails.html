@@ -442,7 +442,7 @@
                                 <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposal_accepted'">
                                     <div class="clearfix"></div>
 
-                                    <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Smart contract created</h1>
+                                    <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Smart contract created</h1>
                                     <p>{{ invoiceData.created.ifactor_proposal_accepted | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
@@ -508,7 +508,7 @@
                                 <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'completed'">
                                     <div class="clearfix"></div>
 
-                                    <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Contract Completed</h1>
+                                    <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Contract Completed</h1>
                                     <p>{{ invoiceData.created.completed | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 
