@@ -18,14 +18,16 @@ select.soflow, select.soflow-color
 }
 .myLabel {
     border: 2px solid #AAA;
-    border-radius: 4px;
+    border-radius: 15px;
     padding: 2px 5px;
     margin: 2px;
     background: #DDD;
     display: inline-block;
+    color: #000;
 }
 .myLabel:hover {
-    background: #CCC;
+    background: #283593;
+    color: #fff;
 }
 .myLabel:active {
     background: #CCF;
@@ -139,10 +141,11 @@ select.soflow, select.soflow-color
                                     <!-- <button type="button" class="btn btn-default btn-icon btn-round">
                                                 <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
                                     </button> -->
+
                                     <div class="myLabel">
                                         <input type="file" ngf-select="ngf-select" ng-model="poDocs" name="file" 
                                      ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB" />
-                                         <span>Upload File</span>
+                                         <i class="fa fa-cloud-upload"></i> <span>Browse File</span>
                                      </div>
                                         <img style="width:20px;" ngf-thumbnail="poDocs || '/thumb.jpg'"/>
                                         <i ng-show="poDocs.$error.required">*required</i><br>
@@ -180,7 +183,7 @@ select.soflow, select.soflow-color
 
                                     <div class="myLabel">
                                         <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file" ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"/>
-                                         <span>Upload File</span>
+                                          <i class="fa fa-cloud-upload"></i> <span>Browse File</span>
                                      </div>
                                         <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/thumb.jpg'"/>
                                         <i ng-show="invoiceDocs.$error.required">*required</i><br>
@@ -217,7 +220,7 @@ select.soflow, select.soflow-color
 
                                     <div class="myLabel">
                                         <input type="file" ngf-select="ngf-select" ng-model="grnDocs" name="file"ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"/>
-                                         <span>Upload File</span>
+                                          <i class="fa fa-cloud-upload"></i> <span>Browse File</span>
                                      </div>
                                         <img style="width:20px;" ngf-thumbnail="grnDocs || '/thumb.jpg'"/>
                                         <i ng-show="grnDocs.$error.required">*required</i><br>
