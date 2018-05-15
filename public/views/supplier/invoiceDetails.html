@@ -632,7 +632,7 @@ font-size: 13px;
                                     </div>
                                 </div>
 
-                                <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_prepaid'|| invoiceData.state == 'invoice_paid'">
+                                <div class="col-md-12 trans_det" ng-show="invoiceData.state == 'ifactor_prepaid'|| invoiceData.state == 'invoice_paid'">
 
                                    <!--  <div id="buyer-header-sent">
                                         <i class="fa fa-number icon-rounded icon-primary ">{{invoiceData.daysToPayout}}</i>
@@ -708,7 +708,7 @@ font-size: 13px;
                                         <p>31 Dec 2018, 16:30</p>
                                     </div> -->
                                     
-                                    <div class="transaction-details no-bottom-padd">
+                                    <div class="transaction-details trans_det no-bottom-padd">
                                             <h5 class="text-dark">Total Amount <span class="text-dark">$ {{invoiceData.invoiceAmount}}</span></h5>
                                             <div class="clearfix"></div>
                                             <h5 class="text-dark">First Payment <span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
