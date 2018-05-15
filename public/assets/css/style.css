@@ -3691,6 +3691,7 @@ border-left: 3px solid transparent;
 .page-topbar .logo-area {
     background-image: url('../images/logo.png');
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 .page-topbar.sidebar_shift .logo-area {
     background-image: url('../images/logo.png');
