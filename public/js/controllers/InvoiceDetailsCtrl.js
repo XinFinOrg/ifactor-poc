@@ -2,8 +2,7 @@
 			'$location', 'GetPost', 'Helper', '$routeParams', 'ngToast',
 			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast) {
 
-	ngToast.create('a toast message hgju  gjumgykmuygk hmjhmhk');
-	$scope.priceSlider = 100;
+		$scope.priceSlider = 100;
        $scope.factorSliderOptions = {
             floor: 0,
             ceil: 100
@@ -46,9 +45,19 @@
 		$location.path('/dashboard');
 	}
 
+	var showAlert = function(msg, className='success') {
+		ngToast.create({
+			className: className, // "success", "info", "warning" or "danger"
+			horizontalPosition : 'center',
+			content: msg
+		});
+	};
+
 	$scope.toastReqPayment = function() {
 		console.log('payment request')
-		ngToast.create('Your payment request is submitted successfully');
+		//ngToast.create('Your payment request is submitted successfully');
+		var msg = 'Your payment request is submitted successfully';
+		showAlert(msg);
 	}
 
 	var invoiceStatusMap = Helper.invoiceStatusMap;
@@ -72,6 +81,10 @@
 		console.log('this.state.', state);
 		var status = invoiceStatusMap[$rootScope.userType][state];
 		return status;
+	}
+
+	$scope.getStatusClass = function(state) {
+		return Helper.statusClassMap[state];
 	}
 
 
@@ -260,7 +273,7 @@
 	$scope.acceptFactoringForm = {
 			platformCharges : 0,
 			saftyPercentage : 0,
-			acceptFactoringRemark : ''
+			acceptFactoringRemark : '',
 	};
 
 	// used
@@ -270,6 +283,7 @@
 			invoiceId : $rootScope.invoiceId,
 			input :	$scope.acceptFactoringForm
 		}
+		data.input.invoiceAmount = $scope.invoiceData.invoiceAmount;
 		GetPost.post(data, function(err, resp) {
 			$scope.factorFlags.proceedIfactorRequest = false;
 			$scope.getInvoiceDetails();

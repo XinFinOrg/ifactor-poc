@@ -95,6 +95,7 @@ var addInvoice = async (function(invoice) {
 });
 
 var factoringProposal = async (function(invoice) {
+    console.log('invoice', invoice)
     var mm = await (contractInstance.addFactoring(
         invoice.invoiceId,
         invoice.financerAddress,

@@ -11,7 +11,7 @@ var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var fs = require('fs');
 var PATH = require('path');
-var web3Conf = false;
+var web3Conf = true;
 if (web3Conf) {
 	var web3Helper = require('./web3Helper');
 }
@@ -279,9 +279,10 @@ router.post('/factoringProposal', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
 	var invoice = {
 		invoiceId : invoiceId,
+		invoiceAmount : parseInt(input.invoiceAmount) || 0,
 		financerAddress : req.user.address,
-		platformCharges : parseInt(input.platformCharges),
-		saftyPercentage : parseInt(input.saftyPercentage)
+		platformCharges : parseInt(input.platformCharges) || 0,
+		saftyPercentage : parseInt(input.saftyPercentage) || 0
 	};
 
 	var tx;

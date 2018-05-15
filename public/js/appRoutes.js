@@ -1,4 +1,14 @@
-angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', 'ngToastProvider', function(
+	$routeProvider, $locationProvider, ngToast, ngToastProvider) {
+
+    ngToast.configure({
+      verticalPosition: 'bottom',
+      horizontalPosition: 'center',
+      maxNumber: 4,
+      combineDuplications: true,
+      newestOnTop: true,
+      animation: 'fade'
+    });
 
 	$routeProvider
 
