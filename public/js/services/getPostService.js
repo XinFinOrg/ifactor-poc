@@ -1,12 +1,14 @@
-angular.module('GetPostService', []).factory('GetPost', ['$http', function($http) {
+angular.module('GetPostService', []).factory('GetPost', ['$http', '$rootScope', function($http, $rootScope) {
 
         /* Post data */
         var post  = function(input, cb) {
             // var url = getUrl(input);
             console.log('getpost');
             console.log(input);
+            $rootScope.isMainLoader = true;
             $http.post(input.url, input)
             .then(function(resp) {
+                $rootScope.isMainLoader = false;
                 console.log('inside getpost post')
                 /* Success */
                 console.log('resp', resp);
@@ -24,10 +26,10 @@ angular.module('GetPostService', []).factory('GetPost', ['$http', function($http
 
         var get = function(input, cb) {
             var url = input.url;
+            $rootScope.isMainLoader = true;
             $http.get(url)
             .then(function(resp) {
-                //console.log('resp : ' + JSON.stringify(resp, null, 4));
-                /* Success */
+                $rootScope.isMainLoader = false;
                 if (!(resp.data && resp.data.success)) {
                     console.log("get: could not get data to ");
                     return cb(1, resp.data);

@@ -251,11 +251,11 @@
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
                                     <div class="blockchain-titles">Eligible Amount</div>
-                                    <div class="blockchain-content">{{tx.args.factorCharges}}% (<span>&#36;</span>{{tx.args.firstPayment}})</div>
+                                    <div class="blockchain-content">{{tx.args.factorSaftyPercentage}}% (<span>&#36;</span>{{tx.args.firstPayment}})</div>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
-                                    <div class="blockchain-titles">Approval Date</div>
-                                    <div class="blockchain-content">20 Apr 2019, 18:44</div>
+                                    <div class="blockchain-titles">Proposal Date</div>
+                                    <div class="blockchain-content">{{tx.args.created | date : "dd MMM y, hh:mm"}}</div>
                                 </div>
                             </div>
                              <div class="col-md-12 padd_15">
@@ -267,7 +267,7 @@
                                     <strong>=</strong>                                    </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
                                     <div class="blockchain-titles">First Payment</div>
-                                    <div class="blockchain-content"><strong>{{tx.args.factorCharges}}% (<span>&#36;</span>{{tx.args.firstPayment}})</strong></div>
+                                    <div class="blockchain-content"><strong>{{tx.args.factorSaftyPercentage}}% (<span>&#36;</span>{{tx.args.firstPayment}})</strong></div>
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
                                     <strong>+</strong>
@@ -280,7 +280,7 @@
                                     <strong>+</strong>                                    </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
                                     <div class="blockchain-titles">Interest Charges</div>
-                                    <div class="blockchain-content"><strong>{{tx.args.factorSaftyPercentage}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
+                                    <div class="blockchain-content"><strong>{{tx.args.factorCharges}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
                                 </div>
                             </div>
                             <div class="col-md-12 padd_bottom_15">

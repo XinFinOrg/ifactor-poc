@@ -63,7 +63,33 @@
     <script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
 	
 </head>
+<style type="text/css">
+.ajax-loader-div { 
+    height: 100%;
+    position: fixed;
+    /*background-color: grey;*/
+    width: 100%;
+    opacity: 0.4;
+    z-index: 1001;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+.ajax-loader {
+    position: fixed;
+    margin: auto;
+    z-index: 1002;
+    left: 35%;
+    top: 30%;
+    
+}
+</style>
+
 <body ng-app="sampleApp" ng-controller="NerdController">
+    <div class="ajax-loader-div" ng-show="isMainLoader">
+        <img src="assets/images/loader1.gif" class="ajax-loader">
+    </div>
     <div class="page-topbar">
         <div class="container">
             <div class="logo-area" ng-click="gotoDashboard()">
