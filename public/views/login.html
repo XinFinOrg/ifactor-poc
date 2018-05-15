@@ -28,7 +28,7 @@
                         <div class="content-body">
                             <!-- <form action="" id="loginForm" class="" method="post" enctype="multipart/form-data" accept-charset="utf-8" novalidate="novalidate"> -->
                             <!-- START -->
-                            <span ng-click="togglePasswordField()" style="color: blue">{{showHideText}}</span>
+                            <!-- <span ng-click="togglePasswordField()" style="color: blue">{{showHideText}}</span> -->
                             <div class="row">
                                 <div class="col-xs-12 has-float-label">
                                     <input class="form-control input-lg input-lg-login" id="email" type="email" placeholder="" name="username" ng-model="username" />
@@ -39,6 +39,7 @@
                                 <div class="col-xs-12 has-float-label">
                                     <input type="{{showHideType}}" class="form-control input-lg input-lg-login" id="password" placeholder="" ng-model="password" /> 
                                     <label for="password">Password*</label>
+                                    <span class="showpass" ng-click="togglePasswordField()" style="color: blue">{{showHideText}}</span>
                                 </div>
                             </div>
                             

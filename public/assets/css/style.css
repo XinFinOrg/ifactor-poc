@@ -922,7 +922,12 @@ a:hover, a:focus {
     top: 8px;
     position: relative;
 }
-
+.showpass
+{
+    position: absolute !important;
+    left: 350px !important;
+    top: 25px !important;
+}
 
 /*----------------------------------------
   footer
