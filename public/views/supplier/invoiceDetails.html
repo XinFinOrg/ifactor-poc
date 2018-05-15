@@ -458,8 +458,8 @@ font-size: 13px;
                                         <p>{{ invoiceData.created.ifactor_request | date : "dd MMM y hh:mm"}}</p>
                                     </div>
                                     <div class="transaction-details m-b-10">
-                                        <p class="text-muted text-uppercase" style="font-size: 14px;">Amount</p>
-                                        <h1 class="f-w-4 no-bottom-padd" style="font-size: 16px">$ {{invoiceData.invoiceAmount}}</h1>
+                                        <div class=" blockchain-titles text-uppercase">Amount</div>
+                                        <div class="blockchain-content no-bottom-padd">$ {{invoiceData.invoiceAmount}}</div>
                                         <div>
                                         </div>
                                     </div>
@@ -482,8 +482,9 @@ font-size: 13px;
                                 </div>
 
                             <!-- factoring proposed -->
-                            <div class="col-md-12 padd_0" ng-show="invoiceData.state == 'ifactor_proposed'">
-                                <h4 class="m-b-20 f-w-6 text-uppercase text-primary response-now">Response Now</h4>
+                            <div class="col-md-12 " ng-show="invoiceData.state == 'ifactor_proposed'">
+                            <!-- <h1 class="success"> Smart Contract Created</h1> -->
+                                <h1 class="text-uppercase success-response success"><i class="fa fa-check icon-rounded icon-primary"></i>Response Now</h1>
 
                                 <div class="transaction-details">
                                     <div class="blockchain-titles text-uppercase">Mode</div>
@@ -648,7 +649,7 @@ font-size: 13px;
                                             <div class="clearfix"></div>
                                             <h5 class="text-dark">Charges <span class="text-dark">$ {{invoiceData.charges}}</span></h5>
                                             <div class="clearfix"></div>
-                                            <h5 class="text-dark">Days to Payout <span class="text-dark">{{invoiceData.daysToPayout}}</span></h5>
+                                            <h5 class="text-dark no-bottom-padd">Days to Payout <span class="text-dark">{{invoiceData.daysToPayout}}</span></h5>
                                             <hr>
                                             <div class="clearfix"></div>
                                             <h5 class="text-dark"><strong>Final Amount </strong><span class="text-dark"><strong>$17,000</strong></span></h5>
@@ -665,12 +666,12 @@ font-size: 13px;
                                             </div>
                                         </div>
 
-                                    <div class="transaction-details m-b-10">
+                                    <!-- <div class="transaction-details m-b-10">
                                         <p class="text-muted text-uppercase">Address</p>
                                          <h1 class="f-size-14 no-bottom-padd">{{invoiceData.financerAddress}}</h1>
                                         <div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <button type="submit" ng-click="toastReqPayment()" class="btn btn-lg btn-primary btn-corner btn-block">Request Payment</button>
                                     </div>
@@ -690,10 +691,11 @@ font-size: 13px;
                                 </div>
                                 <div class="col-md-12" ng-show="invoiceData.state == 'completed'">
                                     <div id="buyer-header-approved">
-                                        <i class="fa fa-check icon-rounded icon-primary inviewport visible"></i>
+                                        <!-- <i class="fa fa-check icon-rounded icon-primary inviewport visible"></i> -->
 
                                         <div class="info-details">
-                                            <h1 class="buyer-title text-uppercase">Payment Received</h1>
+                                            <!-- <h1 class="buyer-title text-uppercase"></h1> -->
+                                            <h1 class="success text-uppercase"><i class="fa fa-check icon-rounded icon-primary"></i> Payment Received</h1>
 
                                         </div>
                                     </div>
@@ -716,11 +718,20 @@ font-size: 13px;
                                             <h5 class="text-dark">Charges <span class="text-dark">{{invoiceData.charges}}</span></h5>
                                             <hr>
                                             <div class="clearfix"></div>
-                                            <h5 class="text-dark f-w-6">Total Amount <span class="text-dark">$ {{invoiceData.firstPayment + invoiceData.balancePayment}}</span></h5>
+                                            <h5 class="text-dark ">Final Amount <span class="text-dark">$ {{invoiceData.firstPayment + invoiceData.balancePayment}}</span></h5>
+                                            <div></div>
+                                             <h5 class="text-dark">XDC to USD<span class="text-dark">$1</span></h5>
                                             <div>
                                             </div>
+                                            <h5 class="text-dark">Payable XDC<span class="text-dark">30,000</span></h5>
+                                            <div>
+                                            </div>
+                                            <h5 class="text-dark">Date<span class="text-dark">31 Dec 2018, 16:30</span></h5>
+                                            <div>
+                                            </div>
+                                            </div>
                                             
-                                            <p class="f-size-12">Estimated Amount is Balance Amount-Processing Charges ( After deducting Factoring Charges )</p>
+                                            
                                         </div>
                                 </div>
 
