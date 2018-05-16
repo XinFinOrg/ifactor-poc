@@ -17,17 +17,24 @@ select.soflow, select.soflow-color
     height:100%;
 }
 .myLabel {
-    border: 2px solid #AAA;
+    /*border: 2px solid #AAA;*/
     border-radius: 15px;
     padding: 2px 5px;
     margin: 2px;
     background: #DDD;
     display: inline-block;
     color: #000;
+    width: 50%
 }
 .myLabel:hover {
     background: #283593;
     color: #fff;
+    -o-transition:.5s;
+  -ms-transition:.5s;
+  -moz-transition:.5s;
+  -webkit-transition:.5s;
+  /* ...and now for the proper property */
+  transition:.5s;
 }
 .myLabel:active {
     background: #CCF;
@@ -145,9 +152,9 @@ select.soflow, select.soflow-color
                                     <div class="myLabel">
                                         <input type="file" ngf-select="ngf-select" ng-model="poDocs" name="file" 
                                      ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB" />
-                                         <i class="fa fa-cloud-upload"></i> <span>Browse File</span>
+                                         <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse File</span>
                                      </div>
-                                        <img style="width:20px;" ngf-thumbnail="poDocs || '/thumb.jpg'"/>
+                                        <img style="width:20px;" ngf-thumbnail="poDocs || '/assets/images/apple-touch-icon-72.png'"/>
                                         <i ng-show="poDocs.$error.required">*required</i><br>
                                         <i ng-show="poDocs.$error.maxSize">File too large 
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>
@@ -183,9 +190,9 @@ select.soflow, select.soflow-color
 
                                     <div class="myLabel">
                                         <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file" ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"/>
-                                          <i class="fa fa-cloud-upload"></i> <span>Browse File</span>
+                                          <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse File</span>
                                      </div>
-                                        <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/thumb.jpg'"/>
+                                        <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/assets/images/apple-touch-icon-72.png'"/>
                                         <i ng-show="invoiceDocs.$error.required">*required</i><br>
                                         <i ng-show="invoiceDocs.$error.maxSize">File too large 
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>
@@ -220,9 +227,9 @@ select.soflow, select.soflow-color
 
                                     <div class="myLabel">
                                         <input type="file" ngf-select="ngf-select" ng-model="grnDocs" name="file"ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"/>
-                                          <i class="fa fa-cloud-upload"></i> <span>Browse File</span>
+                                           <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse File</span>
                                      </div>
-                                        <img style="width:20px;" ngf-thumbnail="grnDocs || '/thumb.jpg'"/>
+                                        <img style="width:20px;" ngf-thumbnail="grnDocs || '/assets/images/apple-touch-icon-72.png'"/>
                                         <i ng-show="grnDocs.$error.required">*required</i><br>
                                         <i ng-show="grnDocs.$error.maxSize">File too large 
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>
