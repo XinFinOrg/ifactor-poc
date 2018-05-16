@@ -21,7 +21,8 @@ var upload = multer({ dest: './public/tmp/'});
 var imgUpload = upload.fields([
 		{name : 'poDocs'},
 		{name : 'invoiceDocs'},
-		{name : 'grnDocs'}
+		{name : 'grnDocs'},
+		{name : 'ifactorProposalDocs'}
 	]);
 
 
@@ -274,7 +275,7 @@ router.post('/requestFactoring', async (function(req, res) {
 	});
 }));
 
-router.post('/factoringProposal', async (function(req, res) {
+router.post('/factoringProposal', imgUpload , async (function(req, res) {
 	let input = req.body.input;
 	let invoiceId = req.body.invoiceId;
 	var invoice = {

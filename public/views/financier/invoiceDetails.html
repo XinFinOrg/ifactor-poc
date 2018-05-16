@@ -17,7 +17,33 @@
 {
     font-size: 24px;
 }
-        </style>
+.myLabel {
+    position: relative;
+}
+.myLabel input {
+    position: absolute;
+    z-index: 2;
+    opacity: 0;
+    width:100%;
+    height:100%;
+}
+.myLabel {
+    border: 2px solid #AAA;
+    border-radius: 15px;
+    padding: 2px 5px;
+    margin: 2px;
+    background: #DDD;
+    display: inline-block;
+    color: #000;
+}
+.myLabel:hover {
+    background: #283593;
+    color: #fff;
+}
+.myLabel:active {
+    background: #CCF;
+}
+</style>
 <!-- START CONTAINER -->
 <div class="page-container row-fluid container-fluid">
     <!-- START CONTENT -->
@@ -468,14 +494,22 @@
                                     </div>
 
                                     <div class="m-b-20">
-                                <div class="transaction-details">
-                                    <div class="blockchain-titles text-uppercase">Attachment</div>
-                                </div>
+                                        <div class="transaction-details">
+                                            <div class="blockchain-titles text-uppercase">Attachment</div>
+                                        </div>
                                         <div class="form-group">
-
-                                            <button type="button" class="btn btn-default btn-icon btn-round">
+                                            <!-- <button type="button" class="btn btn-default btn-icon btn-round">
                                                 <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
-                                            </button>
+                                            </button> -->
+                                            <div class="myLabel">
+                                                <input type="file" ngf-select="ngf-select" ng-model="ifactorProposalDocs" name="file"ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"/>
+                                                  <i class="fa fa-cloud-upload"></i> <span>Browse File</span>
+                                             </div>
+                                            <img style="width:20px;" ngf-thumbnail="ifactorProposalDocs || '/thumb.jpg'"/>
+                                            <i ng-show="ifactorProposalDocs.$error.required">*required</i><br>
+                                            <i ng-show="ifactorProposalDocs.$error.maxSize">File too large 
+                                            {{up.file.size / 1000000|number:1}}MB: max 20M</i>
+                                            <p>{{up.progress}}</p>
                                         </div>
                                     </div>
 
@@ -789,7 +823,7 @@
                                     </div>   
 
                                     <div class="form-group">
-                                        <button ng-click="factoringProposal()" class="btn btn-lg btn-primary btn-corner btn-block">Submit</button>
+                                        <button class="btn btn-lg btn-primary btn-corner btn-block">Submit</button>
                                     </div> 
                             </div>
 

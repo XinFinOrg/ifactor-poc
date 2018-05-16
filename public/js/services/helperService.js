@@ -226,7 +226,35 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', funct
         'save_invoice' : {
             msg : 'Invoice is saved',
             class : 'success'
-        }   
+        },
+        'ifactor_proposal_rejected' : {
+            msg : 'You rejected factoring proposal',
+            class : 'danger'
+        },
+        'ifactor_proposal_accepted' : {
+            msg : 'You accepted factoring proposal',
+            class : 'success'
+        },
+        'ifactor_request' :{
+            msg : 'Your Factoring request is submitted successfully',
+            class : 'info'
+        },
+        'error500' :{
+            msg : 'Internal Server Error',
+            class : 'danger'
+        },
+        'payment_success' : {
+            msg : 'Your Payment is Successful',
+            class : 'success'            
+        },
+        'ifactor_proposed' : {
+            msg : 'Your Factoring Proposal is submitted successfully',
+            class : 'success'            
+        },
+        'ifactor_rejected' : {
+            msg : 'Your rejected factoring request',
+            class : 'success'            
+        },
     };
 
     var createToast = function(msg, className='success') {

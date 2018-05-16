@@ -1,6 +1,6 @@
 	angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',['$scope', '$rootScope', '$http', 
-			'$location', 'GetPost', 'Helper', '$routeParams', 'ngToast',
-			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast) {
+			'$location', 'GetPost', 'Helper', '$routeParams', 'ngToast', 'Upload',
+			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast, Upload) {
 
 		$scope.priceSlider = 100;
        $scope.factorSliderOptions = {
@@ -178,6 +178,7 @@
 			invoiceAmount : $scope.invoiceData.invoiceAmount
 		}
 		GetPost.post(data, function(err, resp) {
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_request');
     		console.log(resp);
     		// 'ifactor_request'
 			$scope.getInvoiceDetails();
@@ -196,6 +197,7 @@
 		}
 		
 		GetPost.post(data, function(err, resp) {
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposal_rejected');
 			$scope.getInvoiceDetails();
 	    });
 
@@ -213,22 +215,23 @@
 			buyerInvoiceRemark : $scope.invoiceActionForm.remark
 		}
 		GetPost.post(data, function(err, resp) {
+			!resp.status ? Helper.showAlert('error500') : 
+				Helper.createToast('You approved Invoice for ' + $rootScope.invoiceId, 'success');
 			$scope.invoiceActionForm = {};
 			$scope.getInvoiceDetails();
 	    });
 
 	};
 
-
 	// used
 	$scope.rejectInvoice = function (input) {
-
 		var data = {
 			url : '/rejectInvoice',
 			invoiceId : $rootScope.invoiceId
 		}
 		GetPost.post(data, function(err, resp) {
-    		console.log(resp);
+			!resp.status ? Helper.showAlert('error500') : 
+				Helper.createToast('You rejected Invoice for ' + $rootScope.invoiceId, 'danger');
     		// invoice_rejected
 			$scope.getInvoiceDetails();
 	    });
@@ -256,8 +259,7 @@
 			invoiceAmount : $scope.invoiceData.invoiceAmount
 		}
 		GetPost.post(data, function(err, resp) {
-    		console.log(resp);
-    		// 'invoice_paid'
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('payment_success');
 			$scope.getInvoiceDetails();
 	    });
 
@@ -273,18 +275,46 @@
 			saftyPercentage : 0,
 			acceptFactoringRemark : '',
 	};
-
+    $scope.ifactorProposalDocs = null;
 	// used
-	$scope.factoringProposal = function (input) {
+	/*$scope.factoringProposal = function (input) {
 		var data = {
 			url : '/factoringProposal',
 			invoiceId : $rootScope.invoiceId,
-			input :	$scope.acceptFactoringForm
+			input :	$scope.acceptFactoringForm,
+			ifactorProposalDocs : $scope.ifactorProposalDocs
 		}
 		data.input.invoiceAmount = $scope.invoiceData.invoiceAmount;
 		GetPost.post(data, function(err, resp) {
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposed');
 			$scope.factorFlags.proceedIfactorRequest = false;
 			$scope.getInvoiceDetails();
+	    });
+	};*/
+
+    $scope.factoringProposal = function (input) {
+		$scope.acceptFactoringForm.invoiceAmount = $scope.invoiceData.invoiceAmount;
+	    Upload.upload({
+	        url: '/factoringProposal',
+            method : 'POST',
+            headers: { 'Content-Type': 'multipart/form-data' },
+            arrayKey : '',
+	        data : {
+				invoiceId : $rootScope.invoiceId,
+				input :	$scope.acceptFactoringForm,
+				ifactorProposalDocs : $scope.ifactorProposalDocs
+	        }
+	    }).then(function (resp) {
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposed');
+			$scope.factorFlags.proceedIfactorRequest = false;
+			$scope.getInvoiceDetails();
+	    }, function (resp) {
+	        console.log('Error status: ' + resp.status);
+	    }, function (evt) { 
+	        console.log(evt);
+	        /*var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+	        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+	        $scope.vm.progress = 'progress: ' + progressPercentage + '% ';*/
 	    });
 	};
 
@@ -302,6 +332,7 @@
 			remark : $scope.proposalActionForm.remark
 		}
 		GetPost.post(data, function(err, resp) {
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_rejected');
 			$scope.factorFlags.proceedIfactorRequest = false;
 			$scope.factorFlags.rejectIfactorRequest = false;
     		// 'ifactor_rejected'
@@ -316,7 +347,7 @@
 				remark : $scope.proposalActionForm.remark
 		}
 		GetPost.post(data, function(err, resp) {
-    		console.log(resp);
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_rejected');
 			$scope.getInvoiceDetails();
 	    });
 	};
@@ -331,7 +362,7 @@
 			buyerAddress : $scope.invoiceData.buyerAddress
 		}
 		GetPost.post(data, function(err, resp) {
-    		console.log(resp);
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('payment_success');
     		// 'ifactor_prepaid'
 			$scope.getInvoiceDetails();
 	    });
@@ -347,6 +378,7 @@
 		}
 		GetPost.post(data, function(err, resp) {
     		console.log(resp);
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('payment_success');
     		// 'completed'
 			$scope.getInvoiceDetails();
 	    });
