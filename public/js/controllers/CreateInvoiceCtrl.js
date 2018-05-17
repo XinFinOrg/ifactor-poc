@@ -40,15 +40,15 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
 	$scope.minPayableDate = new Date().toDateString();
 
     $scope.input = {
-    	companyName : "Company Name",
-		companyType : "Company Type",
-		buyerEmail : '',
+    	companyName : "",
+		companyType : "Food Distributors",
+		buyerEmail : "",
 		buyerAddress : '',
-		contactName : "",
-		companyPhone : "",
-		companyEmail : "",
-		purchaseTitle : "",
-		purchaseNo : "",
+		contactName : "John Smith",
+		companyPhone : "7028460560",
+		companyEmail : "contact@smithnsons.com",
+		purchaseTitle : "DryFruits 100kg Order",
+		purchaseNo : "PO12345",
 		purchaseDate : "",
 		purchaseAmount : "",
 		purchaseDocs : "",
