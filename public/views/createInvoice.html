@@ -124,7 +124,7 @@ select.soflow, select.soflow-color
                                     </datepicker> -->
                                     <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control" class="calendar">
                                         <div class="input-group">
-                                            <input class="form-control input-lg" ng-model="input.payableDate" placeholder=" "/>
+                                            <input class="form-control input-lg" ng-model="input.payableDate" placeholder=" "/  >
                                             <label for="payable">Payble Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
                                             <i class="fa fa-lg fa-calendar"></i>
@@ -271,7 +271,7 @@ select.soflow, select.soflow-color
             <div class="container">
             <div class="pull-right marg_r_10">
                 <button type="submit" class="btn btn-primary btn-corner" ng-click="submitInvoice(input, 'draft')">Save Now</button>
-                <button type="submit" class="btn btn-primary btn-corner" ng-click="submitInvoice(input, 'Invoice_created')">Submit Now</button>
+                <button type="submit" class="btn btn-primary btn-corner" ng-click="submitInvoice(input, 'invoice_created')">Submit Now</button>
             </div>
             </div>
             <!-- MAIN CONTENT AREA ENDS -->

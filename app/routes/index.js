@@ -110,14 +110,18 @@ router.post('/createInvoice', imgUpload, async (function(req, res) {
 	input.supplierEmail = req.user.email;
 	input.supplierName = getFullName(req.user.firstName, req.user.lastName);
 	input.supplierAddress = req.user.address;
-	input.state = 'invoice_created';
-	input.invoiceId = uniqid();
+	input.state = input.state;
+	if (input.invoiceId) {
+		delete input._id;
+	}
+	input.invoiceId = input.invoiceId || uniqid();
 	input.invoiceNo = input.invoiceNo;
 	input.invoiceAmount = parseInt(input.invoiceAmount);
 	input.created = Date.now();
 	var collection = db.getCollection('invoices');
 	var tx;
-	if (web3Conf) {
+	console.log('state', input.state);
+	if (web3Conf && input.state == 'invoice_created') {
 	    try {
 			//web3Helper.addInvoiceEvent(function(err, result) {});
 		    tx = await (web3Helper.addInvoice(input));
@@ -128,12 +132,14 @@ router.post('/createInvoice', imgUpload, async (function(req, res) {
 	    }
 	}
     //upload files
+    console.log('input.invoiceId', input.invoiceId);
 	uploadUserDocs(input.invoiceId, req.files, function(filePaths) {
 		for (var key in filePaths) {
 			input[key] = !filePaths[key] ? (input[key] ? input[key] : '') :   filePaths[key];
 		}
-		collection.save(input, function (err, docs) {
+		collection.update({'invoiceId' : input.invoiceId}, input, {upsert : true}, function (err, docs) {
 		    if (err) {
+		    	console.log(err);
 				return res.send({status : false, error : {
 					errorCode : 'DBError', msg : 'DB Error'
 				}});

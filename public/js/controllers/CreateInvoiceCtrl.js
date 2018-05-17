@@ -1,4 +1,16 @@
-angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$scope', '$rootScope',
+angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) {
+    return {
+        require:'ngModel',
+        link:function (scope, elm, attrs, ctrl) {
+
+            var dateFormat = attrs['date'] || 'yyyy-MM-dd';
+           
+            ctrl.$formatters.unshift(function (modelValue) {
+                return dateFilter(modelValue, dateFormat);
+            });
+        }
+    };
+}).controller('CreateInvoiceController',['$scope', '$rootScope',
  '$http', '$location', 'GetPost', 'Helper', 'Upload',  function($scope, $rootScope,  
  	$http, $location, GetPost, Helper, Upload) {
 
@@ -47,40 +59,42 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
 		contactName : "John Smith",
 		companyPhone : "7028460560",
 		companyEmail : "contact@smithnsons.com",
-		purchaseTitle : "DryFruits 100kg Order",
+		purchaseTitle : "Dryfruits 100kg Order",
 		purchaseNo : "PO12345",
 		purchaseDate : "",
-		purchaseAmount : "",
+		purchaseAmount : 50000,
 		purchaseDocs : "",
 		payableDate : "",
-		invoiceNo : "",
+		invoiceNo : "INV12345",
 		invoiceDate : "",
-		invoiceAmount : "",
+		invoiceAmount : 20000,
 		invoiceDocs : "",
-		grnNo : "",
+		grnNo : "GRN12345",
 		grnDate : "",
 		grnDocs : "",
 		state : "invoice_created",
-		grnAmount : ""
+		grnAmount : 0
 		//buyerId
 		//supplierId
     };
 
     $scope.getBuyerData = function(input) {
-    	
 		input.buyerEmail = $scope.companyNameData.email;
 		input.buyerAddress = $scope.companyNameData.address;
 		input.companyName = $scope.companyNameData.firstName;
-    		
     	return input;
     };
 
-    $scope.submitInvoice2 = function (input, type) {
+	var setCompanyData = function() {
+		$scope.companyNameData.email = input.buyerEmail;
+		$scope.companyNameData.address = input.buyerAddress;
+		$scope.companyNameData.firstName = input.companyName;
+	}
 
+    $scope.submitInvoice2 = function (input, type) {
     	$scope.input.state = type;
     	$scope.input = $scope.getBuyerData(input);
     	console.log(input);
-
 
     	var data = {
 			input : $scope.input,
@@ -114,6 +128,7 @@ angular.module('CreateInvoiceCtrl', []).controller('CreateInvoiceController',['$
     	GetPost.get(data, function(err, docs) {
     		console.log(docs);
 			$scope.input = docs.data[$rootScope.mainInvoiceIndex];
+			setCompanyData($scope.input);
 	    });
     }
 
