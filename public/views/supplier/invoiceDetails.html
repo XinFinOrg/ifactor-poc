@@ -40,7 +40,7 @@ font-size: 13px;
             <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
             </select>
         </div>
-    </div> -->  
+    </div>  --> 
 
     <!-- <toast> </toast> -->
 
@@ -299,7 +299,7 @@ font-size: 13px;
                                 <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
                                     <strong>+</strong>                                    </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
-                                    <div class="blockchain-titles">Interest Charges</div>
+                                    <div class="blockchain-titles">Estimated Charges</div>
                                     <div class="blockchain-content"><strong>{{tx.args.factorCharges}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
                                 </div>
                             </div>
@@ -383,7 +383,7 @@ font-size: 13px;
                                 </div>
 
 
-                                <div class="transaction-details p-l-8" ng-show="invoiceData.state == 'invoice_created'">
+                                <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'invoice_created'">
                                     <div class="clearfix"></div>
 
                                     <h1 class="pending"><i class="fa fa-exclamation icon-rounded icon-primary"></i> Approval Awaited</h1>
@@ -394,7 +394,7 @@ font-size: 13px;
                                     <div class="transaction-details p-l-8">
                                         <div class="clearfix"></div>
 
-                                        <h1 class="rejected"><i class="fa fa-check icon-rounded icon-primary"></i> Rejected</h1>
+                                        <h1 class="rejected"><i class="fa fa-times icon-rounded icon-primary"></i> Rejected</h1>
                                         <p>{{ invoiceData.created.invoice_rejected | date : "dd MMM y hh:mm"}}</p>
                                     </div>
                                     
@@ -411,7 +411,7 @@ font-size: 13px;
                                         <div class="clearfix"></div>
 
                                         <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Approved By Buyer</h1>
-                                        <p>Your Transaction is published on Blockchain</p>
+                                        <!-- <p>Your Transaction is published on Blockchain</p> -->
                                         <p>{{ invoiceData.created.invoice_accepted | date : "dd MMM y hh:mm"}}</p>
                                     </div>
                                     <div class="transaction-details">
@@ -580,7 +580,7 @@ font-size: 13px;
                                         <div class="clearfix"></div>
 
                                         <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Smart Contract Created</h1>
-                                        <p>Your Transaction is published on Blockchain</p>
+                                        <!-- <p>Your Transaction is published on Blockchain</p> -->
                                         <p>{{ invoiceData.created.ifactor_proposal_accepted | date : "dd MMM y hh:mm"}}</p>
                                     </div>
 
@@ -613,12 +613,12 @@ font-size: 13px;
                                 <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_proposal_accepted'">
                                     <div class="transaction-details p-l-8">
                                         <div class="clearfix"></div>
-                                        <div class="blockchain-titles">Eligible Amount</div>
+                                        <div class="blockchain-titles">First Payment</div>
                                         <div class="blockchain-content">$ {{invoiceData.firstPayment}}</div>
                                         <div class="clearfix"></div>
-                                        <div class="blockchain-titles"> XDC to USD</div> <div class="blockchain-content">$1 </div>
+                                        <!-- <div class="blockchain-titles"> XDC to USD</div> <div class="blockchain-content">$1 </div>
                                         <div class="clearfix"></div>
-                                        <div class="blockchain-titles"> Pending XDC </div><div class="blockchain-content">${{invoiceData.firstPayment}}</div>
+                                        <div class="blockchain-titles"> Pending XDC </div><div class="blockchain-content">${{invoiceData.firstPayment}}</div> -->
                                         <div>
                                         </div>
                                     </div>
@@ -644,7 +644,7 @@ font-size: 13px;
                                             <div class="clearfix"></div>
                                             <h5 class="text-dark">First Payment <span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
                                             <div class="clearfix"></div>
-                                            <h5 class="text-dark">Charges <span class="text-dark">$ {{invoiceData.charges}}</span></h5>
+                                            <h5 class="text-dark">Estimated Charges <span class="text-dark">$ {{invoiceData.charges}}</span></h5>
                                             <div class="clearfix"></div>
                                             <h5 class="text-dark no-bottom-padd">Days to Payout <span class="text-dark">{{invoiceData.daysToPayout}}</span></h5>
                                             <hr>
@@ -652,12 +652,12 @@ font-size: 13px;
                                             <h5 class="text-dark"><strong>Final Amount </strong><span class="text-dark"><strong>${{invoiceData.balancePayment}}</strong></span></h5>
                                             <div>
                                             </div>
-                                             <h5 class="text-dark">XDC to USD<span class="text-dark">$1</span></h5>
+                                             <!-- <h5 class="text-dark">XDC to USD<span class="text-dark">$1</span></h5>
                                             <div>
                                             </div>
                                             <h5 class="text-dark">Payable XDC<span class="text-dark">{{invoiceData.balancePayment}}</span></h5>
                                             <div>
-                                            </div>
+                                            </div> -->
                                             <h5 class="text-dark">Date<span class="text-dark">{{invoiceData.payableDate | date : "dd MMM y, hh:mm"}}</span></h5>
                                             <div>
                                             </div>
@@ -712,17 +712,17 @@ font-size: 13px;
                                             <div class="clearfix"></div>
                                             <h5 class="text-dark">Second Payment <span class="text-dark">$ {{invoiceData.balancePayment}}</span></h5>
                                             <div class="clearfix"></div>
-                                            <h5 class="text-dark">Charges <span class="text-dark">{{invoiceData.charges}}</span></h5>
+                                            <h5 class="text-dark">Estimated Charges <span class="text-dark">{{invoiceData.charges}}</span></h5>
                                             <hr>
                                             <div class="clearfix"></div>
                                             <h5 class="text-dark ">Final Amount <span class="text-dark">$ {{invoiceData.firstPayment + invoiceData.balancePayment}}</span></h5>
                                             <div></div>
-                                             <h5 class="text-dark">XDC to USD<span class="text-dark">$1</span></h5>
+                                             <!-- <h5 class="text-dark">XDC to USD<span class="text-dark">$1</span></h5>
                                             <div>
                                             </div>
                                             <h5 class="text-dark">Payable XDC<span class="text-dark">30,000</span></h5>
                                             <div>
-                                            </div>
+                                            </div> -->
                                             <h5 class="text-dark">Date<span class="text-dark">31 Dec 2018, 16:30</span></h5>
                                             <div>
                                             </div>

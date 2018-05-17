@@ -28,17 +28,24 @@
     height:100%;
 }
 .myLabel {
-    border: 2px solid #AAA;
+    /*border: 2px solid #AAA;*/
     border-radius: 15px;
     padding: 2px 5px;
     margin: 2px;
     background: #DDD;
     display: inline-block;
     color: #000;
+    width: 50%
 }
 .myLabel:hover {
     background: #283593;
     color: #fff;
+    -o-transition:.5s;
+  -ms-transition:.5s;
+  -moz-transition:.5s;
+  -webkit-transition:.5s;
+  /* ...and now for the proper property */
+  transition:.5s;
 }
 .myLabel:active {
     background: #CCF;
@@ -48,7 +55,7 @@
 <div class="page-container row-fluid container-fluid">
     <!-- START CONTENT -->
     <section>
-        <!-- <div>
+       <!--  <div>
             <div class="col-md-9 has-float-label">
                 <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
                 </select>
@@ -344,7 +351,7 @@
                                 <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
                                     <strong>+</strong>                                    </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
-                                    <div class="blockchain-titles">Interest Charges</div>
+                                    <div class="blockchain-titles">Estimated Charges</div>
                                     <div class="blockchain-content"><strong>{{tx.args.factorCharges}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
                                 </div>
                             </div>
@@ -501,11 +508,11 @@
                                             <!-- <button type="button" class="btn btn-default btn-icon btn-round">
                                                 <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
                                             </button> -->
-                                            <div class="myLabel">
+                                            <div class="myLabel" style="width: 55%">
                                                 <input type="file" ngf-select="ngf-select" ng-model="ifactorProposalDocs" name="file"ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"/>
-                                                  <i class="fa fa-cloud-upload"></i> <span>Browse File</span>
+                                                  <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse File</span>
                                              </div>
-                                            <img style="width:20px;" ngf-thumbnail="ifactorProposalDocs || '/thumb.jpg'"/>
+                                            <img style="width:20px;" ngf-thumbnail="ifactorProposalDocs || '/assets/images/apple-touch-icon-72.png'"/>
                                             <i ng-show="ifactorProposalDocs.$error.required">*required</i><br>
                                             <i ng-show="ifactorProposalDocs.$error.maxSize">File too large 
                                             {{up.file.size / 1000000|number:1}}MB: max 20M</i>
@@ -682,20 +689,20 @@
                                         <h5 class="text-dark">Eligible Amount<span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
                                     </div>
 
-                                    <div class="transaction-details m-b-10">
-                                       <!--  <p class="text-muted text-uppercase">XDC To USD</p>
-                                        <h1 class="f-w-4 no-bottom-padd">$ 1</h1> -->
+                                    <!-- <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">XDC To USD</p>
+                                        <h1 class="f-w-4 no-bottom-padd">$ 1</h1>
                                         <h5 class="text-dark">XDC To USD<span class="text-dark">$ 1</span></h5>
-                                    </div>
+                                    </div> -->
                                     </div>
 
-                                    <div class="transaction-details m-b-10">
-                                 <!--        <p class="text-muted text-uppercase">Payable XDC</p>
-                                        <h1 class="f-w-4 no-bottom-padd">{{invoiceData.firstPayment}}</h1> -->
+                                   <!--  <div class="transaction-details m-b-10">
+                                        <p class="text-muted text-uppercase">Payable XDC</p>
+                                        <h1 class="f-w-4 no-bottom-padd">{{invoiceData.firstPayment}}</h1>
                                          <h5 class="text-dark"><strong>Payable XDC</strong><span class="text-dark"><strong>$ {{invoiceData.firstPayment}}</strong></span></h5>
 
 
-                                    </div>
+                                    </div> -->
 
                                     <div class="form-group">
                                         <button type="submit" ng-click="prepaySupplier()" class="btn btn-lg btn-primary btn-corner btn-block">Pay to Supplier</button>
@@ -725,19 +732,19 @@
                                         <div class="clearfix"></div>
                                         <h5 class="text-dark">First Payment <span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
                                         <div class="clearfix"></div>
-                                        <h5 class="text-dark">Charges <span class="text-dark">$ {{invoiceData.charges}}</span></h5>
+                                        <h5 class="text-dark">Estimated Charges <span class="text-dark">$ {{invoiceData.charges}}</span></h5>
                                         <div class="clearfix"></div>
                                         <h5 class="text-dark">Days to Payout <span class="text-dark">{{invoiceData.daysToPayout}}</span></h5>
                                         <hr>
                                             <h5 class="text-dark"><strong>Final Amount </strong><span class="text-dark"><strong>${{invoiceData.balancePayment}}</strong></span></h5>
                                             <div>
                                             </div>
-                                             <h5 class="text-dark">XDC to USD<span class="text-dark">$1</span></h5>
+                                             <!-- <h5 class="text-dark">XDC to USD<span class="text-dark">$1</span></h5>
                                             <div>
                                             </div>
                                             <h5 class="text-dark">Payable XDC<span class="text-dark">{{invoiceData.balancePayment}}</span></h5>
                                             <div>
-                                            </div>
+                                            </div> -->
                                             <h5 class="text-dark">Date<span class="text-dark">{{ invoiceData.payableDate | date : "dd MMM y hh:mm"}}</span></h5>
                                             <div>
                                             </div>
@@ -772,7 +779,7 @@
                                     <div class="clearfix"></div>
 
                                     <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i>Contract Completed</h1>
-                                    <p>Your Transaction is published on Blockchain</p>
+                                    <!-- <p>Your Transaction is published on Blockchain</p> -->
                                     <p>{{ invoiceData.created.completed | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 

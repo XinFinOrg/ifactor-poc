@@ -182,6 +182,15 @@ section.box.marginBottom0,
 #buyer-logo i {display:table-cell;vertical-align:middle;}
 #buyer-logo span {display:table-cell;vertical-align:middle;}
 #buyer-logo span {padding-left: 5px;}
+.table>tbody>tr>td {vertical-align: middle;}
+.rqno{width: 11%;}
+.buyname{width: 25%;}
+.poti{width: 25%}
+.amt{width: 15%}
+.dtp{width: 14%}
+.stus{width: 15%}
+._720kb-datepicker-calendar-header:nth-child(odd){background: #6175D6}
+._720kb-datepicker-calendar-month span{color: white}
 /*------------ Dashboard Buyer Logo ------------*/
 
 /*------------ Buyer Details box ------------*/
@@ -976,7 +985,7 @@ section.box {
 .input-lg-login {
     height: 60px !important;
     border-radius: 0px !important;
-    border-bottom: 0px !important;
+    /*border-bottom: 0px !important;*/
 }
 section.loginbox{
         background-color: #ffffff;
@@ -3070,7 +3079,11 @@ table.dataTable.no-footer {
 /*-----------------------------------------------------------
     Labels
 ----------------------------------------------------------*/
+.has-float-label label
+{
+    top: 1em !important;
 
+}
 .label {
     padding: .5em .9em .5em;
     font-size: 13px;
@@ -4029,11 +4042,19 @@ table.dataTable.display tbody tr:first-child td {
 }
 
 .input-lg {
-    height: 60px !important;
+    height: 65px !important;
+    padding-top: 25px;
 }
 
+/*.has-float-label label, .has-float-label>span:focus
+{
+    padding-top:7px!important;
+    padding-bottom: 8px !important;
+    padding-right: 10px !important;
+}*/
+
 .has-float-label .form-control:placeholder-shown:not(:focus)+* {
-    font-size: 12px !important;
+    font-size: 14px !important;
     font-weight: 200;
     opacity: 1 !important;
     top: 1.8em !important;

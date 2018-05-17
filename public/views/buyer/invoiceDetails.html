@@ -282,7 +282,7 @@
                                 <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
                                     <strong>+</strong>                                    </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
-                                    <div class="blockchain-titles">Interest Charges</div>
+                                    <div class="blockchain-titles">Estimated Charges</div>
                                     <div class="blockchain-content"><strong>{{tx.args.factorCharges}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
                                 </div>
                             </div>
@@ -386,7 +386,7 @@
                                     <div class="clearfix"></div>
 
                                     <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Success</h1>
-                                    <p>Your Transaction is published on Blockchain</p>
+                                    <!-- <p>Your Transaction is published on Blockchain</p> -->
                                     <p>{{ invoiceData.created.invoice_accepted | date : "dd MMM y hh:mm"}}</p>
                                 </div>
                                 <div class="col-md-12">
@@ -470,10 +470,10 @@
                                     <div class="transaction-details">
                                         <h5 class="text-dark">Total Amount <span class="text-dark">$ {{invoiceData.invoiceAmount}}</span></h5>
                                         <div class="clearfix"></div>
-                                        <h5 class="text-dark">XDC To USD <span class="text-dark">$ 1</span></h5>
+                                        <!-- <h5 class="text-dark">XDC To USD <span class="text-dark">$ 1</span></h5>
                                         <div class="clearfix"></div>
                                         <h5 class="text-dark">Payable XDC <span class="text-dark">{{invoiceData.invoiceAmount}}</span></h5>
-                                        <div class="clearfix"></div>
+                                        <div class="clearfix"></div> -->
                                         <h5 class="text-dark">Days to Payout <span class="text-dark">{{getDatesDiff(invoiceData.payableDate)}}</span></h5>
                                         <div>
                                         </div>
@@ -499,10 +499,10 @@
                                     <div class="transaction-details">
                                         <h5 class="text-dark">Total Amount <span class="text-dark">${{invoiceData.invoiceAmount}}</span></h5>
                                         <div class="clearfix"></div>
-                                        <h5 class="text-dark">XDC To USD <span class="text-dark">$ 1</span></h5>
+                                        <!-- <h5 class="text-dark">XDC To USD <span class="text-dark">$ 1</span></h5>
                                         <div class="clearfix"></div>
                                         <h5 class="text-dark">Payable XDC <span class="text-dark">{{invoiceData.invoiceAmount}}</span></h5>
-                                        <div class="clearfix"></div>
+                                        <div class="clearfix"></div> -->
                                         <div>
                                         </div>
                                     </div>
