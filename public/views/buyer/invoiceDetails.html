@@ -163,7 +163,7 @@
                                     <div class="buyer-published">Published on Blockchain</div>
                                 </div> -->
                                 <div class="col-lg-6">
-                                    <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">{{getInvoiceStatus(tx.args.state)}}</button></div>
+                                    <!-- <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">{{getInvoiceStatus(tx.args.state)}}</button></div> -->
                                 </div>
                             </div>
                         </div>
@@ -209,7 +209,7 @@
                                     <div class="text-light pull-left text-uppercase buyer-top">{{tx.eventDName}}</div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Factoring Requested</button></div>
+                                    <!-- <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Factoring Requested</button></div> -->
                                 </div>
                             </div>
                         </div>
@@ -241,7 +241,7 @@
                                     <div class="buyer-published">Published on Blockchain</div>
                                 </div> -->
                                 <div class="col-lg-6">
-                                    <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Factoring Proposed</button></div>
+                                    <!-- <div class="buyer-published"><button class="btn btn-sm btn-primary btn-blockchain">Factoring Proposed</button></div> -->
                                 </div>
                             </div>
                         </div>
@@ -289,42 +289,6 @@
                             <div class="col-md-12 padd_bottom_15">
                                 <div class="blockchain-titles">Terms & Conditions</div>
                                 <div class="blockchain-content">ifactor_proposed</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <section class="box" ng-show="isTransferEvents()">
-                    <div class="content-body">
-                        <div class="panel_header">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="text-light pull-left text-uppercase buyer-top">Payment Details</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 padd_top_15">
-                                <table class="table inv">
-                                    <thead>
-                                      <tr>
-                                        <th>Transaction Info</th>
-                                        <th>Date</th>
-                                        <th>Amount</th>
-                                        <th>Conversion</th>
-                                        <th class="amount">XDC</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr ng-repeat="tx in transferEvents">
-                                        <td>{{tx.args.txDType}}</td>
-                                        <td>{{tx.args.created | date : "dd MMM y, hh:mm"}}</td>
-                                        <td class="amount"><span>&#36;</span>{{tx.args.amount}}</td>
-                                        <td><span>&#36;</span>1 = XDC 1</td>
-                                        <td class="amount"><span>&#36;</span>XDC {{tx.args.amount}}</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
                             </div>
                         </div>
                     </div>
