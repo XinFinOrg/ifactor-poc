@@ -1,7 +1,7 @@
 var invoiceStateMap = {
     draft : 1,
-    Invoice_created : 2,
-    Invoice_rejected : 3,
+    invoice_created : 2,
+    invoice_rejected : 3,
     invoice_accepted : 4,
     ifactor_request : 5,
     ifactor_rejected : 6,
@@ -11,6 +11,29 @@ var invoiceStateMap = {
     ifactor_prepaid : 10,
     invoice_paid : 11,
     completed : 12
+};
+
+var invoiceStateMap2 = {
+    "draft": "Draft",
+    "invoice_created": "Created",
+    "invoice_rejected": "Rejected By Buyer",
+    "invoice_accepted": "Approved By Buyer",
+    "ifactor_request": "Factoring Requested",
+    "ifactor_rejected": "Factoring Rejected",
+    "ifactor_proposed": "Factoring Proposed",
+    "ifactor_proposal_rejected": "Factoring Proposal Rejected",
+    "ifactor_proposal_accepted": "Factoring Proposal Accepted",
+    "ifactor_prepaid": "First Payment",
+    "invoice_paid": "Buyer Invoice Payment",
+    "completed": "Balance Payment"
+};
+
+var getDatesDiff = function(date) {
+    var date1 = new Date(date);
+    var date2 = new Date();
+    var diff = (Math.ceil((date1.getTime() - date2.getTime()) /
+            (1000 * 3600 * 24))/365);
+    return (diff*360).toFixed(0);
 };
 
 var dummyTx = [
@@ -103,6 +126,9 @@ var processEvents = function(allEvents) {
     for (var i in allEvents) {
         event = allEvents[i];
         event.eventDName = eventDNames[event.event];
+        if (event.event == 'invoiceHistory') {
+            event.eventDName += ' - ' + invoiceStateMap2[event.args.state];
+        }
         if (event.event == 'factoringProposal') {
             console.log('factoringProposal')
             ev = event.args;
@@ -130,5 +156,6 @@ module.exports = {
     invoiceStateMap : invoiceStateMap,
     dummyTx : dummyTx,
     eventDNames : eventDNames,
-    processEvents : processEvents
+    processEvents : processEvents,
+    getDatesDiff : getDatesDiff
 }
