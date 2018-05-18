@@ -52,7 +52,7 @@ select.soflow, select.soflow-color
 
                     <div class="pull-left">
                         <!-- PAGE HEADING TAG - START -->
-                        <h1 class="title"><a href="/dashboard">Dashboard</a> <span class="request-details">Create Request</span> </h1>
+                        <h1 class="title"><a href="/dashboard">Supplier Dashboard</a> <span class="request-details">Create Request</span> </h1>
                         <!-- PAGE HEADING TAG - END -->
                     </div>
 
@@ -69,12 +69,14 @@ select.soflow, select.soflow-color
                             <div class="row col-md-12">
                                 <div class="col-md-9 has-float-label">
                                 
-                                    <select class="soflow form-control input-lg" ng-model="companyNameData" ng-options="x.firstName for x in companyOptions">
+                                    <select class="soflow form-control input-lg" ng-model="companyNameData" ng-options="x.firstName for x in companyOptions" style="padding-top: 20px;
+    padding-left: 18px;">
                                     </select>
                                     <label for="companyNameData">Buyer Name</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                        <select class="soflow form-control input-lg" ng-model="input.companyType" ng-options="x for x in companyTypeOptions">
+                                        <select class="soflow form-control input-lg" ng-model="input.companyType" ng-options="x for x in companyTypeOptions" style="padding-top: 20px;
+    padding-left: 18px;">
                                         </select>
                                         <label for="companyOptions">Company Type</label>
                                 </div>
@@ -85,8 +87,16 @@ select.soflow, select.soflow-color
                                     <label for="conatctName">Contact Name</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
+                                <div class="input-group">
+                                <span class="input-group-addon" style="cursor: pointer">
+                                        <select>
+                                            <option value="+91">+91</option>
+                                            <option value="+65">+65</option>
+                                        </select>       
+                                    </span>
                                     <input class="form-control input-lg"  ng-model="input.companyPhone" placeholder=" "/>
-                                    <label for="ComapnyPhone">Company Phone</label>
+                                    <label for="ComapnyPhone" style="padding-left: 58px;">Company Phone</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <input class="form-control input-lg"  ng-model="input.companyEmail" placeholder=" "/>
@@ -141,8 +151,13 @@ select.soflow, select.soflow-color
                                     </datepicker>
                                 </div>
                                 <div class="col-md-3 has-float-label">
+                                     <div class="input-group">
+                                     <span class="input-group-addon" style="cursor: pointer">
+                                            <i class="fa fa-lg fa-dollar"></i>
+                                            </span>
                                     <input class="form-control input-lg" placeholder=" "  ng-model="input.purchaseAmount" />
-                                    <label for="amount">Amount*</label>
+                                    <label for="amount" style="padding-left: 15px;">Amount*</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <!-- <button type="button" class="btn btn-default btn-icon btn-round">
@@ -180,8 +195,13 @@ select.soflow, select.soflow-color
                                     </datepicker>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg"  ng-model="input.invoiceAmount" placeholder=" " />
-                                    <label for="amount">Amount*</label>
+                                    <div class="input-group">
+                                     <span class="input-group-addon" style="cursor: pointer">
+                                            <i class="fa fa-lg fa-dollar"></i>
+                                            </span>
+                                    <input class="form-control input-lg" placeholder=" "  ng-model="input.purchaseAmount" />
+                                    <label for="amount" style="padding-left: 15px;">Amount*</label>
+                                    </div>
                                 </div>
                                  <div class="col-md-3 has-float-label">
                                     <!-- <button type="button" class="btn btn-default btn-icon btn-round">
@@ -217,8 +237,13 @@ select.soflow, select.soflow-color
                                     </datepicker>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" ng-model="input.grnAmount" placeholder=" " />
-                                    <label for="amount">Amount*</label>
+                                    <div class="input-group">
+                                     <span class="input-group-addon" style="cursor: pointer">
+                                            <i class="fa fa-lg fa-dollar"></i>
+                                            </span>
+                                    <input class="form-control input-lg" placeholder=" "  ng-model="input.purchaseAmount" />
+                                    <label for="amount" style="padding-left: 15px;">Amount*</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <!-- <button type="button" class="btn btn-default btn-icon btn-round">

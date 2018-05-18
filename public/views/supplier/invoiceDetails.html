@@ -55,7 +55,7 @@ font-size: 13px;
                 <div class="page-title">
                     <div class="pull-left">
                         <!-- PAGE HEADING TAG - START -->
-                        <h1 class="title"><a href="" ng-click="gotoDashboard()">Dashboard</a> <span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
+                        <h1 class="title"><a href="" ng-click="gotoDashboard()">Supplier Dashboard</a> <span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
                         <!-- PAGE HEADING TAG - END -->
                     </div>
                 </div>
@@ -270,7 +270,7 @@ font-size: 13px;
                                     <div class="blockchain-content">Factor</div>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
-                                    <div class="blockchain-titles">Eligible Amount</div>
+                                    <div class="blockchain-titles">First Payment</div>
                                     <div class="blockchain-content">{{tx.args.factorSaftyPercentage}}% (<span>&#36;</span>{{tx.args.firstPayment}})</div>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
@@ -495,7 +495,7 @@ font-size: 13px;
                                 </div>
                                 
                                 <div class="transaction-details m-b-10">
-                                    <div class="blockchain-titles text-uppercase">Eligible Amount (%)</div>
+                                    <div class="blockchain-titles text-uppercase">FIrst Payment (%)</div>
                                     <div class="blockchain-content">{{invoiceData.saftyPercentage}}% ( $ {{invoiceData.firstPayment}} )</div>
                              
                                 </div>

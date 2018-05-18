@@ -40,7 +40,7 @@
 
                     <div class="pull-left">
                         <!-- PAGE HEADING TAG - START -->
-                        <h1 class="title"><a href="/dashboard">Dashboard</a> <span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
+                        <h1 class="title"><a href="/dashboard">Buyer Dashboard</a> <span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
                         <!-- PAGE HEADING TAG - END -->
                     </div>
                 </div>
@@ -253,7 +253,7 @@
                                     <div class="blockchain-content">Factor</div>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
-                                    <div class="blockchain-titles">Eligible Amount</div>
+                                    <div class="blockchain-titles">First Payment</div>
                                     <div class="blockchain-content">{{tx.args.factorSaftyPercentage}}% (<span>&#36;</span>{{tx.args.firstPayment}})</div>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
@@ -445,7 +445,7 @@
                                 <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'ifactor_proposal_accepted'">
                                     <div class="clearfix"></div>
 
-                                    <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Smart contract created</h1>
+                                    <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i> Factoring Requested</h1>
                                     <p>{{ invoiceData.created.ifactor_proposal_accepted | date : "dd MMM y hh:mm"}}</p>
                                 </div>
 

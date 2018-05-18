@@ -68,7 +68,7 @@
 
                     <div class="pull-left">
                         <!-- PAGE HEADING TAG - START -->
-                        <h1 class="title"><a ng-href="/dashboard">Dashboard</a><span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
+                        <h1 class="title"><a ng-href="/dashboard">Financer Dashboard</a><span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
                         <!-- PAGE HEADING TAG - END -->
                     </div>
                 </div>
@@ -322,7 +322,7 @@
                                     <div class="blockchain-content">Factor</div>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
-                                    <div class="blockchain-titles">Eligible Amount</div>
+                                    <div class="blockchain-titles">First Payment</div>
                                     <div class="blockchain-content">{{tx.args.factorSaftyPercentage}}% (<span>&#36;</span>{{tx.args.firstPayment}})</div>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 padd_max">
@@ -471,7 +471,7 @@
                                     <a class="btn btn-round btn-border btn-lg btn-primary deep" data-toggle="tab">Finance</a>
                                 </div>
                                 <div class="transaction-details">
-                                    <div class="blockchain-titles text-uppercase">Factoring charges / Month(%)</div>
+                                    <div class="blockchain-titles text-uppercase">Est. charges / Month(%)</div>
                                 </div>
                                 <div class="form-group">
                                     <!-- <div class="input-group">
@@ -625,12 +625,12 @@
                                         </div>
                                     </div>
                                     <div class="transaction-details m-b-10">
-                                        <div class="blockchain-titles text-uppercase">Factoring Charges/Month (%)</div>
+                                        <div class="blockchain-titles text-uppercase">Est. Charges/Month (%)</div>
                                         <div class="blockchain-content">{{invoiceData.charges}}
                                         </div>
                                     </div>
                                     <div class="transaction-details m-b-10">
-                                        <div class="blockchain-titles text-uppercase">Eligible Amount (%)</div>
+                                        <div class="blockchain-titles text-uppercase">First Payment (%)</div>
                                         <div class="blockchain-content">{{invoiceData.firstPayment}}
                                         </div>
                                     </div>
@@ -684,9 +684,9 @@
                                     </div>
 
                                     <div class="transaction-details m-b-10">
-                                        <!-- <p class="text-muted text-uppercase">Eligible Amount ({{invoiceData.saftyPercentage}}%)</p> -->
+                                        <!-- <p class="text-muted text-uppercase">First Payment ({{invoiceData.saftyPercentage}}%)</p> -->
                                         <!-- <h1 class="f-w-4 no-bottom-padd">{{invoiceData.firstPayment}}</h1> -->
-                                        <h5 class="text-dark">Eligible Amount<span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
+                                        <h5 class="text-dark">First Payment<span class="text-dark">$ {{invoiceData.firstPayment}}</span></h5>
                                     </div>
 
                                     <!-- <div class="transaction-details m-b-10">
