@@ -293,14 +293,22 @@ router.post('/factoringProposal', imgUpload , async (function(req, res) {
 	};
 
 	var tx;
+	var firstPayment, postpayamount, charges;
+	firstPayment = invoice.invoiceAmount * invoice.saftyPercentage/100;
 	if (web3Conf) {
 	    try {
 		    tx = await (web3Helper.factoringProposal(invoice));
-		    console.log('ifactor_proposed', tx);
+			charges = await(web3Helper.getInterestAmount(invoiceId));
+			charges = charges.toNumber();
+			var postpayamount = await(web3Helper.getPostpayAmount(invoiceId));
+			postpayamount = postpayamount.toNumber();
 	    } catch(e) {
 	    	console.log(e)
 			return res.send({status : false, message : 'smart contract error'});
 	    }
+	} else {
+		charges = getInterstAmount(invoice);
+		postpayamount =  invoice.invoiceAmount - (invoice.firstPayment + charges);
 	}
 
 	let updateQuery = {$set : {
@@ -309,7 +317,10 @@ router.post('/factoringProposal', imgUpload , async (function(req, res) {
 			financerEmail : req.user.email,
 			platformCharges : input.platformCharges,
 			saftyPercentage : input.saftyPercentage,
-			acceptFactoringRemark : input.remark
+			acceptFactoringRemark : input.remark,
+			firstPayment : firstPayment,
+			charges : charges,
+			balancePayment : postpayamount
 		}
 	};
 	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
@@ -596,26 +607,24 @@ router.get('/getInvoices', function(req, res) {
 	});
 });
 
+var getInterstAmount = function(invoice) {
+	if (!invoice.platformCharges || invoice.platformCharges <=0) {
+		return 0;
+	}
 
-var getDatesDiff = function(date) {
-	var date1 = new Date(date);
-	var date2 = new Date();
-    var diff = (Math.ceil((date1.getTime() - date2.getTime()) /
-            (1000 * 3600 * 24))/365);
-    return (diff*360).toFixed(0);
+	var charges = (invoice.daysToPayout * invoice.platformCharges * 100)/30;
+	return (charges * amount)/100;
 };
-
 
 var processInvoiceDetails = function(invoice) {
 	invoice.invoiceAmount = !invoice.invoiceAmount ? 0 : invoice.invoiceAmount;
 	invoice.firstPayment = (!invoice.saftyPercentage || invoice.saftyPercentage <= 0) ?
 							invoice.invoiceAmount :
 							(invoice.saftyPercentage/100 * invoice.invoiceAmount);
-	invoice.charges = (!invoice.platformCharges || invoice.platformCharges <=0) ? 0 :
-							(invoice.platformCharges/100 * invoice.invoiceAmount);
+	invoice.charges = getInterstAmount(invoice);
 	invoice.balancePayment =  invoice.invoiceAmount - (invoice.firstPayment + invoice.charges);
 
-	invoice.daysToPayout = getDatesDiff(invoice.payableDate);
+	invoice.daysToPayout = helper.getDatesDiff(invoice.payableDate);
 };
 
 var getInvoiceDates = function(invoiceHistory) {
@@ -659,6 +668,20 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 		var invoiceHistory = helper.dummyTx;
 		var invoice = data[0];
 		processInvoiceDetails(invoice);
+
+		if (web3Conf) {
+		    try {
+				var interest = await(web3Helper.getInterestAmount(invoiceId));
+				postpayamount = postpayamount.toNumber();
+				console.log('getPrepayAmount', postpayamount);
+			    tx1 = await (web3Helper.sendTokens(financerAddress, supplierAddress, postpayamount));
+			    tx = await (web3Helper.postpayFactoring(invoiceId, postpayamount));
+			    console.log('tx', tx);
+		    } catch(e) {
+		    	console.log(e);
+				return res.send({status : false, error : 'blockchain error'});
+		    }
+		}
 
 		getUserDetails({email : invoice.supplierEmail}, async(function(err, userData) {
 			invoice.supplierData = !err ? userData : {};

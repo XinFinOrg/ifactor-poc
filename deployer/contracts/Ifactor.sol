@@ -15,6 +15,7 @@ contract Ifactor is StandardToken {
     	uint factorCharges;
     	uint factorInterest;
     	uint factorSaftyPercentage;
+    	uint daysToPayout;
     }
     
     address owner;
@@ -51,12 +52,13 @@ contract Ifactor is StandardToken {
     }
 
 	function addInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount,
-						address _supplier, address _buyer, uint _created) public {
+						address _supplier, address _buyer, uint _days_to_payout, uint _created) public {
 		Invoice inv;
 		inv.invoiceId = _invoice_id ;
 		inv.invoiceNo = _invoice_no ;
 		inv.state = _state ;
 		inv.amount = _amount ;
+		inv.daysToPayout = _days_to_payout;
 		inv.supplier = _supplier ;
 		inv.buyer = _buyer;
 		Invoices[_invoice_id] = inv;
@@ -89,6 +91,12 @@ contract Ifactor is StandardToken {
 	    factoringProposal(_invoice_id, _factor_charges, _factor_safty_percentage, _amount, _created);
 	}
 
+	function getInterestAmount(string _invoice_id) public constant returns(uint) {
+		Invoice inv = Invoices[_invoice_id];
+		uint _charges = (inv.daysToPayout  * inv.factorCharges * 100)/30;
+		return (_charges * inv.amount)/100;
+	}
+
 	function requestFactoring(string _invoice_id, string _invoice_state, uint _amount, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
 		inv.state = _invoice_state;
@@ -119,7 +127,7 @@ contract Ifactor is StandardToken {
 		uint _value = (inv.amount * 100) -
 						(
 							(inv.amount * inv.factorSaftyPercentage) +
-							(inv.amount * inv.factorCharges)
+							getInterestAmount(_invoice_id)
 						);
         _value = _value/100;
 		return _value;

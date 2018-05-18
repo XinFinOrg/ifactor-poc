@@ -3,8 +3,8 @@ const Web3 = require('web3');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var Promise = require('promise');
+var Helper = require('./helper');
 var invoiceJson = require('../../deployer/build/contracts/Ifactor.json');
-
 if (typeof web3 !== 'undefined') {
     web3 = new Web3(web3.currentProvider);
 } else {
@@ -86,9 +86,10 @@ var getInstance = function(data) {
 var contractInstance = getInstance(invoiceJson);
 
 var addInvoice = async (function(invoice) {
+    var daysToPayout = Helper.getDatesDiff(invoice.payableDate);
     var mm = await (contractInstance.addInvoice(
         invoice.invoiceId, invoice.invoiceNo, 'invoice_created', invoice.invoiceAmount,
-        invoice.supplierAddress, invoice.buyerAddress, Date.now(),
+        invoice.supplierAddress, invoice.buyerAddress, daysToPayout, Date.now(),
         {from: web3.eth.accounts[1], gas:300000}
     ));
     return mm;
@@ -155,6 +156,13 @@ var getAmount = async (function(invoiceId){
     var mm = await (contractInstance.getAmount.call(invoiceId));
     return mm;
 });
+
+var getInterestAmount = async (function(invoiceId){
+    var mm = await (contractInstance.getInterestAmount.call(invoiceId));
+    return mm;
+});
+
+
 
 var getPostpayAmount = async (function(invoiceId){
     var mm = await (contractInstance.getPostpayAmount.call(invoiceId));
@@ -371,6 +379,7 @@ module.exports = {
     setState : setState,
     buyTokens : buyTokens,
     getAmount : getAmount,
+    getInterestAmount : getInterestAmount,
     getInvoiceHistory : getInvoiceHistory,
     getAllEvents : getAllEvents,
     getTransferEvents : getTransferEvents,
