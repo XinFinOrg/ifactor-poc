@@ -95,7 +95,6 @@ var addInvoice = async (function(invoice) {
 });
 
 var factoringProposal = async (function(invoice) {
-    console.log('invoice', invoice)
     var mm = await (contractInstance.addFactoring(
         invoice.invoiceId,
         invoice.financerAddress,
@@ -138,7 +137,6 @@ var setState = async (function(invoiceId, state) {
 });
 
 var requestFactoring = async (function(invoiceId, state, amount) {
-    console.log(invoiceId, state, amount)
     var mm = await (contractInstance.requestFactoring(invoiceId, state, parseInt(amount), Date.now(),
           {from: web3.eth.accounts[1], gas:100000}));
     return mm;
@@ -177,7 +175,6 @@ var getFinancer = async (function(invoiceId){
 });
 
 var getSupplier = async (function(invoiceId){
-    console.log('invoiceId', invoiceId)
     var mm = await (contractInstance.getSupplier(invoiceId));
     return mm;
 });
@@ -271,7 +268,6 @@ var getAllEvents = async(function(invoiceId) {
     allEvents.sort(function(x, y){
         return x.args.created - y.args.created;
     })
-    console.log('allEvents', allEvents)
     return allEvents;
 });
 
@@ -307,7 +303,6 @@ var getTransferEvents = function(invoiceId, cb) {
     allEvents.get(function(err,result) {
     if(!err) {
         //var result = result.filter(tx => tx.args && tx.args.invoiceId == invoiceId);
-        console.log('getTransferEvents', JSON.stringify(result, null, 4));
         return cb(false, result);
     }
         return cb(true);
@@ -348,7 +343,6 @@ var getAllEvents2 = function(invoiceId, cb) {
 
     allEvents.get(function(err,result) {
     if(!err) {
-        console.log('allEvents2', JSON.stringify(result, null, 4));
         //var result = result.filter(tx => tx.args && tx.args.invoiceId == invoiceId);
         return cb(false, result);
     }

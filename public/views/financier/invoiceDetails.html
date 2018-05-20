@@ -55,12 +55,12 @@
 <div class="page-container row-fluid container-fluid">
     <!-- START CONTENT -->
     <section>
-       <!--  <div>
+        <div>
             <div class="col-md-9 has-float-label">
                 <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
                 </select>
             </div>
-        </div> -->
+        </div>
         <div class="container wrapper main-wrapper row" style=''>
 
             <div class='col-xs-12'>
@@ -463,12 +463,12 @@
                                     <!-- <div class="input-group">
                                         <input type="number" name="charges" ng-model="acceptFactoringForm.platformCharges" class="form-control input-lg"/> -->
                                         <div class="col-md-12">
-                                            <rzslider rz-slider-model="acceptFactoringForm.saftyPercentage" rz-slider-options="factorSliderOptions"></rzslider>
+                                            <rzslider rz-slider-model="acceptFactoringForm.saftyPercentage" rz-slider-options="chargesSliderOptions"></rzslider>
                                         <!-- </div> -->
                                     </div>
                                 </div>
                                 <div class="transaction-details">
-                                    <div class="blockchain-titles text-uppercase">Factor Range(%)</div>
+                                    <div class="blockchain-titles text-uppercase">First Payment(%)</div>
                                 </div>
                                 <div class="form-group">
                                    <!--  <div class="input-group">
@@ -491,11 +491,9 @@
                                             <div class="blockchain-titles text-uppercase">Attachment</div>
                                         </div>
                                         <div class="form-group">
-                                            <!-- <button type="button" class="btn btn-default btn-icon btn-round">
-                                                <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
-                                            </button> -->
                                             <div class="myLabel" style="width: 55%">
-                                                <input type="file" ngf-select="ngf-select" ng-model="ifactorProposalDocs" name="file"ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"/>
+                                                <input type="file" ngf-select="ngf-select"              ng-model="ifactorProposalDocs" name="file"          ngf-pattern="'image/*'" accept="image/*" 
+                                                ngf-max-size="20MB"/>
                                                   <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse File</span>
                                              </div>
                                             <img style="width:20px;" ngf-thumbnail="ifactorProposalDocs || '/assets/images/apple-touch-icon-72.png'"/>
@@ -507,7 +505,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <button ng-click="factoringProposal()" class="btn btn-lg btn-primary btn-corner btn-block">Submit Now</button>
+                                        <button ng-click="factoringProposal(ifactorProposalDocs)" class="btn btn-lg btn-primary btn-corner btn-block">Submit Now</button>
                                     </div>
                                 </div>
                             </div>
@@ -630,7 +628,7 @@
                                     </div>
                                     <div class="transaction-details m-b-10">
                                         <div class="blockchain-titles text-uppercase">Attachment</div>
-                                        <div class="blockchain-content"><a href="#" class="attachment-btn">Factor.pdf
+                                        <div class="blockchain-content"><a href="#" ng-click="downloadDocs('ifactorProposalDocs')" class="attachment-btn">Factor.pdf
                                             <i class="fa fa-download"></i>
                                         </a>
                                         </div>
@@ -774,47 +772,60 @@
                     </div>
                 </section>
             </div>
-            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.state == 'completed'">
+            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.supplierRatings">
                 <section class="box">
                     <div class="content-body">
                         <div class="row">
 
                             <div class="col-md-12">
                                  <div class="col-lg-12">
-                                        <div class="text-light buyer-top" style="border-left: none;">Rating</div>
+                                        <div class="text-light buyer-top" style="border-left: none;">Your Ratings to Supplier</div>
                                     </div>
                                     <div class="col-md-12">
-                                        <jk-rating-stars max-rating="5" rating="ctrl.rating" read-only="ctrl.readOnly" on-rating="ctrl.onRating(rating)" >
+                                        <jk-rating-stars max-rating="5" rating="invoiceData.supplierRatings" read-only="true" >
                                         </jk-rating-stars>
                                     </div>      
                             </div>
                         </div>
                     </div>        
                 </section>
-            <!-- MAIN CONTENT AREA ENDS -->
             </div>
-            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.state == 'completed'">
+            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.financerRatings">
                 <section class="box">
                     <div class="content-body">
                         <div class="row">
-
                             <div class="col-md-12">
                                  <div class="col-lg-12">
-                                        <div class="text-light buyer-top" style="border-left: none;">Give a quick rating to Buyer</div>
+                                        <div class="text-light buyer-top" style="border-left: none;">Suppliers rating to you</div>
                                     </div>
                                     <div class="col-md-12">
-                                        <jk-rating-stars max-rating="5" rating="ctrl.rating" read-only="ctrl.readOnly" on-rating="ctrl.onRating(rating)" >
+                                        <jk-rating-stars max-rating="5" rating="invoiceData.financerRatings" read-only="true">
                                         </jk-rating-stars>
-                                    </div>  
-
+                                    </div>      
+                            </div>
+                        </div>
+                    </div>        
+                </section>
+            </div>
+            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.state == 'completed' || true">
+                <section class="box">
+                    <div class="content-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                 <div class="col-lg-12">
+                                        <div class="text-light buyer-top" style="border-left: none;">Give a quick rating to Supplier</div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <jk-rating-stars max-rating="5" rating="ctrl.rating" on-rating="onRating(rating)">
+                                        </jk-rating-stars>
+                                    </div>
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <textarea ng-model="acceptFactoringForm.remark" style="height:150px !important" class="form-control input-lg" id="description" placeholder="Write Terms & Condition"></textarea>
+                                            <textarea ng-model="supplierRatingRemark" style="height:150px !important" class="form-control input-lg" id="description" placeholder="Write Terms & Condition"></textarea>
                                         </div>
                                     </div>   
-
                                     <div class="form-group">
-                                        <button class="btn btn-lg btn-primary btn-corner btn-block">Submit</button>
+                                        <button ng-click="rateSupplier()" class="btn btn-lg btn-primary btn-corner btn-block">Submit</button>
                                     </div> 
                             </div>
 

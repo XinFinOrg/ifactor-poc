@@ -130,12 +130,10 @@ var processEvents = function(allEvents) {
             event.eventDName += ' - ' + invoiceStateMap2[event.args.state];
         }
         if (event.event == 'factoringProposal') {
-            console.log('factoringProposal')
             ev = event.args;
             ev.firstPayment = getPrepayAmount(ev.factorSaftyPercentage, ev.amount);
             ev.charges = getCharges(ev.factorCharges, ev.amount);
             ev.balancePayment = (ev.amount - (ev.firstPayment + ev.charges));
-            console.log(ev);
         }
         if (event.event == 'ifactorTransfer') {
             ev = event.args;

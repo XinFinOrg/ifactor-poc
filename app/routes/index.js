@@ -24,8 +24,11 @@ var imgUpload = upload.fields([
 		{name : 'grnDocs'},
 		{name : 'ifactorProposalDocs'}
 	]);
-
-
+//var ifact
+var imgUpload2 = upload.fields([
+		{name : 'ifactorProposalDocs'},
+		{name : 'ifDocs'}
+	]);
 var moveImages = function (file, path, cb) {
 	//path = PATH.join(__dirname, '../../' + path);
 	console.log(file,path)
@@ -106,6 +109,7 @@ var getFullName = function(firstName, lastName) {
 };
 
 router.post('/createInvoice', imgUpload, async (function(req, res) {
+	console.log('req.files', req.files);
 	let input = req.body.input;
 	input.supplierEmail = req.user.email;
 	input.supplierName = getFullName(req.user.firstName, req.user.lastName);
@@ -281,7 +285,7 @@ router.post('/requestFactoring', async (function(req, res) {
 	});
 }));
 
-router.post('/factoringProposal', imgUpload , async (function(req, res) {
+router.post('/factoringProposal', imgUpload2, async (function(req, res) {
 	let input = req.body.input;
 	let invoiceId = req.body.invoiceId;
 	var invoice = {
@@ -296,27 +300,33 @@ router.post('/factoringProposal', imgUpload , async (function(req, res) {
 	if (web3Conf) {
 	    try {
 		    tx = await (web3Helper.factoringProposal(invoice));
-		    console.log('ifactor_proposed', tx);
 	    } catch(e) {
 	    	console.log(e)
 			return res.send({status : false, message : 'smart contract error'});
 	    }
 	}
 
-	let updateQuery = {$set : {
-			state : 'ifactor_proposed',
-			financerAddress : req.user.address,
-			financerEmail : req.user.email,
-			platformCharges : input.platformCharges,
-			saftyPercentage : input.saftyPercentage,
-			acceptFactoringRemark : input.remark
+	uploadUserDocs(invoice.invoiceId, req.files, function(filePaths) {
+		for (var key in filePaths) {
+			input[key] = !filePaths[key] ? (input[key] ? input[key] : '') :   filePaths[key];
 		}
-	};
-	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
-		if (err) {
-			return res.send({status : false, error : err});
-		}
-		return res.send({status : true, data : {state : ''}});
+
+		let updateQuery = {$set : {
+				state : 'ifactor_proposed',
+				financerAddress : req.user.address,
+				financerEmail : req.user.email,
+				platformCharges : input.platformCharges,
+				saftyPercentage : input.saftyPercentage,
+				acceptFactoringRemark : input.remark,
+				ifactorProposalDocs : input.ifactorProposalDocs
+			}
+		};
+		updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
+			if (err) {
+				return res.send({status : false, error : err});
+			}
+			return res.send({status : true, data : {state : ''}});
+		});
 	});
 }));
 
@@ -391,7 +401,7 @@ router.post('/acceptFactoringProposal', async(function(req, res) {
 
 router.post('/rejectFactoringProposal', async(function(req, res) {
 	console.log('inside rejectFactoringProposal');
-	let input = req.body.invoiceId;
+	let invoiceId = req.body.invoiceId;
 
 	var tx;
 	if (web3Conf) {
@@ -413,6 +423,34 @@ router.post('/rejectFactoringProposal', async(function(req, res) {
 		return res.send({status : true, data : {state : ''}});
 	});
 }));
+
+router.post('/rateFinancer', function(req, res) {
+	let invoiceId = req.body.invoiceId;
+	let updateQuery = {$set : {
+			financerRatings : req.body.financerRatings,
+			financerRatingRemark : req.body.financerRatingRemark
+	}};
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
+		if (err) {
+			return res.send({status : false, error : err});
+		}
+		return res.send({status : true, data : {state : ''}});
+	});
+});
+
+router.post('/rateSupplier', function(req, res) {
+	let invoiceId = req.body.invoiceId;
+	let updateQuery = {$set : {
+			supplierRatings : req.body.supplierRatings,
+			supplierRatingRemark : req.body.supplierRatingRemark
+	}};
+	updateInvoice({invoiceId : invoiceId}, updateQuery, function(err, data) {
+		if (err) {
+			return res.send({status : false, error : err});
+		}
+		return res.send({status : true, data : {state : ''}});
+	});
+});
 
 router.post('/payInvoice', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
@@ -670,7 +708,7 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 				invoice.created = getInvoiceDates(invoiceHistory);
 				var tarnsferEvents = allEvents.filter(x => x.event == 'ifactorTransfer');
 				var otherEvents = allEvents.filter(x => x.event != 'ifactorTransfer');
-				console.log(tarnsferEvents);
+				//console.log(tarnsferEvents);
 				return res.send({status : true, data : {
 					invoice : invoice, invoiceHistory : invoiceHistory,
 					tarnsferEvents : tarnsferEvents, otherEvents : otherEvents,
@@ -684,7 +722,7 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 					return res.send({status : true, data : {invoice : invoice, invoiceHistory : invoiceHistory, balance : balance}});
 				});*/
 			} else {
-				console.log('invoiceHistory', invoiceHistory)
+				//console.log('invoiceHistory', invoiceHistory)
 				return res.send({status : true, data : {invoice : invoice, invoiceHistory : invoiceHistory}});
 			}
 		}));

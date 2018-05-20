@@ -255,6 +255,22 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', funct
             msg : 'Your rejected factoring request',
             class : 'success'            
         },
+        'ratings_f2s' : {
+            msg : 'You just rated supplier',
+            class : 'success'
+        },
+        'ratings_s2f' : {
+            msg : 'You just rated supplier',
+            class : 'success'
+        },
+        'rate_supplier_mandatory' : {
+            msg : 'You must rate Supplier before submit',
+            class : 'danger'
+        },
+        'rate_financer_mandatory' : {
+            msg : 'You must rate Financier before submit',
+            class : 'danger'
+        }
     };
 
     var createToast = function(msg, className='success') {

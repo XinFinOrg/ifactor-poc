@@ -8,6 +8,11 @@
             ceil: 100
         };
 
+       $scope.chargesSliderOptions = {
+            floor: 0,
+            ceil: 10
+        };
+
 	//PNotify.alert('Notice me, senpai!');
 
 	$rootScope.invoiceId = $rootScope.invoiceId || $routeParams.invoiceId;
@@ -275,24 +280,10 @@
 			saftyPercentage : 0,
 			acceptFactoringRemark : '',
 	};
-    $scope.ifactorProposalDocs = null;
-	// used
-	/*$scope.factoringProposal = function (input) {
-		var data = {
-			url : '/factoringProposal',
-			invoiceId : $rootScope.invoiceId,
-			input :	$scope.acceptFactoringForm,
-			ifactorProposalDocs : $scope.ifactorProposalDocs
-		}
-		data.input.invoiceAmount = $scope.invoiceData.invoiceAmount;
-		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposed');
-			$scope.factorFlags.proceedIfactorRequest = false;
-			$scope.getInvoiceDetails();
-	    });
-	};*/
 
-    $scope.factoringProposal = function (input) {
+    $scope.ifactorProposalDocs = null;
+    $scope.ifDocs = null;
+    $scope.factoringProposal = function (ifactorProposalDocs) {
 		$scope.acceptFactoringForm.invoiceAmount = $scope.invoiceData.invoiceAmount;
 	    Upload.upload({
 	        url: '/factoringProposal',
@@ -302,19 +293,18 @@
 	        data : {
 				invoiceId : $rootScope.invoiceId,
 				input :	$scope.acceptFactoringForm,
-				ifactorProposalDocs : $scope.ifactorProposalDocs
+				ifactorProposalDocs : ifactorProposalDocs,
+				ifDocs : $scope.ifDocs
 	        }
 	    }).then(function (resp) {
+			console.log($scope.ifactorProposalDocs);
 			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposed');
 			$scope.factorFlags.proceedIfactorRequest = false;
 			$scope.getInvoiceDetails();
 	    }, function (resp) {
 	        console.log('Error status: ' + resp.status);
-	    }, function (evt) { 
-	        console.log(evt);
-	        /*var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-	        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-	        $scope.vm.progress = 'progress: ' + progressPercentage + '% ';*/
+	    }, function (evt) {
+	        //console.log(evt);
 	    });
 	};
 
@@ -548,4 +538,52 @@
 	$scope.showHistory = function() {
 		$scope.showHistoryFlag = true;
 	}
+
+   $scope.onRating = function(rating) {
+   		console.log('inside onrating')
+		if ($rootScope.userType == 'Supplier') {
+			$scope.financerRatings = rating;
+		} else {
+			console.log('ratings', rating)
+			$scope.supplierRatings = rating;
+		}
+    };
+
+    $scope.rateSupplier = function() {
+		/*hasFinancerRated : true
+		hasSupplierRated : true*/
+		console.log('$scope.supplierRatings', $scope.supplierRatings)
+    	if (!$scope.supplierRatings) {
+			Helper.showAlert('rate_supplier_mandatory');
+			return;
+    	}
+		var data = {
+			url : '/rateSupplier',
+			invoiceId : $rootScope.invoiceId,
+			supplierRatings : $scope.supplierRatings,
+			supplierRatingRemark : $scope.supplierRatingRemark
+		}
+		GetPost.post(data, function(err, resp) {
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ratings_f2s');
+			$scope.getInvoiceDetails();
+	    });
+    };
+
+    $scope.rateFinancer = function() {
+    	if (!$scope.financerRatings) {
+			Helper.showAlert('rate_financer_mandatory');
+			return;
+    	}
+		var data = {
+			url : '/rateFinancer',
+			invoiceId : $rootScope.invoiceId,
+			financerRatings : $scope.financerRatings,
+			financerRatingRemark : $scope.financerRatingRemark
+		};
+		GetPost.post(data, function(err, resp) {
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ratings_s2f');
+			$scope.getInvoiceDetails();
+	    });
+    };
+
 }]);
