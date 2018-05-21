@@ -52,7 +52,7 @@ contract Ifactor is StandardToken {
     }
 
 	function addInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount,
-						address _supplier, address _buyer, uint _days_to_payout, uint _created) public {
+						address _supplier, address _buyer, uint _payable_date, uint _created) public {
 		Invoice inv;
 		inv.invoiceId = _invoice_id ;
 		inv.invoiceNo = _invoice_no ;
@@ -63,7 +63,7 @@ contract Ifactor is StandardToken {
 		inv.buyer = _buyer;
 		Invoices[_invoice_id] = inv;
 		invoiceHistory(_invoice_id, _state, _created);
-		createInvoice(_invoice_id, _invoice_no, _state, _amount, _supplier, _buyer);
+		createInvoice(_invoice_id, _invoice_no, _state, _amount, _payable_date, _supplier, _buyer);
 	}
 
 	function getState(string _invoice_id) public view returns(string) {
@@ -76,17 +76,23 @@ contract Ifactor is StandardToken {
 		inv.state = _invoice_state;
 		invoiceHistory(_invoice_id, _invoice_state, _created);
 	}
-	
+
+	function setPayoutDays(uint _payoutDays) {
+		Invoice inv = Invoices[_invoice_id];
+		inv.daysToPayout = _payoutDays;
+	}
+
 	function getAmount(string _invoice_id) public constant returns(uint) {
 		Invoice inv = Invoices[_invoice_id];
         return inv.amount;
 	}
 
-	function addFactoring(string _invoice_id, address _financer, uint _factor_charges, uint _factor_safty_percentage, uint _amount, uint _created) public {
+	function addFactoring(string _invoice_id, address _financer, uint _factor_charges, uint _factor_safty_percentage, uint _amount, uint _days_to_payout, uint _created) public {
 		Invoice inv = Invoices[_invoice_id];
 		inv.financer = _financer;
 		inv.factorCharges = _factor_charges;
 		inv.factorSaftyPercentage = _factor_safty_percentage;
+		inv.daysToPayout = _days_to_payout;
         setState(_invoice_id, 'ifactor_proposed', _created);
 	    factoringProposal(_invoice_id, _factor_charges, _factor_safty_percentage, _amount, _created);
 	}
@@ -168,8 +174,8 @@ contract Ifactor is StandardToken {
 		return inv.amount;
     }
 
-	event createInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount,
-						address _supplier, address _buyer);
+	event createInvoice(string invoiceId, string invoiceNo, string state, uint amount,
+						uint payableDate, address supplier, address buyer);
 	event invoiceHistory(string invoiceId, string state, uint created);
 	event factoringRequest(string invoiceId, uint amount, uint created);
 	event factoringProposal(string invoiceId, uint factorCharges, uint factorSaftyPercentage, uint amount, uint created);

@@ -28,9 +28,9 @@ var invoiceStateMap2 = {
     "completed": "Balance Payment"
 };
 
-var getDatesDiff = function(date) {
+var getDatesDiff = function(date, d2) {
     var date1 = new Date(date);
-    var date2 = new Date();
+    var date2 = !d2 ? new Date() : new Date(d2);
     var diff = (Math.ceil((date1.getTime() - date2.getTime()) /
             (1000 * 3600 * 24))/365);
     return (diff*360).toFixed(0);
@@ -121,7 +121,7 @@ var getPostpayAmount = function(invoice) {
     return  invoiceAmount - getPrepayAmount(invoice) + getCharges(invoice);
 };
 
-var processEvents = function(allEvents) {
+var processEvents = function(allEvents, invoice) {
     var event, ev;
     for (var i in allEvents) {
         event = allEvents[i];
@@ -131,9 +131,12 @@ var processEvents = function(allEvents) {
         }
         if (event.event == 'factoringProposal') {
             ev = event.args;
-            ev.firstPayment = getPrepayAmount(ev.factorSaftyPercentage, ev.amount);
+            /*ev.firstPayment = getPrepayAmount(ev.factorSaftyPercentage, ev.amount);
             ev.charges = getCharges(ev.factorCharges, ev.amount);
-            ev.balancePayment = (ev.amount - (ev.firstPayment + ev.charges));
+            ev.balancePayment = (ev.amount - (ev.firstPayment + ev.charges));*/
+            ev.firstPayment = invoice.firstPayment;
+            ev.charges = invoice.charges;
+            ev.balancePayment = invoice.balancePayment;
         }
         if (event.event == 'ifactorTransfer') {
             ev = event.args;

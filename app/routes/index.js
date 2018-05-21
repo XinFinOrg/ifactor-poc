@@ -293,7 +293,8 @@ router.post('/factoringProposal', imgUpload2, async (function(req, res) {
 		invoiceAmount : parseInt(input.invoiceAmount) || 0,
 		financerAddress : req.user.address,
 		platformCharges : parseInt(input.platformCharges) || 0,
-		saftyPercentage : parseInt(input.saftyPercentage) || 0
+		saftyPercentage : parseInt(input.saftyPercentage) || 0,
+		payableDate : input.payableDate
 	};
 
 	var tx;
@@ -307,7 +308,7 @@ router.post('/factoringProposal', imgUpload2, async (function(req, res) {
 			var postpayamount = await(web3Helper.getPostpayAmount(invoiceId));
 			postpayamount = postpayamount.toNumber();
 	    } catch(e) {
-	    	console.log(e)
+	    	console.log(e);
 			return res.send({status : false, message : 'smart contract error'});
 	    }
 	} else {
@@ -329,7 +330,7 @@ router.post('/factoringProposal', imgUpload2, async (function(req, res) {
 				acceptFactoringRemark : input.remark,
 				firstPayment : firstPayment,
 				charges : charges,
-				balancePayment : postpayamount
+				balancePayment : postpayamount,
 				ifactorProposalDocs : input.ifactorProposalDocs
 			}
 		};
@@ -466,7 +467,7 @@ router.post('/rateSupplier', function(req, res) {
 
 router.post('/payInvoice', async (function(req, res) {
 	let invoiceId = req.body.invoiceId;
-	let updateQuery = {$set : {state : 'invoice_paid'}};
+	let updateObj = {state : 'invoice_paid'};
 	let buyerAddress = req.body.buyerAddress;
 	let supplierAddress = req.body.supplierAddress;
 	let financerAddress = req.body.financerAddress;
@@ -483,19 +484,33 @@ router.post('/payInvoice', async (function(req, res) {
 			}
 		    var tx1 = await (web3Helper.sendTokens(buyerAddress, financerAddress, parseInt(postpayamount)));
 		    tx = await (web3Helper.payInvoice(invoiceId, invoiceAmount));
+
+			var proposalEvent = await (web3Helper.getProposalAcceptedEvent(invoiceId));
+			var proposalDate = proposalEvent[0].args.created;
+		    var daysToPayout = Helper.getDatesDiff(new Date(), proposalDate);
+		    web3Helper.setPayoutDays(invoiceId, daysToPayout);
+
+			var interestAmount = await(web3Helper.getInterestAmount(invoiceId));
+			interestAmount = interestAmount.toNumber();
+			var postpayamount = await(web3Helper.getPostpayAmount(invoiceId));
+			postpayamount = postpayamount.toNumber();
+			updateObj.charges = interestAmount;
+			updateObj.balancePayment = postpayamount;
 	    } catch(e) {
 	    	console.log(e);
 			return res.send({status : false, error : 'blockchain error'});
 	    }
 	}
 
+	let updateQuery = {$set : updateObj};
 	updateInvoice({'invoiceId' : invoiceId}, updateQuery, function(err, data) {
 		if (err) {
 			return res.send({status : false, error : err});
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
-}));
+}
+));
 
 router.post('/prepaySupplier', async(function(req, res) {
 	//'invoiceId' : new ObjectID(invoiceId)}
@@ -706,9 +721,9 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 		}
 		var invoiceHistory = helper.dummyTx;
 		var invoice = data[0];
-		processInvoiceDetails(invoice);
+		//processInvoiceDetails(invoice);
 
-		if (web3Conf) {
+		/*if (web3Conf) {
 		    try {
 				var interest = await(web3Helper.getInterestAmount(invoiceId));
 				postpayamount = postpayamount.toNumber();
@@ -720,14 +735,14 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 		    	console.log(e);
 				return res.send({status : false, error : 'blockchain error'});
 		    }
-		}
+		}*/
 
 		getUserDetails({email : invoice.supplierEmail}, async(function(err, userData) {
 			invoice.supplierData = !err ? userData : {};
 			if (web3Conf) {
 				var allEvents = await (web3Helper.getAllEvents(invoiceId));
 	        	//console.log(allEvents)
-				helper.processEvents(allEvents);
+				helper.processEvents(allEvents, invoice);
 				invoiceHistory = allEvents.filter(x => x.event == 'invoiceHistory');
 				invoice.created = getInvoiceDates(invoiceHistory);
 				var tarnsferEvents = allEvents.filter(x => x.event == 'ifactorTransfer');

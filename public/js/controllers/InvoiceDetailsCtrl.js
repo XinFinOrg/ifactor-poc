@@ -276,9 +276,10 @@
 
 	// used
 	$scope.acceptFactoringForm = {
-			platformCharges : 0,
-			saftyPercentage : 0,
-			acceptFactoringRemark : '',
+		platformCharges : 0,
+		saftyPercentage : 0,
+		acceptFactoringRemark : '',
+		payableDate : $scope.invoiceData.payableDate
 	};
 
     $scope.ifactorProposalDocs = null;
@@ -293,8 +294,7 @@
 	        data : {
 				invoiceId : $rootScope.invoiceId,
 				input :	$scope.acceptFactoringForm,
-				ifactorProposalDocs : ifactorProposalDocs,
-				ifDocs : $scope.ifDocs
+				ifactorProposalDocs : ifactorProposalDocs
 	        }
 	    }).then(function (resp) {
 			console.log($scope.ifactorProposalDocs);

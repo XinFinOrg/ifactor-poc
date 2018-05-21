@@ -86,22 +86,24 @@ var getInstance = function(data) {
 var contractInstance = getInstance(invoiceJson);
 
 var addInvoice = async (function(invoice) {
-    var daysToPayout = Helper.getDatesDiff(invoice.payableDate);
+    //var daysToPayout = Helper.getDatesDiff(invoice.payableDate);
     var mm = await (contractInstance.addInvoice(
         invoice.invoiceId, invoice.invoiceNo, 'invoice_created', invoice.invoiceAmount,
-        invoice.supplierAddress, invoice.buyerAddress, daysToPayout, Date.now(),
+        invoice.supplierAddress, invoice.buyerAddress, invoice.payableDate, Date.now(),
         {from: web3.eth.accounts[1], gas:300000}
     ));
     return mm;
 });
 
 var factoringProposal = async (function(invoice) {
+    var daysToPayout = Helper.getDatesDiff(invoice.payableDate);
     var mm = await (contractInstance.addFactoring(
         invoice.invoiceId,
         invoice.financerAddress,
         parseInt(invoice.platformCharges),
         parseInt(invoice.saftyPercentage),
         parseInt(invoice.invoiceAmount),
+        daysToPayout,
         Date.now(),
         {from: web3.eth.accounts[1], gas:300000}
     ));
@@ -136,6 +138,14 @@ var setState = async (function(invoiceId, state) {
           {from: web3.eth.accounts[1], gas:100000}));
     return mm;
 });
+
+var setPayoutDays = async (function(invoiceId, days) {
+    var mm = await (contractInstance.setPayoutDays(invoiceId, days, Date.now(),
+          {from: web3.eth.accounts[1], gas:100000}));
+    return mm;
+});
+
+
 
 var requestFactoring = async (function(invoiceId, state, amount) {
     var mm = await (contractInstance.requestFactoring(invoiceId, state, parseInt(amount), Date.now(),
@@ -244,6 +254,25 @@ var processEventBigNumbers = function(allEvents) {
         }
     }
 };
+
+var getProposalAcceptedEvent = async(function(invoiceId) {
+    let eventInstance, events;
+    let f1 = {
+        from: web3.eth.coinbase,
+        gas: 70000000
+    };
+    let f2 = {
+        fromBlock: 0,
+        toBlock: 'latest'
+    };
+    eventInstance = contractInstance.invoiceHistory(f1, f2);
+    events = await (Promisify(cb => eventInstance.get(cb)));
+    events = events.filter(tx => tx.args && tx.args.invoiceId == invoiceId &&
+        tx.args.state == 'ifactor_proposal_accepted');
+    processEventBigNumbers(events);
+    return events;
+});
+
 
 var getAllEvents = async(function(invoiceId) {
     let eventInstance, events;
@@ -390,5 +419,6 @@ module.exports = {
     getProps : getProps,
     getEthBalance : getEthBalance,
     requestFactoring : requestFactoring,
-    getAccounts : getAccounts
+    getAccounts : getAccounts,
+    getProposalAcceptedEvent : getProposalAcceptedEvent
 };
