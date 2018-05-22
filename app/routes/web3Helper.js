@@ -86,17 +86,24 @@ var getInstance = function(data) {
 var contractInstance = getInstance(invoiceJson);
 
 var addInvoice = async (function(invoice) {
-    //var daysToPayout = Helper.getDatesDiff(invoice.payableDate);
+    var payableDate = new Date(invoice.payableDate).getTime();
     var mm = await (contractInstance.addInvoice(
         invoice.invoiceId, invoice.invoiceNo, 'invoice_created', invoice.invoiceAmount,
-        invoice.supplierAddress, invoice.buyerAddress, invoice.payableDate, Date.now(),
-        {from: web3.eth.accounts[1], gas:300000}
+        invoice.supplierAddress, invoice.buyerAddress, Date.now(),
+        {from: web3.eth.accounts[1], gas:1000000}
     ));
+    /*var nn = await (contractInstance.emitPayableDate(
+        invoice.invoiceId, payableDate,
+        {from: web3.eth.accounts[1], gas:3000000}
+    ));*/
+
     return mm;
 });
 
 var factoringProposal = async (function(invoice) {
+    console.log('payableDate', invoice.payableDate)
     var daysToPayout = Helper.getDatesDiff(invoice.payableDate);
+    console.log('daysToPayout', daysToPayout);
     var mm = await (contractInstance.addFactoring(
         invoice.invoiceId,
         invoice.financerAddress,
@@ -105,7 +112,7 @@ var factoringProposal = async (function(invoice) {
         parseInt(invoice.invoiceAmount),
         daysToPayout,
         Date.now(),
-        {from: web3.eth.accounts[1], gas:300000}
+        {from: web3.eth.accounts[1], gas:4000000}
     ));
     return mm;
 });
@@ -140,7 +147,7 @@ var setState = async (function(invoiceId, state) {
 });
 
 var setPayoutDays = async (function(invoiceId, days) {
-    var mm = await (contractInstance.setPayoutDays(invoiceId, days, Date.now(),
+    var mm = await (contractInstance.setPayoutDays(invoiceId, days,
           {from: web3.eth.accounts[1], gas:100000}));
     return mm;
 });
@@ -420,5 +427,6 @@ module.exports = {
     getEthBalance : getEthBalance,
     requestFactoring : requestFactoring,
     getAccounts : getAccounts,
-    getProposalAcceptedEvent : getProposalAcceptedEvent
+    getProposalAcceptedEvent : getProposalAcceptedEvent,
+    setPayoutDays : setPayoutDays
 };

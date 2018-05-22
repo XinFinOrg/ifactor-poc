@@ -270,7 +270,23 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', funct
         'rate_financer_mandatory' : {
             msg : 'You must rate Financier before submit',
             class : 'danger'
-        }
+        },
+        'invoice_buyer' : {
+            msg : 'Buyer Name is Mandatory',
+            class : 'danger'
+        },
+        'invoice_payableDate' : {
+            msg : 'Payable Date is Mandatory',
+            class : 'danger'
+        },
+        'invoiceNo' : {
+            msg : 'Invoice No is Mandatory',
+            class : 'danger'
+        },
+        'invoiceAmount' : {
+            msg : 'Invoice Amount is Mandatory',
+            class : 'danger'
+        },
     };
 
     var createToast = function(msg, className='success') {
@@ -285,13 +301,26 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', funct
         createToast(alert.msg, alert.class);
     };
 
+    var isObjEmpty = function(obj) {
+        for(var prop in obj) {
+            if (prop == '$$hashKey') {
+                continue;
+            }
+            if(obj.hasOwnProperty(prop))
+                return false;
+        }
+
+        return true;
+    }
+
     return {
         invoiceStatusMap : invoiceStatusMap,
         stateOptions : stateOptions,
         statusClassMap : statusClassMap,
         companyTypeOptions : companyTypeOptions,
         showAlert : showAlert,
-        createToast : createToast
+        createToast : createToast,
+        isObjEmpty : isObjEmpty
     }
 
 }]);

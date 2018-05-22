@@ -278,14 +278,14 @@
 	$scope.acceptFactoringForm = {
 		platformCharges : 0,
 		saftyPercentage : 0,
-		acceptFactoringRemark : '',
-		payableDate : $scope.invoiceData.payableDate
+		acceptFactoringRemark : ''
 	};
 
     $scope.ifactorProposalDocs = null;
     $scope.ifDocs = null;
     $scope.factoringProposal = function (ifactorProposalDocs) {
 		$scope.acceptFactoringForm.invoiceAmount = $scope.invoiceData.invoiceAmount;
+		$scope.acceptFactoringForm.payableDate = $scope.invoiceData.payableDate;
 	    Upload.upload({
 	        url: '/factoringProposal',
             method : 'POST',
@@ -337,7 +337,7 @@
 				remark : $scope.proposalActionForm.remark
 		}
 		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_rejected');
+			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposal_accepted');
 			$scope.getInvoiceDetails();
 	    });
 	};

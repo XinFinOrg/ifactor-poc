@@ -16,7 +16,7 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 
 	var stateMap = Helper.stateMap;
 
-	$scope.urlMap = function(type) {
+	/*$scope.urlMap = function(type) {
 
 		if (type == 'createInvoice') {
 			$location.path('/create-invoice');
@@ -32,11 +32,7 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 		$scope.templateUrlDashboard = $scope.dashboardUrl[type];
 	};
 
-	$scope.urlMap('supplier');
-
-	$scope.createRequest = function (argument) {
-		// body...
-	}
+	$scope.urlMap('supplier');*/
 
 	$scope.date = new Date();
 	$scope.eventSources = [];
@@ -46,6 +42,11 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 	GetPost.get({url : '/getBuyerList'}, function(err, docs) {
 		console.log(docs);
 		$scope.companyOptions = docs.data;
+		console.log('init : companyNameData', $scope.companyNameData)
+		if (Helper.isObjEmpty($scope.companyNameData) && $scope.companyOptions &&
+			$scope.companyOptions.length > 0) {
+			$scope.companyNameData = $scope.companyOptions[0];
+		}
     });
 
 	$scope.companyNameData = {};
@@ -85,10 +86,21 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
     	return input;
     };
 
+	var getArrIndexByVal = function(arr, key, val) {
+		for (var i in arr) {
+			if (arr[i][key] == val) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	var setCompanyData = function() {
-		$scope.companyNameData.email = input.buyerEmail;
-		$scope.companyNameData.address = input.buyerAddress;
-		$scope.companyNameData.firstName = input.companyName;
+		var input = $scope.input;
+		console.log('$scope.companyOptions')
+		var index = getArrIndexByVal($scope.companyOptions, 'email', input.buyerEmail);
+		console.log('buyer', input.buyerEmail, 'index', index, 'buyers', $scope.companyOptions)
+		$scope.companyNameData = index >= 0 ? $scope.companyOptions[index] : {};
 	}
 
     $scope.submitInvoice2 = function (input, type) {
@@ -128,7 +140,7 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
     	GetPost.get(data, function(err, docs) {
     		console.log(docs);
 			$scope.input = docs.data[$rootScope.mainInvoiceIndex];
-			setCompanyData($scope.input);
+			setCompanyData();
 	    });
     }
 
@@ -145,7 +157,10 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
     $scope.submitInvoice = function (input, type) {
     	$scope.input.state = type;
     	$scope.input = $scope.getBuyerData(input);
-    	console.log(input);
+    	if (!validateInvoice()) {
+    		return;
+    	}
+
 	    Upload.upload({
 	        url: '/createInvoice',
             method : 'POST',
@@ -169,11 +184,19 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 	        console.log('Error status: ' + resp.status);
 	    }, function (evt) { 
 	        console.log(evt);
-	        /*var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-	        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-	        $scope.vm.progress = 'progress: ' + progressPercentage + '% ';*/
 	    });
 	};
+
+	var validateInvoice = function() {
+		var invoice = $scope.input;
+		var errors = 0;
+		(!$scope.companyNameData || !$scope.companyNameData.email) ?
+			(Helper.showAlert('invoice_buyer'), errors++) : undefined;
+		!invoice.payableDate ? (errors++, Helper.showAlert('invoice_payableDate')) : undefined;
+		!invoice.invoiceNo ? (Helper.showAlert('invoiceNo'), errors++) : undefined;
+		!invoice.invoiceAmount ? (Helper.showAlert('invoiceAmount'), errors++) : undefined;
+		return !errors;
+	}
 
 	$scope.uploadImages = function (file) {
 	    Upload.upload({

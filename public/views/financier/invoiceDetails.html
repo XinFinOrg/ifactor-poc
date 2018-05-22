@@ -346,13 +346,13 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
                                     <div class="blockchain-titles">Final Payment</div>
-                                    <div class="blockchain-content"><strong>{{100 - (tx.args.factorCharges + tx.args.factorSaftyPercentage)}}% (<span>&#36;</span>{{tx.args.balancePayment}})</strong></div>
+                                    <div class="blockchain-content"><strong>{{tx.args.balancePaymentPer|number : 2}}% (<span>&#36;</span>{{tx.args.balancePayment}})</strong></div>
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
                                     <strong>+</strong>                                    </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
                                     <div class="blockchain-titles">Estimated Charges</div>
-                                    <div class="blockchain-content"><strong>{{tx.args.factorCharges}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
+                                    <div class="blockchain-content"><strong>{{tx.args.chargesPer|number : 2}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
                                 </div>
                             </div>
                             <div class="col-md-12 padd_bottom_15">
@@ -446,88 +446,78 @@
                                     </div>
                                 </div>
 
-                            <div class="col-md-12 padd_0" ng-show="factorFlags.proceedIfactorRequest">
-                                <h4 class=" f-w-6 text-uppercase text-primary response-now">Factor Now</h4>
-                                <div class="transaction-details">
-                                    <div class="blockchain-titles text-uppercase">Mode</div>
-                                </div>
-                                <!-- [ Togglable tabs ] -->
-                                <div class="btn-group m-b-20" data-toggle="btns">
-                                    <a class="btn btn-round btn-border btn-lg btn-primary active deep" data-toggle="tab">Factor</a>
-                                    <a class="btn btn-round btn-border btn-lg btn-primary deep" data-toggle="tab">Finance</a>
-                                </div>
-                                <div class="transaction-details">
-                                    <div class="blockchain-titles text-uppercase">Est. charges / Month(%)</div>
-                                </div>
-                                <div class="form-group">
-                                    <!-- <div class="input-group">
-                                        <input type="number" name="charges" ng-model="acceptFactoringForm.platformCharges" class="form-control input-lg"/> -->
-                                        <div class="col-md-12">
-                                            <rzslider rz-slider-model="acceptFactoringForm.saftyPercentage" rz-slider-options="chargesSliderOptions"></rzslider>
-                                        <!-- </div> -->
+                                <div class="col-md-12 padd_0" ng-show="factorFlags.proceedIfactorRequest">
+                                    <h4 class=" f-w-6 text-uppercase text-primary response-now">Factor Now</h4>
+                                    <div class="transaction-details">
+                                        <div class="blockchain-titles text-uppercase">Mode</div>
                                     </div>
-                                </div>
-                                <div class="transaction-details">
-                                    <div class="blockchain-titles text-uppercase">First Payment(%)</div>
-                                </div>
-                                <div class="form-group">
-                                   <!--  <div class="input-group">
-                                        <input type="number" name="charges" ng-model="acceptFactoringForm.saftyPercentage" class="form-control input-lg"/> -->
-                                        <div class="col-md-12">
-                                            <rzslider rz-slider-model="acceptFactoringForm.platformCharges" rz-slider-options="factorSliderOptions"></rzslider>
+                                    <!-- [ Togglable tabs ] -->
+                                    <div class="btn-group m-b-20" data-toggle="btns">
+                                        <a class="btn btn-round btn-border btn-lg btn-primary active deep" data-toggle="tab">Factor</a>
+                                        <a class="btn btn-round btn-border btn-lg btn-primary deep" data-toggle="tab">Finance</a>
+                                    </div>
+                                    <div class="transaction-details">
+                                        <div class="blockchain-titles text-uppercase">Est. charges / Month(%)
                                         </div>
-                                    <!-- </div> -->
-                                </div>
-                                <div class="transaction-details no-bottom-padd">
-
+                                    </div>
                                     <div class="form-group">
-                                        <div class="input-group">
-                                            <textarea ng-model="acceptFactoringForm.remark" style="height:150px !important" class="form-control input-lg" id="description" placeholder="Write Terms & Condition"></textarea>
+                                        <div class="col-md-12">
+                                            <rzslider rz-slider-model="acceptFactoringForm.platformCharges" rz-slider-options="chargesSliderOptions"></rzslider>
                                         </div>
                                     </div>
-
-                                    <div class="m-b-20">
-                                        <div class="transaction-details">
-                                            <div class="blockchain-titles text-uppercase">Attachment</div>
+                                    <div class="transaction-details">
+                                        <div class="blockchain-titles text-uppercase">First Payment(%)
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                            <div class="col-md-12">
+                                                <rzslider rz-slider-model="acceptFactoringForm.saftyPercentage" rz-slider-options="factorSliderOptions"></rzslider>
+                                            </div>
+                                    </div>
+                                    <div class="transaction-details no-bottom-padd">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <textarea ng-model="acceptFactoringForm.remark" style="height:150px !important" class="form-control input-lg" id="description" placeholder="Write Terms & Condition"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="m-b-20">
+                                            <div class="transaction-details">
+                                                <div class="blockchain-titles text-uppercase">Attachment</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="myLabel" style="width: 55%">
+                                                    <input type="file" ngf-select="ngf-select"              ng-model="ifactorProposalDocs" name="file"          ngf-pattern="'image/*'" accept="image/*" 
+                                                    ngf-max-size="20MB"/>
+                                                      <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse File</span>
+                                                 </div>
+                                                <img style="width:20px;" ngf-thumbnail="ifactorProposalDocs || '/assets/images/apple-touch-icon-72.png'"/>
+                                                <i ng-show="ifactorProposalDocs.$error.required">*required</i><br>
+                                                <i ng-show="ifactorProposalDocs.$error.maxSize">File too large 
+                                                {{up.file.size / 1000000|number:1}}MB: max 20M</i>
+                                                <p>{{up.progress}}</p>
+                                            </div>
                                         </div>
                                         <div class="form-group">
-                                            <div class="myLabel" style="width: 55%">
-                                                <input type="file" ngf-select="ngf-select"              ng-model="ifactorProposalDocs" name="file"          ngf-pattern="'image/*'" accept="image/*" 
-                                                ngf-max-size="20MB"/>
-                                                  <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse File</span>
-                                             </div>
-                                            <img style="width:20px;" ngf-thumbnail="ifactorProposalDocs || '/assets/images/apple-touch-icon-72.png'"/>
-                                            <i ng-show="ifactorProposalDocs.$error.required">*required</i><br>
-                                            <i ng-show="ifactorProposalDocs.$error.maxSize">File too large 
-                                            {{up.file.size / 1000000|number:1}}MB: max 20M</i>
-                                            <p>{{up.progress}}</p>
+                                            <button ng-click="factoringProposal(ifactorProposalDocs)" class="btn btn-lg btn-primary btn-corner btn-block">Submit Now
+                                            </button>
                                         </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <button ng-click="factoringProposal(ifactorProposalDocs)" class="btn btn-lg btn-primary btn-corner btn-block">Submit Now</button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12 transaction-details"  ng-show="isIfactorRequested()">
-                                <div class="clearfix"></div>
-                            <!-- <div id="header-blue" class="col-md-12" ng-show="isIfactorRequested()"> -->
-                                 <h1 class="text-uppercase success-response success"><i class="fa fa-question icon-rounded icon-primary"></i>Respond Now</h1>
+                                <div class="col-md-12 transaction-details"  ng-show="isIfactorRequested()">
+                                    <div class="clearfix"></div>
+                                     <h1 class="text-uppercase success-response success"><i class="fa fa-question icon-rounded icon-primary"></i>Respond Now</h1>
 
-                                <!-- <div class="transaction-details"> -->
-                                    
-
-                                    <div class="blockchain-titles m-b-15">What would you like to do factoring for this request?</div>
-                                    <div>
-                                        <div class="form-group form-group-bottom">
-                                            <button class="btn btn-lg btn-primary btn-corner btn-block" ng-click="proceedRequest()">Proceed</button>
+                                        <div class="blockchain-titles m-b-15">What would you like to do factoring for this request?
                                         </div>
-                                        <div class="form-group no-bottom-marg form-group-bottom">
-                                            <button type="submit" class="btn btn-lg btn-border btn-primary btn-corner btn-block" ng-click="rejectRequest()">Reject</button>
+                                        <div>
+                                            <div class="form-group form-group-bottom">
+                                                <button class="btn btn-lg btn-primary btn-corner btn-block" ng-click="proceedRequest()">Proceed</button>
+                                            </div>
+                                            <div class="form-group no-bottom-marg form-group-bottom">
+                                                <button type="submit" class="btn btn-lg btn-border btn-primary btn-corner btn-block" ng-click="rejectRequest()">Reject</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                <!-- </div> -->
-                            </div>
+                                </div>
 
                             <div class="col-md-12" ng-show="factorFlags.rejectIfactorRequest">
                                 <div id="buyer-header-rejected">
@@ -548,17 +538,8 @@
 
 
                             <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_rejected'">
-                                <!-- <div id="buyer-header-rejected">
-                                    <i class="fa fa-times icon-rounded icon-primary inviewport"></i>
-                                    <div class="info-details">
-                                        <h1 class="buyer-title text-uppercase">Rejected By You</h1>
-                                        <p class="f-w-6">{{invoiceData.rejectFactoringRemark}}</p>
-                                    </div>
-                                </div> -->
-
                                 <div class="transaction-details p-l-8">
                                     <div class="clearfix"></div>
-
                                     <h1 class="rejected"><i class="fa fa-close icon-rounded icon-primary"></i> Rejected By You</h1>
                                     <p>{{ invoiceData.created.invoice_rejected | date : "dd MMM y hh:mm"}}</p>
                                     <p class="f-w-6">{{invoiceData.rejectFactoringRemark}}</p>
@@ -570,18 +551,11 @@
                                     <h1 class="no-bottom-padd">{{invoiceData.created.ifactor_rejected | date : "dd MMM y, hh:mm"}}</h1>
                                     <div>
                                     </div>
-
                                 </div> 
                             </div>
                             
                             <div class="col-md-12" ng-show="invoiceData.state == 'ifactor_proposed'">
                                 <div id="buyer-header-rejected">
-                                    <!-- <i class="fa fa-times icon-rounded icon-primary"></i> -->
-
-                                   <!--  <div class="info-details">
-                                        <h1 class="buyer-title text-uppercase"><i class="fa fa-exclamation icon-rounded icon-primary"></i>Factoring Proposed</h1>
-
-                                    </div> -->
                                     <div class="info-details">
                                      <h1 class="pending text"><i class="fa fa-exclamation icon-rounded icon-primary"></i>Factoring Proposed</h1>
                                         
@@ -609,12 +583,12 @@
                                         </div>
                                     </div>
                                     <div class="transaction-details m-b-10">
-                                        <div class="blockchain-titles text-uppercase">Est. Charges/Month (%)</div>
+                                        <div class="blockchain-titles text-uppercase">Est. Charges/Month ({{invoiceData.platformCharges}}%)</div>
                                         <div class="blockchain-content">{{invoiceData.charges}}
                                         </div>
                                     </div>
                                     <div class="transaction-details m-b-10">
-                                        <div class="blockchain-titles text-uppercase">First Payment (%)</div>
+                                        <div class="blockchain-titles text-uppercase">First Payment ({{invoiceData.saftyPercentage}}%)</div>
                                         <div class="blockchain-content">{{invoiceData.firstPayment}}
                                         </div>
                                     </div>
@@ -757,16 +731,13 @@
                                     </div>
                                 </div>
                             </div>    
-                                <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'completed'">
-                                    <div class="clearfix"></div>
+                            <div class="col-md-12 transaction-details p-l-8" ng-show="invoiceData.state == 'completed'">
+                                <div class="clearfix"></div>
 
-                                    <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i>Contract Completed</h1>
-                                    <!-- <p>Your Transaction is published on Blockchain</p> -->
-                                    <p>{{ invoiceData.created.completed | date : "dd MMM y hh:mm"}}</p>
-                                </div>
-
+                                <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i>Contract Completed</h1>
+                                <!-- <p>Your Transaction is published on Blockchain</p> -->
+                                <p>{{ invoiceData.created.completed | date : "dd MMM y hh:mm"}}</p>
                             </div>
-
                         </div>
                         <!-- End .row -->
                     </div>
@@ -807,7 +778,7 @@
                     </div>        
                 </section>
             </div>
-            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.state == 'completed' || true">
+            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.state == 'completed' && !invoiceData.supplierRatings">
                 <section class="box">
                     <div class="content-body">
                         <div class="row">

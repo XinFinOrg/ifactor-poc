@@ -33,7 +33,7 @@ var getDatesDiff = function(date, d2) {
     var date2 = !d2 ? new Date() : new Date(d2);
     var diff = (Math.ceil((date1.getTime() - date2.getTime()) /
             (1000 * 3600 * 24))/365);
-    return (diff*360).toFixed(0);
+    return (diff*360 < 0) ? 0 : (diff*360).toFixed(0);
 };
 
 var dummyTx = [
@@ -136,7 +136,9 @@ var processEvents = function(allEvents, invoice) {
             ev.balancePayment = (ev.amount - (ev.firstPayment + ev.charges));*/
             ev.firstPayment = invoice.firstPayment;
             ev.charges = invoice.charges;
+            ev.chargesPer = invoice.chargesPer;
             ev.balancePayment = invoice.balancePayment;
+            ev.balancePaymentPer = invoice.balancePaymentPer;
         }
         if (event.event == 'ifactorTransfer') {
             ev = event.args;

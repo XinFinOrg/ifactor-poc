@@ -294,13 +294,13 @@ font-size: 13px;
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
                                     <div class="blockchain-titles">Final Payment</div>
-                                    <div class="blockchain-content"><strong>{{100 - (tx.args.factorCharges + tx.args.factorSaftyPercentage)}}% (<span>&#36;</span>{{tx.args.balancePayment}})</strong></div>
+                                    <div class="blockchain-content"><strong>{{tx.args.balancePaymentPer|number : 2}}% (<span>&#36;</span>{{tx.args.balancePayment}})</strong></div>
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
                                     <strong>+</strong>                                    </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
                                     <div class="blockchain-titles">Estimated Charges</div>
-                                    <div class="blockchain-content"><strong>{{tx.args.factorCharges}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
+                                    <div class="blockchain-content"><strong>{{tx.args.chargesPer|number : 2}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
                                 </div>
                             </div>
                             <div class="col-md-12 padd_bottom_15">
@@ -363,8 +363,6 @@ font-size: 13px;
                                         </div>
                                     </div>
                                 </div>
-
-
 
                                 <div id="header-blue" ng-show="isHistoryBarEnabled('goods_delivered')">
                                     <i class="fa icon-rounded icon-primary fa-no-icon"></i>
@@ -478,54 +476,54 @@ font-size: 13px;
                                     </div>
                                 </div>
 
-                            <!-- factoring proposed -->
-                            <div class="col-md-12 " ng-show="invoiceData.state == 'ifactor_proposed'">
-                            <!-- <h1 class="success"> Smart Contract Created</h1> -->
-                                <h1 class="text-uppercase success-response success"><i class="fa fa-question icon-rounded icon-primary"></i>Respond Now</h1>
+                                <!-- factoring proposed -->
+                                <div class="col-md-12 " ng-show="invoiceData.state == 'ifactor_proposed'">
+                                <!-- <h1 class="success"> Smart Contract Created</h1> -->
+                                    <h1 class="text-uppercase success-response success"><i class="fa fa-question icon-rounded icon-primary"></i>Respond Now</h1>
 
-                                <div class="transaction-details">
-                                    <div class="blockchain-titles text-uppercase">Mode</div>
-                                    <div class="blockchain-content">Factor</div>
-                                </div>
-                                
-                                <div class="transaction-details m-b-10">
-                                    <div class="blockchain-titles text-uppercase">Factoring Charges/Month (%)</div>
-                                    <div class="blockchain-content">{{invoiceData.platformCharges}}% ($ {{invoiceData.charges}})</div>
+                                    <div class="transaction-details">
+                                        <div class="blockchain-titles text-uppercase">Mode</div>
+                                        <div class="blockchain-content">Factor</div>
+                                    </div>
                                     
-                                </div>
-                                
-                                <div class="transaction-details m-b-10">
-                                    <div class="blockchain-titles text-uppercase">FIrst Payment (%)</div>
-                                    <div class="blockchain-content">{{invoiceData.saftyPercentage}}% ( $ {{invoiceData.firstPayment}} )</div>
-                             
-                                </div>
-                                
-                                <div class="transaction-details m-b-10">
-                                    <div class="blockchain-titles text-uppercase">Terms &amp; Condition</div>
-                                    <div class="blockchain-content">{{invoiceData.acceptFactoringRemark}}</div>
-                               
-                                </div>
-                                
-                                <div class="transaction-details m-b-10">
-                                    <div class="blockchain-titles text-uppercase">Attachment</div>
-                                    <div class="blockchain-content"><a href="#" class="attachment-btn"><i class="fa fa-download"></i> Factor.pdf</a></div>
+                                    <div class="transaction-details m-b-10">
+                                        <div class="blockchain-titles text-uppercase">Factoring Charges/Month (%)</div>
+                                        <div class="blockchain-content">{{invoiceData.platformCharges}}% ($ {{invoiceData.charges}})</div>
+                                        
+                                    </div>
                                     
-                                </div>
-                                
-                                <div>
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <textarea style="height: 150px !important;" ng-model="proposalActionForm.remark" class="form-control input-lg" id="description" placeholder="Remark*"></textarea>
+                                    <div class="transaction-details m-b-10">
+                                        <div class="blockchain-titles text-uppercase">FIrst Payment (%)</div>
+                                        <div class="blockchain-content">{{invoiceData.saftyPercentage}}% ( $ {{invoiceData.firstPayment}} )</div>
+                                 
+                                    </div>
+                                    
+                                    <div class="transaction-details m-b-10">
+                                        <div class="blockchain-titles text-uppercase">Terms &amp; Condition</div>
+                                        <div class="blockchain-content">{{invoiceData.acceptFactoringRemark}}</div>
+                                   
+                                    </div>
+                                    
+                                    <div class="transaction-details m-b-10">
+                                        <div class="blockchain-titles text-uppercase">Attachment</div>
+                                        <div class="blockchain-content"><a href="#" class="attachment-btn"><i class="fa fa-download"></i> Factor.pdf</a></div>
+                                        
+                                    </div>
+                                    
+                                    <div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <textarea style="height: 150px !important;" ng-model="proposalActionForm.remark" class="form-control input-lg" id="description" placeholder="Remark*"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-group-bottom">
+                                                <button ng-click="acceptFactoringProposal()" class="btn btn-sm btn-primary btn-blockchange-model btn-block">Accept</button>
+                                            </div>
+                                            <div class="form-group form-group-bottom">
+                                                <button ng-click="rejectFactoringProposal()" class="btn btn-sm btn-border btn-primary btn-blockchange-model btn-block">Reject</button>
                                             </div>
                                         </div>
-                                        <div class="form-group form-group-bottom">
-                                            <button ng-click="acceptFactoringProposal()" class="btn btn-sm btn-primary btn-blockchange-model btn-block">Accept</button>
-                                        </div>
-                                        <div class="form-group form-group-bottom">
-                                            <button ng-click="rejectFactoringProposal()" class="btn btn-sm btn-border btn-primary btn-blockchange-model btn-block">Reject</button>
-                                        </div>
-                                    </div>
-                            </div>
+                                </div>
 
                                 <div class="col-md-12" ng-if="invoiceData.state == 'ifactor_proposal_rejected'">
                                     <!-- <div id="buyer-header-rejected">
@@ -661,7 +659,7 @@ font-size: 13px;
                                             <h5 class="text-dark">Date<span class="text-dark">{{invoiceData.payableDate | date : "dd MMM y, hh:mm"}}</span></h5>
                                             <div>
                                             </div>
-                                        </div>
+                                    </div>
 
                                     <!-- <div class="transaction-details m-b-10">
                                         <p class="text-muted text-uppercase">Address</p>
@@ -675,7 +673,6 @@ font-size: 13px;
                                 </div>
 
                                 <div class="opacity-5 line-before" ng-show="isCurrentStage('payment_disbursed')"></div>
-                                <!-- <div class="col-md-12"> -->
                                 <div id="header-blue" class="no-after" ng-show="isStageEnabled('contract_complete')">
                                     <div ng-class="{'opacity-5' : isStageOpaque('contract_complete')}">
                                         <i class="fa icon-rounded icon-primary" ng-class="isOldStage('contract_complete') ? 'fa-check' : 'fa-number'"><span ng-show="!isOldStage('contract_complete')">5</span></i>
@@ -683,27 +680,17 @@ font-size: 13px;
                                             <h1 class="buyer-title" ng-class="{'ifactor-strong' : isCurrentStage('contract_complete')}">Contract Complete</h1>
                                         </div>
                                     </div>
-                                <!-- </div> -->
                                 <hr>
                                 </div>
                                 <div class="col-md-12" ng-show="invoiceData.state == 'completed'">
                                     <div id="buyer-header-approved">
                                         <!-- <i class="fa fa-check icon-rounded icon-primary inviewport visible"></i> -->
-
                                         <div class="info-details">
                                             <!-- <h1 class="buyer-title text-uppercase"></h1> -->
                                             <h1 class="success text-uppercase"><i class="fa fa-check icon-rounded icon-primary"></i> Payment Received</h1>
 
                                         </div>
                                     </div>
-
-                                    <!-- <div class="transaction-details p-l-8">
-                                        <div class="clearfix"></div>
-
-                                        <h1 class="success"><i class="fa fa-check icon-rounded icon-primary"></i>Payment Received</h1>
-                                        <p>Your Transaction is published on Blockchain</p>
-                                        <p>31 Dec 2018, 16:30</p>
-                                    </div> -->
                                     
                                     <div class="transaction-details trans_det no-bottom-padd">
                                             <h5 class="text-dark">Total Amount <span class="text-dark">$ {{invoiceData.invoiceAmount}}</span></h5>
@@ -724,12 +711,7 @@ font-size: 13px;
                                             <div>
                                             </div> -->
                                             <h5 class="text-dark">Date<span class="text-dark">31 Dec 2018, 16:30</span></h5>
-                                            <div>
-                                            </div>
-                                            </div>
-                                            
-                                            
-                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -774,7 +756,7 @@ font-size: 13px;
                     </div>        
                 </section>
             </div>
-            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.state == 'completed' || true">
+            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.state == 'completed' && !invoiceData.financerRatings">
                 <section class="box">
                     <div class="content-body">
                         <div class="row">

@@ -277,13 +277,13 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
                                     <div class="blockchain-titles">Final Payment</div>
-                                    <div class="blockchain-content"><strong>{{100 - (tx.args.factorCharges + tx.args.factorSaftyPercentage)}}% (<span>&#36;</span>{{tx.args.balancePayment}})</strong></div>
+                                    <div class="blockchain-content"><strong>{{tx.args.balancePaymentPer|number : 2}}% (<span>&#36;</span>{{tx.args.balancePayment}})</strong></div>
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 padd_max" align="center">
                                     <strong>+</strong>                                    </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 padd_max">
                                     <div class="blockchain-titles">Estimated Charges</div>
-                                    <div class="blockchain-content"><strong>{{tx.args.factorCharges}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
+                                    <div class="blockchain-content"><strong>{{tx.args.chargesPer|number : 2}}% (<span>&#36;</span>{{tx.args.charges}})</strong></div>
                                 </div>
                             </div>
                             <div class="col-md-12 padd_bottom_15">
@@ -483,54 +483,6 @@
                         </div>
                         <!-- End .row -->
                     </div>
-                </section>
-            </div>
-            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.state == 'completed'">
-                <section class="box">
-                    <div class="content-body">
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                 <div class="col-lg-12">
-                                        <div class="text-light buyer-top" style="border-left: none;">Rating</div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <jk-rating-stars max-rating="5" rating="ctrl.rating" read-only="ctrl.readOnly" on-rating="ctrl.onRating(rating)" >
-                                        </jk-rating-stars>
-                                    </div>      
-                            </div>
-                        </div>
-                    </div>        
-                </section>
-            <!-- MAIN CONTENT AREA ENDS -->
-            </div>
-            <div class="col-xs-12 col-md-3 col-lg-3" ng-show="invoiceData.state == 'completed'">
-                <section class="box">
-                    <div class="content-body">
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                 <div class="col-lg-12">
-                                        <div class="text-light buyer-top" style="border-left: none;">Give a quick rating to Buyer</div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <jk-rating-stars max-rating="5" rating="ctrl.rating" read-only="ctrl.readOnly" on-rating="ctrl.onRating(rating)" >
-                                        </jk-rating-stars>
-                                    </div>  
-
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <textarea ng-model="acceptFactoringForm.remark" style="height:150px !important" class="form-control input-lg" id="description" placeholder="Write Terms & Condition"></textarea>
-                                        </div>
-                                    </div>   
-
-                                    <div class="form-group">
-                                        <button ng-click="factoringProposal()" class="btn btn-lg btn-primary btn-corner btn-block">Submit</button>
-                                    </div> 
-                            </div>
-
-                        </div>
-                    </div>        
                 </section>
             </div>
             <!-- MAIN CONTENT AREA ENDS -->

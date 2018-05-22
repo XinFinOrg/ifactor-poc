@@ -42,28 +42,22 @@ contract Ifactor is StandardToken {
 	    balances[owner] = balances[owner] - _value;
 	}
 
-    function getProps(string _invoice_id) public returns(Invoice) {
-    	Invoice inv = Invoices[_invoice_id];
-    	return inv;
-    }
-
     function getBalance(address _address) public view returns(uint) {
         return balances[_address];
     }
 
 	function addInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount,
-						address _supplier, address _buyer, uint _payable_date, uint _created) public {
+						address _supplier, address _buyer, uint _created) public {
 		Invoice inv;
 		inv.invoiceId = _invoice_id ;
 		inv.invoiceNo = _invoice_no ;
 		inv.state = _state ;
 		inv.amount = _amount ;
-		inv.daysToPayout = _days_to_payout;
 		inv.supplier = _supplier ;
 		inv.buyer = _buyer;
 		Invoices[_invoice_id] = inv;
 		invoiceHistory(_invoice_id, _state, _created);
-		createInvoice(_invoice_id, _invoice_no, _state, _amount, _payable_date, _supplier, _buyer);
+		createInvoice(_invoice_id, _invoice_no, _state, _amount, _supplier, _buyer);
 	}
 
 	function getState(string _invoice_id) public view returns(string) {
@@ -77,9 +71,13 @@ contract Ifactor is StandardToken {
 		invoiceHistory(_invoice_id, _invoice_state, _created);
 	}
 
-	function setPayoutDays(uint _payoutDays) {
+	function emitPayableDate(string _invoice_id, uint _payable_date) public {
+		payableDates(_invoice_id, _payable_date);
+	}
+
+	function setPayoutDays(string _invoice_id, uint _payout_days) {
 		Invoice inv = Invoices[_invoice_id];
-		inv.daysToPayout = _payoutDays;
+		inv.daysToPayout = _payout_days;
 	}
 
 	function getAmount(string _invoice_id) public constant returns(uint) {
@@ -175,9 +173,10 @@ contract Ifactor is StandardToken {
     }
 
 	event createInvoice(string invoiceId, string invoiceNo, string state, uint amount,
-						uint payableDate, address supplier, address buyer);
+						address supplier, address buyer);
 	event invoiceHistory(string invoiceId, string state, uint created);
 	event factoringRequest(string invoiceId, uint amount, uint created);
 	event factoringProposal(string invoiceId, uint factorCharges, uint factorSaftyPercentage, uint amount, uint created);
    	event ifactorTransfer(string invoiceId, string transferType, uint amount, uint created);
+   	event payableDates(string invoiceId, uint payableDate);
 }

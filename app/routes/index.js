@@ -298,15 +298,17 @@ router.post('/factoringProposal', imgUpload2, async (function(req, res) {
 	};
 
 	var tx;
-	var firstPayment, postpayamount, charges;
+	var firstPayment, postpayamount, charges, chargesPer, balancePaymentPer;
 	firstPayment = invoice.invoiceAmount * invoice.saftyPercentage/100;
 	if (web3Conf) {
 	    try {
 		    tx = await (web3Helper.factoringProposal(invoice));
 			charges = await(web3Helper.getInterestAmount(invoiceId));
-			charges = charges.toNumber();
+			charges = charges.toNumber()/100;
+			console.log('charges', charges)
 			var postpayamount = await(web3Helper.getPostpayAmount(invoiceId));
 			postpayamount = postpayamount.toNumber();
+			console.log('postpayamount', postpayamount)
 	    } catch(e) {
 	    	console.log(e);
 			return res.send({status : false, message : 'smart contract error'});
@@ -330,7 +332,9 @@ router.post('/factoringProposal', imgUpload2, async (function(req, res) {
 				acceptFactoringRemark : input.remark,
 				firstPayment : firstPayment,
 				charges : charges,
+				chargesPer : charges/input.invoiceAmount * 100,
 				balancePayment : postpayamount,
+				balancePaymentPer : postpayamount/input.invoiceAmount * 100,
 				ifactorProposalDocs : input.ifactorProposalDocs
 			}
 		};
@@ -482,20 +486,24 @@ router.post('/payInvoice', async (function(req, res) {
 			if (ENV == 'prod') {
 				web3Helper.unlockSync(req.user.address, req.user.password);
 			}
+			//buyerAddress = req.user.address;
 		    var tx1 = await (web3Helper.sendTokens(buyerAddress, financerAddress, parseInt(postpayamount)));
 		    tx = await (web3Helper.payInvoice(invoiceId, invoiceAmount));
 
 			var proposalEvent = await (web3Helper.getProposalAcceptedEvent(invoiceId));
 			var proposalDate = proposalEvent[0].args.created;
-		    var daysToPayout = Helper.getDatesDiff(new Date(), proposalDate);
+		    var daysToPayout = helper.getDatesDiff(new Date(), proposalDate);
 		    web3Helper.setPayoutDays(invoiceId, daysToPayout);
 
 			var interestAmount = await(web3Helper.getInterestAmount(invoiceId));
 			interestAmount = interestAmount.toNumber();
 			var postpayamount = await(web3Helper.getPostpayAmount(invoiceId));
 			postpayamount = postpayamount.toNumber();
-			updateObj.charges = interestAmount;
+			updateObj.charges = interestAmount/100;
+			updateObj.chargesPer = updateObj.charges/invoiceAmount * 100;
 			updateObj.balancePayment = postpayamount;
+			updateObj.balancePaymentPer = postpayamount/invoiceAmount * 100;
+
 	    } catch(e) {
 	    	console.log(e);
 			return res.send({status : false, error : 'blockchain error'});
@@ -722,21 +730,6 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 		var invoiceHistory = helper.dummyTx;
 		var invoice = data[0];
 		//processInvoiceDetails(invoice);
-
-		/*if (web3Conf) {
-		    try {
-				var interest = await(web3Helper.getInterestAmount(invoiceId));
-				postpayamount = postpayamount.toNumber();
-				console.log('getPrepayAmount', postpayamount);
-			    tx1 = await (web3Helper.sendTokens(financerAddress, supplierAddress, postpayamount));
-			    tx = await (web3Helper.postpayFactoring(invoiceId, postpayamount));
-			    console.log('tx', tx);
-		    } catch(e) {
-		    	console.log(e);
-				return res.send({status : false, error : 'blockchain error'});
-		    }
-		}*/
-
 		getUserDetails({email : invoice.supplierEmail}, async(function(err, userData) {
 			invoice.supplierData = !err ? userData : {};
 			if (web3Conf) {
