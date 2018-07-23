@@ -1,1 +1,1 @@
-exports.ENV = 'dev';
+exports.ENV = 'prod';
