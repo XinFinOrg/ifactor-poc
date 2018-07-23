@@ -250,7 +250,7 @@ var sendTokens = async(function(acc1, acc2, value) {
     if (!parseInt(value)) {
         value = 0;
     }
-    unlockSync(acc1, phrase);
+    //unlockSync(acc1, phrase);
     var mm = await (contractInstance.transfer(acc2, value, 
           {from : acc1, gas:100000}));
     return mm;
@@ -414,6 +414,7 @@ var getAllEvents2 = function(invoiceId, cb) {
     });
 };
 
+//buyTokens("0x00b1a1e50b50443cb18dcbd624e115be46c10131", 100000)
 module.exports = {
     createAccount : createAccount,
     unlock : unlock,
