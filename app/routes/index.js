@@ -484,7 +484,8 @@ router.post('/payInvoice', async (function(req, res) {
 			var postpayamount = invoiceAmount;
 			console.log('getPrepayAmount', postpayamount);
 			if (ENV == 'prod') {
-				web3Helper.unlockSync(req.user.address, req.user.password);
+				//web3Helper.unlockSync(req.user.address, req.user.password);
+				web3Helper.unlockSync(req.user.address, "");
 			}
 			//buyerAddress = req.user.address;
 		    var tx1 = await (web3Helper.sendTokens(buyerAddress, financerAddress, parseInt(postpayamount)));
@@ -529,6 +530,9 @@ router.post('/prepaySupplier', async(function(req, res) {
 	console.log('address', supplierAddress, buyerAddress, financerAddress);
 	var tx, tx1;
 	if (web3Conf) {
+		if (ENV == 'prod') {
+			web3Helper.unlockSync(req.user.address, "");
+		}
 	    try {
 		    /*tx1 = await (web3Helper.buyTokens(financerAddress));
 		    tx1 = await (web3Helper.buyTokens(supplierAddress));
@@ -565,6 +569,9 @@ router.post('/postpaySupplier', async(function(req, res) {
 	console.log(supplierAddress, buyerAddress, financerAddress);
 	var tx;
 	if (web3Conf) {
+		if (ENV == 'prod') {
+			web3Helper.unlockSync(req.user.address, "");
+		}
 	    try {
 	    	//tx = await(web3Helper.etherTransfer(financerAddress));
 			var postpayamount = await(web3Helper.getPostpayAmount(invoiceId));
