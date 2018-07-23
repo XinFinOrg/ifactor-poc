@@ -18,7 +18,7 @@
     "ngToast": "ngtoast#^2.0.0"
   },
   "resolutions": {
-    "angular": ">=1.4.0",
+    "angular": "^1.6.10",
     "moment": "~2.10.3",
     "angular-sanitize": "^1.6.10"
   }
