@@ -8,10 +8,10 @@ var invoiceJson = require('../../deployer/build/contracts/Ifactor.json');
 if (typeof web3 !== 'undefined') {
     web3 = new Web3(web3.currentProvider);
 } else {
-    var provider = new Web3.providers.HttpProvider("http://localhost:8545");
+    var provider = new Web3.providers.HttpProvider("http://localhost:22001");
     web3 = new Web3(provider);
 }
-var provider = new Web3.providers.HttpProvider("http://localhost:8545");
+var provider = new Web3.providers.HttpProvider("http://localhost:22001");
 
     if (web3 && web3.isConnected()) {
         console.log('web3 is Connected')
