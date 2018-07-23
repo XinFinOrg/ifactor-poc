@@ -19,6 +19,12 @@ var provider = new Web3.providers.HttpProvider("http://localhost:8545");
         console.log('web3 is not Connected')
     }
 
+var defaultAccount = web3.eth.coinbase;
+
+var unlockDefaultAccount = function() {
+    return web3.personal.unlockAccount(defaultAccount, "", 15);
+}
+
 var createAccount = function(phrase) {
     return web3.personal.newAccount();
 }
@@ -86,21 +92,23 @@ var getInstance = function(data) {
 var contractInstance = getInstance(invoiceJson);
 
 var addInvoice = async (function(invoice) {
+    unlockDefaultAccount();
     var payableDate = new Date(invoice.payableDate).getTime();
     var mm = await (contractInstance.addInvoice(
         invoice.invoiceId, invoice.invoiceNo, 'invoice_created', invoice.invoiceAmount,
         invoice.supplierAddress, invoice.buyerAddress, Date.now(),
-        {from: web3.eth.accounts[1], gas:1000000}
+        {from: defaultAccount, gas:1000000}
     ));
     /*var nn = await (contractInstance.emitPayableDate(
         invoice.invoiceId, payableDate,
-        {from: web3.eth.accounts[1], gas:3000000}
+        {from: defaultAccount, gas:3000000}
     ));*/
 
     return mm;
 });
 
 var factoringProposal = async (function(invoice) {
+    unlockDefaultAccount();
     console.log('payableDate', invoice.payableDate)
     var daysToPayout = Helper.getDatesDiff(invoice.payableDate);
     console.log('daysToPayout', daysToPayout);
@@ -112,26 +120,29 @@ var factoringProposal = async (function(invoice) {
         parseInt(invoice.invoiceAmount),
         daysToPayout,
         Date.now(),
-        {from: web3.eth.accounts[1], gas:4000000}
+        {from: defaultAccount, gas:4000000}
     ));
     return mm;
 });
 
 var prepayFactoring = async (function(invoiceId, amount) {
+    unlockDefaultAccount();
     var mm = await (contractInstance.prepayFactoring(invoiceId, amount, Date.now(),
-          {from: web3.eth.accounts[1], gas:100000}));
+          {from: defaultAccount, gas:100000}));
     return mm;
 });
 
 var payInvoice = async (function(invoiceId, amount) {
+    unlockDefaultAccount();
     var mm = await (contractInstance.payInvoice(invoiceId, amount, Date.now(),
-          {from: web3.eth.accounts[1], gas:100000}));
+          {from: defaultAccount, gas:100000}));
     return mm;
 });
 
 var postpayFactoring = async (function(invoiceId, amount) {
+    unlockDefaultAccount();
     var mm = await (contractInstance.postpayFactoring(invoiceId, amount, Date.now(),
-          {from: web3.eth.accounts[1], gas:100000}));
+          {from: defaultAccount, gas:100000}));
     return mm;
 });
 
@@ -141,29 +152,33 @@ var getState = async (function(invoiceId) {
 });
 
 var setState = async (function(invoiceId, state) {
+    unlockDefaultAccount();
     var mm = await (contractInstance.setState(invoiceId, state, Date.now(),
-          {from: web3.eth.accounts[1], gas:100000}));
+          {from: defaultAccount, gas:100000}));
     return mm;
 });
 
 var setPayoutDays = async (function(invoiceId, days) {
+    unlockDefaultAccount();
     var mm = await (contractInstance.setPayoutDays(invoiceId, days,
-          {from: web3.eth.accounts[1], gas:100000}));
+          {from: defaultAccount, gas:100000}));
     return mm;
 });
 
 
 
 var requestFactoring = async (function(invoiceId, state, amount) {
+    unlockDefaultAccount();
     var mm = await (contractInstance.requestFactoring(invoiceId, state, parseInt(amount), Date.now(),
-          {from: web3.eth.accounts[1], gas:100000}));
+          {from: defaultAccount, gas:100000}));
     return mm;
 });
 
 var buyTokens = async (function(address, amount) {
+    unlockDefaultAccount();
     amount = !amount ? 10000 : amount;
     var mm = await (contractInstance.buyTokens(address, amount,
-          {from: web3.eth.accounts[1], gas:100000}));
+          {from: defaultAccount, gas:100000}));
     return mm;
 });
 
@@ -231,6 +246,7 @@ var sendTokens = async(function(acc1, acc2, value) {
     if (!parseInt(value)) {
         value = 0;
     }
+    unlockSync(acc1, phrase);
     var mm = await (contractInstance.transfer(acc2, value, 
           {from : acc1, gas:100000}));
     return mm;
