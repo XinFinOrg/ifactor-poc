@@ -16,7 +16,7 @@ var db = require('./app/config/db');
 var config = require('./app/config/config');
 var authLocal = require('./app/auth/local');
 var port = process.env.PORT || 6001; // set our port
-var url = 'mongodb://localhost:27017/testDb1';
+var url = 'mongodb://localhost:27743/ifactor';
 
 mongoose.connect(url);
 
