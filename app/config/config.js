@@ -1,1 +1,0 @@
-exports.ENV = 'prod';

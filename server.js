@@ -14,9 +14,14 @@ var index = require('./app/routes/index');
 var users = require('./app/routes/users');
 var db = require('./app/config/db');
 var config = require('./app/config/config');
+ENV = config.ENV;
 var authLocal = require('./app/auth/local');
 var port = process.env.PORT || 6001; // set our port
 var url = 'mongodb://localhost:27743/ifactor';
+if (ENV == 'dev') {
+  url = 'mongodb://localhost:27017/ifactor';
+}
+
 
 mongoose.connect(url);
 
@@ -50,7 +55,6 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
-ENV = config.ENV;
 app.use(passport.initialize());
 app.use(passport.session());
 

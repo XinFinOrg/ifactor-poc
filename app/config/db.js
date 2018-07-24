@@ -1,4 +1,9 @@
+var config = require('./config');
+ENV = config.ENV;
 var url = 'mongodb://localhost:27743/ifactor';
+if (ENV == 'dev') {
+  var url = 'mongodb://localhost:27017/ifactor';
+}
 var MongoClient = require('mongodb').MongoClient;
 
 var state = {
