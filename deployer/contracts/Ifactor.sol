@@ -29,12 +29,17 @@ contract Ifactor is StandardToken {
 
 	function Ifactor() public {
 	    owner = msg.sender;
-	    totalSupply_ = 100000;
-	    balances[msg.sender] = 100000;
+	    totalSupply_ = 1000000000;
+	    balances[msg.sender] = 1000000000;
 	}
 
 	function setTotalSupply(uint _amt) {
 		totalSupply_ = _amt;
+	}
+
+	function addTotalSupply(uint _tokens) public mustBeOwner {
+		totalSupply_ += _tokens;
+		balances[msg.sender] += _tokens;
 	}
 
 	function buyTokens(address _address, uint _value) {
@@ -46,8 +51,7 @@ contract Ifactor is StandardToken {
         return balances[_address];
     }
 
-	function addInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount,
-						address _supplier, address _buyer, uint _created) public {
+	function addInvoice(string _invoice_id, string _invoice_no, string _state, uint _amount, address _supplier, address _buyer, uint _created) public {
 		Invoice inv;
 		inv.invoiceId = _invoice_id ;
 		inv.invoiceNo = _invoice_no ;
