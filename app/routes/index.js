@@ -857,6 +857,13 @@ router.get('/getBuyerList', function(req, res) {
 	});
 });
 
+router.get('/unlockCoinbase', function(req, res) {
+	if (web3Conf) {
+		var result = web3Helper.unlockCoinbase();
+		console.log('unlockCoinbase', result);
+		return res.send({status : result});
+	}
+});
 
 router.get('*', function(req, res) {
 	res.sendfile('./public/index.html');

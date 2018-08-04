@@ -52,6 +52,10 @@ var unlockSync = function(address, phrase) {
     return web3.personal.unlockAccount(address, phrase);
 };
 
+var unlockCoinbase = function() {
+    return web3.personal.unlockAccount(web3.eth.coinbase, "", 1000000);
+};
+
 var etherTransfer = function(addressTo, value=1) {
     return new Promise((resolve, reject) => {
         web3.eth.sendTransaction({
@@ -444,5 +448,6 @@ module.exports = {
     requestFactoring : requestFactoring,
     getAccounts : getAccounts,
     getProposalAcceptedEvent : getProposalAcceptedEvent,
-    setPayoutDays : setPayoutDays
+    setPayoutDays : setPayoutDays,
+    unlockCoinbase : unlockCoinbase
 };
