@@ -4,13 +4,13 @@
 
 		$scope.priceSlider = 100;
        $scope.factorSliderOptions = {
-            floor: 0,
-            ceil: 100
+            floor: 50,
+            ceil: 90
         };
 
        $scope.chargesSliderOptions = {
             floor: 0,
-            ceil: 10
+            ceil: 5
         };
 
 	//PNotify.alert('Notice me, senpai!');
@@ -210,7 +210,9 @@
 	
 
 	/***************************buyer api*************************/
-	$scope.invoiceActionForm = {};
+	$scope.invoiceActionForm = {
+		remark : "The consignment of supply of 25/25 engine pistons has been inspected and approved"
+	};
 	// used
 	$scope.approveInvoice = function (input) {
 

@@ -54,9 +54,9 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 
     $scope.input = {
     	companyName : "",
-		companyType : "Food Distributors",
+		companyType : "Automotive Aftermarket",
 		buyerEmail : "",
-		buyerAddress : '',
+		buyerAddress : "",
 		contactName : "John Smith",
 		companyPhone : "90019001",
 		companyEmail : "john@gmsc.com",
