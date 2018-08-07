@@ -683,7 +683,7 @@ var getInterstAmount = function(invoice) {
 	}
 
 	var charges = (invoice.daysToPayout * invoice.platformCharges * 100)/30;
-	return (charges * amount)/100;
+	return (charges * invoice.amount)/100;
 };
 
 var processInvoiceDetails = function(invoice) {
@@ -763,7 +763,12 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 				});*/
 			} else {
 				//console.log('invoiceHistory', invoiceHistory)
-				return res.send({status : true, data : {invoice : invoice, invoiceHistory : invoiceHistory}});
+				return res.send(
+					{status : true, data : {invoice : invoice,
+					invoiceHistory : helper.dummyInvoiceHistory,
+					"tarnsferEvents": helper.dummyTransferEvents,
+					"otherEvents":helper.dummyOtherEvents, "balance":0}}
+				);
 			}
 		}));
 	});
