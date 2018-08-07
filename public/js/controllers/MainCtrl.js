@@ -31,7 +31,7 @@ angular.module('MainCtrl', []).controller('MainController',['$scope', '$rootScop
 			//$location.path('/dashboard');
 			GetPost.get({ url : '/getBalance' }, function(err, resp) {
 				if (resp.status) {
-					$rootScope.balance = resp.data.balance;
+					$rootScope.balance = parseFloat(resp.data.balance);
 					console.log('balance', $scope.balance)
 				}
 		    });

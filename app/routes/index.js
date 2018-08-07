@@ -382,7 +382,8 @@ router.get('/getBalance', async (function(req, res) {
 		try {
 		    result = await (web3Helper.getBalance(address));
 		    console.log(result.toNumber());
-			return res.send({status : true, data : {balance : result.toNumber()}});
+		    var bal = result.toNumber();
+			return res.send({status : true, data : {balance : bal}});
 		} catch(e) {
 			return res.send({status : true, data : {balance : 0}});
 	    }
