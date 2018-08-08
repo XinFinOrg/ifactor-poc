@@ -522,6 +522,24 @@ router.post('/payInvoice', async (function(req, res) {
 }
 ));
 
+router.post('/buyTokens', function(req, res) {
+	var address = req.body.address;
+	var tokens = req.body.tokens;
+	if (!address) {
+		return res.send({status : false, error : 'address not provided'});
+	}
+	if (!tokens) {
+		tokens = 100000;
+	}
+
+	try {
+		var tx1 = await (web3Helper.buyTokens(address, tokens));
+		return res.send({status : true, txHash : tx1});		
+	} catch (e) {
+		return res.send({status : false, error : 'blockchain error'});
+	}
+});
+
 router.post('/prepaySupplier', async(function(req, res) {
 	//'invoiceId' : new ObjectID(invoiceId)}
 	let invoiceId = req.body.invoiceId;
