@@ -822,23 +822,6 @@ router.post('/login', autheticate, async (function(req, res) {
 
 		var address = req.user.address;
 		var userType = req.user.type;
-		if (web3Conf && ENV == 'dev') {
-			var accounts = web3Helper.getAccounts();
-			var accAddress = '';
-			accAddress = (userType == 'Supplier') ? accounts[9] :
-					(userType == 'Buyer' ) ? accounts[8] : accounts[7];
-			if (address != accAddress) {
-				updateUser({email : req.user.email}, {$set : {address : accAddress}}, async (function(err, data) {
-					console.log('address updated, new Address : ', accAddress);
-					try {
-				    	var tx1 = await(web3Helper.etherTransfer(accAddress));
-					    var tx2 = await (web3Helper.buyTokens(accAddress));
-					} catch(e) {
-						console.log('blockchain error', e);
-					}
-				}));
-			}
-		}
 		return res.send({status : 'success', data : {userType : data[0].type}});
 	});
 }));
