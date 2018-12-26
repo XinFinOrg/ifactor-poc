@@ -1,0 +1,970 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>iFactor Documentation</title>
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <link href="stylesheets/highlight-monokai.css" rel="stylesheet" type="text/css" media="screen, print" />
+    <script src="javascripts/all.js" type="text/javascript"></script>
+  </head>
+  <body class="" data-languages="[&#34;bash&#34;,&#34;javascript&#34;]">
+    <a href="#" id="nav-button">
+      <span> NAV <img alt="undefined" class="undefined" src="images/navbar.png">
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img alt="undefined" class="undefined" src="images/logo.png">
+      <div class="lang-selector">
+        <a href="#" data-language-name="bash">bash</a>
+        <a href="#" data-language-name="javascript">javascript</a>
+      </div>
+      <div class="search">
+        <input type="text" class="search" id="input-search" placeholder="Search">
+      </div>
+      <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="introduction">Introduction</h1>
+        <p>Welcome to the iFactor API! Xinfin provides a simple and powerful REST API&#39;s for Invoice Factoring use case. You can use our API to access iFactor API endpoints and integrate into your application.</p>
+        <p>This API reference provides information on available endpoints and how to interact with it.</p>
+        <aside class="notice"> Please note that this is a beta version of the iFactor API&#39;s which is still undergoing final testing before its official release. You can directly integrate these api into your application, There is no authentication required as of now. </aside>
+        <h1 id="invoice-factoring">Invoice Factoring</h1>
+        <p>iFactor is a use case of Invoice Factoring. Invoice Factoring is a financial transaction and a type of debtor finance in which a business sells its accounts receivable (invoices) to a third party (called a factor) at a discount.</p>
+        <p>There are 3 entities involved :</p>
+        <ol>
+          <li>
+            <p>Supplier : Supplier uploads invoice to the platform.</p>
+          </li>
+          <li>
+            <p>Buyer : Buyer Verifys invoice and pay the invoice amount to financer on payout date.</p>
+          </li>
+          <li>
+            <p>Financer : Financer propose and provide factoring service to supplier against invoice.</p>
+          </li>
+        </ol>
+        <h1 id="signup">Signup</h1>
+        <p> This endpoint onboards an user to the platform. <code>/signup</code> adds user to the system, At the same time it automatically creates a Wallet account for the user by assigning the unique wallet address.</p>
+        <p> There are 3 types of user roles in invoice factoring defined as type. User type can &#39;supplier&#39;, &#39;buyer&#39; or &#39;financer&#39;. Each user role has different functionality.</p>
+        <aside class="warning">A user account can have only a single role</aside>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/signup</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>firstName</td>
+              <td>String</td>
+              <td>yes</td>
+            </tr>
+            <tr>
+              <td>lastName</td>
+              <td>String</td>
+              <td>no</td>
+            </tr>
+            <tr>
+              <td>email</td>
+              <td>String</td>
+              <td>yes</td>
+            </tr>
+            <tr>
+              <td>password</td>
+              <td>String</td>
+              <td>yes</td>
+            </tr>
+            <tr>
+              <td>type</td>
+              <td>String</td>
+              <td>yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <aside class="notice">All user requests are wrapped inside &quot;input&quot; key. So every request looks like <code>{&quot;input&quot; : {}}</code> </aside>
+        <blockquote>
+          <p>The typical signup request would like this:</p>
+        </blockquote>
+        <pre class="highlight bash"><code>  curl -X POST 
+  http://ifactor.xinfin.org/signup 
+  -H <span class="hljs-string">'cache-control: no-cache'</span> 
+  -H <span class="hljs-string">'content-type: application/json'</span>
+  -d <span class="hljs-string">'{
+      "input" : {
+        "firstName" : "John",
+        "lastName" "Smith",
+        "email" : "johns89@gmail.com",
+        "password" : "jyt6665gyuu_",
+        "type" : "supplier"
+      }
+  }'</span></code></pre>
+        <blockquote>
+          <p>The signup request returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h1 id="login">Login</h1>
+        <p>Logs in user to the platform. Returns role specific user details.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/login</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>email</td>
+              <td>String</td>
+              <td>yes</td>
+            </tr>
+            <tr>
+              <td>password</td>
+              <td>String</td>
+              <td>yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <blockquote>
+          <p>The above command returns JSON structured like this. data object contains user details:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"data"</span> : {}
+  }</code></pre>
+        <aside class="notice">All api endpoints except /signup and /login requires authentication through login session</aside>
+        <h1 id="wallet">Wallet</h1>
+        <p>Ifactor has pre-integrated wallet with ERC-20 token standard. When user signs up for the platform, a wallet address is created for the user.</p>
+        <h2 id="get-balance">Get Balance</h2>
+        <p>Returns a token balance for specified address.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>GET http://ifactor.xinfin.org/getBalance</code></p>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"data"</span> : {
+      <span class="hljs-attr">"balance"</span> : <span class="hljs-number">10000</span>
+    }
+  }</code></pre>
+        <h2 id="buy-tokens">Buy Tokens</h2>
+        <p>Transfer tokens to a specified address from coinbase account(token pool).</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/buyTokens</code></p>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>address</td>
+              <td>String</td>
+              <td>yes</td>
+            </tr>
+            <tr>
+              <td>tokens</td>
+              <td>Integer</td>
+              <td>yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+      <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h1 id="invoice">Invoice</h1>
+        <p>This section lists all api endpoints related to Invoice. The following list explains the list of apis and their usage.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>API Endpoint</th>
+              <th>Initiator</th>
+              <th>Usage </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>/createInvoice</td>
+              <td>Supplier</td>
+              <td>Create an Invoice</td>
+            </tr>
+            <tr>
+              <td>/approveInvoice</td>
+              <td>Buyer</td>
+              <td>Verify Invoice</td>
+            </tr>
+            <tr>
+              <td>/rejectInvoice</td>
+              <td>Buyer</td>
+              <td>Reject Invoice</td>
+            </tr>
+            <tr>
+              <td>/requestFactoring</td>
+              <td>Supplier</td>
+              <td>Request financers for factoring</td>
+            </tr>
+            <tr>
+              <td>/factoringProposal</td>
+              <td>Financer</td>
+              <td>Factoring Proposal to Supplier</td>
+            </tr>
+            <tr>
+              <td>/rejectFactoringRequest</td>
+              <td>Supplier</td>
+              <td>Reject Factoring Proposal</td>
+            </tr>
+            <tr>
+              <td>/acceptFactoringProposal</td>
+              <td>Supplier</td>
+              <td>Reject Factoring Proposal</td>
+            </tr>
+            <tr>
+              <td>/prepaySupplier</td>
+              <td>Financer</td>
+              <td>Pay First Payment to Supplier</td>
+            </tr>
+            <tr>
+              <td>/payInvoice</td>
+              <td>Buyer</td>
+              <td>Pay invoice amount to Financer</td>
+            </tr>
+            <tr>
+              <td>/postpaySupplier</td>
+              <td>Financer</td>
+              <td>Pay final payment to supplier</td>
+            </tr>
+            <tr>
+              <td>/getInvoiceDetails</td>
+              <td>All</td>
+              <td>Get invoice details</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="create-invoice">Create Invoice</h2>
+        <p>Create an Invoice.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/createInvoice</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>companyName</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>companyType</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>buyerEmail</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>buyerAddress</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>contactName</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>companyPhone</td>
+              <td>Integer</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>companyEmail</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>purchaseTitle</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>purchaseNo</td>
+              <td>Integer</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>purchaseDate</td>
+              <td>Date</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>purchaseAmount</td>
+              <td>Integer</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>purchaseDocs</td>
+              <td>Image(Base64)</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>payableDate</td>
+              <td>Date</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>invoiceNo</td>
+              <td>Integer</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>invoiceDate</td>
+              <td>Date</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>invoiceAmount</td>
+              <td>Integer</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="verify-invoice-details">Verify Invoice Details</h2>
+        <p>Verify the invoice details.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/approveInvoice</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>remark</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="rejcct-invoice-details">Rejcct Invoice Details</h2>
+        <p>Reject the invoice details.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/rejectInvoice</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>remark</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="initiate-factoring">Initiate Factoring</h2>
+        <p>Lists invoice for fatcoring. This endpoints sends notification to all financers available on the platform for factoring.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/requestFactoring</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>Integer</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>remark</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="propose-factoirng">Propose Factoirng</h2>
+        <p>This endpoint enables financer to propose factoring solution to supplier by filling a simple form.</p>
+        <p>The key elements of the form are :</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceAmount</td>
+              <td>Total factoring amount</td>
+            </tr>
+            <tr>
+              <td>platformCharges</td>
+              <td>Interest Rate/Month (typical 0.5-2%)</td>
+            </tr>
+            <tr>
+              <td>saftyPercentage</td>
+              <td>This defines the percentage of factoring amount to be kept as saftey (typically 15-20%) </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Factoring amount is paid to supplier in 2 steps. Safty Percentage defines the amount to be paid in second(final) payment.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/factoringProposal</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>invoiceAmount</td>
+              <td>Integer</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>platformCharges</td>
+              <td>Integer</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>saftyPercentage</td>
+              <td>Integer</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>payableDate</td>
+              <td>Date</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="reject-factoring-request">Reject Factoring Request</h2>
+        <p>Rejects factoring request.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/rejectFactoringRequest</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>remark</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="accept-factoring-proposal">Accept Factoring Proposal</h2>
+        <p>Accepts factoring request.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/acceptFactoringProposal</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="pay-invoice">Pay Invoice</h2>
+        <p>This enpoint enables Buyer to Transfer invoice amount to financer.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/payInvoice</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>buyerAddress</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>financerAddress</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="prepay-supplier">Prepay Supplier</h2>
+        <p>This enpoint enables Financer to Transfer first payment amount to supplier.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/prepaySupplier</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>supplierAddress</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>financerAddress</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="postpay-supplier">Postpay Supplier</h2>
+        <p>This enpoint enables Financer to Transfer final payment amount to supplier.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/postpaySupplier</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>supplierAddress</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>financerAddress</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="get-invoice-details">Get Invoice Details</h2>
+        <p>Get Invoice details.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/getInvoiceDetails</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>String</td>
+              <td>yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>{
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>, 
+    <span class="hljs-attr">"data"</span> : {
+      <span class="hljs-attr">"invoice"</span>:{
+        <span class="hljs-attr">"_id"</span>:<span class="hljs-string">"5b69a1002ca2d6dc11bb95e2"</span>,
+        <span class="hljs-attr">"companyName"</span> :<span class="hljs-string">"General Motors"</span>,
+        <span class="hljs-attr">"companyType"</span>:<span class="hljs-string">"Automotive Aftermarket"</span>,
+        <span class="hljs-attr">"buyerEmail"</span>:<span class="hljs-string">"ifb@123.com"</span>,
+        <span class="hljs-attr">"buyerAddress"</span>:<span class="hljs-string">"0x3b16994c8649f8b6c4333f5831148dfbf90250c9"</span>,
+        <span class="hljs-attr">"contactName"</span>:<span class="hljs-string">"John Smith"</span>,
+        <span class="hljs-attr">"companyPhone"</span>:<span class="hljs-string">"90019001"</span>,
+        <span class="hljs-attr">"companyEmail"</span>:<span class="hljs-string">"john@gmsc.com"</span>,
+        <span class="hljs-attr">"purchaseTitle"</span>:<span class="hljs-string">"Supply of engine piston"</span>,
+        <span class="hljs-attr">"purchaseNo"</span>:<span class="hljs-string">"PO1234"</span>,
+        <span class="hljs-attr">"purchaseDate"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"purchaseAmount"</span>:<span class="hljs-string">"25000"</span>,
+        <span class="hljs-attr">"purchaseDocs"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"payableDate"</span>:<span class="hljs-string">"2018-08-21"</span>,
+        <span class="hljs-attr">"invoiceNo"</span>:<span class="hljs-string">"INV1234"</span>,
+        <span class="hljs-attr">"invoiceDate"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"invoiceAmount"</span>:<span class="hljs-number">25000</span>,
+        <span class="hljs-attr">"invoiceDocs"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"grnNo"</span>:<span class="hljs-string">"GRN1234"</span>,
+        <span class="hljs-attr">"grnDate"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"grnDocs"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"state"</span>:<span class="hljs-string">"completed"</span>,
+        <span class="hljs-attr">"grnAmount"</span>:<span class="hljs-string">"0"</span>,
+        <span class="hljs-attr">"supplierEmail"</span>:<span class="hljs-string">"ifs@123.com"</span>,
+        <span class="hljs-attr">"supplierName"</span>:<span class="hljs-string">"atul supplier"</span>,
+        <span class="hljs-attr">"supplierAddress"</span>:<span class="hljs-string">"0x4732a8f965916e3cf0a68d6116deb191a01e5dba"</span>,
+        <span class="hljs-attr">"invoiceId"</span>:<span class="hljs-string">"4wpqlorsjkjr3vpr"</span>,
+        <span class="hljs-attr">"created"</span>:<span class="hljs-number">15656776</span>,
+        <span class="hljs-attr">"buyerInvoiceRemark"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"financerAddress"</span>:<span class="hljs-string">"0xd7388802a6fc6b5d1391538c64ea675fdcccefb3"</span>,
+        <span class="hljs-attr">"financerEmail"</span>:<span class="hljs-string">"iff@123.com"</span>,
+        <span class="hljs-attr">"platformCharges"</span>:<span class="hljs-string">"2"</span>,
+        <span class="hljs-attr">"saftyPercentage"</span>:<span class="hljs-string">"82"</span>,
+        <span class="hljs-attr">"acceptFactoringRemark"</span>:<span class="hljs-string">"jhgty jkhjjvgjy"</span>,
+        <span class="hljs-attr">"firstPayment"</span>:<span class="hljs-number">20500</span>,
+        <span class="hljs-attr">"charges"</span>:<span class="hljs-number">90000</span>,
+        <span class="hljs-attr">"chargesPer"</span>:<span class="hljs-number">4</span>,
+        <span class="hljs-attr">"balancePayment"</span>:<span class="hljs-number">10000</span>,
+        <span class="hljs-attr">"balancePaymentPer"</span>:<span class="hljs-number">15</span>,
+        <span class="hljs-attr">"ifactorProposalDocs"</span>:<span class="hljs-literal">null</span>,
+        <span class="hljs-attr">"acceptProposalRemark"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"supplierRatings"</span>:<span class="hljs-number">4</span>,
+        <span class="hljs-attr">"supplierRatingRemark"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"financerRatings"</span>:<span class="hljs-number">4</span>,
+        <span class="hljs-attr">"financerRatingRemark"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"supplierData"</span>:{
+          <span class="hljs-attr">"_id"</span>:<span class="hljs-string">"5b572e9dc6221ad60a511a1c"</span>,
+          <span class="hljs-attr">"firstName"</span>:<span class="hljs-string">"atul"</span>,
+          <span class="hljs-attr">"lastName"</span>:<span class="hljs-string">"supplier"</span>,
+          <span class="hljs-attr">"email"</span>:<span class="hljs-string">"ifs@123.com"</span>,
+          <span class="hljs-attr">"password"</span>:<span class="hljs-string">"123"</span>,
+          <span class="hljs-attr">"type"</span>:<span class="hljs-string">"Supplier"</span>,
+          <span class="hljs-attr">"address"</span>:<span class="hljs-string">"0x4732a8f965916e3cf0a68d6116deb191a01e5dba"</span>,
+          <span class="hljs-attr">"phrase"</span>:<span class="hljs-string">"123"</span>,
+        }
+      },
+      <span class="hljs-attr">"invoiceHistory"</span>:[],
+      <span class="hljs-attr">"tarnsferEvents"</span>:[],
+      <span class="hljs-attr">"otherEvents"</span>:[],
+      <span class="hljs-attr">"balance"</span>:<span class="hljs-number">100000</span>
+    }
+  }</code></pre>
+        <h1 id="ratings">Ratings</h1>
+        <p>This section list api endpoints to rate financer and supplier to each other.</p>
+        <h2 id="rate-financer">Rate Financer</h2>
+        <p>This api endpoint enables Supplier to rate financer.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/rateFinancer</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>financerRatings</td>
+              <td>Integer</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>financerRatingRemark</td>
+              <td>String</td>
+              <td>No</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="rate-supplier">Rate Supplier</h2>
+        <p>This api endpoint enables Financer to rate Supplier.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/rateSupplier</code></p>
+        <h3 id="request-details">Request Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameters</th>
+              <th>Arguments</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>invoiceId</td>
+              <td>String</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>supplierRatings</td>
+              <td>Integer</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>supplierRatingRemark</td>
+              <td>String</td>
+              <td>No</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h1 id="dashboard">Dashboard</h1>
+        <p>Returns user specific invoice records.</p>
+        <p>The following list describes the visibility of invoices for each user role.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>User Type</th>
+              <th>Visibilty</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Supplier</td>
+              <td>Invoices created/uploaded by supplier</td>
+            </tr>
+            <tr>
+              <td>Buyer</td>
+              <td>Invoices having Buyer</td>
+            </tr>
+            <tr>
+              <td>Financer</td>
+              <td>All Factoring enbaled Invoices</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="get-supplier-dashboard">Get Supplier Dashboard</h2>
+        <p>Get the list of supplier invoices.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>GET http://ifactor.xinfin.org/getSupplierDashboard?email=ifs@gmail.com</code></p>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>{
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>, 
+    <span class="hljs-attr">"data"</span> : [
+      {
+        <span class="hljs-attr">"_id"</span>:<span class="hljs-string">"5b69a1002ca2d6dc11bb95e2"</span>,
+        <span class="hljs-attr">"companyName"</span> :<span class="hljs-string">"General Motors"</span>,
+        <span class="hljs-attr">"buyerEmail"</span>:<span class="hljs-string">"ifb@123.com"</span>,
+        <span class="hljs-attr">"buyerAddress"</span>:<span class="hljs-string">"0x3b16994c8649f8b6c4333f5831148dfbf90250c9"</span>,
+        <span class="hljs-attr">"companyEmail"</span>:<span class="hljs-string">"john@gmsc.com"</span>,
+        <span class="hljs-attr">"purchaseTitle"</span>:<span class="hljs-string">"Supply of engine piston"</span>,
+        <span class="hljs-attr">"purchaseNo"</span>:<span class="hljs-string">"PO1234"</span>,
+        <span class="hljs-attr">"purchaseDate"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"purchaseAmount"</span>:<span class="hljs-string">"25000"</span>,
+        <span class="hljs-attr">"payableDate"</span>:<span class="hljs-string">"2018-08-21"</span>,
+        <span class="hljs-attr">"invoiceNo"</span>:<span class="hljs-string">"INV1234"</span>,
+        <span class="hljs-attr">"invoiceDate"</span>:<span class="hljs-string">""</span>,
+        <span class="hljs-attr">"invoiceAmount"</span>:<span class="hljs-number">25000</span>,
+        <span class="hljs-attr">"supplierEmail"</span>:<span class="hljs-string">"ifs@123.com"</span>,
+        <span class="hljs-attr">"supplierName"</span>:<span class="hljs-string">"atul supplier"</span>,
+        <span class="hljs-attr">"supplierAddress"</span>:<span class="hljs-string">"0x4732a8f965916e3cf0a68d6116deb191a01e5dba"</span>,
+        <span class="hljs-attr">"created"</span>:<span class="hljs-number">15656776</span>
+      }
+    ]
+}</code></pre>
+        <h2 id="get-buyers-dashboard">Get Buyers Dashboard</h2>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>GET http://ifactor.xinfin.org/getBuyersDashboard?email=ifs@gmail.com</code></p>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+        <h2 id="get-financer-dashboard">Get Financer Dashboard</h2>
+        <p>Get Financer invoices.</p>
+        <h3 id="http-request">HTTP Request</h3>
+        <p><code>POST http://ifactor.xinfin.org/getFinancerDashboard?email=ifs@gmail.com</code></p>
+        <h3 id="response-details">Response Details</h3>
+        <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+        </blockquote>
+        <pre class="highlight json"><code>  {
+    <span class="hljs-attr">"status"</span> : <span class="hljs-literal">true</span>
+  }</code></pre>
+      </div>
+      <div class="dark-box">
+        <div class="lang-selector">
+          <a href="#" data-language-name="bash">bash</a>
+          <a href="#" data-language-name="javascript">javascript</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
