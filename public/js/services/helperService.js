@@ -79,7 +79,7 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', funct
             'Agricultural Chemicals',
             'Steel/Iron Ore',
             'Textiles',
-            'Aluminum',
+            'Aluminium',
             'Engineering & Construction',
             'Paints/Coatings',
             'Telecommunications Equipment',
