@@ -33,6 +33,11 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 			controller: 'LoginController'
 		})
 
+		.when('/creds',{
+			templateUrl: 'views/creds.html',
+			controller: ''
+		})
+
 		.when('/geeks', {
 			templateUrl: 'views/geek.html',
 			controller: 'GeekController'	

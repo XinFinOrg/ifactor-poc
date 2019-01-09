@@ -12,7 +12,9 @@ jQuery(function($) {
     var ADMIN_SETTINGS = window.ADMIN_SETTINGS || {};
 
 
-
+    $('#dropdownToggle').click(function() {
+       $('#dropdownMenu').toggle();
+    });
 
 
     /*--------------------------------

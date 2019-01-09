@@ -4125,6 +4125,11 @@ table.dataTable.display tbody tr:first-child td {
     text-align: left;
     color: #666;
 }
+.sign-msg1 {
+    font-size: 17px;
+    padding: 8px 20px;
+    text-align: left;
+}
 .sign-msg {
     font-size: 17px;
     padding: 8px 20px;

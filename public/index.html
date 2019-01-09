@@ -94,7 +94,7 @@
         <div class="container">
             <div class="logo-area" ng-click="gotoDashboard()">
             </div>
-            <div class="quick-area">
+            <div class="quick-area" ng-show="isLoggedIn">
                 <div class='pull-right'>
                     <ul class="info-menu right-links list-inline list-unstyled">
                         <li class="balaceTop">Balance : {{balance}} XDC</li>
@@ -217,14 +217,14 @@
                         </li> -->
     
                         <li class="profile">
-                            <a href="#" data-toggle="dropdown" class="toggle">
-                                <img src="assets/images/profile/profile.jpg" alt="user-image" class="img-circle img-inline">
-                                <span>Sagar Sawant
+                            <a href="#" data-toggle="dropdown" class="toggle" id="dropdownToggle">
+                                <!-- <img src="assets/images/profile/profile.jpg" alt="user-image" class="img-circle img-inline"> -->
+                                <span>Name
                                     <i class="fa fa-angle-down"></i>
                                 </span>
                             </a>
-                            <ul class="dropdown-menu profile animated fadeIn" role="menu">
-                                <li>
+                            <ul class="dropdown-menu profile animated fadeIn" role="menu" id="dropdownMenu">
+                                <!-- <li>
                                     <a href="#settings">
                                         <i class="fa fa-wrench"></i>
                                         Settings
@@ -241,7 +241,7 @@
                                         <i class="fa fa-info"></i>
                                         Help
                                     </a>
-                                </li>
+                                </li> -->
                                 <li class="last">
                                     <a href="" ng-click="logOut()">
                                         <i class="fa fa-lock"></i>

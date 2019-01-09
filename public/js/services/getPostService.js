@@ -27,9 +27,11 @@ angular.module('GetPostService', []).factory('GetPost', ['$http', '$rootScope', 
         var get = function(input, cb) {
             var url = input.url;
             $rootScope.isMainLoader = true;
+            $rootScope.isLoggedIn = false;
             $http.get(url)
             .then(function(resp) {
                 $rootScope.isMainLoader = false;
+                $rootScope.isLoggedIn = true;
                 if (!(resp.data && resp.data.success)) {
                     console.log("get: could not get data to ");
                     return cb(1, resp.data);
