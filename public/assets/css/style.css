@@ -4127,13 +4127,21 @@ table.dataTable.display tbody tr:first-child td {
 }
 .sign-msg1 {
     font-size: 17px;
-    padding: 8px 20px;
+    padding: 20px 75px;
+    text-align: left;
+}
+.sign-msg2 {
+    font-size: 17px;
+    padding: 8px 0px;
     text-align: left;
 }
 .sign-msg {
     font-size: 17px;
     padding: 8px 20px;
     text-align: center;
+}
+.loginFont {
+    color: #6274d6;
 }
 .padd_0{
     padding:0px !important;

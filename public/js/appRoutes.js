@@ -35,7 +35,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 
 		.when('/creds',{
 			templateUrl: 'views/creds.html',
-			controller: ''
+			controller: 'CredentialsController'
 		})
 
 		.when('/geeks', {
