@@ -162,7 +162,7 @@
 			url : '/downloadInvoiceDocs'
 		}
 		if (!data.docUrl) {
-			console.log('no documents to download');
+			console.log('No documents to download');
 			return;
 		}
 		window.open('/downloadInvoiceDocs?docUrl='+
@@ -211,7 +211,7 @@
 
 	/***************************buyer api*************************/
 	$scope.invoiceActionForm = {
-		remark : "The consignment of supply of 25/25 engine pistons has been inspected and approved"
+		remark : ""
 	};
 	// used
 	$scope.approveInvoice = function (input) {

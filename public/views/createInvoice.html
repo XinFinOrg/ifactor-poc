@@ -122,7 +122,7 @@ select.soflow, select.soflow-color
                                     <!-- <datepicker>
                                       <input ng-model="date" placeholder=" " type="text"/>
                                     </datepicker> -->
-                                    <datepicker class="labelText" date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control" class="calendar">
+                                    <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control" class="calendar calender1">
                                         <div  class="input-group">
                                             <input class="form-control input-lg" ng-model="input.payableDate" placeholder=" "/  >
                                             <label for="payable">Payble Date</label>
@@ -140,7 +140,7 @@ select.soflow, select.soflow-color
                                     <label class="labelText" for="CompanyEmail">PO No*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <datepicker class="labelText" date-format="yyyy-MM-dd" selector="form-control">
+                                    <datepicker class="calender1" date-format="yyyy-MM-dd" selector="form-control">
                                         <div class="input-group">
                                             <input class="form-control input-lg" ng-model="input.purchaseDate" />
                                             <label for="po date">PO Date</label>
@@ -184,7 +184,7 @@ select.soflow, select.soflow-color
                                     <label class="labelText" for="invoice">Invoice No*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <datepicker class="labelText" date-format="yyyy-MM-dd" selector="form-control">
+                                    <datepicker class="calender1" date-format="yyyy-MM-dd" selector="form-control">
                                         <div class="input-group">
                                             <input class="form-control input-lg" ng-model="input.invoiceDate" />
                                             <label for="invoice">Invoice Date</label>
