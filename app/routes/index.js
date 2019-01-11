@@ -11,7 +11,7 @@ var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var fs = require('fs');
 var PATH = require('path');
-var web3Conf = true;
+var web3Conf = false;
 if (web3Conf) {
 	var web3Helper = require('./web3Helper');
 }
@@ -649,31 +649,34 @@ var getInvoices = function(query, cb) {
 };
 
 router.get('/getSupplierDashboard', function(req, res) {
-	console.log(req.isAuthenticated());
-	console.log(req.user);
-	console.log(req.session);
+	// console.log('getSupplierDashboard API: ',req.isAuthenticated());
+	// console.log('getSupplierDashboard API: ',req.user);
+	// console.log('getSupplierDashboard API: ',req.session);
 	var email = req.user.email;
+	var name = req.user.firstName + " " + req.user.lastName;
 	//email = 'vinod@z.com';
 	getInvoices({supplierEmail : email}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
-		return res.send({status : true, data : data})
+		return res.send({status : true, data : data, name: name})
 	});
 });
 
 router.get('/getBuyerDashboard', function(req, res) {
 	var email = req.user.email;
+	var name = req.user.firstName + " " + req.user.lastName;
 	getInvoices({buyerEmail : email, state : {$ne : 'draft'}}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
-		return res.send({status : true, data : data});
+		return res.send({status : true, data : data, name: name});
 	});
 });
 
 router.get('/getFinancerDashboard', function(req, res) {
 	var email = req.user.email;
+	var name = req.user.firstName + " " + req.user.lastName;
 	let list = ['draft', 'invoice_created', 'invoice_rejected', 'invoice_accepted'];
 
 	//get all invoices greater than 6;
@@ -681,7 +684,7 @@ router.get('/getFinancerDashboard', function(req, res) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
-		return res.send({status : true, data : data});
+		return res.send({status : true, data : data, name: name});
 	});
 });
 

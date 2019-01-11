@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="buyer-published">
-                                        <button class="btn btn-sm btn-primary btn-blockchain">Approved</button>
+                                        <button class="btn btn-sm btn-primary btn-blockchain" ng-class="getStatusClass(invoiceData.state)">{{getInvoiceStatus(invoiceData.state)}}</button>
                                     </div>
                                 </div>
                             </div>
