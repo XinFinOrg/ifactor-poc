@@ -172,18 +172,17 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 	        	invoiceDocs : $scope.invoiceDocs,
 	        	grnDocs : $scope.grnDocs
 	        }
-	    }).then(function (resp) {
-	    	console.log(resp);
+		})
+		.then(resp => {
+	    	console.log('submit data',resp);
 	    	if (type == 'draft') {
 				Helper.showAlert('save_invoice');
 	    	} else {
 				Helper.showAlert('submit_invoice');
 	    	}
 			$location.path('/dashboard');
-	    }, function (resp) {
-	        console.log('Error status: ' + resp.status);
-	    }, function (evt) { 
-	        console.log(evt);
+	    }).catch(err => { 
+	        console.log(err);
 	    });
 	};
 
