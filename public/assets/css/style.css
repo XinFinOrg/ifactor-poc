@@ -4168,3 +4168,6 @@ table.dataTable.display tbody tr:first-child td {
 .m-b-15{
     margin-bottom: 15px;
 }
+.labelText{
+    z-index:0 !important;
+}

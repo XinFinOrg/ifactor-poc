@@ -65,7 +65,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	$scope.invoiceData = [];
 
 	$scope.userTypeUrl  = {
-		Supplier : 'getSupplierDashboard',
+		Supplier : 'getSupplierDashboard', 
 		Buyer : 'getBuyerDashboard',
 		Financer : 'getFinancerDashboard',
 	}
@@ -75,13 +75,14 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	};
 
     $scope.getInvoices = function () {
-    	console.log($rootScope.userType);
+    	console.log('$scope.getInvoices: ',$rootScope.userType);
     	var url = $scope.userTypeUrl[$rootScope.userType];
     	console.log(url);
     	GetPost.get({ url : '/' + url}, function(err, docs) {
     		console.log(docs);
 			$scope.dashboardData = $scope.setStatusClasses(docs.data);
 			$scope.dashboardData = docs.data;
+			$rootScope.name = docs.name;
 			// $scope.invoiceData = $scope.dashboardData[$rootScope.mainInvoiceIndex];
 	    });
     }  

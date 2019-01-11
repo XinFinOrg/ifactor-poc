@@ -36,7 +36,7 @@ select.soflow, select.soflow-color
   /* ...and now for the proper property */
   transition:.5s;
 }
-.myLabel:active {
+.myLabel:active {no
     background: #CCF;
 }
 </style>
@@ -72,19 +72,19 @@ select.soflow, select.soflow-color
                                     <select class="soflow form-control input-lg" ng-model="companyNameData" ng-options="x.firstName for x in companyOptions" style="padding-top: 20px;
     padding-left: 18px;">
                                     </select>
-                                    <label for="companyNameData">Buyer Name</label>
+                                    <label class="labelText" for="companyNameData">Buyer Name</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                         <select class="soflow form-control input-lg" ng-model="input.companyType" ng-options="x for x in companyTypeOptions" style="padding-top: 20px;
     padding-left: 18px;">
                                         </select>
-                                        <label for="companyOptions">Company Type</label>
+                                        <label class="labelText" for="companyOptions">Company Type</label>
                                 </div>
                             </div>
                             <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-6 has-float-label">
                                     <input class="form-control input-lg"  ng-model="input.contactName"  placeholder=" "/>
-                                    <label for="conatctName">Contact Name</label>
+                                    <label class="labelText" for="conatctName">Contact Name</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                 <div class="input-group">
@@ -100,7 +100,7 @@ select.soflow, select.soflow-color
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <input class="form-control input-lg"  ng-model="input.companyEmail" placeholder=" "/>
-                                    <label for="CompanyEmail">Company Email</label>
+                                    <label class="labelText" for="CompanyEmail">Company Email</label>
                                 </div>
                             </div>
                         </div>
@@ -116,14 +116,14 @@ select.soflow, select.soflow-color
                             <div class="row col-md-12">
                                 <div class="col-md-9 has-float-label">
                                     <input class="form-control input-lg" ng-model="input.purchaseTitle" placeholder=" " />
-                                    <label for="potitle">PO Title*</label>
+                                    <label class="labelText" for="potitle">PO Title*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <!-- <datepicker>
                                       <input ng-model="date" placeholder=" " type="text"/>
                                     </datepicker> -->
-                                    <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control" class="calendar">
-                                        <div class="input-group">
+                                    <datepicker class="labelText" date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control" class="calendar">
+                                        <div  class="input-group">
                                             <input class="form-control input-lg" ng-model="input.payableDate" placeholder=" "/  >
                                             <label for="payable">Payble Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
@@ -137,10 +137,10 @@ select.soflow, select.soflow-color
                                 <div class="col-md-12 label-invoice">PO</div>
                                 <div class="col-md-3 has-float-label">
                                     <input class="form-control input-lg" ng-model="input.purchaseNo" placeholder=" " />
-                                    <label for="CompanyEmail">PO No*</label>
+                                    <label class="labelText" for="CompanyEmail">PO No*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                                    <datepicker class="labelText" date-format="yyyy-MM-dd" selector="form-control">
                                         <div class="input-group">
                                             <input class="form-control input-lg" ng-model="input.purchaseDate" />
                                             <label for="po date">PO Date</label>
@@ -150,7 +150,7 @@ select.soflow, select.soflow-color
                                         </div>
                                     </datepicker>
                                 </div>
-                                <div class="col-md-3 has-float-label">
+                                <div class="col-md-3 has-float-label labelText">
                                      <div class="input-group">
                                      <span class="input-group-addon" style="cursor: pointer">
                                             <i class="fa fa-lg fa-dollar"></i>
@@ -181,10 +181,10 @@ select.soflow, select.soflow-color
                                 <div class="col-md-12 label-invoice">Invoice</div>
                                 <div class="col-md-3 has-float-label">
                                     <input class="form-control input-lg" placeholder=" " ng-model="input.invoiceNo" />
-                                    <label for="invoice">Invoice No*</label>
+                                    <label class="labelText" for="invoice">Invoice No*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                                    <datepicker class="labelText" date-format="yyyy-MM-dd" selector="form-control">
                                         <div class="input-group">
                                             <input class="form-control input-lg" ng-model="input.invoiceDate" />
                                             <label for="invoice">Invoice Date</label>
@@ -194,7 +194,7 @@ select.soflow, select.soflow-color
                                         </div>
                                     </datepicker>
                                 </div>
-                                <div class="col-md-3 has-float-label">
+                                <div class="col-md-3 has-float-label labelText">
                                     <div class="input-group">
                                      <span class="input-group-addon" style="cursor: pointer">
                                             <i class="fa fa-lg fa-dollar"></i>
@@ -223,10 +223,10 @@ select.soflow, select.soflow-color
                                 <div class="col-md-12 label-invoice">GRN</div>
                                 <div class="col-md-3 has-float-label">
                                     <input class="form-control input-lg" ng-model="input.grnNo" placeholder=" " />
-                                    <label for="CompanyEmail">GRN No*</label>
+                                    <label class="labelText" for="CompanyEmail">GRN No*</label>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                                    <datepicker class="labelText" date-format="yyyy-MM-dd" selector="form-control">
                                         <div class="input-group">
                                             <input class="form-control input-lg" ng-model="input.grnDate" placeholder=" " />
                                             <label for="grn">GRN Date</label>
@@ -246,7 +246,7 @@ select.soflow, select.soflow-color
                                     <label for="amount" style="padding-left: 15px;">Amount*</label>
                                     </div>
                                 </div> -->
-                                <div class="col-md-3 has-float-label">
+                                <div class="col-md-offset-3 col-md-3 has-float-label">
                                     <div class="myLabel">
                                         <input type="file" ngf-select="ngf-select" ng-model="grnDocs" name="file" ngf-pattern="'image/*,application/pdf'" accept="image/*,,application/pdf" ngf-max-size="20MB"/>
                                            <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse File</span>
