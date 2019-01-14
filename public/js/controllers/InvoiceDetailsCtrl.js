@@ -109,7 +109,30 @@
 			$rootScope.balance = resp.data.balance;
 			$scope.invoiceTxHistory = resp.data.invoiceHistory;
 			$scope.allEvents = resp.data.otherEvents;
-			$scope.transferEvents = resp.data.tarnsferEvents;
+			// console.log($scope.allEvents.length);
+			// console.log("before ",$scope.allEvents);
+			// for(i = 0; i < $scope.allEvents.length; i++){
+			// 	console.log("per object: ",$scope.allEvents[i].args.state);
+			// 	// console.log($scope.allEvents[i].args.state);
+			// 	if ($scope.allEvents[i].args.state == undefined || $scope.allEvents[i].args.state == ""){
+			// 		console.log("in");
+			// 		i++;
+			// 		continue;
+			// 	} else {
+			// 		var temp = $scope.allEvents[i].args.state.split("_");
+			// 		console.log(temp.length, temp);
+			// 		$scope.allEvents[i].args.state = "";
+			// 		for(i = 0; i < temp.length; i++){
+			// 			temp[i] = temp[i].charAt(0).toUpperCase() + temp[i].slice(1);
+			// 			$scope.allEvents[i].args.state += temp[i] + " ";
+			// 		}
+			// 		// $scope.allEvents[i].args.state =  temp;
+			// 	}
+				
+				
+			// }
+			// console.log("after:",$scope.allEvents);
+			$scope.transferEvents = resp.data.transferEvents;
 			mapInvoiceHistory($scope.invoiceTxHistory);
 			$scope.setCurrentStage();
 		});

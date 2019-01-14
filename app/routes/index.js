@@ -109,7 +109,10 @@ var getFullName = function(firstName, lastName) {
 };
 
 router.post('/createInvoice', imgUpload, async (function(req, res) {
-	console.log('req.files', req.files);
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
+		console.log('req.files', req.files);
 	let input = req.body.input;
 	input.supplierEmail = req.user.email;
 	input.supplierName = getFullName(req.user.firstName, req.user.lastName);
@@ -151,6 +154,7 @@ router.post('/createInvoice', imgUpload, async (function(req, res) {
 			return res.send({status : true, tx : tx});
 		});
 	});
+	}
 }));
 
 var updateInvoiceBlockchain = async(function(invoiceId, state) {
@@ -184,7 +188,10 @@ var updateUser = function(query, update, cb) {
 };
 
 router.post('/approveInvoice', async (function(req, res) {
-	console.log('inside approveInvoice');
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else {
+		console.log('inside approveInvoice');
 	let invoiceId = req.body.invoiceId;
 	let remark = req.body.remark;
 
@@ -209,10 +216,15 @@ router.post('/approveInvoice', async (function(req, res) {
 		}
 		return res.send({status : true, data : {state : '', tx : tx}});
 	});
+	}
+	
 }));
 
 router.get('/downloadInvoiceDocs', function(req, res) {
-	let filePath = req.query.docUrl;
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else {
+		let filePath = req.query.docUrl;
 	console.log('filePath', filePath);
 	let fileName = req.body.name;
 	//let fileName = 'abcd';
@@ -225,10 +237,14 @@ router.get('/downloadInvoiceDocs', function(req, res) {
 	res.download(filePath, fileName, function(err) {
 		console.log(err);
 	});
+	}
 });
 
 router.post('/rejectInvoice', async (function(req, res) {
-	let invoiceId = req.body.invoiceId;
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else {
+		let invoiceId = req.body.invoiceId;
 	let remark = req.body.remark;
 
 	var tx;
@@ -249,10 +265,14 @@ router.post('/rejectInvoice', async (function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
+	 }	
 }));
 
 router.post('/requestFactoring', async (function(req, res) {
-	let invoiceId = req.body.invoiceId;
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else {
+		let invoiceId = req.body.invoiceId;
 	let amount = req.body.invoiceAmount;
 	var tx;
 	if (web3Conf) {
@@ -283,9 +303,13 @@ router.post('/requestFactoring', async (function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
+	 }
 }));
 
 router.post('/factoringProposal', imgUpload2, async (function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else {
 	let input = req.body.input;
 	let invoiceId = req.body.invoiceId;
 	var invoice = {
@@ -345,9 +369,13 @@ router.post('/factoringProposal', imgUpload2, async (function(req, res) {
 			return res.send({status : true, data : {state : ''}});
 		});
 	});
+	}
 }));
 
 router.post('/rejectFactoringRequest', async (function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	console.log('inside rejectFactoringRequest');
 	let invoiceId = req.body.invoiceId;
 	let remark = req.body.remark;
@@ -370,9 +398,13 @@ router.post('/rejectFactoringRequest', async (function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
+}
 }));
 
 router.get('/getBalance', async (function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	console.log('getBalance')
 	if (!req.isAuthenticated()) {
 		return res.send({status : true, data : {balance : 0}});
@@ -390,10 +422,14 @@ router.get('/getBalance', async (function(req, res) {
 	} else {
 		return res.send({status : true, data : {balance : 0}});
 	}
+}
 }));
 
 
 router.post('/acceptFactoringProposal', async(function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	console.log('acceptFactoringProposal');
 	let invoiceId = req.body.invoiceId;
 	var tx;
@@ -415,9 +451,13 @@ router.post('/acceptFactoringProposal', async(function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
+}
 }));
 
 router.post('/rejectFactoringProposal', async(function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	console.log('inside rejectFactoringProposal');
 	let invoiceId = req.body.invoiceId;
 
@@ -440,9 +480,13 @@ router.post('/rejectFactoringProposal', async(function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
+}
 }));
 
 router.post('/rateFinancer', function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	let invoiceId = req.body.invoiceId;
 	let updateQuery = {$set : {
 			financerRatings : req.body.financerRatings,
@@ -454,9 +498,13 @@ router.post('/rateFinancer', function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
+}
 });
 
 router.post('/rateSupplier', function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	let invoiceId = req.body.invoiceId;
 	let updateQuery = {$set : {
 			supplierRatings : req.body.supplierRatings,
@@ -468,9 +516,13 @@ router.post('/rateSupplier', function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
+}
 });
 
 router.post('/payInvoice', async (function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	let invoiceId = req.body.invoiceId;
 	let updateObj = {state : 'invoice_paid'};
 	let buyerAddress = req.body.buyerAddress;
@@ -520,9 +572,12 @@ router.post('/payInvoice', async (function(req, res) {
 		return res.send({status : true, data : {state : ''}});
 	});
 }
-));
+}));
 
 router.post('/buyTokens', function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	var address = req.body.address;
 	var tokens = req.body.tokens;
 	if (!address) {
@@ -538,9 +593,13 @@ router.post('/buyTokens', function(req, res) {
 	} catch (e) {
 		return res.send({status : false, error : 'blockchain error'});
 	}
+}
 });
 
 router.post('/prepaySupplier', async(function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	//'invoiceId' : new ObjectID(invoiceId)}
 	let invoiceId = req.body.invoiceId;
 	let buyerAddress = req.body.buyerAddress;
@@ -578,9 +637,13 @@ router.post('/prepaySupplier', async(function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
+}
 }));
 
 router.post('/postpaySupplier', async(function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	let invoiceId = req.body.invoiceId;
 	let buyerAddress = req.body.buyerAddress;
 	let supplierAddress = req.body.supplierAddress;
@@ -612,6 +675,7 @@ router.post('/postpaySupplier', async(function(req, res) {
 		}
 		return res.send({status : true, data : {state : ''}});
 	});
+}
 }));
 
 var getUsers = function(query, cb) {
@@ -649,6 +713,9 @@ var getInvoices = function(query, cb) {
 };
 
 router.get('/getSupplierDashboard', function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	// console.log('getSupplierDashboard API: ',req.isAuthenticated());
 	// console.log('getSupplierDashboard API: ',req.user);
 	// console.log('getSupplierDashboard API: ',req.session);
@@ -661,9 +728,14 @@ router.get('/getSupplierDashboard', function(req, res) {
 		}
 		return res.send({status : true, data : data, name: name})
 	});
+}
 });
 
 router.get('/getBuyerDashboard', function(req, res) {
+	// console.log("req.isAuthenticated(): ", req.isAuthenticated());
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else {
 	var email = req.user.email;
 	var name = req.user.firstName + " " + req.user.lastName;
 	getInvoices({buyerEmail : email, state : {$ne : 'draft'}}, function(err, data) {
@@ -672,9 +744,13 @@ router.get('/getBuyerDashboard', function(req, res) {
 		}
 		return res.send({status : true, data : data, name: name});
 	});
+	}
 });
 
 router.get('/getFinancerDashboard', function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	var email = req.user.email;
 	var name = req.user.firstName + " " + req.user.lastName;
 	let list = ['draft', 'invoice_created', 'invoice_rejected', 'invoice_accepted'];
@@ -686,9 +762,13 @@ router.get('/getFinancerDashboard', function(req, res) {
 		}
 		return res.send({status : true, data : data, name: name});
 	});
+}
 });
 
 router.get('/getInvoices', function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	getInvoices({}, function(err, data) {
 		if (err) {
 			console.log(err)
@@ -696,9 +776,10 @@ router.get('/getInvoices', function(req, res) {
 		}
 		return res.send({status : true, data : data})
 	});
+}
 });
 
-var getInterstAmount = function(invoice) {
+var getInterstAmount = function(invoice) { 
 	if (!invoice.platformCharges || invoice.platformCharges <=0) {
 		return 0;
 	}
@@ -730,6 +811,9 @@ var getInvoiceDates = function(invoiceHistory) {
 
 
 router.get('/getBalance', async(function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	if (!req.user || !web3Conf) {
 		return {status : true, data : {balance : 0}};
 	}
@@ -742,9 +826,13 @@ router.get('/getBalance', async(function(req, res) {
 			return {status : false, error : 'blockchain error'};
 		}
 	}
+}
 }));
 
 router.post('/getInvoiceDetails', async(function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else {
 	let invoiceId = req.body.invoiceId;
 	//'invoiceId' : new ObjectID(invoiceId)}
 	if (web3Conf) {
@@ -767,12 +855,12 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 				helper.processEvents(allEvents, invoice);
 				invoiceHistory = allEvents.filter(x => x.event == 'invoiceHistory');
 				invoice.created = getInvoiceDates(invoiceHistory);
-				var tarnsferEvents = allEvents.filter(x => x.event == 'ifactorTransfer');
+				var transferEvents = allEvents.filter(x => x.event == 'ifactorTransfer');
 				var otherEvents = allEvents.filter(x => x.event != 'ifactorTransfer');
 				//console.log(tarnsferEvents);
 				return res.send({status : true, data : {
 					invoice : invoice, invoiceHistory : invoiceHistory,
-					tarnsferEvents : tarnsferEvents, otherEvents : otherEvents,
+					transferEvents : transferEvents, otherEvents : otherEvents,
 					balance : balance
 				}});
 				/*web3Helper.getInvoiceHistory(invoiceId, function(err, result) {
@@ -787,21 +875,26 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 				return res.send(
 					{status : true, data : {invoice : invoice,
 					invoiceHistory : helper.dummyInvoiceHistory,
-					"tarnsferEvents": helper.dummyTransferEvents,
+					"transferEvents": helper.dummyTransferEvents,
 					"otherEvents":helper.dummyOtherEvents, "balance":0}}
 				);
 			}
 		}));
 	});
+}
 }));
 
 router.get('/getUsers', function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	getUsers({}, function(err, data) {
 		if (err) {
 			return res.send({status : false, msg : data})
 		}
 		return res.send({status : true, data : data})
 	});
+}
 });
 
 var autheticate = function (req, res, next) {
@@ -855,7 +948,18 @@ router.get('/startApp', function(req, res) {
 	}
 });
 
+router.get('/logout', function(req, res) {
+	req.logout();
+	res.clearCookie('connect.sid');
+	res.redirect('/');
+	console.log('logout aaya: ', req.isAuthenticated());
+	// return res.send({status : true});
+});
+
 router.get('/getBuyerList', function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else { 
 	var collection = db.getCollection('users');
 	var showFields = {email : 1, firstName : 1, address : 1};
 	collection.find({type : 'Buyer'}, showFields).toArray(function(err, data) {
@@ -865,6 +969,7 @@ router.get('/getBuyerList', function(req, res) {
 		console.log(data);
 		return res.send({status : true, data : data});
 	});
+}
 });
 
 router.get('/unlockCoinbase', function(req, res) {
