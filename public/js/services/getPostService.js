@@ -3,15 +3,14 @@ angular.module('GetPostService', []).factory('GetPost', ['$http', '$rootScope', 
         /* Post data */
         var post  = function(input, cb) {
             // var url = getUrl(input);
-            console.log('getpost');
-            console.log(input);
+            console.log('GetPostService > post(): input = ',input);
             $rootScope.isMainLoader = true;
             $http.post(input.url, input)
             .then(function(resp) {
                 $rootScope.isMainLoader = false;
-                console.log('inside getpost post')
+                // console.log('inside getpost post')
                 /* Success */
-                console.log('resp', resp);
+                console.log('GetPostService > post(): resp = ',resp);
                 if (resp.data && resp.data.status) {
                     return cb(0, resp.data);
                 }

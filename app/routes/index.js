@@ -23,7 +23,7 @@ var imgUpload = upload.fields([
 		{name : 'invoiceDocs'},
 		{name : 'grnDocs'},
 		{name : 'ifactorProposalDocs'}
-	]);
+	]);      
 //var ifact
 var imgUpload2 = upload.fields([
 		{name : 'ifactorProposalDocs'},
@@ -897,16 +897,18 @@ router.get('/getUsers', function(req, res) {
 }
 });
 
-var autheticate = function (req, res, next) {
+var authenticate = function (req, res, next) {
 	console.log('inside authenticate');
-	console.log(req.user);
+	console.log(req.body);
     passport.authenticate('local', function (err, user, info) {
+		console.log("in here 1");
     	console.log(err, user, info)
         if (err) {
         	console.log('err', err)
             return next(err);
         }
         if (!user) {
+			console.log('!user');
             return res.send({ success: false, message: info });
         }
         console.log('user', user);
@@ -923,10 +925,11 @@ var autheticate = function (req, res, next) {
             req.auth.info = info;
             return next();
         });
-    })(req, res, next);
+	})(req, res, next);
+	console.log("in here 2");
 };
 
-router.post('/login', autheticate, async (function(req, res) {
+router.post('/login', authenticate, async (function(req, res) {
 	var [email, password] = [req.body.email, req.body.password];
 	var collection = db.getCollection('users');	
 	collection.find({email : email, password : password}).toArray(function(err, data) {

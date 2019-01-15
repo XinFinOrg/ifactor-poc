@@ -3,13 +3,13 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 
 	$scope.tagline = 'To the moon and back!';
 	$scope.login = function() {
-		console.log('inside a function');
+		
 		var data = {
 			email : $scope.username,
 			password : $scope.password,
 			url : '/login'
 		}
-
+		console.log('LoginCtrl > login(): data = ',data);
 		GetPost.post(data, function(err, docs) {
 				console.log(docs);
 				$rootScope.userType = docs.data.userType;

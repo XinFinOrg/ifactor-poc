@@ -1,5 +1,36 @@
 
-
+<div class="ajax-loader-div" ng-show="isMainLoader">
+    <img src="assets/images/loader1.gif" class="ajax-loader">
+</div>
+<div class="page-topbar">
+    <div class="container">
+        <div class="logo-area" ng-click="gotoDashboard()">
+        </div>
+        <div class="quick-area" ng-show="isLoggedIn">
+            <div class='pull-right'>
+                <ul class="info-menu right-links list-inline list-unstyled">
+                    <li class="balaceTop">Balance : {{balance}} XDC</li>
+                    <li class="profile">
+                        <a href="#" data-toggle="dropdown" class="toggle" id="dropdownToggle">
+                            <!-- <img src="assets/images/profile/profile.jpg" alt="user-image" class="img-circle img-inline"> -->
+                            <span>{{name}}
+                                <i class="fa fa-angle-down"></i>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu profile animated fadeIn" role="menu" id="dropdownMenu">
+                            <li class="last">
+                                <a href="" ng-click="logOut()">
+                                    <i class="fa fa-lock"></i>
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
     <!-- START CONTAINER -->
     <div class="page-container row-fluid container-fluid">
         <!-- START CONTENT -->
@@ -52,10 +83,7 @@
                         </div>    
                             
                             <div class="content-body">
-                           
-                                <!-- <div class="sign-msg"><strong>Supplier: </strong></div><br>
-                                <div class="sign-msg"><strong>Buyer: </strong></div><br>
-                                <div class="sign-msg"><strong>Financer: </strong></div><br> -->
+
                             </form>
 
                         </div>
@@ -67,3 +95,12 @@
         <!-- END CONTENT -->
 
     </div>
+
+    <footer>
+        <div class="footAdj"></div>
+        <div class="page-footer">
+            <div class="container">            
+                <div class="copyright">Copyright © 2018 inFactor. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
