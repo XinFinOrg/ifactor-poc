@@ -16,6 +16,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 		$scope.templateUrlDashboard = $scope.dashboardUrl[type];
 	};
 
+	$scope.name = $rootScope.name;
 	$scope.urlMap($rootScope.userType);
 
 

@@ -4175,3 +4175,6 @@ table.dataTable.display tbody tr:first-child td {
 .calendar1{
     z-index: -100;
 }
+.panel_header{
+    height: 40px;
+}
