@@ -2,6 +2,8 @@ angular.module('MainCtrl', []).controller('MainController',['$scope', '$rootScop
  '$http', '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
  	$http, $location, GetPost, Helper) {
 
+	$scope.isLoggedIn = false;
+
 	$scope.urlMap = function(type) {
 
 		if (type == 'createInvoice') {
@@ -21,6 +23,16 @@ angular.module('MainCtrl', []).controller('MainController',['$scope', '$rootScop
 	$scope.gotoDashboard = function() {
 			console.log('inside gotoDashboard');
 			$location.path('/dashboard');		
+	};
+
+	$scope.goToSignup = function() {
+		window.location.href = "/signup";
+		// $location.path('/signup');		
+};
+
+	$scope.goToLogin = function() {
+		window.location.href = "/login";
+		// $location.path('/signup');		
 	};
  
 	GetPost.get({ url : '/startApp' }, function(err, resp) {

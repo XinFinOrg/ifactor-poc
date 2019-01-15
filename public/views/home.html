@@ -1,102 +1,130 @@
+<!-- <div class="page-topbar">
+    <div class="container">
+        <div class="logo-area" ng-click="gotoDashboard()">
+        </div>
+        <div class="quick-area" ng-show="isLoggedIn">
+            <div class='pull-right'>
+                <ul class="info-menu right-links list-inline list-unstyled">
+                    <li class="balaceTop">Balance : {{balance}} XDC</li>
+                    <li class="profile">
+                        <a href="#" data-toggle="dropdown" class="toggle" id="dropdownToggle">
+                            <span>{{name}}
+                                <i class="fa fa-angle-down"></i>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu profile animated fadeIn" role="menu" id="dropdownMenu">
+                            <li class="last">
+                                <a href="" ng-click="logOut()">
+                                    <i class="fa fa-lock"></i>
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div> -->
 
 <div class="page-topbar">
-        <div class="container">
-            <div class="logo-area" ng-click="gotoDashboard()">
-            </div>
-            <div class="quick-area" ng-show="isLoggedIn">
-                <div class='pull-right'>
-                    <ul class="info-menu right-links list-inline list-unstyled">
-                        <li class="balaceTop">Balance : {{balance}} XDC</li>
-                        <li class="profile">
-                            <a href="#" data-toggle="dropdown" class="toggle" id="dropdownToggle">
-                                <span>{{name}}
-                                    <i class="fa fa-angle-down"></i>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu profile animated fadeIn" role="menu" id="dropdownMenu">
-                                <li class="last">
-                                    <a href="" ng-click="logOut()">
-                                        <i class="fa fa-lock"></i>
-                                        Logout
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+    <div class="container">
+        <div class="logo-area">
+
+        </div>
+        <div class="quick-area">
+
+            <div class='pull-right'>
+                <ul class="info-menu right-links list-inline list-unstyled">
+                    <li >
+                        <a href="" class="toggle" ng-click="goToSignup()">
+                            <i class="fa fa-user"></i>
+                            <span>Sign Up</span>
+                        </a>
+                    </li>
+
+                    <li class="login">
+                        <a href="" class="toggle" ng-click="goToLogin()">
+                            <i class="fa fa-sign-in"></i>
+                            <span>Login</span>
+                        </a>                            
+                    </li>
+                </ul>
             </div>
         </div>
+
     </div>
-    <!-- START CONTAINER -->
-    <div class="page-container row-fluid container-fluid">
-        <!-- START CONTENT -->
-        <section>
-            <div class="container wrapper main-wrapper row" style=''>
+</div>
+<!-- START CONTAINER -->
+<div class="page-container row-fluid container-fluid">
+    <!-- START CONTENT -->
+    <section>
+        <div class="container wrapper main-wrapper row" style=''>
 
-                <div class='col-xs-12'>
-                    <div class="page-title">
+            <div class='col-xs-12'>
+                <div class="page-title">
 
-                        <div class="pull-left">
-                            <!-- PAGE HEADING TAG - START -->
-                            <h1 class="title">&nbsp;</h1>
-                            <!-- PAGE HEADING TAG - END -->
+                    <div class="pull-left">
+                        <!-- PAGE HEADING TAG - START -->
+                        <h1 class="title">&nbsp;</h1>
+                        <!-- PAGE HEADING TAG - END -->
+                    </div>
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <!-- MAIN CONTENT AREA STARTS -->
+            <div class="sign-msg"> <strong>Please note that this is a demo version of the inFactor which is still undergoing final testing before its official release.</strong><br></div>
+            <div><br></div>
+
+            <div class="col-md-12 col-xs-12 sign_up_box">
+                <section class="loginbox">
+                    <header class="panel_header">
+                        <h1 class="sign-msg1"><strong>What is inFactor?</strong></h1>
+                    </header>                     
+                    <div class="sign-msg1">A Global Framework, messaging and transaction standard built on XinFin Hybrid Blockchain Network(Private+Public).
+                        <br>inFactor.io is built on top of XDC-I11 messaging protocol that is built alongside ISO20022 standard for Trade Instruments, mainly Invoices.
                         </div>
+                        
+                        <header class="sign-msg1">
+                            <h1 class="sign-msg2"><strong>How infactor works(Refer below workflow diagram):</strong></h1>
+                        </header>
+            
+                        
+                        <img class="sign-msg1" src="assets/images/workflow.png" alt="">
+                        
+                        <header class="panel_header">
+                            <h1 class="sign-msg1"><strong>About Us</strong></h1>
+                        </header>
+                    
+                        <div class="sign-msg1">  Supply and demand is the basis of creation of any economy. 
+                            For any financial value to be generated, there needs to be an urge for it’s consumption and a fair quality and capacity of the supply to be available for the consumer accept it. 
+                            Supply and demand is the fundamental matchmaking that creates economic growth potential. 
+                            There is one more factor that influences this matchmaking equation. It is the availability and intent of a financier to step in and support the supplier to bear the cost of producing a supply till the consumer is able to consume the supply and meet the monetary obligation for it’s consumption.<br>
+                            inFactor captures the existing data sets of the domestic invoice factoring markets from 
+                            regulated institutions and relays them into global order book market based on ISO20022 standard 
+                            for making it accessible to international factors using a Fiat based cryptocurrency of their 
+                            choice (USD,JPY,EUR,GBP) The fiat liquidity relay can be used by any regulated financial institution to get wider and cheaper 
+                            access to capital from entities with international float.
+                       </div>
+                            <br>
+                        
+                    
 
                     </div>
-                </div>
-                <div class="clearfix"></div>
-                <!-- MAIN CONTENT AREA STARTS -->
-                <div class="sign-msg"> <strong>Please note that this is a demo version of the inFactor which is still undergoing final testing before its official release.</strong><br></div>
-                <div><br></div>
-
-                <div class="col-md-12 col-xs-12 sign_up_box">
-                    <section class="loginbox">
-                        <header class="panel_header">
-                            <h1 class="sign-msg1"><strong>What is inFactor?</strong></h1>
-						</header>                     
-                        <div class="sign-msg1">A Global Framework, messaging and transaction standard built on XinFin Hybrid Blockchain Network(Private+Public).
-							<br>inFactor.io is built on top of XDC-I11 messaging protocol that is built alongside ISO20022 standard for Trade Instruments, mainly Invoices.
-							</div>
-							
-							<header class="sign-msg1">
-                                <h1 class="sign-msg2"><strong>How infactor works(Refer below workflow diagram):</strong></h1>
-                            </header>
-                
-                            
-							<img class="sign-msg1" src="assets/images/workflow.png" alt="">
-							
-							<header class="panel_header">
-								<h1 class="sign-msg1"><strong>About Us</strong></h1>
-							</header>
-						
-							<div class="sign-msg1">  Supply and demand is the basis of creation of any economy. 
-								For any financial value to be generated, there needs to be an urge for it’s consumption and a fair quality and capacity of the supply to be available for the consumer accept it. 
-								Supply and demand is the fundamental matchmaking that creates economic growth potential. 
-								There is one more factor that influences this matchmaking equation. It is the availability and intent of a financier to step in and support the supplier to bear the cost of producing a supply till the consumer is able to consume the supply and meet the monetary obligation for it’s consumption.<br>
-								inFactor captures the existing data sets of the domestic invoice factoring markets from 
-								regulated institutions and relays them into global order book market based on ISO20022 standard 
-								for making it accessible to international factors using a Fiat based cryptocurrency of their 
-								choice (USD,JPY,EUR,GBP) The fiat liquidity relay can be used by any regulated financial institution to get wider and cheaper 
-								access to capital from entities with international float.
-						   </div>
-								<br>
-							
-                        
-
-                        </div>
-                    </section>
-                </div>
-                <!-- MAIN CONTENT AREA ENDS -->
+                </section>
             </div>
-        </section>
-        <!-- END CONTENT -->
-
-	</div>
-	<footer>
-    <div class="footAdj"></div>
-    <div class="page-footer">
-        <div class="container">            
-            <div class="copyright">Copyright © 2018 inFactor. All rights reserved.</div>
+            <!-- MAIN CONTENT AREA ENDS -->
         </div>
+    </section>
+    <!-- END CONTENT -->
+
+</div>
+<!-- <footer>
+<div class="footAdj"></div>
+<div class="page-footer">
+    <div class="container">            
+        <div class="copyright">Copyright © 2018 inFactor. All rights reserved.</div>
     </div>
-    </footer>
+</div>
+</footer> -->

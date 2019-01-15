@@ -38,10 +38,10 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 			controller: 'CredentialsController'
 		})
 
-		.when('/forgot-password',{
-			templateUrl: 'views/forgot-password.html',
-			controller: ''
-		})
+		// .when('/forgot-password',{
+		// 	templateUrl: 'views/forgot-password.html',
+		// 	controller: ''
+		// })
 
 		.when('/geeks', {
 			templateUrl: 'views/geek.html',

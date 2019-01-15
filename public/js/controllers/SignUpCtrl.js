@@ -2,6 +2,8 @@ angular.module('SignUpCtrl', []).controller('SignUpController',['$scope', '$root
  '$http', '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
  	$http, $location, GetPost, Helper) {
 
+		$scope.isLoggedIn = false;
+
 	$scope.signup = function() {
 		var data  = {input : $scope.input, url : '/signup'};
 		GetPost.post(data, function(err, resp) {

@@ -1,6 +1,27 @@
 angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', '$rootScope', '$http', 
 			'$location', 'GetPost', 'Helper',  function($scope, $rootScope, $http, $location, GetPost,Helper) {
 
+	
+
+	$scope.gotoDashboard = function() {
+		console.log('gotoDashboard')
+		$location.path('/dashboard');
+	}
+
+	$scope.logOut = function () {
+		var data = { url : '/logout' };
+		GetPost.get(data, function(err, resp) {
+			if (!resp.status) {	
+				console.log('1');
+				$location.path('/login');
+			} else {
+				console.log('2');
+				$rootScope.isLoggedIn = false;
+				window.location.href = "/login";
+		}
+	});
+	}
+
 	$scope.urlMap = function(type) {
 		if (type == 'createInvoice') {
 			$location.path('/create-invoice');
