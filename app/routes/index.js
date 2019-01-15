@@ -11,7 +11,7 @@ var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var fs = require('fs');
 var PATH = require('path');
-var web3Conf = true;
+var web3Conf = false;
 if (web3Conf) {
 	var web3Helper = require('./web3Helper');
 }

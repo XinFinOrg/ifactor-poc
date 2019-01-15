@@ -25,7 +25,7 @@ angular.module('MainCtrl', []).controller('MainController',['$scope', '$rootScop
  
 	GetPost.get({ url : '/startApp' }, function(err, resp) {
 		if (!resp.status) {
-			$location.path('/login');
+			$location.path('/');
 		} else {
 			$rootScope.userType = resp.data.userType;
 			//$location.path('/dashboard');
