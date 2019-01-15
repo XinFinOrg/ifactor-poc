@@ -17,4 +17,10 @@ angular.module('SignUpCtrl', []).controller('SignUpController',['$scope', '$root
 	    });
 	}
 
+	$scope.login = function() {
+		window.location.href = "/login";
+		// $location.path('/signup');		
+	};
+ 
+
 }]);

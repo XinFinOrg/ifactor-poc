@@ -4142,7 +4142,7 @@ table.dataTable.display tbody tr:first-child td {
     text-align: center;
 }
 .loginFont {
-    color: #6274d6;
+    color: #6274d6 !important;
 }
 .padd_0{
     padding:0px !important;

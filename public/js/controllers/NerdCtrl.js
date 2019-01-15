@@ -6,8 +6,8 @@ function($scope, $rootScope, $location, GetPost) {
 	$rootScope.isMainLoader = false;
 	$rootScope.isLoggedIn = false;
 	$scope.gotoDashboard = function() {
-		console.log('gotoDashboard')
-		$location.path('/dashboard');
+		console.log('')
+		$location.path('/');
 	}
 
 	$scope.logOut = function () {
