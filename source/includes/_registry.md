@@ -8,7 +8,7 @@ This api endpoint enables Supplier to rate financer.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/rateFinancer`
+`POST http://infactor.xinfin.org/rateFinancer`
 
 ### Request Details
 
@@ -33,7 +33,7 @@ This api endpoint enables Financer to rate Supplier.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/rateSupplier`
+`POST http://infactor.xinfin.org/rateSupplier`
 
 ### Request Details
 

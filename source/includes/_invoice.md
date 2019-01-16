@@ -23,7 +23,7 @@ Create an Invoice.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/createInvoice`
+`POST http://infactor.xinfin.org/createInvoice`
 
 ### Request Details
 
@@ -61,7 +61,7 @@ Verify the invoice details.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/approveInvoice`
+`POST http://infactor.xinfin.org/approveInvoice`
 
 ### Request Details
 
@@ -86,7 +86,7 @@ Reject the invoice details.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/rejectInvoice`
+`POST http://infactor.xinfin.org/rejectInvoice`
 
 ### Request Details
 
@@ -110,7 +110,7 @@ Lists invoice for fatcoring. This endpoints sends notification to all financers 
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/requestFactoring`
+`POST http://infactor.xinfin.org/requestFactoring`
 
 ### Request Details
 
@@ -144,7 +144,7 @@ Factoring amount is paid to supplier in 2 steps. Safty Percentage defines the am
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/factoringProposal`
+`POST http://infactor.xinfin.org/factoringProposal`
 
 ### Request Details
 
@@ -171,7 +171,7 @@ Rejects factoring request.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/rejectFactoringRequest`
+`POST http://infactor.xinfin.org/rejectFactoringRequest`
 
 ### Request Details
 
@@ -195,7 +195,7 @@ Accepts factoring request.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/acceptFactoringProposal`
+`POST http://infactor.xinfin.org/acceptFactoringProposal`
 
 ### Request Details
 
@@ -219,7 +219,7 @@ This enpoint enables Buyer to Transfer invoice amount to financer.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/payInvoice`
+`POST http://infactor.xinfin.org/payInvoice`
 
 ### Request Details
 
@@ -245,7 +245,7 @@ This enpoint enables Financer to Transfer first payment amount to supplier.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/prepaySupplier`
+`POST http://infactor.xinfin.org/prepaySupplier`
 
 ### Request Details
 
@@ -272,7 +272,7 @@ This enpoint enables Financer to Transfer final payment amount to supplier.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/postpaySupplier`
+`POST http://infactor.xinfin.org/postpaySupplier`
 
 ### Request Details
 
@@ -297,7 +297,7 @@ Get Invoice details.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/getInvoiceDetails`
+`POST http://infactor.xinfin.org/getInvoiceDetails`
 
 ### Request Details
 

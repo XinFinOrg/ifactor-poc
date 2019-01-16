@@ -10,7 +10,7 @@
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/signup`
+`POST http://infactor.xinfin.org/signup`
 
 ### Request Details
 
@@ -28,7 +28,7 @@ type | String | yes
 
 ```bash
   curl -X POST 
-  http://ifactor.xinfin.org/signup 
+  http://infactor.xinfin.org/signup 
   -H 'cache-control: no-cache' 
   -H 'content-type: application/json'
   -d '{
@@ -56,7 +56,7 @@ Logs in user to the platform. Returns role specific user details.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/login`
+`POST http://infactor.xinfin.org/login`
 
 ### Request Details
 

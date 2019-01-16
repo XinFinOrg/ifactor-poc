@@ -16,7 +16,7 @@ Get the list of supplier invoices.
 
 ### HTTP Request
 
-`GET http://ifactor.xinfin.org/getSupplierDashboard?email=ifs@gmail.com`
+`GET http://infactor.xinfin.org/getSupplierDashboard?email=ifs@gmail.com`
 
 > The above command returns JSON structured like this:
 
@@ -51,7 +51,7 @@ Get the list of supplier invoices.
 
 ### HTTP Request
 
-`GET http://ifactor.xinfin.org/getBuyersDashboard?email=ifs@gmail.com`
+`GET http://infactor.xinfin.org/getBuyersDashboard?email=ifs@gmail.com`
 
 
 ### Response Details
@@ -69,7 +69,7 @@ Get Financer invoices.
 
 ### HTTP Request
 
-`POST http://ifactor.xinfin.org/getFinancerDashboard?email=ifs@gmail.com`
+`POST http://infactor.xinfin.org/getFinancerDashboard?email=ifs@gmail.com`
 
 ### Response Details
 
