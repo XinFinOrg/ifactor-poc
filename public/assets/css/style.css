@@ -4136,6 +4136,12 @@ table.dataTable.display tbody tr:first-child td {
     padding: 8px 0px;
     text-align: left;
 }
+.sign-msg3 {
+    width: 700px;
+    height: 300px;
+    padding: 20px 75px;
+    align: center;
+}
 .sign-msg {
     font-size: 17px;
     padding: 8px 20px;
