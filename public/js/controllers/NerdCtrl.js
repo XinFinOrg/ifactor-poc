@@ -6,22 +6,22 @@ function($scope, $rootScope, $location, GetPost) {
 	$rootScope.isMainLoader = false;
 	$rootScope.isLoggedIn = false;
 	$scope.gotoDashboard = function() {
-		console.log('')
-		$location.path('/');
+		console.log('gotoDashboard')
+		$location.path('/dashboard');
 	}
 
 	$scope.logOut = function () {
 		var data = { url : '/logout' };
 		GetPost.get(data, function(err, resp) {
-			if (!resp.status) {
+			if (!resp.status) {	
 				console.log('1');
 				$location.path('/login');
 			} else {
 				console.log('2');
 				$rootScope.isLoggedIn = false;
 				window.location.href = "/login";
-			}
-		});
+		}
+	});
 
 		// $scope.session.clear();
 		console.log("chfcfhfc");

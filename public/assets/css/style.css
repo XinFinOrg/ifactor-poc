@@ -4184,3 +4184,7 @@ table.dataTable.display tbody tr:first-child td {
 .panel-header1{
     height: 40px;
 }
+
+.btn-primary:disabled{
+    background: #777dcb;
+}

@@ -20,52 +20,67 @@
                 <div class="clearfix"></div>
                 <!-- MAIN CONTENT AREA STARTS -->
 
-                <div class="sign-msg"> <strong>Please note that this is a demo version of the inFactor which is still undergoing final testing before its official release.</strong><br>To access the platform, use dummy <a class="loginFont" href="/creds">Credentials</a></div><div><br></div>
-
                 <div class="col-md-6 col-xs-12 sign_up_box">
                     <section class="loginbox">
                         <header class="panel_header">
-                            <h1 class="title no-padd text-center">CREATE YOUR INFACTOR ACCOUNT</h1>
+                            <h1 class="title no-padd text-center">Create your InFactor account</h1>
                         </header>
                         <div class="sign-msg">We connect global Buyers, Suppliers and Financiers using inFactor Platform</div>
                         <div class="content-body">
-                            <form>
-                            <!-- START -->
-                            <div class="row">
-                                <div class="col-xs-12 has-float-label">
-                                    <input class="form-control input-lg input-lg-login" id="firstName" type="text"  ng-model="input.firstName" placeholder=" "/>
-                                    <label class="labelText" for="firstName">First Name*</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 has-float-label">
-                                    <input class="form-control input-lg input-lg-login" id="lastName" type="text"  ng-model="input.lastName" placeholder=" "/>
-                                    <label class="labelText" for="lastName">Last Name*</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 has-float-label">
-                                    <input class="form-control input-lg input-lg-login" id="email" type="email"  ng-model="input.email" placeholder=" "/>
-                                    <label class="labelText" for="email">Email Id*</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 has-float-label">
-                                    <input class="form-control input-lg input-lg-login" id="password" type="password"  ng-model="input.password" placeholder=" "/>
-                                    <label class="labelText" for="password">Password*</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 has-float-label">
-                                    <input class="form-control input-lg input-lg-login" id="confirmPassword" type="password"  placeholder=" "/>
-                                    <label class="labelText" for="confirmPassword">Confirm password*</label>
-                                </div>
-                            </div>
+                            <form name="userForm" ng-submit="submitForm()" novalidate>
 
+                            <div class="form-group" ng-class="{ 'has-error' : userForm.firstName.$touched && userForm.firstName.$invalid }">
+                                <div class="row">
+                                    <div class="col-xs-12 has-float-label">
+                                        <input class="form-control input-lg" id="firstName" name="firstName" type="text" ng-model="input.firstName" ng-required="true" placeholder=" ">
+                                        <label class="labelText" for="firstName">First Name</label>
+                                        <p ng-show="userForm.firstName.$touched && userForm.firstName.$invalid" class="help-block">Your first name is required.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- START -->
+                            <div class="form-group" ng-class="{ 'has-error' : userForm.lastName.$touched && userForm.lastName.$invalid }">
+                                <div class="row">
+                                    <div class="col-xs-12 has-float-label">
+                                        <input class="form-control input-lg" id="lastName" name="lastName" type="text"  ng-model="input.lastName" placeholder=" " ng-required="true">
+                                        <label class="labelText" for="lastName">Last Name</label>
+                                        <p ng-show="userForm.lastName.$touched && userForm.lastName.$invalid" class="help-block">Your last name is required.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : userForm.email.$touched && userForm.email.$invalid }">
+                                <div class="row">
+                                    <div class="col-xs-12 has-float-label">
+                                        <input class="form-control input-lg" id="email" name="email" type="email"  ng-model="input.email" placeholder=" " ng-required="true">
+                                        <label class="labelText" for="email">Email</label>
+                                        <p ng-show="userForm.email.$touched && userForm.email.$invalid" class="help-block">Invalid email, please enter valid email.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : (userForm.password.$dirty && userForm.password.$error.minlength) || (userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength) }">
+                                <div class="row">
+                                    <div class="col-xs-12 has-float-label">
+                                        <input class="form-control input-lg" id="password" name="password" type="password"  ng-model="input.password" ng-minlength="6" placeholder=" " ng-required="true">
+                                        <label class="labelText" for="password">Password</label>
+                                        <p ng-show="userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength" class="help-block">Password is required</p>
+                                        <p ng-show="userForm.password.$dirty && userForm.password.$error.minlength" class="help-block">Password too short</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : (userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.minlength) || (userForm.confirmPassword.$error.compare)}">
+                                <div class="row">
+                                    <div class="col-xs-12 has-float-label">
+                                        <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password" ng-model="input.confirmPassword" placeholder=" " ng-required="true">
+                                        <label class="labelText" for="confirmPassword">Confirm password</label>
+                                        <p ng-show="userForm.confirmPassword.$touched && !userForm.confirmPassword.$dirty && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.minlength" class="help-block">Confirm password is required</p>
+                                        <p ng-show="userForm.confirmPassword.$error.compare" class="help-block">Confirm password does not match.</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
-                                <div class="row register_as_group">
+                                <div class="row input-lg">
                                 <div class="col-md-12">
-                                    <p>REGISTER AS</p>
+                                    <p>Register as</p>
                                 </div>
                                 
                                 <div class="col-sm-4 col-md-4 col-lg-4">
@@ -73,7 +88,6 @@
                                         <li>
                                             <input type="radio" id="b-option" name="selector" value="Buyer" ng-model="input.type" class="icheck-minimal-purple">
                                             <label for="b-option" class="iradio-label form-label">Buyer</label>
-                                            <div class="check"></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -83,7 +97,6 @@
                                          <li>
                                             <input type="radio" id="s-option" name="selector" value="Supplier" ng-model="input.type" class="icheck-minimal-purple">
                                             <label for="s-option" class="iradio-label form-label">Supplier</label>
-                                            <div class="check"></div>
                                          </li>
                                     </ul>
                                 </div>
@@ -93,7 +106,6 @@
                                         <li>
                                             <input type="radio" id="f-option" name="selector" value="Financer" ng-model="input.type" class="icheck-minimal-purple">
                                             <label for="f-option" class="iradio-label form-label">Financer</label>
-                                            <div class="check"></div>
                                         </li>                                        
                                     </ul>
                                 </div>
@@ -101,27 +113,20 @@
                             </div>
                             </div>
                             <!-- <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="exampleCheck1" ng-required="true">
                                 <label class="form-check-label" for="exampleCheck1" style="font-weight: 400; padding-top: 10px;">I agree to Terms & Conditions</label>
                             </div> -->
-
-                            
                             
                             <div class="row text-center m-t-20">
-                                <button class="btn btn-primary btn-corner-login btn-lg" ng-click="signup()">Sign Up</button>
+                                <button class="btn btn-primary btn-corner-login btn-lg" ng-click="signup()" ng-disabled="userForm.$invalid && !userForm.exampleCheck1.$invalid">Sign Up</button>
                             </div>
                             
                             <div class="row text-center m-t-20">
                                 <div class="col-md-12"><p class="text-center">By clicking Sign Up, you agree to inFactor's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p></div>
                             </div>
 
-                            <div class="row text-center m-t-20 loginFont">
-                                    <div class="col-md-12"><p class="text-center"><a href="/login"><u>Login</u></a></p>
-                                     </div>
-                                </div>
-
                             <!-- END -->
-                            </form>
+                        </form>
 
                         </div>
                     </section>
