@@ -690,7 +690,7 @@
                                         <div class="clearfix"></div>
                                         <h5 class="text-dark">Estimated Charges <span class="text-dark">$ {{invoiceData.charges}}</span></h5>
                                         <div class="clearfix"></div>
-                                        <h5 class="text-dark">Days to Payout <span class="text-dark">{{invoiceData.daysToPayout}}</span></h5>
+                                        <h5 class="text-dark">Days to Payout <span class="text-dark">{{getDatesDiff(invoiceData.payableDate)}}</span></h5>
                                         <hr>
                                             <h5 class="text-dark"><strong>Balance Amount </strong><span class="text-dark"><strong>${{invoiceData.balancePayment}}</strong></span></h5>
                                             <div>

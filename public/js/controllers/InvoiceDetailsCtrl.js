@@ -145,13 +145,15 @@
     };
 
 
-    $scope.getDatesDiff = function(date) {
+	$scope.getDatesDiff = function(date) {
     	var date1 = new Date(date);
     	var date2 = new Date();
 	    var diff = (Math.ceil((date1.getTime() - date2.getTime()) /
 	            (1000 * 3600 * 24))/365);
-	    return (diff*360).toFixed(0);
+		var days = (diff*360).toFixed(0);
+		return days > 0 ? days : 0;
 	};
+
 
 
 	$scope.filterTransactionHistory = function(state, txhash) {
