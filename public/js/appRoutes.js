@@ -27,7 +27,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 			templateUrl: 'views/signup.html',
 			controller: 'SignUpController'
 		})
-
+		
 		.when('/login', {
 			templateUrl: 'views/login.html',
 			controller: 'LoginController'

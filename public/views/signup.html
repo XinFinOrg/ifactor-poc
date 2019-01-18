@@ -27,7 +27,7 @@
                         </header>
                         <div class="sign-msg">We connect global Buyers, Suppliers and Financiers using inFactor Platform</div>
                         <div class="content-body">
-                            <form name="userForm" ng-submit="submitForm()" novalidate>
+                            <form name="userForm" novalidate>
 
                             <div class="form-group" ng-class="{ 'has-error' : userForm.firstName.$touched && userForm.firstName.$invalid }">
                                 <div class="row">
@@ -86,7 +86,7 @@
                                 <div class="col-sm-4 col-md-4 col-lg-4">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <input type="radio" id="b-option" name="selector" value="Buyer" ng-model="input.type" class="icheck-minimal-purple">
+                                            <input type="radio" id="b-option" name="selector" value="Buyer" ng-model="input.type" class="icheck-minimal-purple" ng-required="true">
                                             <label for="b-option" class="iradio-label form-label">Buyer</label>
                                         </li>
                                     </ul>
@@ -95,7 +95,7 @@
                                 <div class="col-sm-4 col-md-4 col-lg-4">
                                     <ul class="list-unstyled">
                                          <li>
-                                            <input type="radio" id="s-option" name="selector" value="Supplier" ng-model="input.type" class="icheck-minimal-purple">
+                                            <input type="radio" id="s-option" name="selector" value="Supplier" ng-model="input.type" class="icheck-minimal-purple" ng-required="true">
                                             <label for="s-option" class="iradio-label form-label">Supplier</label>
                                          </li>
                                     </ul>
@@ -104,7 +104,7 @@
                                 <div class="col-sm-4 col-md-4 col-lg-4">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <input type="radio" id="f-option" name="selector" value="Financer" ng-model="input.type" class="icheck-minimal-purple">
+                                            <input type="radio" id="f-option" name="selector" value="Financer" ng-model="input.type" class="icheck-minimal-purple" ng-required="true">
                                             <label for="f-option" class="iradio-label form-label">Financer</label>
                                         </li>                                        
                                     </ul>
@@ -112,13 +112,13 @@
                                 
                             </div>
                             </div>
-                            <!-- <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="exampleCheck1" ng-required="true">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="exampleCheck1" ng-model="check" ng-required="true">
                                 <label class="form-check-label" for="exampleCheck1" style="font-weight: 400; padding-top: 10px;">I agree to Terms & Conditions</label>
-                            </div> -->
+                            </div>
                             
                             <div class="row text-center m-t-20">
-                                <button class="btn btn-primary btn-corner-login btn-lg" ng-click="signup()" ng-disabled="userForm.$invalid && !userForm.exampleCheck1.$invalid">Sign Up</button>
+                                <button class="btn btn-primary btn-corner-login btn-lg" ng-click="signup()" ng-disabled="userForm.$invalid && userForm.exampleCheck1.$invalid">Sign Up</button>
                             </div>
                             
                             <div class="row text-center m-t-20">
