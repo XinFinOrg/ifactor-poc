@@ -40,7 +40,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 
 		.when('/forgot-password',{
 			templateUrl: 'views/forgot-password.html',
-			controller: ''
+			controller: 'ForgotPasswordController'
 		})
 
 		.when('/geeks', {

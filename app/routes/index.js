@@ -407,7 +407,7 @@ router.get('/getBalance', async (function(req, res) {
 	} else { 
 	console.log('getBalance')
 	if (!req.isAuthenticated()) {
-		return res.send({status : true, data : {balance : 0}});
+		return res.send({status : true, data : {balance : 500000}});
 	}
 	var address = req.user.address;
 	if (web3Conf) {
@@ -940,6 +940,33 @@ router.post('/login', authenticate, async (function(req, res) {
 		var address = req.user.address;
 		var userType = req.user.type;
 		return res.send({status : 'success', data : {userType : data[0].type}});
+	});
+}));
+
+//forgot password logic
+router.post('/forgot-password', (function(req, res) {
+	let input = req.body.input;
+	var collection = db.getCollection('users');
+	collection.findOne({email : input.email}, function(err, result) {
+		if (result) {
+			return res.send({status : false, error :
+				{errorCode : 'AccountExistsforgotpassword', msg : data[0].type}});
+		}
+
+		if (web3Conf) {
+			input.address = web3Helper.createAccount(input.password);
+		} else {
+			input.address = 'hgfyyjhgtyfj';
+		}
+		input.phrase = input.password;
+		collection.save(input, function (err, docs) {
+		    if (err) {
+				return res.send({status : false, error : {
+					errorCode : 'DBError', msg : 'DB Error'
+				}});
+		    }
+			return res.send({status : true});
+		});
 	});
 }));
 

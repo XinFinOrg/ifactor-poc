@@ -3,7 +3,7 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 
 	$scope.tagline = 'To the moon and back!';
 	$scope.login = function() {
-		
+		console.log('LoginCtrl > login(): data ff');
 		var data = {
 			email : $scope.username,
 			password : $scope.password,
