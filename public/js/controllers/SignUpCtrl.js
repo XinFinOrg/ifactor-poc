@@ -18,7 +18,7 @@ SignUpCtrl.controller('SignUpController',['$scope', '$rootScope',
 	    });
 	}
 
-	$scope.login = function() {
+	$scope.goToLogin = function() {
 		window.location.href = "/login";
 		// $location.path('/signup');		
 	};

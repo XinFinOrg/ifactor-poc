@@ -16,6 +16,11 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 				$location.path('/dashboard');
         });
 	}
+
+	$scope.goToSignup = function() {
+		window.location.href = "/signup";
+		// $location.path('/signup');		
+	};
 	$scope.isShowPassword = false;
 	$scope.showHideText = 'SHOW';
 	$scope.showHideType = 'password';
