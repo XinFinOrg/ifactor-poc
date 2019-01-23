@@ -2,6 +2,8 @@ angular.module('ForgotPasswordCtrl', []).controller('ForgotPasswordController',[
  '$http', '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
  	$http, $location, GetPost, Helper) {
 
+	
+
 		$scope.isLoggedIn = false;
 
 	$scope.forgotpassword = function() {

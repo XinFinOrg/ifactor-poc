@@ -1,10 +1,10 @@
 <style>
-.input-lg{
-    border-radius: 0;
+    .input-lg{
+    border-radius: 6;
 }
 select.soflow, select.soflow-color
 {
-    border-radius: 0;
+    border-radius: 6;
 }
 .myLabel {
     position: relative;
@@ -36,8 +36,40 @@ select.soflow, select.soflow-color
   /* ...and now for the proper property */
   transition:.5s;
 }
-.myLabel:active {no
+.myLabel:active {
     background: #CCF;
+}
+
+.roundspan{
+      /* border-bottom-right-radius:6px; */
+      border-bottom-left-radius:6px !important;
+     /* -moz-border-radius-bottomright:6px; */
+     -moz-border-radius-bottomleft:6px !important ;
+     /* -webkit-border-bottom-right-radius:6px; */
+     -webkit-border-bottom-left-radius:6px !important;
+
+      /* -moz-border-radius-topright:6px; */
+      -moz-border-radius-topleft:6px !important;
+      /* -webkit-border-top-right-radius:6px; */
+      -webkit-border-top-left-radius:6px !important;
+      /* border-top-right-radius:6px; */
+      border-top-left-radius:6px !important;
+}
+
+.roundinput{
+      border-bottom-right-radius:6px !important;
+      /* border-bottom-left-radius:6px; */
+     -moz-border-radius-bottomright:6px!important ;
+     /* -moz-border-radius-bottomleft:6px; */
+     -webkit-border-bottom-right-radius:6px !important;
+     /* -webkit-border-bottom-left-radius:6px; */
+
+      -moz-border-radius-topright:6px !important;
+      /* -moz-border-radius-topleft:6px; */
+      -webkit-border-top-right-radius:6px !important;
+      /* -webkit-border-top-left-radius:6px; */
+      border-top-right-radius:6px !important;
+      /* border-top-left-radius:6px; */
 }
 </style>
 <!-- START CONTAINER -->
@@ -52,7 +84,8 @@ select.soflow, select.soflow-color
 
                     <div class="pull-left">
                         <!-- PAGE HEADING TAG - START -->
-                        <h1 class="title"><a href="/dashboard">Supplier Dashboard</a> <span class="request-details">Create Request</span> </h1>
+                        <h1 class="title"><a href="/dashboard">Supplier Dashboard</a> <span class="request-details">Create
+                                Request</span> </h1>
                         <!-- PAGE HEADING TAG - END -->
                     </div>
 
@@ -60,49 +93,73 @@ select.soflow, select.soflow-color
             </div>
             <div class="clearfix"></div>
             <!-- MAIN CONTENT AREA STARTS -->
-            
+
             <div class="col-xs-12">
                 <section class="box">
                     <div class="content-body no-top-padd">
                         <div class="row">
                             <div class="col-md-12 invoice-supplier-buy">Buyer Details</div>
-                            <div class="row col-md-12">
-                                <div class="col-md-9 has-float-label">
-                                
-                                    <select class="soflow form-control input-lg" ng-model="companyNameData" ng-options="x.firstName for x in companyOptions" style="padding-top: 20px;
-    padding-left: 18px;">
-                                    </select>
-                                    <label class="labelText" for="companyNameData">Buyer Name</label>
-                                </div>
-                                <div class="col-md-3 has-float-label">
-                                        <select class="soflow form-control input-lg" ng-model="input.companyType" ng-options="x for x in companyTypeOptions" style="padding-top: 20px;
-    padding-left: 18px;">
-                                        </select>
-                                        <label class="labelText" for="companyOptions">Company Type</label>
-                                </div>
-                            </div>
-                            <div class="row col-md-12 marg_t-20">
-                                <div class="col-md-6 has-float-label">
-                                    <input class="form-control input-lg"  ng-model="input.contactName"  placeholder=" "/>
-                                    <label class="labelText" for="conatctName">Contact Name</label>
-                                </div>
-                                <div class="col-md-3 has-float-label">
-                                <div class="input-group">
-                                <span class="input-group-addon" style="cursor: pointer">
-                                        <select>
-                                            <option value="+65">+65</option>
-                                            <option value="+91">+91</option>
-                                        </select>       
-                                    </span>
-                                    <input class="form-control input-lg"  ng-model="input.companyPhone" placeholder=" "/>
-                                    <label for="ComapnyPhone" style="padding-left: 58px;">Company Phone</label>
+                            <form name="userForm" novalidate>
+                                <div class="row col-md-12">
+                                    <div class="col-md-9 has-float-label">
+                                        <div class="form-group">
+                                            <select class="soflow form-control input-lg" ng-model="companyNameData" id="companyNameData" name="companyNameData"
+                                                ng-options="x.firstName for x in companyOptions" style="padding-top: 20px; padding-left: 18px;"
+                                                ng-required="true">
+                                            </select>
+                                            <label class="labelText" for="companyNameData">Buyer Name</label>
+                                            <p ng-show="!userForm.companyNameData.$touched" class="help-block">Please select a buyer.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 has-float-label">
+                                        <div class="form-group">
+                                            <select class="soflow form-control input-lg" ng-model="input.companyType" id="companyTypeOptions" name="companyTypeOptions"
+                                                ng-options="x for x in companyTypeOptions" style="padding-top: 20px; padding-left: 18px;"
+                                                ng-required="true">
+                                            </select>
+                                            <label class="labelText" for="companyTypeOptions">Company Type</label>
+                                            <p ng-show="!userForm.companyTypeOptions.$touched" class="help-block">Please select a type.</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg"  ng-model="input.companyEmail" placeholder=" "/>
-                                    <label class="labelText" for="CompanyEmail">Company Email</label>
+                                <div class="row col-md-12 marg_t-20">
+                                    <div class="col-md-6 has-float-label">
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.contactName.$touched && userForm.contactName.$invalid }">
+                                            <input class="form-control input-lg" id="contactName" name="contactName" ng-model="input.contactName" placeholder=" " ng-required="true"/>
+                                            <label class="labelText" for="contactName">Contact Name</label>
+                                            <p ng-show="userForm.contactName.$touched && userForm.contactName.$invalid" class="help-block">Your contact name is required.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-3 has-float-label">
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.companyPhone.$touched && userForm.companyPhone.$invalid }">
+                                            <div class="input-group">
+                                                <span class="input-group-addon roundspan" style="cursor: pointer">
+                                                    <select>
+                                                        <option value="+65">+65</option>
+                                                        <option value="+91">+91</option>
+                                                    </select>
+                                                </span>
+                                                
+                                                <input class="form-control input-lg roundinput" id="companyPhone" name="companyPhone"ng-model="input.companyPhone"
+                                                    placeholder=" " ng-required="true"/>
+                                                <label for="companyPhone" style="padding-left: 58px;">Company Phone</label>
+                                                
+                                                
+                                            </div>
+                                            <p ng-show="userForm.companyPhone.$touched && userForm.companyPhone.$invalid" class="help-block">Your contact no is required.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-3 has-float-label">
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.companyEmail.$touched && userForm.companyEmail.$invalid }">
+                                            <input class="form-control input-lg" name="companyEmail" id="companyEmail" type="email" ng-model="input.companyEmail" placeholder=" " ng-required="true"/>
+                                            <label class="labelText" for="companyEmail">Company Email</label>
+                                            <p ng-show="userForm.companyEmail.$touched && userForm.companyEmail.$invalid" class="help-block">Invalid email, please enter valid email.</p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </section>
@@ -122,12 +179,14 @@ select.soflow, select.soflow-color
                                     <!-- <datepicker>
                                       <input ng-model="date" placeholder=" " type="text"/>
                                     </datepicker> -->
-                                    <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control" class="calendar calender1">
-                                        <div  class="input-group">
-                                            <input class="form-control input-lg" ng-model="input.payableDate" placeholder=" "/  >
+                                    <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control"
+                                        class="calendar calender1">
+                                        <div class="input-group">
+                                            <input class="form-control input-lg" ng-model="input.payableDate"
+                                                placeholder=" "/>
                                             <label for="payable">Payble Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
-                                            <i class="fa fa-lg fa-calendar"></i>
+                                                <i class="fa fa-lg fa-calendar"></i>
                                             </span>
                                         </div>
                                     </datepicker>
@@ -145,18 +204,18 @@ select.soflow, select.soflow-color
                                             <input class="form-control input-lg" ng-model="input.purchaseDate" />
                                             <label for="po date">PO Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
-                                            <i class="fa fa-lg fa-calendar"></i>
+                                                <i class="fa fa-lg fa-calendar"></i>
                                             </span>
                                         </div>
                                     </datepicker>
                                 </div>
                                 <div class="col-md-3 has-float-label labelText">
-                                     <div class="input-group">
-                                     <span class="input-group-addon" style="cursor: pointer">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" style="cursor: pointer">
                                             <i class="fa fa-lg fa-dollar"></i>
-                                            </span>
-                                    <input class="form-control input-lg" placeholder=" "  ng-model="input.purchaseAmount" />
-                                    <label for="amount" style="padding-left: 15px;">Amount*</label>
+                                        </span>
+                                        <input class="form-control input-lg" placeholder=" " ng-model="input.purchaseAmount" />
+                                        <label for="amount" style="padding-left: 15px;">Amount*</label>
                                     </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
@@ -165,17 +224,19 @@ select.soflow, select.soflow-color
                                     </button> -->
 
                                     <div class="myLabel">
-                                        <input type="file" ngf-select="ngf-select" ng-model="poDocs" name="file" 
-                                     ngf-pattern="'image/*,application/pdf'" accept="image/*, application/pdf" ngf-max-size="20MB" />
-                                         <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse File</span>
-                                     </div>
-                                        <img style="width:20px;" ngf-thumbnail="poDocs || '/assets/images/apple-touch-icon-72.png'"/>
-                                        <i ng-show="poDocs.$error.required">*required</i><br>
-                                        <i ng-show="poDocs.$error.maxSize">File too large 
+                                        <input type="file" ngf-select="ngf-select" ng-model="poDocs" name="file"
+                                            ngf-pattern="'image/*,application/pdf'" accept="image/*, application/pdf"
+                                            ngf-max-size="20MB" />
+                                        <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse
+                                            File</span>
+                                    </div>
+                                    <img style="width:20px;" ngf-thumbnail="poDocs || '/assets/images/apple-touch-icon-72.png'" />
+                                    <i ng-show="poDocs.$error.required">*required</i><br>
+                                    <i ng-show="poDocs.$error.maxSize">File too large
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>
-                                        <p>{{up.progress}}</p>
-                                         </div>
-                                
+                                    <p>{{up.progress}}</p>
+                                </div>
+
                             </div>
                             <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-12 label-invoice">Invoice</div>
@@ -189,37 +250,40 @@ select.soflow, select.soflow-color
                                             <input class="form-control input-lg" ng-model="input.invoiceDate" />
                                             <label for="invoice">Invoice Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
-                                            <i class="fa fa-lg fa-calendar"></i>
+                                                <i class="fa fa-lg fa-calendar"></i>
                                             </span>
                                         </div>
                                     </datepicker>
                                 </div>
                                 <div class="col-md-3 has-float-label labelText">
                                     <div class="input-group">
-                                     <span class="input-group-addon" style="cursor: pointer">
+                                        <span class="input-group-addon" style="cursor: pointer">
                                             <i class="fa fa-lg fa-dollar"></i>
-                                            </span>
-                                    <input class="form-control input-lg" placeholder=" "  ng-model="input.invoiceAmount" />
-                                    <label for="amount" style="padding-left: 15px;">Amount*</label>
+                                        </span>
+                                        <input class="form-control input-lg" placeholder=" " ng-model="input.invoiceAmount" />
+                                        <label for="amount" style="padding-left: 15px;">Amount*</label>
                                     </div>
                                 </div>
-                                 <div class="col-md-3 has-float-label">
+                                <div class="col-md-3 has-float-label">
                                     <!-- <button type="button" class="btn btn-default btn-icon btn-round">
                                                 <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
                                     </button> -->
 
                                     <div class="myLabel">
-                                        <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file" ngf-pattern="'image/*,application/pdf'" accept="image/*,,application/pdf" ngf-max-size="20MB"/>
-                                          <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse File</span>
-                                     </div>
-                                        <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/assets/images/apple-touch-icon-72.png'"/>
-                                        <i ng-show="invoiceDocs.$error.required">*required</i><br>
-                                        <i ng-show="invoiceDocs.$error.maxSize">File too large 
+                                        <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file"
+                                            ngf-pattern="'image/*,application/pdf'" accept="image/*,,application/pdf"
+                                            ngf-max-size="20MB" />
+                                        <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse
+                                            File</span>
+                                    </div>
+                                    <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/assets/images/apple-touch-icon-72.png'" />
+                                    <i ng-show="invoiceDocs.$error.required">*required</i><br>
+                                    <i ng-show="invoiceDocs.$error.maxSize">File too large
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>
-                                        <p>{{up.progress}}</p>
-                                         </div>
+                                    <p>{{up.progress}}</p>
                                 </div>
-                                <div class="row col-md-12 marg_t-20">
+                            </div>
+                            <div class="row col-md-12 marg_t-20">
                                 <div class="col-md-12 label-invoice">GRN</div>
                                 <div class="col-md-3 has-float-label">
                                     <input class="form-control input-lg" ng-model="input.grnNo" placeholder=" " />
@@ -231,7 +295,7 @@ select.soflow, select.soflow-color
                                             <input class="form-control input-lg" ng-model="input.grnDate" placeholder=" " />
                                             <label for="grn">GRN Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
-                                            <i class="fa fa-lg fa-calendar"></i>
+                                                <i class="fa fa-lg fa-calendar"></i>
                                             </span>
                                         </div>
                                     </datepicker>
@@ -248,34 +312,37 @@ select.soflow, select.soflow-color
                                 </div> -->
                                 <div class="col-md-offset-3 col-md-3 has-float-label">
                                     <div class="myLabel">
-                                        <input type="file" ngf-select="ngf-select" ng-model="grnDocs" name="file" ngf-pattern="'image/*,application/pdf'" accept="image/*,,application/pdf" ngf-max-size="20MB"/>
-                                           <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse File</span>
-                                     </div>
-                                        <img style="width:20px;" ngf-thumbnail="grnDocs || '/assets/images/apple-touch-icon-72.png'"/>
-                                        <i ng-show="grnDocs.$error.required">*required</i><br>
-                                        <i ng-show="grnDocs.$error.maxSize">File too large 
-                                        {{up.file.size / 1000000|number:1}}MB: max 20M</i>
-                                        <p>{{up.progress}}</p>
+                                        <input type="file" ngf-select="ngf-select" ng-model="grnDocs" name="file"
+                                            ngf-pattern="'image/*,application/pdf'" accept="image/*,,application/pdf"
+                                            ngf-max-size="20MB" />
+                                        <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse
+                                            File</span>
                                     </div>
+                                    <img style="width:20px;" ngf-thumbnail="grnDocs || '/assets/images/apple-touch-icon-72.png'" />
+                                    <i ng-show="grnDocs.$error.required">*required</i><br>
+                                    <i ng-show="grnDocs.$error.maxSize">File too large
+                                        {{up.file.size / 1000000|number:1}}MB: max 20M</i>
+                                    <p>{{up.progress}}</p>
                                 </div>
                             </div>
-                            </div>
-                            
                         </div>
                     </div>
-                </section>
+
             </div>
-            <div class="container">
-            <div class="pull-right marg_r_10">
-                <button type="submit" class="btn btn-primary btn-corner" ng-click="submitInvoice(input, 'draft')">Save Now</button>
-                <button type="submit" class="btn btn-primary btn-corner" ng-click="submitInvoice(input, 'invoice_created')">Submit Now</button>
-            </div>
-            </div>
-            <!-- MAIN CONTENT AREA ENDS -->
         </div>
     </section>
-    <!-- END CONTENT -->
+</div>
+<div class="container">
+    <div class="pull-right marg_r_10">
+        <button type="submit" class="btn btn-primary btn-corner" ng-click="submitInvoice(input, 'draft')">Save Now</button>
+        <button type="submit" class="btn btn-primary btn-corner" ng-click="submitInvoice(input, 'invoice_created')">Submit
+            Now</button>
+    </div>
+</div>
+<!-- MAIN CONTENT AREA ENDS -->
+</div>
+</section>
+<!-- END CONTENT -->
 
 </div>
 <!-- END CONTAINER -->
-        

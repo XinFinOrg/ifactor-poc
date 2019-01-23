@@ -972,8 +972,10 @@ router.post('/forgot-password', (function(req, res) {
 
 router.get('/startApp', function(req, res) {
 	if (!req.isAuthenticated()) {
+		console.log('startApp api: if');
 		return res.send({status : false});
 	} else {
+		console.log('startApp api: else');
 		return res.send({status : true, data : {userType : req.user.type}});
 	}
 });
