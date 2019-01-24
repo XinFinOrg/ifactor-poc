@@ -40,7 +40,7 @@ select.soflow, select.soflow-color
     background: #CCF;
 }
 
-.roundspan{
+.leftroundspan{
       /* border-bottom-right-radius:6px; */
       border-bottom-left-radius:6px !important;
      /* -moz-border-radius-bottomright:6px; */
@@ -54,6 +54,22 @@ select.soflow, select.soflow-color
       -webkit-border-top-left-radius:6px !important;
       /* border-top-right-radius:6px; */
       border-top-left-radius:6px !important;
+}
+
+.rightroundspan{
+      border-bottom-right-radius:6px !important;
+      /* border-bottom-left-radius:6px !important; */
+     -moz-border-radius-bottomright:6px !important;
+     /* -moz-border-radius-bottomleft:6px !important ; */
+     -webkit-border-bottom-right-radius:6px !important;
+     /* -webkit-border-bottom-left-radius:6px !important; */
+
+      -moz-border-radius-topright:6px !important;
+      /* -moz-border-radius-topleft:6px !important; */
+      -webkit-border-top-right-radius:6px !important;
+      /* -webkit-border-top-left-radius:6px !important; */
+      border-top-right-radius:6px !important;
+      /* border-top-left-radius:6px !important; */
 }
 
 .roundinput{
@@ -112,17 +128,18 @@ select.soflow, select.soflow-color
                                         </div>
                                     </div>
                                     <div class="col-md-3 has-float-label">
-                                        <div class="form-group">
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.companyTypeOptions.$touched && userForm.companyTypeOptions.$invalid }">
                                             <select class="soflow form-control input-lg" ng-model="input.companyType" id="companyTypeOptions" name="companyTypeOptions"
                                                 ng-options="x for x in companyTypeOptions" style="padding-top: 20px; padding-left: 18px;"
                                                 ng-required="true">
                                             </select>
                                             <label class="labelText" for="companyTypeOptions">Company Type</label>
                                             <p ng-show="!userForm.companyTypeOptions.$touched" class="help-block">Please select a type.</p>
+                                            <p ng-show="userForm.companyTypeOptions.$touched && userForm.companyTypeOptions.$invalid" class="help-block">Please select a type.</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row col-md-12 marg_t-20">
+                                <div class="row col-md-12">
                                     <div class="col-md-6 has-float-label">
                                         <div class="form-group" ng-class="{ 'has-error' : userForm.contactName.$touched && userForm.contactName.$invalid }">
                                             <input class="form-control input-lg" id="contactName" name="contactName" ng-model="input.contactName" placeholder=" " ng-required="true"/>
@@ -134,14 +151,14 @@ select.soflow, select.soflow-color
                                     <div class="col-md-3 has-float-label">
                                         <div class="form-group" ng-class="{ 'has-error' : userForm.companyPhone.$touched && userForm.companyPhone.$invalid }">
                                             <div class="input-group">
-                                                <span class="input-group-addon roundspan" style="cursor: pointer">
+                                                <span class="input-group-addon leftroundspan border-red" style="cursor: pointer">
                                                     <select>
                                                         <option value="+65">+65</option>
                                                         <option value="+91">+91</option>
                                                     </select>
                                                 </span>
                                                 
-                                                <input class="form-control input-lg roundinput" id="companyPhone" name="companyPhone"ng-model="input.companyPhone"
+                                                <input class="form-control input-lg roundinput" id="companyPhone" name="companyPhone" ng-model="input.companyPhone"
                                                     placeholder=" " ng-required="true"/>
                                                 <label for="companyPhone" style="padding-left: 58px;">Company Phone</label>
                                                 
@@ -170,52 +187,85 @@ select.soflow, select.soflow-color
                     <div class="content-body no-top-padd">
                         <div class="row">
                             <div class="col-md-12 invoice-supplier-buy">Purchase Details</div>
+                            <form name="userForm2" novalidate>
                             <div class="row col-md-12">
                                 <div class="col-md-9 has-float-label">
-                                    <input class="form-control input-lg" ng-model="input.purchaseTitle" placeholder=" " />
-                                    <label class="labelText" for="potitle">PO Title*</label>
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.purchaseTitle.$touched && userForm2.purchaseTitle.$invalid }">
+                                        <input class="form-control input-lg" id="purchaseTitle" name="purchaseTitle" ng-model="input.purchaseTitle" placeholder=" " ng-required="true"/>
+                                        <label class="labelText" for="purchaseTitle">PO Title</label>
+                                        <p ng-show="userForm2.purchaseTitle.$touched && userForm2.purchaseTitle.$invalid" class="help-block">PO Title is required.</p>
+                                    </div>
                                 </div>
+                                
                                 <div class="col-md-3 has-float-label">
                                     <!-- <datepicker>
                                       <input ng-model="date" placeholder=" " type="text"/>
                                     </datepicker> -->
-                                    <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control"
-                                        class="calendar calender1">
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.payableDate.$touched && userForm2.payableDate.$invalid }">
+                                        <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control">
+                                            <div class="input-group input-group-error-position-fix">
+                                                <input class="form-control input-lg" ng-model="input.payableDate" name="payableDate" id="payableDate"
+                                                    placeholder="" ng-required="true"/>
+                                                <label for="payableDate">Payable Date</label>
+                                                <span class="input-group-addon rightroundspan border-red" style="cursor: pointer">
+                                                    <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
+                                                </span>
+                                            </div>
+                                        </datepicker>
+                                        <p ng-show="userForm2.payableDate.$touched && userForm2.payableDate.$invalid" class="help-block" style="margin-top: 0px !important">Date is required.</p>
+                                        
+                                    </div>
+                                    
+                                    
+                                    
+                                    <!-- <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control"
+                                        class="">
                                         <div class="input-group">
                                             <input class="form-control input-lg" ng-model="input.payableDate"
                                                 placeholder=" "/>
-                                            <label for="payable">Payble Date</label>
+                                            <label for="payable">Payable Date</label>
                                             <span class="input-group-addon" style="cursor: pointer">
                                                 <i class="fa fa-lg fa-calendar"></i>
                                             </span>
                                         </div>
-                                    </datepicker>
+                                    </datepicker> -->
                                 </div>
+                                
                             </div>
-                            <div class="row col-md-12 marg_t-20">
+                            <div class="row col-md-12">
                                 <div class="col-md-12 label-invoice">PO</div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" ng-model="input.purchaseNo" placeholder=" " />
-                                    <label class="labelText" for="CompanyEmail">PO No*</label>
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.purchaseNo.$touched && userForm2.purchaseNo.$invalid }">
+                                        <input class="form-control input-lg" ng-model="input.purchaseNo" name="purchaseNo" id="purchaseNo" placeholder=" " ng-required="true"/>
+                                        <label class="labelText" for="purchaseNo">PO No*</label>
+                                        <p ng-show="userForm2.purchaseNo.$touched && userForm2.purchaseNo.$invalid" class="help-block">PO number is required.</p>
+                                    </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <datepicker class="calender1" date-format="yyyy-MM-dd" selector="form-control">
-                                        <div class="input-group">
-                                            <input class="form-control input-lg" ng-model="input.purchaseDate" />
-                                            <label for="po date">PO Date</label>
-                                            <span class="input-group-addon" style="cursor: pointer">
-                                                <i class="fa fa-lg fa-calendar"></i>
-                                            </span>
-                                        </div>
-                                    </datepicker>
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.purchaseDate.$touched && userForm2.purchaseDate.$invalid }">
+                                        <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                                            <div class="input-group input-group-error-position-fix">
+                                                <input class="form-control input-lg" ng-model="input.purchaseDate" name="purchaseDate" id="purchaseDate" ng-required="true"/>
+                                                <label for="purchaseDate">PO Date</label>
+                                                <span class="input-group-addon rightroundspan border-red" style="cursor: pointer">
+                                                    <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
+                                                </span> 
+                                            </div>
+                                        </datepicker>
+                                        
+                                        <p ng-show="userForm2.purchaseDate.$touched && userForm2.purchaseDate.$invalid" class="help-block" style="margin-top: 0px !important">Date is required.</p>
+                                    </div> 
                                 </div>
                                 <div class="col-md-3 has-float-label labelText">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" style="cursor: pointer">
-                                            <i class="fa fa-lg fa-dollar"></i>
-                                        </span>
-                                        <input class="form-control input-lg" placeholder=" " ng-model="input.purchaseAmount" />
-                                        <label for="amount" style="padding-left: 15px;">Amount*</label>
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.purchaseAmount.$touched && userForm2.purchaseAmount.$invalid }">
+                                            <div class="input-group input-group-error-position-fix">
+                                                <span class="input-group-addon leftroundspan border-red" style="cursor: pointer">
+                                                    <i class="fa fa-lg fa-dollar input-group-icon-position-fix"></i>
+                                                </span>
+                                                <input type="number" class="form-control input-lg roundinput" placeholder=" " name="purchaseAmount" id="purchaseAmount" ng-model="input.purchaseAmount" ng-required="true"/>
+                                                <label for="purchaseAmount" style="padding-left: 15px;">Amount*</label>
+                                            </div>
+                                        <p ng-show="userForm2.purchaseAmount.$touched && userForm2.purchaseAmount.$invalid" class="help-block" style="margin-top: 0px !important">Amount is required.</p>
                                     </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
@@ -238,32 +288,44 @@ select.soflow, select.soflow-color
                                 </div>
 
                             </div>
-                            <div class="row col-md-12 marg_t-20">
+                            <div class="row col-md-12">
                                 <div class="col-md-12 label-invoice">Invoice</div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" placeholder=" " ng-model="input.invoiceNo" />
-                                    <label class="labelText" for="invoice">Invoice No*</label>
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm2.invoiceNo.$touched && userForm2.invoiceNo.$invalid }">
+                                                <input class="form-control input-lg" ng-model="input.invoiceNo" name="invoiceNo" id="invoiceNo" placeholder=" " ng-required="true"/>
+                                                <label class="labelText" for="invoiceNo">Invoice No*</label>
+                                                <p ng-show="userForm2.invoiceNo.$touched && userForm2.invoiceNo.$invalid" class="help-block">Invoice number is required.</p>
+                                            </div>
+                                    
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <datepicker class="calender1" date-format="yyyy-MM-dd" selector="form-control">
-                                        <div class="input-group">
-                                            <input class="form-control input-lg" ng-model="input.invoiceDate" />
-                                            <label for="invoice">Invoice Date</label>
-                                            <span class="input-group-addon" style="cursor: pointer">
-                                                <i class="fa fa-lg fa-calendar"></i>
-                                            </span>
-                                        </div>
-                                    </datepicker>
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.invoiceDate.$touched && userForm2.invoiceDate.$invalid }">
+                                        <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                                            <div class="input-group input-group-error-position-fix">
+                                                <input class="form-control input-lg" ng-model="input.invoiceDate" name="invoiceDate" id="invoiceDate" ng-required="true"/>
+                                                <label for="invoiceDate">Invoice Date</label>
+                                                <span class="input-group-addon rightroundspan border-red" style="cursor: pointer">
+                                                    <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
+                                                </span> 
+                                            </div>
+                                        </datepicker>
+                                        
+                                        <p ng-show="userForm2.invoiceDate.$touched && userForm2.invoiceDate.$invalid" class="help-block" style="margin-top: 0px !important">Date is required.</p>
+                                    </div> 
                                 </div>
                                 <div class="col-md-3 has-float-label labelText">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" style="cursor: pointer">
-                                            <i class="fa fa-lg fa-dollar"></i>
-                                        </span>
-                                        <input class="form-control input-lg" placeholder=" " ng-model="input.invoiceAmount" />
-                                        <label for="amount" style="padding-left: 15px;">Amount*</label>
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.invoiceAmount.$touched && userForm2.invoiceAmount.$invalid }">
+                                            <div class="input-group input-group-error-position-fix">
+                                                <span class="input-group-addon leftroundspan border-red" style="cursor: pointer">
+                                                    <i class="fa fa-lg fa-dollar input-group-icon-position-fix"></i>
+                                                </span>
+                                                <input type="number" class="form-control input-lg roundinput" placeholder=" " name="invoiceAmount" id="invoiceAmount" ng-model="input.invoiceAmount" ng-required="true"/>
+                                                <label for="purchaseAmount" style="padding-left: 15px;">Amount*</label>
+                                            </div>
+                                        <p ng-show="userForm2.invoiceAmount.$touched && userForm2.invoiceAmount.$invalid" class="help-block" style="margin-top: 0px !important">Amount is required.</p>
                                     </div>
                                 </div>
+
                                 <div class="col-md-3 has-float-label">
                                     <!-- <button type="button" class="btn btn-default btn-icon btn-round">
                                                 <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
@@ -283,24 +345,30 @@ select.soflow, select.soflow-color
                                     <p>{{up.progress}}</p>
                                 </div>
                             </div>
-                            <div class="row col-md-12 marg_t-20">
+                            <div class="row col-md-12">
                                 <div class="col-md-12 label-invoice">GRN</div>
                                 <div class="col-md-3 has-float-label">
-                                    <input class="form-control input-lg" ng-model="input.grnNo" placeholder=" " />
-                                    <label class="labelText" for="CompanyEmail">GRN No*</label>
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.grnNo.$touched && userForm2.grnNo.$invalid }">
+                                        <input class="form-control input-lg" ng-model="input.grnNo" name="grnNo" id="grnNo" placeholder=" " ng-required="true"/>
+                                        <label class="labelText" for="grnNo">GRN No*</label>
+                                        <p ng-show="userForm2.grnNo.$touched && userForm2.grnNo.$invalid" class="help-block">GRN is required.</p>
+                                    </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <datepicker class="labelText" date-format="yyyy-MM-dd" selector="form-control">
-                                        <div class="input-group">
-                                            <input class="form-control input-lg" ng-model="input.grnDate" placeholder=" " />
-                                            <label for="grn">GRN Date</label>
-                                            <span class="input-group-addon" style="cursor: pointer">
-                                                <i class="fa fa-lg fa-calendar"></i>
-                                            </span>
-                                        </div>
-                                    </datepicker>
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.grnDate.$touched && userForm2.grnDate.$invalid }">
+                                        <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                                            <div class="input-group input-group-error-position-fix">
+                                                <input class="form-control input-lg" ng-model="input.grnDate" name="grnDate" id="grnDate" ng-required="true"/>
+                                                <label for="grnDate">GRN Date</label>
+                                                <span class="input-group-addon rightroundspan border-red" style="cursor: pointer">
+                                                    <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
+                                                </span> 
+                                            </div>
+                                        </datepicker>
+                                        
+                                        <p ng-show="userForm2.grnDate.$touched && userForm2.grnDate.$invalid" class="help-block" style="margin-top: 0px !important">Date is required.</p>
+                                    </div> 
                                 </div>
-                                <div></div>
                                 <!-- <div class="col-md-3 has-float-label">
                                     <div class="input-group">
                                      <span class="input-group-addon" style="cursor: pointer">
@@ -325,6 +393,7 @@ select.soflow, select.soflow-color
                                     <p>{{up.progress}}</p>
                                 </div>
                             </div>
+                            </form>
                         </div>
                     </div>
 

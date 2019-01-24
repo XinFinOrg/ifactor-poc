@@ -292,7 +292,9 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', funct
     var createToast = function(msg, className='success') {
         ngToast.create({
             className: className, // "success", "info", "warning" or "danger"
-            content: msg
+            content: msg,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
         });
     };
 
