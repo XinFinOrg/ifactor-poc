@@ -1,8 +1,9 @@
 angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootScope', '$http', 
-			'$location', 'GetPost',  function($scope, $rootScope, $http, $location, GetPost) {
+			'$location', 'GetPost', 'ngToast', 'Helper',  function($scope, $rootScope, $http, $location, GetPost, ngToast, Helper) {
 
 	$scope.tagline = 'To the moon and back!';
 	$scope.login = function() {
+		Helper.createToast('You are trying to login ', 'success');
 		console.log('LoginCtrl > login(): data ff');
 		var data = {
 			email : $scope.username,
