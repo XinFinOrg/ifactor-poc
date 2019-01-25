@@ -4178,7 +4178,7 @@ table.dataTable.display tbody tr:first-child td {
     z-index:0 !important;
 }
 .calendar1{
-    z-index: -100;
+    z-index: -1;
 }
 
 .panel-header1{
@@ -4187,4 +4187,16 @@ table.dataTable.display tbody tr:first-child td {
 
 .btn-primary:disabled{
     background: #777dcb;
+}
+
+.input-group-error-position-fix{
+    display: inline-table !important;
+}
+
+.input-group-icon-position-fix{
+    display: contents !important;
+}
+
+.has-error .border-red{
+    border-color: #f44336 !important;
 }
