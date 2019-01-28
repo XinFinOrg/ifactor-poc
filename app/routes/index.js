@@ -908,7 +908,7 @@ var authenticate = function (req, res, next) {
             return next(err);
         }
         if (!user) {
-			console.log('!user');
+			console.log('!user, info:',info);
             return res.send({ success: false, message: info });
         }
         console.log('user', user);

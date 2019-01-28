@@ -3,7 +3,6 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 
 	$scope.tagline = 'To the moon and back!';
 	$scope.login = function() {
-		Helper.createToast('You are trying to login ', 'success');
 		console.log('LoginCtrl > login(): data ff');
 		var data = {
 			email : $scope.username,
@@ -12,9 +11,15 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 		}
 		console.log('LoginCtrl > login(): data = ',data);
 		GetPost.post(data, function(err, docs) {
-				console.log(docs);
+			if(!err){
+				Helper.createToast('You are logged in.', 'success');
+				console.log('LoginCtrl: login(): docs:',docs, 'err:', err);
 				$rootScope.userType = docs.data.userType;
 				$location.path('/dashboard');
+			} else {
+				Helper.createToast('Please check your credentials.', 'danger');
+			}
+			
         });
 	}
 

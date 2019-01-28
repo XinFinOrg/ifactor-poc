@@ -155,9 +155,11 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
     $scope.invoiceDocs = null;
 
     $scope.submitInvoice = function (input, type) {
+		$scope.isSubmitNowButtonDisabled = true;
     	$scope.input.state = type;
     	$scope.input = $scope.getBuyerData(input);
     	if (!validateInvoice()) {
+			$scope.isSubmitNowButtonDisabled = false;
     		return;
     	}
 

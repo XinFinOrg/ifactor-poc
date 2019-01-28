@@ -159,7 +159,7 @@ select.soflow, select.soflow-color
                                                 </span>
                                                 
                                                 <input class="form-control input-lg roundinput" id="companyPhone" name="companyPhone" ng-model="input.companyPhone"
-                                                    placeholder=" " ng-required="true"/>
+                                                    type="number" placeholder=" " ng-required="true"/>
                                                 <label for="companyPhone" style="padding-left: 58px;">Company Phone</label>
                                                 
                                                 
@@ -403,8 +403,8 @@ select.soflow, select.soflow-color
 </div>
 <div class="container">
     <div class="pull-right marg_r_10">
-        <button type="submit" class="btn btn-primary btn-corner" ng-click="submitInvoice(input, 'draft')">Save Now</button>
-        <button type="submit" class="btn btn-primary btn-corner" ng-click="submitInvoice(input, 'invoice_created')">Submit
+        <button type="submit" class="btn btn-primary btn-corner" ng-disabled="userForm.$invalid || userForm2.$invalid || isSubmitNowButtonDisabled" ng-click="submitInvoice(input, 'draft')">Save Now</button>
+        <button type="submit" class="btn btn-primary btn-corner" ng-disabled="userForm.$invalid || userForm2.$invalid || isSubmitNowButtonDisabled" ng-click="submitInvoice(input, 'invoice_created')">Submit
             Now</button>
     </div>
 </div>
