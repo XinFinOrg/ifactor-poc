@@ -10,7 +10,7 @@ SignUpCtrl.controller('SignUpController',['$scope', '$rootScope',
 		GetPost.post(data, function(err, resp) {
 			console.log(err, resp);
 			if (!resp.status) {
-				console.log('error')
+				Helper.createToast(resp.error.msg, 'warning');
 			} else {
 				Helper.showAlert('signup');
 				$location.path('/login');

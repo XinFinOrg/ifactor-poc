@@ -26,6 +26,7 @@ auth.use = function() {
         passwordField : 'password'
     },
     function(email, password, done) {
+        console.log('local.js > auth.use() > passport.use');
         User.findOne({ email: email}, function(err, user) {
             if (err) {
                 return done(err, false, 4);

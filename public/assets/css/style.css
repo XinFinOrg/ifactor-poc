@@ -174,6 +174,7 @@ section.box.marginBottom0,
 .circle-border {padding:2px; border: 1px solid #cfcfcf;}
 
 .opacity-5 {-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";filter: alpha(opacity=20);-moz-opacity: 0.2;-khtml-opacity: 0.2;opacity: 0.2;}
+.opacity-3 {-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";filter: alpha(opacity=40);-moz-opacity: 0.4;-khtml-opacity: 0.4;opacity: 0.4;}
 
 /*------------ Dashboard Buyer Logo ------------*/
 #buyer-logo {padding: 5px;}

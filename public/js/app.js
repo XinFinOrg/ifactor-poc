@@ -6,6 +6,7 @@ angular.module('sampleApp', ['ui.bootstrap', 'ngToast', 'rzModule', 'jkAngularRa
 		ngToast.configure({
 		  verticalPosition: 'bottom',
 		  horizontalPosition: 'center',
-		  maxNumber: 3
+			maxNumber: 1,
+			combineDuplications: false,
 		});
 	  }]);
