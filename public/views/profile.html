@@ -1,0 +1,186 @@
+<div class="page-topbar">
+    <div class="container">
+        <div class="logo-area">
+
+        </div>
+        <div class="quick-area">
+
+            <div class='pull-right'>
+                <ul class="info-menu right-links list-inline list-unstyled">
+                    <!-- <li>
+                        <a href="http://infactor.io/docs" target="_blank" class="balaceTop">Documentaion</a>
+                        <i class="fa fa-user"></i>
+                    </li> -->
+                    <li class="profile">
+                        <a href="#" data-toggle="dropdown" class="toggle" id="dropdownToggle">
+                            <span>{{name}}
+                                <i class="fa fa-angle-down"></i>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu profile animated fadeIn" role="menu" id="dropdownMenu">
+                            <!-- <li>
+                                <a href="#settings">
+                                    <i class="fa fa-wrench"></i>
+                                    Settings
+                                </a>
+                            </li> -->
+                            <li>
+                                <a href="/profile">
+                                    <i class="fa fa-user"></i>
+                                    Profile
+                                </a>
+                            </li>
+                            <!-- <li>
+                                <a href="#help">
+                                    <i class="fa fa-info"></i>
+                                    Help
+                                </a>
+                            </li>  -->
+                            <li class="last">
+                                <a href="" ng-click="logOut()">
+                                    <i class="fa fa-lock"></i>
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+ <!-- START CONTAINER -->
+ <div class="page-container row-fluid container-fluid">
+    <!-- START CONTENT -->
+    <section>
+        <div class="container wrapper main-wrapper row" style=''>
+
+            <div class='col-xs-12'>
+                <div class="page-title">
+
+                    <div class="pull-left">
+                        <!-- PAGE HEADING TAG - START -->
+                        <h1 class="title">&nbsp;</h1>
+                        <!-- PAGE HEADING TAG - END -->
+                    </div>
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <!-- MAIN CONTENT AREA STARTS -->
+
+            <div class="col-md-12 col-xs-12 sign_up_box">
+                <section class="loginbox">
+                    <header class="panel_header">
+                        <h1 class="title"><strong>Edit Profile</strong></h1>
+                    </header>
+                    <div class="content-body">
+                        <form name="userForm" novalidate>
+
+                        <div class="form-group" ng-class="{ 'has-error' : userForm.firstName.$touched && userForm.firstName.$invalid }">
+                            <div class="row">
+                                <div class="col-xs-6 user_pic_wrap">
+                                        <img src="assets/images/noimage.png" height="80px" width="80px" alt="user_img" class="img-circle circle-border"
+                                        <span class="edit_pic">
+                                        <label for="imageUpload">
+                                        <input id="imageUpload" type="file" accept="image/*" name="imageUpload" class="upload-hidden"> 
+                                        </label>
+                                        </span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-xs-6 has-float-label">
+                                    <input class="form-control input-lg" id="firstName" name="firstName" type="text" ng-model="input.firstName" ng-required="true" placeholder=" ">
+                                    <label class="labelText" for="firstName">First Name</label>
+                                    <p ng-show="userForm.firstName.$touched && userForm.firstName.$invalid" class="help-block">Your first name is required.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- START -->
+                        <div class="form-group" ng-class="{ 'has-error' : userForm.lastName.$touched && userForm.lastName.$invalid }">
+                            <div class="row">
+                                <div class="col-xs-6 has-float-label">
+                                    <input class="form-control input-lg" id="lastName" name="lastName" type="text"  ng-model="input.lastName" placeholder=" " ng-required="true">
+                                    <label class="labelText" for="lastName">Last Name</label>
+                                    <p ng-show="userForm.lastName.$touched && userForm.lastName.$invalid" class="help-block">Your last name is required.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : userForm.email.$touched && userForm.email.$invalid }">
+                            <div class="row">
+                                <div class="col-xs-6 has-float-label">
+                                    <input class="form-control input-lg" id="email" name="email" disabled="disabled" type="email"  ng-model="input.email" placeholder=" " ng-required="true">
+                                    <label class="labelText" for="email">Email</label>
+                                    <p ng-show="userForm.email.$touched && userForm.email.$invalid" class="help-block">Invalid email, please enter valid email.</p>
+                                </div>
+                                <div class="col-md-3 row text-center m-t-20">
+                                    <button class="btn btn-primary btn-corner-login btn-lg" ng-click="signup()" ng-disabled="userForm.$invalid">Save</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                        <header class="panel_header">
+                            <h1 class="title"><strong>Change Password</strong></h1><br>
+                        </header>
+
+                        <div class="form-group" ng-class="{ 'has-error' : (userForm.password.$dirty && userForm.password.$error.minlength) || (userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength) }">
+                        
+                            <div class="row">
+                                <div class="col-xs-6 has-float-label">
+                                    <input class="form-control input-lg" id="password" name="password" type="password"  ng-model="input.password" ng-minlength="6" placeholder=" " ng-required="true">
+                                    <input type="hidden" id="changepasswordtoken" name="changepasswordtoken" value="">
+                                    <label class="labelText" for="password">Old Password</label>
+                                    <p ng-show="userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength" class="help-block">Password is required</p>
+                                    <p ng-show="userForm.password.$dirty && userForm.password.$error.minlength" class="help-block">Password too short</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 has-float-label">
+                                    <input class="form-control input-lg" id="password" name="password" type="password"  ng-model="input.password" ng-minlength="6" placeholder=" " ng-required="true">
+                                    <label class="labelText" for="password">New Password</label>
+                                    <p ng-show="userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength" class="help-block">Password is required</p>
+                                    <p ng-show="userForm.password.$dirty && userForm.password.$error.minlength" class="help-block">Password too short</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : (userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.minlength) || (userForm.confirmPassword.$error.compare)}">
+                            <div class="row">
+                                <div class="col-xs-6 has-float-label">
+                                    <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password" ng-model="input.confirmPassword" placeholder=" " ng-required="true">
+                                    <label class="labelText" for="confirmPassword">Re-type New Password</label>
+                                    <p ng-show="userForm.confirmPassword.$touched && !userForm.confirmPassword.$dirty && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.minlength" class="help-block">Confirm password is required</p>
+                                    <p ng-show="userForm.confirmPassword.$error.compare" class="help-block">Confirm password does not match.</p>
+                                </div>
+                                <div class="col-md-3 row text-center m-t-20">
+                                    <button class="btn btn-primary btn-corner-login btn-lg" ng-click="signup()" ng-disabled="userForm.$invalid">Submit</button>
+                                </div>
+                            </div>
+                            
+                        </div> 
+                         
+                        <!-- END -->
+                    </form>
+
+                    </div>
+                </section>
+            </div>
+            <!-- MAIN CONTENT AREA ENDS -->
+        </div>
+    </section>
+    <!-- END CONTENT -->
+
+                        </div>
+                    </section>
+                </div>
+                <!-- MAIN CONTENT AREA ENDS -->
+            </div>
+        </section>
+        <!-- END CONTENT -->
+
+    </div>
