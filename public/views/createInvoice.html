@@ -90,7 +90,7 @@ select.soflow, select.soflow-color
 </style>
 <!-- START CONTAINER -->
 
-<div class="page-container row-fluid container-fluid">
+<div class="row-fluid container-fluid">
     <!-- START CONTENT -->
     <section>
         <div class="container wrapper main-wrapper row" style=''>
@@ -398,16 +398,22 @@ select.soflow, select.soflow-color
                     </div>
 
             </div>
+            <div class="pull-right marg_r_10">
+                <button type="submit" class="btn btn-primary btn-corner" ng-disabled="userForm.$invalid || userForm2.$invalid || isSubmitNowButtonDisabled" ng-click="submitInvoice(input, 'draft')">Save Now</button>
+                <button type="submit" class="btn btn-primary btn-corner" ng-disabled="userForm.$invalid || userForm2.$invalid || isSubmitNowButtonDisabled" ng-click="submitInvoice(input, 'invoice_created')">Submit
+                    Now</button>
+            </div>
         </div>
+        
     </section>
 </div>
-<div class="container">
+<!-- <div class="container">
     <div class="pull-right marg_r_10">
         <button type="submit" class="btn btn-primary btn-corner" ng-disabled="userForm.$invalid || userForm2.$invalid || isSubmitNowButtonDisabled" ng-click="submitInvoice(input, 'draft')">Save Now</button>
         <button type="submit" class="btn btn-primary btn-corner" ng-disabled="userForm.$invalid || userForm2.$invalid || isSubmitNowButtonDisabled" ng-click="submitInvoice(input, 'invoice_created')">Submit
             Now</button>
     </div>
-</div>
+</div> -->
 <!-- MAIN CONTENT AREA ENDS -->
 </div>
 </section>
