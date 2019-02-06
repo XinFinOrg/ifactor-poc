@@ -353,6 +353,7 @@ hr {margin-top: 15px; margin-bottom: 15px;}
 
 .page-container.container-fluid{
     padding: 0px;
+    height: -webkit-fill-available;
 }
 
 .spacer20{
@@ -955,17 +956,20 @@ a:hover, a:focus {
   text-decoration:none;
 }
 .page-footer {
-   bottom:0;
-   position:fixed;
    width:100%;
    background:#fcfdff;
    
    -webkit-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.1);
-    -moz-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.1);
-    box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.1);
+	box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.1);
+	
+	position:relative;
+	bottom: 0;
 }
 .page-footer .copyright {padding:15px;
     text-align:center;}
+
+    html, body{height:100%;}
 
 
 /*---------------------------------
@@ -3153,6 +3157,7 @@ table.dataTable.no-footer {
 
 .main-wrapper{
     margin-top:60px;
+	margin-bottom: 100px;
 }
 
 
@@ -3743,6 +3748,7 @@ border-left: 3px solid transparent;
 
     .main-wrapper{
         padding:15px 0 0 0px;
+		padding-bottom: 50px;
     }
 
     .page-topbar .logo-area,

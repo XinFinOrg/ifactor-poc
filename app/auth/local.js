@@ -28,6 +28,7 @@ auth.use = function() {
     function(email, password, done) {
         console.log('local.js > auth.use() > passport.use');
         User.findOne({ email: email}, function(err, user) {
+            console.log('err: ',err,'user:', user);
             if (err) {
                 return done(err, false, 4);
             }

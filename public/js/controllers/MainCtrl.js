@@ -48,6 +48,14 @@ angular.module('MainCtrl', []).controller('MainController',['$scope', '$rootScop
 	// 			}
 	// 	    });
 	// 	}
-    // });
+	// });
+	
+	// GetPost.get({ url : '/getUSDPrice' }, function(err, resp) {
+	// 	if(err){
+	// 		console.log('error:', err);
+	// 	} else {
+	// 		console.log('resp:', resp);
+	// 	}
+	// });
 
 }]);
