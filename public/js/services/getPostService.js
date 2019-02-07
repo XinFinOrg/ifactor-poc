@@ -31,7 +31,7 @@ angular.module('GetPostService', []).factory('GetPost', ['$http', '$rootScope', 
             .then(function(resp) {
                 $rootScope.isMainLoader = false;
                 $rootScope.isLoggedIn = true;
-                if (!(resp.data && resp.data.success)) {
+                if (!(resp.data && resp.data.status)) {
                     console.log("get: could not get data to ");
                     return cb(1, resp.data);
                 }
