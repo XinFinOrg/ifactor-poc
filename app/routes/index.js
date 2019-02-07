@@ -1012,11 +1012,20 @@ router.get('/unlockCoinbase', function(req, res) {
 	}
 });
 
-router.get('/getUSDPrice', function(req, res){
-	let agRes = helper.getUSDPrice();
-	console.log(agRes);
-	return res.send({status: true, price: agRes})
-});
+// router.get('/getUSDPrice', function(req, res){
+// 		 helper.getUSDPrice()
+// 		 .then((data, err) => {
+// 			if(!err){
+// 				console.log('bhai',data);
+// 				return res.send({status: true, data: data});
+// 			} else {
+// 				console.log('error: ',err);
+// 				return res.send({status : false});
+// 			}
+// 		 });
+		
+	
+// });
 
 router.get('*', function(req, res) {
 	res.sendfile('./public/index.html');

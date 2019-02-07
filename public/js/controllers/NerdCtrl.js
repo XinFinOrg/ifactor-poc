@@ -2,6 +2,14 @@ angular.module('NerdCtrl', []).controller('NerdController', ['$scope', '$rootSco
 function($scope, $rootScope, $location, GetPost, ngToast, Helper) {
 
 	$scope.tagline = 'Nothing beats a pocket protector!';
+	
+	// GetPost.get({ url : '/getUSDPrice' }, function(err, resp) {
+	// 	if(err){
+	// 		console.log('error:', err);
+	// 	} else {
+	// 		console.log('resp:', resp);
+	// 	}
+	// });
 	$rootScope.isMainLoader = false;
 	$rootScope.isLoggedIn = false;
 	$scope.gotoDashboard = function() {
