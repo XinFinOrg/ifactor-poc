@@ -6,12 +6,18 @@ angular.module('ForgotPasswordCtrl', []).controller('ForgotPasswordController',[
 
 		$scope.isLoggedIn = false;
 
-	$scope.forgotpassword = function() {
+	$scope.forgotPassword = function() {
 		console.log('data in');
-		var data  = {input : $scope.input, url : '/forgot-password'};
-		console.log(data);
-		GetPost.post(data, function(err, resp) {
-			// console.log(err, resp);
+		const url = '/forgotPassword?email=' + $scope.input.email; 
+		var data  = {url : url};
+		GetPost.get(data, function(err, resp) {
+			if(resp.status){
+				Helper.createToast('Email has been sent successsfully.', 'success');
+			} else if(resp.error.errorCode  == "AccountNotFound") {
+				Helper.createToast('Email id not found.', 'warning');
+			} else {
+				Helper.createToast('Some error has occured.', 'danger');
+			}
 			return resp;
 	    });
 	}
