@@ -11,6 +11,16 @@ var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var fs = require('fs');
 var PATH = require('path');
+var mailer = require('nodemailer');
+var transporter = mailer.createTransport({
+	service: 'gmail',
+	auth: {
+		user: 'infactor.xinfin@gmail.com',
+		pass: '..abcdefg..'
+	}
+	});
+var brcypt = require('bcrypt-nodejs');
+
 var web3Conf = false;
 if (web3Conf) {
 	var web3Helper = require('./web3Helper');
@@ -79,6 +89,10 @@ var uploadUserDocs = function(invoiceId, files, cb) {
 router.post('/signup', (function(req, res) {
 	let input = req.body.input;
 	var collection = db.getCollection('users');
+	if(input.password!==input.confirmPassword){
+		return res.send({status : false, error :
+			{errorCode : 'ConfirmPassword', msg : 'Confirm passwro'}});
+	}
 	collection.findOne({email : input.email}, function(err, result) {
 		if (result) {
 			return res.send({status : false, error :
@@ -88,9 +102,10 @@ router.post('/signup', (function(req, res) {
 		if (web3Conf) {
 			input.address = web3Helper.createAccount(input.password);
 		} else {
-			input.address = 'hgfyyjhgtyfj';
+			input.address = 'local';
 		}
 		input.phrase = input.password;
+		delete req.body.input['confirmPassword'];
 		collection.save(input, function (err, docs) {
 		    if (err) {
 				return res.send({status : false, error : {
@@ -944,31 +959,48 @@ router.post('/login', authenticate, async (function(req, res) {
 }));
 
 //forgot password logic
-router.post('/forgot-password', (function(req, res) {
-	let input = req.body.input;
-	var collection = db.getCollection('users');
-	collection.findOne({email : input.email}, function(err, result) {
-		if (result) {
+router.get('/forgotPassword', (function(req, res) {
+	const email = req.query.email;
+	const collection = db.getCollection('users');
+	collection.findOne({email : email}, function(err, result) {
+		console.log('inside findOne, err:', err, result);
+		if (result==null) {
 			return res.send({status : false, error :
-				{errorCode : 'AccountExistsforgotpassword', msg : data[0].type}});
+				{errorCode : 'AccountNotFound', msg : 'Email does not exist.'}});
 		}
-
-		if (web3Conf) {
-			input.address = web3Helper.createAccount(input.password);
-		} else {
-			input.address = 'hgfyyjhgtyfj';
-		}
-		input.phrase = input.password;
-		collection.save(input, function (err, docs) {
-		    if (err) {
-				return res.send({status : false, error : {
-					errorCode : 'DBError', msg : 'DB Error'
-				}});
-		    }
-			return res.send({status : true});
-		});
+		forgotPasswordMailer(email, result._id, req.get('host'));
+		// collection.save(input, function (err, docs) {
+		//     if (err) {
+		// 		return res.send({status : false, error : {
+		// 			errorCode : 'DBError', msg : 'DB Error'
+		// 		}});
+		//     }
+		// 	return res.send({status : true});
+		// });
+		return res.send({status : true});
 	});
 }));
+
+var forgotPasswordMailer = function(email, id, host){
+	var userHash = brcypt.hashSync(id);
+	var link = "http://" + host + "/resetPassword?resetId=" + userHash + "&email=" + email;
+	console.log(link);
+	var mailOptions = {
+		from: 'InFactor',
+		to: email,
+		subject: 'Reset password link for your InFactor account',
+		text: 'Here is the link to reset your password:'+link
+	};
+
+	transporter.sendMail(mailOptions, function(error, info){
+		if (error) {
+		  console.log(error);
+		} else {
+		  console.log('Email sent: ' + info.response);
+		}
+	  });
+	  return;
+}
 
 router.get('/startApp', function(req, res) {
 	if (!req.isAuthenticated()) {
