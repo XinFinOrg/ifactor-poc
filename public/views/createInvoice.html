@@ -128,11 +128,13 @@ select.soflow, select.soflow-color
                                     </div>
                                 </div>
                                 <div class="row col-md-12">
-                                    <div class="col-md-6 has-float-label">
+                                    <div class="col-md-6 has-float-label">                            
+                                            <!-- ng-pattern="^[a-zA-Z][a-zA-Z\s]*$"-->
                                         <div class="form-group" ng-class="{ 'has-error' : userForm.contactName.$touched && userForm.contactName.$invalid }">
-                                            <input class="form-control input-lg" id="contactName" name="contactName" ng-model="input.contactName" placeholder=" " ng-required="true"/>
+                                            <input class="form-control input-lg" id="contactName" name="contactName" ng-pattern ="/^[a-zA-Z\s]*$/" ng-model="input.contactName" placeholder=" " ng-required="true"/>
                                             <label class="labelText" for="contactName">Contact Name</label>
                                             <p ng-show="userForm.contactName.$touched && userForm.contactName.$invalid" class="help-block">Your contact name is required.</p>
+                                            <p ng-show="userForm.contactName.$error.pattern" class="help-block">Only alphabets allowed.</p>
                                         </div>
                                     </div>
                                     
@@ -147,12 +149,11 @@ select.soflow, select.soflow-color
                                                 </span>
                                                 
                                                 <input class="form-control input-lg roundinput" id="companyPhone" name="companyPhone" ng-model="input.companyPhone"
-                                                    type="number" placeholder=" " ng-required="true"/>
+                                                     ng-pattern="/^[0-9]*$/" placeholder=" " ng-required="true"/>
                                                 <label for="companyPhone" style="padding-left: 58px;">Company Phone</label>
-                                                
-                                                
                                             </div>
                                             <p ng-show="userForm.companyPhone.$touched && userForm.companyPhone.$invalid" class="help-block">Your contact no is required.</p>
+                                            <p ng-show="userForm.companyPhone.$error.pattern" class="help-block">Only numbers allowed.</p>
                                         </div>
                                     </div>
                                     
@@ -179,9 +180,11 @@ select.soflow, select.soflow-color
                             <div class="row col-md-12">
                                 <div class="col-md-9 has-float-label">
                                     <div class="form-group" ng-class="{ 'has-error' : userForm2.purchaseTitle.$touched && userForm2.purchaseTitle.$invalid }">
-                                        <input class="form-control input-lg" id="purchaseTitle" name="purchaseTitle" ng-model="input.purchaseTitle" placeholder=" " ng-required="true"/>
+                                        <input class="form-control input-lg" id="purchaseTitle" name="purchaseTitle" ng-model="input.purchaseTitle" 
+                                        ng-pattern="/^[a-z\d\-_\s]+$/i" placeholder=" " ng-required="true"/>
                                         <label class="labelText" for="purchaseTitle">PO Title</label>
                                         <p ng-show="userForm2.purchaseTitle.$touched && userForm2.purchaseTitle.$invalid" class="help-block">PO Title is required.</p>
+                                        <p ng-show="userForm2.purchaseTitle.$error.pattern" class="help-block">Only alphanumerics allowed.</p>
                                     </div>
                                 </div>
                                 
@@ -224,9 +227,10 @@ select.soflow, select.soflow-color
                                 <div class="col-md-12 label-invoice">PO</div>
                                 <div class="col-md-3 has-float-label">
                                     <div class="form-group" ng-class="{ 'has-error' : userForm2.purchaseNo.$touched && userForm2.purchaseNo.$invalid }">
-                                        <input class="form-control input-lg" ng-model="input.purchaseNo" name="purchaseNo" id="purchaseNo" placeholder=" " ng-required="true"/>
-                                        <label class="labelText" for="purchaseNo">PO No*</label>
+                                        <input class="form-control input-lg" ng-model="input.purchaseNo" name="purchaseNo" id="purchaseNo" ng-pattern="/^[a-z\d\-_\s]+$/i" placeholder=" " ng-required="true"/>
+                                        <label class="labelText" for="purchaseNo">PO No</label>
                                         <p ng-show="userForm2.purchaseNo.$touched && userForm2.purchaseNo.$invalid" class="help-block">PO number is required.</p>
+                                        <p ng-show="userForm2.purchaseNo.$error.pattern" class="help-block">Only alphanumerics allowed.</p>
                                     </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
@@ -250,10 +254,11 @@ select.soflow, select.soflow-color
                                                 <span class="input-group-addon leftroundspan border-red" style="cursor: pointer">
                                                     <i class="fa fa-lg fa-dollar input-group-icon-position-fix"></i>
                                                 </span>
-                                                <input type="number" class="form-control input-lg roundinput" placeholder=" " name="purchaseAmount" id="purchaseAmount" ng-model="input.purchaseAmount" ng-required="true"/>
-                                                <label for="purchaseAmount" style="padding-left: 15px;">Amount*</label>
+                                                <input class="form-control input-lg roundinput" ng-pattern="/^[0-9]*$/" placeholder=" " name="purchaseAmount" id="purchaseAmount" ng-model="input.purchaseAmount" ng-required="true"/>
+                                                <label for="purchaseAmount" style="padding-left: 15px;">Amount</label>
                                             </div>
                                         <p ng-show="userForm2.purchaseAmount.$touched && userForm2.purchaseAmount.$invalid" class="help-block" style="margin-top: 0px !important">Amount is required.</p>
+                                        <p ng-show="userForm2.purchaseAmount.$error.pattern" class="help-block">Only numbers allowed.</p>
                                     </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
@@ -269,6 +274,7 @@ select.soflow, select.soflow-color
                                             File</span>
                                     </div>
                                     <img style="width:20px;" ngf-thumbnail="poDocs || '/assets/images/apple-touch-icon-72.png'" />
+                                    <div>(Optional)</div>
                                     <i ng-show="poDocs.$error.required">*required</i><br>
                                     <i ng-show="poDocs.$error.maxSize">File too large
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>
@@ -280,9 +286,10 @@ select.soflow, select.soflow-color
                                 <div class="col-md-12 label-invoice">Invoice</div>
                                 <div class="col-md-3 has-float-label">
                                         <div class="form-group" ng-class="{ 'has-error' : userForm2.invoiceNo.$touched && userForm2.invoiceNo.$invalid }">
-                                                <input class="form-control input-lg" ng-model="input.invoiceNo" name="invoiceNo" id="invoiceNo" placeholder=" " ng-required="true"/>
-                                                <label class="labelText" for="invoiceNo">Invoice No*</label>
+                                                <input class="form-control input-lg" ng-model="input.invoiceNo" name="invoiceNo" id="invoiceNo" ng-pattern="/^[a-z\d\-_\s]+$/i" placeholder=" " ng-required="true"/>
+                                                <label class="labelText" for="invoiceNo">Invoice No</label>
                                                 <p ng-show="userForm2.invoiceNo.$touched && userForm2.invoiceNo.$invalid" class="help-block">Invoice number is required.</p>
+                                                <p ng-show="userForm2.invoiceNo.$error.pattern" class="help-block">Only alphanumerics allowed.</p>
                                             </div>
                                     
                                 </div>
@@ -307,8 +314,8 @@ select.soflow, select.soflow-color
                                                 <span class="input-group-addon leftroundspan border-red" style="cursor: pointer">
                                                     <i class="fa fa-lg fa-dollar input-group-icon-position-fix"></i>
                                                 </span>
-                                                <input type="number" class="form-control input-lg roundinput" placeholder=" " name="invoiceAmount" id="invoiceAmount" ng-model="input.invoiceAmount" ng-required="true"/>
-                                                <label for="purchaseAmount" style="padding-left: 15px;">Amount*</label>
+                                                <input class="form-control input-lg roundinput" ng-pattern="/^[0-9]*$/" placeholder=" " name="invoiceAmount" id="invoiceAmount" ng-model="input.invoiceAmount" ng-required="true"/>
+                                                <label for="purchaseAmount" style="padding-left: 15px;">Amount</label>
                                             </div>
                                         <p ng-show="userForm2.invoiceAmount.$touched && userForm2.invoiceAmount.$invalid" class="help-block" style="margin-top: 0px !important">Amount is required.</p>
                                     </div>
@@ -327,6 +334,7 @@ select.soflow, select.soflow-color
                                             File</span>
                                     </div>
                                     <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/assets/images/apple-touch-icon-72.png'" />
+                                    <div>(Optional)</div>
                                     <i ng-show="invoiceDocs.$error.required">*required</i><br>
                                     <i ng-show="invoiceDocs.$error.maxSize">File too large
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>
@@ -337,9 +345,10 @@ select.soflow, select.soflow-color
                                 <div class="col-md-12 label-invoice">GRN</div>
                                 <div class="col-md-3 has-float-label">
                                     <div class="form-group" ng-class="{ 'has-error' : userForm2.grnNo.$touched && userForm2.grnNo.$invalid }">
-                                        <input class="form-control input-lg" ng-model="input.grnNo" name="grnNo" id="grnNo" placeholder=" " ng-required="true"/>
-                                        <label class="labelText" for="grnNo">GRN No*</label>
+                                        <input class="form-control input-lg" ng-model="input.grnNo" name="grnNo" id="grnNo" ng-pattern="/^[a-z\d\-_\s]+$/i" placeholder=" " ng-required="true"/>
+                                        <label class="labelText" for="grnNo">GRN No</label>
                                         <p ng-show="userForm2.grnNo.$touched && userForm2.grnNo.$invalid" class="help-block">GRN is required.</p>
+                                        <p ng-show="userForm2.grnNo.$error.pattern" class="help-block">Only alphanumerics allowed.</p>
                                     </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
@@ -375,6 +384,7 @@ select.soflow, select.soflow-color
                                             File</span>
                                     </div>
                                     <img style="width:20px;" ngf-thumbnail="grnDocs || '/assets/images/apple-touch-icon-72.png'" />
+                                    <div>(Optional)</div>
                                     <i ng-show="grnDocs.$error.required">*required</i><br>
                                     <i ng-show="grnDocs.$error.maxSize">File too large
                                         {{up.file.size / 1000000|number:1}}MB: max 20M</i>

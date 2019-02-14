@@ -62,9 +62,10 @@
                             <div class="form-group" ng-class="{ 'has-error' : userForm.firstName.$touched && userForm.firstName.$invalid }">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg" id="firstName" name="firstName" type="text" ng-model="input.firstName" ng-required="true" placeholder=" ">
+                                        <input class="form-control input-lg" id="firstName" name="firstName" ng-pattern ="/^[a-zA-Z\s]*$/" type="text" ng-model="input.firstName" ng-required="true" placeholder=" ">
                                         <label class="labelText" for="firstName">First Name</label>
                                         <p ng-show="userForm.firstName.$touched && userForm.firstName.$invalid" class="help-block">Your first name is required.</p>
+                                        <p ng-show="userForm.firstName.$error.pattern" class="help-block">Only alphabets allowed.</p>
                                     </div>
                                 </div>
                             </div>
@@ -72,9 +73,10 @@
                             <div class="form-group" ng-class="{ 'has-error' : userForm.lastName.$touched && userForm.lastName.$invalid }">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg" id="lastName" name="lastName" type="text"  ng-model="input.lastName" placeholder=" " ng-required="true">
+                                        <input class="form-control input-lg" id="lastName" name="lastName" ng-pattern ="/^[a-zA-Z\s]*$/" type="text"  ng-model="input.lastName" placeholder=" " ng-required="true">
                                         <label class="labelText" for="lastName">Last Name</label>
                                         <p ng-show="userForm.lastName.$touched && userForm.lastName.$invalid" class="help-block">Your last name is required.</p>
+                                        <p ng-show="userForm.lastName.$error.pattern" class="help-block">Only alphabets allowed.</p>
                                     </div>
                                 </div>
                             </div>
@@ -90,10 +92,12 @@
                             <div class="form-group" ng-class="{ 'has-error' : (userForm.password.$dirty && userForm.password.$error.minlength) || (userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength) }">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg" id="password" name="password" type="password"  ng-model="input.password" ng-minlength="6" placeholder=" " ng-required="true">
+                                        <input class="form-control input-lg" id="password" name="password" type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/" ng-model="input.password" ng-minlength="6" placeholder=" " ng-required="true">
                                         <label class="labelText" for="password">Password</label>
                                         <p ng-show="userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength" class="help-block">Password is required</p>
-                                        <p ng-show="userForm.password.$dirty && userForm.password.$error.minlength" class="help-block">Password too short</p>
+                                        <p ng-show="userForm.password.$dirty && userForm.password.$error.pattern" class="help-block">Password should be atleast 6 characters
+                                            long and should contain one number,one character and one special
+                                            character</p>
                                     </div>
                                 </div>
                             </div>
