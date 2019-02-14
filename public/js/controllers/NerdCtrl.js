@@ -10,6 +10,8 @@ function($scope, $rootScope, $location, GetPost, ngToast, Helper) {
 	// 		console.log('resp:', resp);
 	// 	}
 	// });
+	$rootScope.message = '';
+	$rootScope.messageType = '';
 	$rootScope.isMainLoader = false;
 	$rootScope.isLoggedIn = false;
 	$scope.gotoDashboard = function() {
@@ -22,8 +24,11 @@ function($scope, $rootScope, $location, GetPost, ngToast, Helper) {
 		GetPost.get(data, function(err, resp) {
 			if (!resp.status) {	
 				console.log('1');
-				Helper.createToast('You are logged out.', 'info');
-				window.location.href = '/login';
+				$rootScope.message = 'You have logged out';
+				$rootScope.messageType = 'success'
+				$rootScope.isLoggedIn = false;
+				// window.location.href = '/login';
+				$location.path('/login');
 				
 			} else {
 				console.log('2');

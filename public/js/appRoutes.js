@@ -50,7 +50,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 
 		.when('/reset-password',{
 			templateUrl: 'views/reset-password.html',
-			controller: ''
+			controller: 'ResetPasswordController'
 		})
 
 		.when('/geeks', {

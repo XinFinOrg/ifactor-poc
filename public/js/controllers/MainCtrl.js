@@ -2,7 +2,7 @@ angular.module('MainCtrl', []).controller('MainController',['$scope', '$rootScop
  '$http', '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
  	$http, $location, GetPost, Helper) {
 
-	$scope.isLoggedIn = false;
+	$rootScope.isLoggedIn = false;
 
 	// $scope.urlMap = function(type) {
 
@@ -26,29 +26,12 @@ angular.module('MainCtrl', []).controller('MainController',['$scope', '$rootScop
 	};
 
 	$scope.goToSignup = function() {
-		window.location.href = "/signup";
-		// $location.path('/signup');		
+		// window.location.href = "/signup";
+		$location.path('/signup');		
 };
 
 	$scope.goToLogin = function() {
-		window.location.href = "/login";
-		// $location.path('/signup');		
+		$location.path('/login')
+		// window.location.href = "/login";
 	};
- 
-	// GetPost.get({ url : '/startApp' }, function(err, resp) {
-	// 	if (!resp.status) {
-	// 		$location.path('/');
-	// 	} else {
-	// 		$rootScope.userType = resp.data.userType;
-	// 		//$location.path('/dashboard');
-	// 		GetPost.get({ url : '/getBalance' }, function(err, resp) {
-	// 			if (resp.status) {
-	// 				$rootScope.balance = parseFloat(resp.data.balance);
-	// 				console.log('balance', $scope.balance)
-	// 			}
-	// 	    });
-	// 	}
-	// });
-	
-
 }]);

@@ -7,6 +7,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "angular-animate": "^1.7.7",
     "asyncawait": "^1.0.6",
     "axios": "^0.18.0",
     "bcrypt-nodejs": "0.0.3",

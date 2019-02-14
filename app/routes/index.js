@@ -959,30 +959,31 @@ router.post('/login', authenticate, async (function(req, res) {
 }));
 
 //forgot password logic
-router.get('/forgotPassword', (function(req, res) {
+router.get('/forgotPassword', function(req, res) {
 	const email = req.query.email;
 	const collection = db.getCollection('users');
 	collection.findOne({email : email}, function(err, result) {
-		console.log('inside findOne, err:', err, result);
+		if (err) {
+			return res.send({status : false, error : {
+				errorCode : 'DBError', msg : 'DB Error'}});
+		}
 		if (result==null) {
 			return res.send({status : false, error :
 				{errorCode : 'AccountNotFound', msg : 'Email does not exist.'}});
 		}
-		forgotPasswordMailer(email, result._id, req.get('host'));
-		// collection.save(input, function (err, docs) {
-		//     if (err) {
-		// 		return res.send({status : false, error : {
-		// 			errorCode : 'DBError', msg : 'DB Error'
-		// 		}});
-		//     }
-		// 	return res.send({status : true});
-		// });
+		var userHash = brcypt.hashSync(result._id);
+		collection.update({email : email},{$set: {'reset': userHash}}, function(){
+			if (err) {
+				return res.send({status : false, error : {
+					errorCode : 'DBError', msg : 'DB Error'}});
+			}
+		});
+		forgotPasswordMailer(email, userHash, req.get('host'));
 		return res.send({status : true});
 	});
-}));
+});
 
-var forgotPasswordMailer = function(email, id, host){
-	var userHash = brcypt.hashSync(id);
+var forgotPasswordMailer = function(email, userHash, host){
 	var link = "http://" + host + "/resetPassword?resetId=" + userHash + "&email=" + email;
 	console.log(link);
 	var mailOptions = {
@@ -1001,6 +1002,29 @@ var forgotPasswordMailer = function(email, id, host){
 	  });
 	  return;
 }
+
+router.get('/resetPassword', function(req, res){
+	const resetHash = req.query.resetId;
+	const email = req.query.email;
+	const collection = db.getCollection('users');
+	collection.findOne({email : email}, function(error, result) {
+		if(error){
+			return res.send({status : false, error : {
+				errorCode : 'DBError', msg : 'DB Error'}});
+		}
+		if(resetHash == result.reset){
+			console.log('match');
+			// res.redirect('/reset-password',{});
+			res.redirect(url.format({
+				pathname:"/reset-password",
+				query: {
+				   'email': email,
+					'resetId': resetHash
+				 }
+			}));
+		}
+	});
+});
 
 router.get('/startApp', function(req, res) {
 	if (!req.isAuthenticated()) {

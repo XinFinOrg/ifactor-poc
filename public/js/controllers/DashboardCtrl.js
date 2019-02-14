@@ -1,7 +1,7 @@
 angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', '$rootScope', '$http', 
 			'$location', 'GetPost', 'Helper',  function($scope, $rootScope, $http, $location, GetPost,Helper) {
 
-	
+	Helper.checkForMessage();
 
 	$scope.gotoDashboard = function() {
 		console.log('gotoDashboard')
