@@ -50,14 +50,14 @@
                 <div class="clearfix"></div>
                 <!-- MAIN CONTENT AREA STARTS -->
 
-                <div class="sign-msg"> <strong>Please note that this is a demo version of the inFactor which is still undergoing final testing before its official release.</strong><br>To access the platform, use dummy <a class="loginFont" href="/creds">Credentials</a></div><div><br></div>
+                <div class="sign-msg"> <strong>Please note that this is a demo version of the InFactor which is still undergoing final testing before its official release.</strong><br>To access the platform, use dummy <a class="loginFont" href="/creds">Credentials</a></div><div><br></div>
 
                 <div class="col-md-6 col-xs-12 sign_up_box">
                     <section class="loginbox">
                         <header class="panel_header">
                             <h1 class="title no-padd text-center">Get started</h1>
                         </header>
-                            <div class="sign-msg">We connect global Buyers, Suppliers and Financiers using inFactor Platform</div>
+                            <div class="sign-msg">We connect global Buyers, Suppliers and Financiers using InFactor Platform</div>
                         
                         <div class="content-body">
                             <!-- <form action="" id="loginForm" class="" method="post" enctype="multipart/form-data" accept-charset="utf-8" novalidate="novalidate"> -->
@@ -82,21 +82,22 @@
                                 <div class="form-group" ng-class="{ 'has-error' : (userForm.password.$dirty && userForm.password.$error.minlength) || (userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength) }">
                                     <div class="row">
                                         <div class="col-xs-12 has-float-label">
-                                            <input class="form-control input-lg" id="password" name="password" type="{{showHideType}}"  ng-model="password" placeholder=" " ng-required="true">
+                                                
+                                            <div class = "input-group password-input-group">
+                                                <input type="{{showHideType}}" name="password" id="password "class="form-control input-lg" ng-model="password" placeholder=" " ng-required="true"/>
+                                                <label for="password">Password</label>
+                                                <span class="input-group-addon rightroundspan" ng-click="togglePasswordField()" >
+                                                <span class="{{showHideClass}}" style="cursor:pointer"></span>
+                                                    </span>
+                                            </div>
+                                            <!-- <input class="form-control input-lg" id="password" name="password" type="{{showHideType}}"  ng-model="password" placeholder=" " ng-required="true">
                                             <label class="labelText" for="password">Password</label>
-                                            <span class="showpass" ng-click="togglePasswordField()" style="color: blue; cursor: pointer;">{{showHideText}}</span>
+                                            <span class="showpass" ng-click="togglePasswordField()" style="color: blue; cursor: pointer;">{{showHideText}}</span> -->
                                             <!-- <p ng-show="userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength" class="help-block">Password is required</p>
                                             <p ng-show="userForm.password.$dirty && userForm.password.$error.minlength" class="help-block">Password too short</p> -->
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="row">
-                                    <div class="col-xs-12 has-float-label">
-                                        <input type="{{showHideType}}" class="form-control input-lg input-lg-login" id="password" placeholder=" " ng-model="password" /> 
-                                        <label for="password">PASSWORD*</label>
-                                        <span class="showpass" ng-click="togglePasswordField()" style="color: blue; cursor: pointer;">{{showHideText}}</span>
-                                    </div>
-                                </div> -->
                                 
                                 <div class="row text-center m-t-20">
                                     <button type="submit" class="btn btn-primary btn-corner-login btn-lg" ng-click="login()" ng-disabled="userForm.$invalid">Sign In</button>
@@ -128,7 +129,7 @@
     <div class="footAdj"></div>
     <div class="page-footer">
         <div class="container">            
-            <div class="copyright">Copyright © 2018 inFactor. All rights reserved.</div>
+            <div class="copyright">Copyright © 2018 InFactor. All rights reserved.</div>
         </div>
     </div>
     </footer> -->

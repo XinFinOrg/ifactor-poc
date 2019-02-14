@@ -1,4 +1,4 @@
-angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', function($http, ngToast) {
+angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', '$rootScope', function($http, ngToast, $rootScope) {
 
     var invoiceStatusMap = {
         "Supplier": {
@@ -289,12 +289,12 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', funct
         },
     };
 
-    var createToast = function(msg, className) {
-        ngToast.create({
-            className: className, // "success", "info", "warning" or "danger"
-            content: msg
-        });
-    };
+    // var createToast = function(msg, className) {
+    //     ngToast.create({
+    //         className: className,
+    //         content: msg
+    //     });
+    // };
 
     var showAlert = function(type) {
         var alert = alertData[type] || {msg : '', class : 'success'};
@@ -313,14 +313,27 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', funct
         return true;
     }
 
+    var checkForMessage = function() {
+        console.log('helperService.js > checkForMessage() > $rootScope.message: ',$rootScope.message, '$rootScope.messageType:', $rootScope.messageType);
+        if($rootScope.message!='' && $rootScope.messageType!=''){
+            ngToast.create({
+                className: $rootScope.messageType, // "success", "info", "warning" or "danger"
+                content: $rootScope.message
+            });
+            $rootScope.message = '';
+            $rootScope.messageType = '';
+        }
+    }
+
     return {
         invoiceStatusMap : invoiceStatusMap,
         stateOptions : stateOptions,
         statusClassMap : statusClassMap,
         companyTypeOptions : companyTypeOptions,
         showAlert : showAlert,
-        createToast : createToast,
-        isObjEmpty : isObjEmpty
+        // createToast : createToast,
+        isObjEmpty : isObjEmpty,
+        checkForMessage: checkForMessage,
     }
 
 }]);

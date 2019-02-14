@@ -1,26 +1,29 @@
-var SignUpCtrl = angular.module('SignUpCtrl', []);
-SignUpCtrl.controller('SignUpController',['$scope', '$rootScope',
+var SignUpCtrl = angular.module('SignUpCtrl', []).controller('SignUpController',['$scope', '$rootScope',
  '$http', '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
  	$http, $location, GetPost, Helper) {
 
-		$scope.isLoggedIn = false;
+	$scope.isLoggedIn = false;
+	Helper.checkForMessage();
 
 	$scope.signup = function() {
 		var data  = {input : $scope.input, url : '/signup'};
 		GetPost.post(data, function(err, resp) {
 			console.log(err, resp);
 			if (!resp.status) {
-				Helper.createToast(resp.error.msg, 'warning');
+				$rootScope.message = resp.error.msg;
+				$rootScope.messageType = 'warning';
+				$location.path('/login');
 			} else {
-				Helper.showAlert('signup');
+				$rootScope.message = 'You have successfully signed up. Please log in.';
+				$rootScope.messageType = 'success';
 				$location.path('/login');
 			}
 	    });
 	}
 
 	$scope.goToLogin = function() {
-		window.location.href = "/login";
-		// $location.path('/signup');		
+		// window.location.href = "/login";
+		$location.path('/login');		
 	};
  
 
@@ -28,28 +31,28 @@ SignUpCtrl.controller('SignUpController',['$scope', '$rootScope',
 
 SignUpCtrl.directive('ngCompare', function () {
 	return {
-	require: 'ngModel',
-	link: function (scope, currentEl, attrs, ctrl) {
-	var comparefield = document.getElementsByName(attrs.ngCompare)[0]; //getting first element
-	compareEl = angular.element(comparefield);
-	
-	//current field key up
-	currentEl.on('keyup', function () {
-	if (compareEl.val() != "") {
-	var isMatch = currentEl.val() === compareEl.val();
-	ctrl.$setValidity('compare', isMatch);
-	scope.$digest();
+		require: 'ngModel',
+		link: function (scope, currentEl, attrs, ctrl) {
+			var comparefield = document.getElementsByName(attrs.ngCompare)[0]; //getting first element
+			compareEl = angular.element(comparefield);
+			
+			//current field key up
+			currentEl.on('keyup', function () {
+				if (compareEl.val() != "") {
+					var isMatch = currentEl.val() === compareEl.val();
+					ctrl.$setValidity('compare', isMatch);
+					scope.$digest();
+				}
+			});
+			
+			//Element to compare field key up
+			compareEl.on('keyup', function () {
+				if (currentEl.val() != "") {
+					var isMatch = currentEl.val() === compareEl.val();
+					ctrl.$setValidity('compare', isMatch);
+					scope.$digest();
+				}
+			});
+		}
 	}
-	});
-	
-	//Element to compare field key up
-	compareEl.on('keyup', function () {
-	if (currentEl.val() != "") {
-	var isMatch = currentEl.val() === compareEl.val();
-	ctrl.$setValidity('compare', isMatch);
-	scope.$digest();
-	}
-	});
-	}
-	}
-   });
+});

@@ -15,7 +15,8 @@
     "angular-jk-rating-stars": "^1.0.8",
     "pnotify": "^3.2.1",
     "angular-sanitize": "^1.6.10",
-    "ngToast": "ngtoast#^2.0.0"
+    "ngToast": "ngtoast#^2.0.0",
+    "angular-animate": "^1.7.7"
   },
   "resolutions": {
     "angular": "^1.6.10",

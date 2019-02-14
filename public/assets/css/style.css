@@ -940,8 +940,15 @@ a:hover, a:focus {
 .showpass
 {
     position: absolute !important;
-    left: 350px !important;
-    top: 25px !important;
+    left: 80% !important;
+    top: 40% !important;
+}
+
+@media screen and (max-width: 440px) {
+    .showpass
+    {
+        left: 75% !important;
+    }
 }
 
 /*----------------------------------------
@@ -4209,4 +4216,24 @@ table.dataTable.display tbody tr:first-child td {
 
 .has-error .border-red{
     border-color: #f44336 !important;
+}
+
+.password-input-group{
+    position: static !important;
+}
+
+.rightroundspan{
+    border-bottom-right-radius:6px !important;
+    /* border-bottom-left-radius:6px !important; */
+   -moz-border-radius-bottomright:6px !important;
+   /* -moz-border-radius-bottomleft:6px !important ; */
+   -webkit-border-bottom-right-radius:6px !important;
+   /* -webkit-border-bottom-left-radius:6px !important; */
+
+    -moz-border-radius-topright:6px !important;
+    /* -moz-border-radius-topleft:6px !important; */
+    -webkit-border-top-right-radius:6px !important;
+    /* -webkit-border-top-left-radius:6px !important; */
+    border-top-right-radius:6px !important;
+    /* border-top-left-radius:6px !important; */
 }
