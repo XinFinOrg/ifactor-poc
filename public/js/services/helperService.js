@@ -289,7 +289,6 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', '$roo
         },
     };
 
-<<<<<<< HEAD
     var createToast = function(msg, className) {
         ngToast.create({
             className: className,
@@ -297,14 +296,6 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', '$roo
         });
         return;
     };
-=======
-    // var createToast = function(msg, className) {
-    //     ngToast.create({
-    //         className: className,
-    //         content: msg
-    //     });
-    // };
->>>>>>> f61d1bd4c731ba8b8a1372a9330f0d40c3366a4e
 
     var showAlert = function(type) {
         var alert = alertData[type] || {msg : '', class : 'success'};
