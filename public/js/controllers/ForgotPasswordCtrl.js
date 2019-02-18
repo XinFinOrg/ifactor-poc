@@ -12,11 +12,11 @@ angular.module('ForgotPasswordCtrl', []).controller('ForgotPasswordController',[
 		var data  = {url : url};
 		GetPost.get(data, function(err, resp) {
 			if(resp.status){
-				Helper.createToast('Email has been sent successsfully.', 'success');
+				Helper.createToast('Email has been sent successsfully', 'success');
 			} else if(resp.error.errorCode  == "AccountNotFound") {
-				Helper.createToast('Email id not found.', 'warning');
+				Helper.createToast('Email address not found', 'warning');
 			} else {
-				Helper.createToast('Some error has occured.', 'danger');
+				Helper.createToast('Some error has occured', 'danger');
 			}
 			return resp;
 	    });

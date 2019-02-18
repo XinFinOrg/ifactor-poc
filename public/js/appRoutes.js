@@ -8,7 +8,9 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
       combineDuplications: true,
       newestOnTop: true,
       animation: 'fade'
-    });
+		});
+		
+		$locationProvider.html5Mode(true);
 
 	$routeProvider
 
@@ -48,7 +50,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 			controller: 'ForgotPasswordController'
 		})
 
-		.when('/reset-password',{
+		.when('/reset-password/:resetId/:email',{
 			templateUrl: 'views/reset-password.html',
 			controller: 'ResetPasswordController'
 		})
@@ -77,6 +79,6 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 			templateUrl: 'views/home.html',
 			controller: 'MainController'
 		});
-	$locationProvider.html5Mode(true);
+	
 
 }]);

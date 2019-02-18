@@ -4237,3 +4237,7 @@ table.dataTable.display tbody tr:first-child td {
     border-top-right-radius:6px !important;
     /* border-top-left-radius:6px !important; */
 }
+
+.label{
+    display: block !important;
+}
