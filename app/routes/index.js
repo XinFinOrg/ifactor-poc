@@ -984,9 +984,11 @@ router.get('/forgotPassword', function(req, res) {
 });
 
 var forgotPasswordMailer = function(email, userHash, host){
-	// var link = "http://" + host + "/resetPassword?resetId=" + userHash + "&email=" + email;
-	var link = "http://" + host + "/resetPassword/"+email+"/"+userHash;
-	// var link = "http://" + host + "/resetPassword/resetId/" + userHash + "/email/" + email;
+	
+	// var link = "http://" + host + "/resetPassword?email="+email+"&resetId="+userHash;
+	var link = "http://" + host + "/reset-password?email="+email+"&resetId="+userHash;
+
+	
 	console.log(link);
 	var mailOptions = {
 		from: 'InFactor',
@@ -1005,26 +1007,62 @@ var forgotPasswordMailer = function(email, userHash, host){
 	  return;
 }
 
-router.get('/resetPassword/:email/:resetId', function(req, res){
-	const resetHash = req.params.resetId;
-	const email = req.params.email;
-	console.log(resetHash,email);
+// router.get('/resetPassword', function(req, res){
+// 	const resetId = req.query.resetId;
+// 	const email = req.query.email;
+// 	console.log(resetId,email);
+// 	const collection = db.getCollection('users');
+// 	collection.findOne({email : email}, function(error, result) {
+// 		if(error){
+// 			return res.send({status : false, error : {
+// 				errorCode : 'DBError', msg : 'DB Error'}});
+// 		}
+// 		if(resetId == result.reset){
+// 			console.log('match');
+// 			// res.redirect('/reset-password',{});
+// 			res.redirect(url.format({
+// 				pathname:"/reset-password",
+// 				// ?email="+email+"&resetId="+resetId,
+// 				query: {
+// 				   'email': email,
+// 					'resetId': resetId
+// 				 }
+// 			}));
+// 		}
+// 		else{
+// 			res.redirect(url.format({
+// 				pathname:"/login"
+// 			}));
+// 		}
+// 	});
+// });
+
+router.get('/resetPassword', function(req, res){
+	const resetId = req.query.resetId;
+	const email = req.query.email;
+	console.log(resetId,email);
 	const collection = db.getCollection('users');
 	collection.findOne({email : email}, function(error, result) {
 		if(error){
 			return res.send({status : false, error : {
 				errorCode : 'DBError', msg : 'DB Error'}});
 		}
-		if(resetHash == result.reset){
-			console.log('match');
-			// res.redirect('/reset-password',{});
-			res.redirect(url.format({
-				pathname:"/reset-password/"+resetHash+"/"+email,
-				// query: {
-				//    'email': email,
-				// 	'resetId': resetHash
-				//  }
-			}));
+		if(resetId == result.reset){
+			// console.log('match');
+			// // res.redirect('/reset-password',{});
+			// res.redirect(url.format({
+			// 	pathname:"/reset-password",
+			// 	// ?email="+email+"&resetId="+resetId,
+			// 	query: {
+			// 	   'email': email,
+			// 		'resetId': resetId
+			// 	 }
+			// }));
+			return res.send({status : true});
+		}
+		else{
+			return res.send({status : false, error : {
+				errorCode : 'ResetIDError', msg : 'Your link is invalid'}});
 		}
 	});
 });

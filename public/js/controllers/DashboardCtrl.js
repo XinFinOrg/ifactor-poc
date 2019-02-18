@@ -3,6 +3,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 
 	Helper.checkForMessage();
 
+	document.getElementById('dropdownMenu').style.display = 'none';
 	$scope.gotoDashboard = function() {
 		console.log('gotoDashboard')
 		$location.path('/dashboard');
