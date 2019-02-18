@@ -106,7 +106,7 @@ select.soflow, select.soflow-color
                             <form name="userForm" novalidate>
                                 <div class="row col-md-12">
                                     <div class="col-md-9 has-float-label">
-                                        <div class="form-group">
+                                        <div class="form-group" ng-class="{ 'has-error' : !userForm.companyNameData.$touched }">
                                             <select class="soflow form-control input-lg" ng-model="companyNameData" id="companyNameData" name="companyNameData"
                                                 ng-options="x.firstName for x in companyOptions" style="padding-top: 20px; padding-left: 18px;"
                                                 ng-required="true">
