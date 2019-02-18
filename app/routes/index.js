@@ -1037,10 +1037,11 @@ var forgotPasswordMailer = function(email, userHash, host){
 // 	});
 // });
 
-router.get('/resetPassword', function(req, res){
-	const resetId = req.query.resetId;
-	const email = req.query.email;
-	console.log(resetId,email);
+router.post('/resetPassword', function(req, res){
+	console.log('resetPassword API > req.body:', req.body);
+	const resetId = req.body.resetId;
+	const email = req.body.email;
+	const password = req.body.newPassword;
 	const collection = db.getCollection('users');
 	collection.findOne({email : email}, function(error, result) {
 		if(error){
@@ -1048,16 +1049,19 @@ router.get('/resetPassword', function(req, res){
 				errorCode : 'DBError', msg : 'DB Error'}});
 		}
 		if(resetId == result.reset){
-			// console.log('match');
-			// // res.redirect('/reset-password',{});
-			// res.redirect(url.format({
-			// 	pathname:"/reset-password",
-			// 	// ?email="+email+"&resetId="+resetId,
-			// 	query: {
-			// 	   'email': email,
-			// 		'resetId': resetId
-			// 	 }
-			// }));
+			collection.update(
+				{'email': email}, {$set: {'password': password}}, {upsert:false},
+				function(err, docs){
+					if (err) {
+						console.log(err);
+						return res.send({status : false, error : {
+							errorCode : 'DBError', msg : 'DB Error'
+						}});
+					}
+				}
+			);
+			
+			
 			return res.send({status : true});
 		}
 		else{

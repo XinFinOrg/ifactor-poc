@@ -1,25 +1,28 @@
 angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$scope', '$rootScope',
- '$http', '$location', '$routeParams', 'GetPost', 'Helper',  function($scope, $rootScope,  $routeParams,
- 	$http, $location, GetPost, Helper) {
+ '$http', '$location', '$routeParams', 'GetPost', 'Helper', '$window',  function($scope, $rootScope,  $routeParams,
+ 	$http, $location, GetPost, Helper, $window) {
 
 	
-		$rootScope.isMainLoader = true;
-		GetPost.get({url : (window.location.origin+'/resetPassword'+window.location.search)}, function(err, res) {
-			console.log(err,res);
-			if(res.status){
-				console.log('resetid match');
-				$rootScope.isMainLoader = false;
-				Helper.createToast('true', 'success');
-			} else if(res.error.errorCode  == "ResetIDError") {
-				Helper.createToast(res.error.msg, 'warning');
-				// $rootScope.message = res.error.msg;
-				// $rootScope.messageType = 'warning';
-				// $location.path('/login');
-				// res.redirect('/login');
-			} else {
-				Helper.createToast('Some error has occured.', 'danger');
-			}
-	    });
+		// $rootScope.isMainLoader = true;
+		// window.alert('asasas');
+		// console.log('$window', $location);
+		// GetPost.get({url : ($window.location.origin + '/resetPassword' + $window.location.search)}, function(err, res) {
+		// 	console.log(err,res);
+		// 	if(res.status){
+		// 		console.log('resetid match');
+		// 		Helper.createToast('true', 'success');
+		// 	} else if(res.error.errorCode  == "ResetIDError") {
+		// 		Helper.createToast(res.error.msg, 'warning');
+		// 		setTimeout(() =>{
+		// 			$window.location.href = '/login';
+		// 		}, 2000)
+		// 		console.log('$window',window);
+		// 		$rootScope.message = res.error.msg;
+		// 		$rootScope.messageType = 'warning';
+		// 	} else {
+		// 		Helper.createToast('Some error has occured.', 'danger');
+		// 	}
+	  //   });
 		$scope.isLoggedIn = false;
 		var querystring = window.location.search;
 		querystring = querystring.split('&');
@@ -33,23 +36,28 @@ angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$
 // 		myvalue = $location.search()['email'];
 // 		// 'myvalue' now stores '33'
 //  }
-	console.log('defined1',params, window.location); 
+	console.log('defined1',params); 
 
 	$scope.resetPassword = function() {
-		var data  = {input : $scope.input, url : '/signup'};
-		console.log('data in');
-		const url = '/forgotPassword?email=' + $scope.input.email; 
-		var data  = {url : url};
-		GetPost.get(data, function(err, resp) {
+		var data  = {
+			'newPassword': $scope.input.password,
+			'email': params[0],
+			'resetId': params[1],
+			'url' : '/resetPassword'
+		};
+		// console.log('data in');
+		GetPost.post(data, function(err, resp) {
 			if(resp.status){
-				Helper.createToast('Email has been sent successsfully.', 'success');
-			} else if(resp.error.errorCode  == "AccountNotFound") {
-				Helper.createToast('Email address not found.', 'warning');
+				Helper.createToast('Password has been changed successsfully.', 'success');
+			} else if(resp.error.errorCode  == "ResetIDError") {
+				Helper.createToast(res.error.msg, 'warning');
 			} else {
 				Helper.createToast('Some error has occured.', 'danger');
 			}
-			return resp;
-	    });
+			});
+			setTimeout(() =>{
+				$window.location.href = '/login';
+			}, 2000)
 	}
 
 	$scope.login = function() {

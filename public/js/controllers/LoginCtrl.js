@@ -1,8 +1,8 @@
 angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootScope', '$http', 
-			'$location', 'GetPost', 'ngToast', 'Helper',  function($scope, $rootScope, $http, $location, GetPost, ngToast, Helper) {
+			'$location', 'GetPost', 'ngToast', 'Helper',
+			function($scope, $rootScope, $http, $location, GetPost, ngToast, Helper) {
 
 	Helper.checkForMessage();
-	
 	$scope.showHideClass = 'glyphicon glyphicon-eye-open';
 	$scope.login = function() {
 		console.log('LoginCtrl > login(): data ff');
