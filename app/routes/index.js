@@ -971,7 +971,7 @@ router.get('/forgotPassword', function(req, res) {
 			return res.send({status : false, error :
 				{errorCode : 'AccountNotFound', msg : 'Email does not exist.'}});
 		}
-		var userHash = brcypt.hashSync(result._id);
+		var userHash = brcypt.hashSync(result._id).split('/').join('');
 		collection.update({email : email},{$set: {'reset': userHash}}, function(){
 			if (err) {
 				return res.send({status : false, error : {
@@ -984,7 +984,9 @@ router.get('/forgotPassword', function(req, res) {
 });
 
 var forgotPasswordMailer = function(email, userHash, host){
-	var link = "http://" + host + "/resetPassword?resetId=" + userHash + "&email=" + email;
+	// var link = "http://" + host + "/resetPassword?resetId=" + userHash + "&email=" + email;
+	var link = "http://" + host + "/resetPassword/"+email+"/"+userHash;
+	// var link = "http://" + host + "/resetPassword/resetId/" + userHash + "/email/" + email;
 	console.log(link);
 	var mailOptions = {
 		from: 'InFactor',
@@ -1003,9 +1005,10 @@ var forgotPasswordMailer = function(email, userHash, host){
 	  return;
 }
 
-router.get('/resetPassword', function(req, res){
-	const resetHash = req.query.resetId;
-	const email = req.query.email;
+router.get('/resetPassword/:email/:resetId', function(req, res){
+	const resetHash = req.params.resetId;
+	const email = req.params.email;
+	console.log(resetHash,email);
 	const collection = db.getCollection('users');
 	collection.findOne({email : email}, function(error, result) {
 		if(error){
@@ -1016,11 +1019,11 @@ router.get('/resetPassword', function(req, res){
 			console.log('match');
 			// res.redirect('/reset-password',{});
 			res.redirect(url.format({
-				pathname:"/reset-password",
-				query: {
-				   'email': email,
-					'resetId': resetHash
-				 }
+				pathname:"/reset-password/"+resetHash+"/"+email,
+				// query: {
+				//    'email': email,
+				// 	'resetId': resetHash
+				//  }
 			}));
 		}
 	});

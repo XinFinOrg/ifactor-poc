@@ -59,24 +59,25 @@
                         <div class="content-body">
                             <form name="userForm" novalidate>
 
-                            <div class="form-group" ng-class="{ 'has-error' : userForm.firstName.$touched && userForm.firstName.$invalid }">
+                            <div class="form-group" ng-class="{ 'has-error' : (userForm.firstName.$touched && userForm.firstName.$invalid) || userForm.firstName.$error.pattern}">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg" id="firstName" name="firstName" ng-pattern ="/^[a-zA-Z\s]*$/" type="text" ng-model="input.firstName" ng-required="true" placeholder=" ">
+                                            <!-- ^[^\s*][a-zA-Z]*[^\s*]$ -->
+                                        <input class="form-control input-lg" id="firstName" name="firstName" ng-pattern ="/^(?! )[A-Za-z]*[ ]{0,1}[A-Za-z]*(?<! )$/" ng-trim="false" type="text" ng-model="input.firstName" ng-required="true" placeholder=" ">
                                         <label class="labelText" for="firstName">First Name</label>
-                                        <p ng-show="userForm.firstName.$touched && userForm.firstName.$invalid" class="help-block">Your first name is required.</p>
-                                        <p ng-show="userForm.firstName.$error.pattern" class="help-block">Only alphabets allowed.</p>
+                                        <p ng-show="userForm.firstName.$touched && userForm.firstName.$invalid && !userForm.firstName.$error.pattern" class="help-block">Your first name is required.</p>
+                                        <p ng-show="userForm.firstName.$error.pattern" class="help-block">Max. 2 words, only alphabets are allowed and no spaces at either ends.</p>
                                     </div>   
                                 </div>
                             </div>
                             <!-- START -->
-                            <div class="form-group" ng-class="{ 'has-error' : userForm.lastName.$touched && userForm.lastName.$invalid }">
+                            <div class="form-group" ng-class="{ 'has-error' : (userForm.lastName.$touched && userForm.lastName.$invalid) || userForm.lastName.$error.pattern}">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg" id="lastName" name="lastName" ng-pattern ="/^[a-zA-Z\s]*$/" type="text"  ng-model="input.lastName" placeholder=" " ng-required="true">
+                                        <input class="form-control input-lg" id="lastName" name="lastName" ng-pattern ="/^(?! )[A-Za-z]*(?<! )$/" ng-trim="false" type="text"  ng-model="input.lastName" placeholder=" " ng-required="true">
                                         <label class="labelText" for="lastName">Last Name</label>
                                         <p ng-show="userForm.lastName.$touched && userForm.lastName.$invalid" class="help-block">Your last name is required.</p>
-                                        <p ng-show="userForm.lastName.$error.pattern" class="help-block">Only alphabets allowed.</p>
+                                        <p ng-show="userForm.lastName.$error.pattern" class="help-block">Max. 1 word, only alphabets are allowed and no spaces at either ends.</p>
                                     </div>
                                 </div>
                             </div>
