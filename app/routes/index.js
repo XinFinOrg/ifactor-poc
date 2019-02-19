@@ -830,27 +830,19 @@ var getInvoiceDates = function(invoiceHistory) {
 }
 
 
-// router.get('/getBalance', async(function(req, res) {
-// 	var balance = await (web3Helper.getBalance('0x0638e1574728b6d862dd5d3a3e0942c3be47d996'));
-// 	balance = balance.toNumber();
-// 	console.log('getBalance API > coinbase balance:',balance);
-// 	if (!req.isAuthenticated()) {
-// 		return res.send({status : false});
-// 	} else { 
-// 	if (!req.user || !web3Conf) {
-// 		return {status : true, data : {balance : 0}};
-// 	}
-// 	if (web3Conf) {
-// 		try {
-// 		    var balance = await (web3Helper.getBalance(req.user.address));
-// 		    balance = balance.toNumber();
-// 			return {status : true, data : {balance : 0}};
-// 		} catch(e) {
-// 			return {status : false, error : 'blockchain error'};
-// 		}
-// 	}
-// }
-// }));
+router.post('/getBalance', async(function(req, res) {
+	try{
+		console.log('getBalance API > start');
+		var balance = await (web3Helper.getBalance(req.body.address));
+		balance = balance.toNumber();
+		console.log('getBalance API > address balance:', balance);
+		console.log('getBalance API > end');
+		return {status : true, addressBalance: balance};
+	} catch (e){
+		console.log('getBalance API > error: ', e);
+		return {status : true}
+	}
+}));
 
 router.post('/getInvoiceDetails', async(function(req, res) {
 	if (!req.isAuthenticated()) {
