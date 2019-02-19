@@ -46,10 +46,10 @@ angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$
 			'url' : '/resetPassword'
 		};
 		// console.log('data in');
-		GetPost.post(data, function(err, resp) {
-			if(resp.status){
+		GetPost.post(data, function(err, res) {
+			if(res.status){
 				Helper.createToast('Password has been changed successsfully.', 'success');
-			} else if(resp.error.errorCode  == "ResetIDError") {
+			} else if(res.error.errorCode  == "ResetIDError") {
 				Helper.createToast(res.error.msg, 'warning');
 			} else {
 				Helper.createToast('Some error has occured.', 'danger');

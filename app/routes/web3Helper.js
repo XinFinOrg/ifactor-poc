@@ -22,7 +22,10 @@ var provider = new Web3.providers.HttpProvider("http://localhost:22001");
 var defaultAccount = web3.eth.coinbase;
 
 var unlockDefaultAccount = function() {
-    return web3.personal.unlockAccount(defaultAccount, "", 15);
+    console.log('web3helper > unlockDefaultAccount(): start');
+    var ret = web3.personal.unlockAccount(defaultAccount, "", 15);
+    console.log('web3helper > unlockDefaultAccount(): end');
+    return ret;
 }
 
 var createAccount = function(phrase) {
@@ -179,10 +182,12 @@ var requestFactoring = async (function(invoiceId, state, amount) {
 });
 
 var buyTokens = async (function(address, amount) {
+    console.log('web3helper > buyTokens(): start');
     unlockDefaultAccount();
     amount = !amount ? 10000 : amount;
     var mm = await (contractInstance.buyTokens(address, amount,
           {from: defaultAccount, gas:100000}));
+    console.log('web3helper > buyTokens(): mm:', mm);
     return mm;
 });
 

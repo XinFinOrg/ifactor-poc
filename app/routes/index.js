@@ -91,7 +91,7 @@ router.post('/signup', (function(req, res) {
 	var collection = db.getCollection('users');
 	if(input.password!==input.confirmPassword){
 		return res.send({status : false, error :
-			{errorCode : 'ConfirmPassword', msg : 'Confirm passwro'}});
+			{errorCode : 'ConfirmPassword', msg : 'Confirm password did not match password entered.'}});
 	}
 	collection.findOne({email : input.email}, function(err, result) {
 		if (result) {
