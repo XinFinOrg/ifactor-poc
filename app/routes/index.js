@@ -607,6 +607,7 @@ router.post('/buyTokens', function(req, res) {
 		var tx1 = await (web3Helper.buyTokens(address, tokens));
 		return res.send({status : true, txHash : tx1});		
 	} catch (e) {
+		console.log('buyTokens API > error:', e);
 		return res.send({status : false, error : 'blockchain error'});
 	}
 }
