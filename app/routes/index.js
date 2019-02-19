@@ -828,6 +828,9 @@ var getInvoiceDates = function(invoiceHistory) {
 
 
 router.get('/getBalance', async(function(req, res) {
+	var balance = await (web3Helper.getBalance('0x0638e1574728b6d862dd5d3a3e0942c3be47d996'));
+	balance = balance.toNumber();
+	console.log('getBalance API > coinbase balance:',balance);
 	if (!req.isAuthenticated()) {
 		return res.send({status : false});
 	} else { 
