@@ -24,6 +24,7 @@ var defaultAccount = web3.eth.coinbase;
 var unlockDefaultAccount = function() {
     console.log('web3helper > unlockDefaultAccount(): start');
     var ret = web3.personal.unlockAccount(defaultAccount, "", 15);
+    console.log('unlockAccount:', ret);
     console.log('web3helper > unlockDefaultAccount(): end');
     return ret;
 }
