@@ -591,6 +591,7 @@ router.post('/payInvoice', async (function(req, res) {
 
 router.post('/buyTokens', function(req, res) {
 	if (!req.isAuthenticated()) {
+		console.log('buyTokens API > req.isAuthenticated(): false');
 		return res.send({status : false});
 	} else { 
 	var address = req.body.address;
