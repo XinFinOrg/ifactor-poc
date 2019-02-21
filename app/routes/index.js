@@ -1059,18 +1059,11 @@ var forgotPasswordMailer = function(email, userHash, host){
 // 	});
 // });
 
-<<<<<<< Updated upstream
 router.post('/resetPassword', function(req, res){
 	console.log('resetPassword API > req.body:', req.body);
 	const resetId = req.body.resetId;
 	const email = req.body.email;
 	const password = req.body.newPassword;
-=======
-router.get('/resetPassword', function(req, res){
-	const resetId = req.query.resetId;
-	const email = req.query.email;
-	console.log(resetId,email);
->>>>>>> Stashed changes
 	const collection = db.getCollection('users');
 	collection.findOne({email : email}, function(error, result) {
 		if(error){
@@ -1078,7 +1071,6 @@ router.get('/resetPassword', function(req, res){
 				errorCode : 'DBError', msg : 'DB Error'}});
 		}
 		if(resetId == result.reset){
-<<<<<<< Updated upstream
 			collection.update(
 				{'email': email}, {$set: {'password': password}}, {upsert:false},
 				function(err, docs){
@@ -1092,24 +1084,11 @@ router.get('/resetPassword', function(req, res){
 			);
 			
 			
-=======
-			// console.log('match');
-			// // res.redirect('/reset-password',{});
-			// res.redirect(url.format({
-			// 	pathname:"/reset-password",
-			// 	// ?email="+email+"&resetId="+resetId,
-			// 	query: {
-			// 	   'email': email,
-			// 		'resetId': resetId
-			// 	 }
-			// }));
->>>>>>> Stashed changes
 			return res.send({status : true});
 		}
 		else{
 			return res.send({status : false, error : {
 				errorCode : 'ResetIDError', msg : 'Your link is invalid'}});
-<<<<<<< Updated upstream
 		}
 	});
 });
@@ -1147,8 +1126,6 @@ router.post('/verifyAccount', function(req, res){
 				console.log('verifyAccount API > invalid link');
 				return res.send({status : false, error : {
 					errorCode : 'VerifyIDError', msg : 'Your link is invalid. Redirecting you to log in page'}});
-=======
->>>>>>> Stashed changes
 		}
 	});
 });
