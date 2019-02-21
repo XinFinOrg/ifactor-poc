@@ -24,7 +24,7 @@ angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$
 		// 	}
 	  //   });
 		$scope.isLoggedIn = false;
-		var querystring = window.location.search;
+		var querystring = $window.location.search;
 		querystring = querystring.split('&');
 		var params = [];
 		for(x of querystring){

@@ -59,56 +59,58 @@
                         <div class="content-body">
                             <form name="userForm" novalidate>
 
-                            <div class="form-group" ng-class="{ 'has-error' : (userForm.firstName.$touched && userForm.firstName.$invalid) || userForm.firstName.$error.pattern}">
+                            <div class="form-group" ng-class="{ 'has-error' : (!firstNameFocused && userForm.firstName.$touched && userForm.firstName.$invalid && !userForm.firstName.$error.pattern) || userForm.firstName.$error.pattern}">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                            <!-- ^[^\s*][a-zA-Z]*[^\s*]$ -->
-                                        <input class="form-control input-lg" id="firstName" name="firstName" ng-pattern ="/^(?! )[A-Za-z]*[ ]{0,1}[A-Za-z]*(?<! )$/" ng-trim="false" type="text" ng-model="input.firstName" ng-required="true" placeholder=" ">
+                                        <input class="form-control input-lg" id="firstName" name="firstName" ng-pattern ="/^(?! )[A-Za-z]*[ ]{0,1}[A-Za-z]*(?<! )$/" ng-trim="false" ng-focus="firstNameFocused = true" ng-blur="firstNameFocused = false" type="text" ng-model="input.firstName" ng-required="true" placeholder=" ">
                                         <label class="labelText" for="firstName">First Name</label>
-                                        <p ng-show="userForm.firstName.$touched && userForm.firstName.$invalid && !userForm.firstName.$error.pattern" class="help-block">Your first name is required.</p>
-                                        <p ng-show="userForm.firstName.$error.pattern" class="help-block">Max. 2 words, only alphabets are allowed and no spaces at either ends.</p>
+                                        <p ng-if="!firstNameFocused && userForm.firstName.$touched && userForm.firstName.$invalid && !userForm.firstName.$error.pattern" class="help-block">Your first name is required</p>
+                                        <p ng-if="userForm.firstName.$error.pattern" class="help-block">Numbers are not allowed, no spaces at either ends too<br>Maximum two words separate by a space</p>
                                     </div>   
                                 </div>
                             </div>
-                            <!-- START -->
-                            <div class="form-group" ng-class="{ 'has-error' : (userForm.lastName.$touched && userForm.lastName.$invalid) || userForm.lastName.$error.pattern}">
+                            <div class="form-group" ng-class="{ 'has-error' : (!lastNameFocused && userForm.lastName.$touched && userForm.lastName.$invalid && !userForm.lastName.$error.pattern) || userForm.lastName.$error.pattern}">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg" id="lastName" name="lastName" ng-pattern ="/^(?! )[A-Za-z]*(?<! )$/" ng-trim="false" type="text"  ng-model="input.lastName" placeholder=" " ng-required="true">
+                                        <input class="form-control input-lg" id="lastName" name="lastName" ng-pattern ="/^(?! )[A-Za-z]*(?<! )$/" ng-trim="false" ng-focus="lastNameFocused = true" ng-blur="lastNameFocused = false" type="text"  ng-model="input.lastName" placeholder=" " ng-required="true">
                                         <label class="labelText" for="lastName">Last Name</label>
-                                        <p ng-show="userForm.lastName.$touched && userForm.lastName.$invalid" class="help-block">Your last name is required.</p>
-                                        <p ng-show="userForm.lastName.$error.pattern" class="help-block">Max. 1 word, only alphabets are allowed and no spaces at either ends.</p>
+                                        <p ng-if="!lastNameFocused && userForm.lastName.$touched && userForm.lastName.$invalid && !userForm.lastName.$error.pattern" class="help-block">Your last name is required</p>
+                                        <p ng-if="userForm.lastName.$error.pattern" class="help-block">Numbers are not allowed, no spaces at either ends too<br>Maximum one word</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" ng-class="{ 'has-error' : userForm.email.$touched && userForm.email.$invalid }">
+                            <div class="form-group" ng-class="{ 'has-error' : (!emailFocused && userForm.email.$touched && userForm.email.$invalid && !userForm.email.$error.pattern) || (!emailFocused && userForm.email.$error.pattern)}">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg" id="email" name="email" type="email"  ng-model="input.email" placeholder=" " ng-required="true">
+                                        <input class="form-control input-lg" id="email" name="email" ng-pattern = "/^(?! )[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]{2,})+(?<! )$/" type="email"  ng-focus="emailFocused = true" ng-blur="emailFocused = false" ng-model="input.email" placeholder=" " ng-required="true">
                                         <label class="labelText" for="email">Email</label>
-                                        <p ng-show="userForm.email.$touched && userForm.email.$invalid" class="help-block">Invalid email, please enter valid email.</p>
+                                        <p ng-if="!emailFocused && userForm.email.$touched && userForm.email.$invalid && !userForm.email.$error.pattern" class="help-block">Your email is required</p>
+                                        <p ng-if="!emailFocused && userForm.email.$error.pattern" class="help-block">Invalid email, please enter valid email</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" ng-class="{ 'has-error' : (userForm.password.$dirty && userForm.password.$error.minlength) || (userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength) }">
+                            <div class="form-group" ng-class="{ 'has-error' : (!passwordFocused && userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.pattern) || (!passwordFocused && userForm.password.$error.pattern) }">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg" id="password" name="password" type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/" ng-model="input.password" ng-minlength="6" placeholder=" " ng-required="true">
+                                        <input class="form-control input-lg" id="password" name="password" type="password" ng-focus="passwordFocused = true" ng-blur="passwordFocused = false" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,15}$/" ng-model="input.password" placeholder=" " ng-required="true">
                                         <label class="labelText" for="password">Password</label>
-                                        <p ng-show="userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength" class="help-block">Password is required</p>
-                                        <p ng-show="userForm.password.$dirty && userForm.password.$error.pattern" class="help-block">Password should be atleast 6 characters
-                                            long and should contain one number,one character and one special
-                                            character</p>
+                                        <p ng-if="!passwordFocused && userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.pattern" class="help-block">Password is required</p>
+                                        <p ng-if="!passwordFocused && userForm.password.$error.pattern" class="help-block">
+                                            Password length should be 6-15 characters<br>
+                                            Must contain atleast one number, one character and one special character</p>
+                                        <p ng-if="passwordFocused" class="help-block">
+                                            Password length should be 6-15 characters<br>
+                                            Must contain atleast one number, one character and one special character</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" ng-class="{ 'has-error' : (userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.minlength) || (userForm.confirmPassword.$error.compare)}">
+                            <div class="form-group" ng-class="{ 'has-error' : (!confirmPasswordFocused && userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid) || (!confirmPasswordFocused && userForm.confirmPassword.$error.compare)}">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password" ng-model="input.confirmPassword" placeholder=" " ng-required="true">
+                                        <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password"  ng-focus="confirmPasswordFocused = true" ng-blur="confirmPasswordFocused = false" ng-model="input.confirmPassword" placeholder=" " ng-required="true">
                                         <label class="labelText" for="confirmPassword">Confirm password</label>
-                                        <p ng-show="userForm.confirmPassword.$touched && !userForm.confirmPassword.$dirty && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.minlength" class="help-block">Confirm password is required</p>
-                                        <p ng-show="userForm.confirmPassword.$error.compare" class="help-block">Confirm password does not match.</p>
+                                        <p ng-if="!confirmPasswordFocused && userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.compare" class="help-block">Confirm password is required</p>
+                                        <p ng-if="userForm.confirmPassword.$error.compare" class="help-block">Confirm password does not match.</p>
                                     </div>
                                 </div>
                             </div>

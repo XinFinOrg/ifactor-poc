@@ -105,17 +105,43 @@ router.post('/signup', (function(req, res) {
 			input.address = 'local';
 		}
 		input.phrase = input.password;
-		delete req.body.input['confirmPassword'];
+		input.accountStatus = brcypt.hashSync(input.email).split('/').join('A');
+		delete input.confirmPassword;
 		collection.save(input, function (err, docs) {
 		    if (err) {
 				return res.send({status : false, error : {
 					errorCode : 'DBError', msg : 'DB Error'
 				}});
-		    }
+			}
+			emailVerificationMailer(input.email, input.accountStatus, req.get('host'));
 			return res.send({status : true});
 		});
 	});
 }));
+
+var emailVerificationMailer = function(email, verifyHash, host){
+	
+	// var link = "http://" + host + "/resetPassword?email="+email+"&resetId="+userHash;
+	var link = "http://" + host + "/login?email="+email+"&verifyId="+verifyHash;
+
+	
+	console.log(link);
+	var mailOptions = {
+		from: 'InFactor',
+		to: email,
+		subject: 'Account verification link for your InFactor account',
+		text: 'Please click on the following link to verify your account:'+link
+	};
+
+	transporter.sendMail(mailOptions, function(error, info){
+		if (error) {
+		  console.log(error);
+		} else {
+		  console.log('Email sent: ' + info.response);
+		}
+	  });
+	  return;
+}
 
 var getFullName = function(firstName, lastName) {
 	return !firstName && !lastName ? 'Anonymous' : 
@@ -417,30 +443,27 @@ router.post('/rejectFactoringRequest', async (function(req, res) {
 }));
 
 router.get('/getBalance', async (function(req, res) {
-	var balance = await (web3Helper.getBalance('0x0638e1574728b6d862dd5d3a3e0942c3be47d996'));
-	balance = balance.toNumber();
-	console.log('getBalance API > coinbase balance:',balance);
+	console.log('getBalance API > start');
 	if (!req.isAuthenticated()) {
 		return res.send({status : false});
 	} else { 
-	console.log('getBalance')
-	if (!req.isAuthenticated()) {
-		return res.send({status : true, data : {balance : 500000}});
-	}
-	var address = req.user.address;
-	if (web3Conf) {
-		try {
-		    result = await (web3Helper.getBalance(address));
-		    console.log(result.toNumber());
-		    var bal = result.toNumber();
-			return res.send({status : true, data : {balance : bal}});
-		} catch(e) {
+		if (!req.isAuthenticated()) {
+			return res.send({status : true, data : {balance : 500000}});
+		}
+		var address = req.user.address;
+		if (web3Conf) {
+			try {
+				result = await (web3Helper.getBalance(address));
+				console.log(result.toNumber());
+				var bal = result.toNumber();
+				return res.send({status : true, data : {balance : bal}});
+			} catch(e) {
+				return res.send({status : true, data : {balance : 0}});
+			}
+		} else {
 			return res.send({status : true, data : {balance : 0}});
-	    }
-	} else {
-		return res.send({status : true, data : {balance : 0}});
+		}
 	}
-}
 }));
 
 
@@ -836,11 +859,10 @@ router.post('/getBalance', async(function(req, res) {
 		var balance = await (web3Helper.getBalance(req.body.address));
 		balance = balance.toNumber();
 		console.log('getBalance API > address balance:', balance);
-		console.log('getBalance API > end');
-		return {status : true, addressBalance: balance};
+		return res.send({status : true, addressBalance: balance});
 	} catch (e){
 		console.log('getBalance API > error: ', e);
-		return {status : true}
+		return res.send({status : true});
 	}
 }));
 
@@ -1067,6 +1089,43 @@ router.post('/resetPassword', function(req, res){
 		else{
 			return res.send({status : false, error : {
 				errorCode : 'ResetIDError', msg : 'Your link is invalid'}});
+		}
+	});
+});
+
+router.post('/verifyAccount', function(req, res){
+	console.log('verifyAccount API > req.body:', req.body);
+	const verifyHash = req.body.verifyId;
+	const email = req.body.email;
+	const collection = db.getCollection('users');
+	collection.findOne({email : email}, function(error, result) {
+		console.log('verifyAccount API > result: ', result);
+		if(result === null){
+			return res.send({status : false, error : {
+				errorCode : 'DBError', msg : 'DB Error'}});
+		}
+		if(result.accountStatus == 'verified'){
+			console.log('verifyAccount API > already verified');
+			return res.send({status : false, error : {
+				errorCode : 'AccountAlreadyVerified', msg : 'Your account has already been verified. Redirecting you to log in page'}});
+		} else if(verifyHash == result.accountStatus){
+				console.log('verifyAccount API > verified');
+				collection.update(
+					{'email': email}, {$set: {'accountStatus': 'verified'}}, {upsert:false},
+					function(err, docs){
+						if (err) {
+							console.log('verifyAccount API > verified DB Error:', err);
+							return res.send({status : false, error : {
+								errorCode : 'DBError', msg : 'DB Error'
+							}});
+						}
+					}
+				);
+				return res.send({status : true,  msg : 'Your account has been successfully verified. Redirecting you to log in page'});
+		} else {
+				console.log('verifyAccount API > invalid link');
+				return res.send({status : false, error : {
+					errorCode : 'VerifyIDError', msg : 'Your link is invalid. Redirecting you to log in page'}});
 		}
 	});
 });

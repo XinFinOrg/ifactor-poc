@@ -55,11 +55,6 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 			controller: 'ResetPasswordController'
 		})
 
-		.when('/geeks', {
-			templateUrl: 'views/geek.html',
-			controller: 'GeekController'	
-		})
-
 		.when('/dashboard', {
 			templateUrl: 'views/dashboard.html',
 			controller: 'DashboardController'	

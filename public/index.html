@@ -10,7 +10,7 @@
     <meta content="" name="description" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <link rel="shortcut icon" href="public/assets/images/favicon.png" type="image/x-icon" /><!-- Favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon" /><!-- Favicon -->
     <link rel="apple-touch-icon-precomposed" href="public/assets/images/apple-touch-icon-57.png"><!-- For iPhone -->
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="public/assets/images/apple-touch-icon-114.png"><!-- For iPhone 4 Retina display -->
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="public/assets/images/apple-touch-icon-72.png"><!-- For iPad -->
@@ -98,31 +98,28 @@
 	<script src="js/controllers/DashboardCtrl.js"></script>
     <script src="js/controllers/InvoiceDetailsCtrl.js"></script>
     <script src="js/controllers/CreateInvoiceCtrl.js"></script>
-    <script src="js/controllers/GeekCtrl.js"></script>
     <script src="js/controllers/ResetPasswordCtrl.js"></script>
 	<script src="js/services/NerdService.js"></script>
-	<script src="js/services/GeekService.js"></script>
 	
 </head>
 <style type="text/css">
 .ajax-loader-div { 
     height: 100%;
     position: fixed;
-    /*background-color: grey;*/
+    background-color: #ffffffcf;
     width: 100%;
-    opacity: 0.4;
     z-index: 1001;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center
 }
 .ajax-loader {
     position: fixed;
     margin: auto;
     z-index: 1002;
-    left: 32%;
-    top: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center
     
 }
 
@@ -131,7 +128,7 @@
 
 <body ng-app="sampleApp" ng-controller="NerdController">
     <toast style="margin-bottom: 4%"></toast>
-    <div class="ajax-loader-div" ng-show="isMainLoader">
+    <div class="ajax-loader-div" ng-show="">
         <img src="assets/images/loader1.gif" class="ajax-loader">
     </div>
     <div class="page-topbar">

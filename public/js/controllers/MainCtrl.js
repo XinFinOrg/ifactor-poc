@@ -3,7 +3,7 @@ angular.module('MainCtrl', []).controller('MainController',['$scope', '$rootScop
  	$http, $location, GetPost, Helper) {
 
 	$rootScope.isLoggedIn = false;
-
+	$location.path('/home');
 	// $scope.urlMap = function(type) {
 
 	// 	if (type == 'createInvoice') {
