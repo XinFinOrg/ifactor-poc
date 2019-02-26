@@ -30,15 +30,18 @@ auth.use = function() {
         User.findOne({ email: email}, function(err, user) {
             console.log('err: ',err,'user:', user);
             if (err) {
-                return done(err, false, 4);
+                return done(err);
             }
             if (!user) {
-                return done(null, false, 2);
+                return done(null, false, { message: 'Account not found.' });
+            }
+            if (user.accountStatus !== 'verified') {
+                return done(null, false, { message: 'Account not yet verified.' });
             }
             if (!user.validPassword(password)) {
-                return done(null, false, 3);
+                return done(null, false, { message: 'Incorrect password.' });
             }
-            return done(null, user, 1);
+            return done(null, user);
         });
     }
     ));

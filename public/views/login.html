@@ -1,27 +1,21 @@
-<div class="ajax-loader-div" ng-show="isMainLoader">
-    <img src="assets/images/loader1.gif" class="ajax-loader">
-</div>
+
 <div class="page-topbar">
     <div class="container">
-        <div class="logo-area">
-
-        </div>
+        <a href="/">
+            <div class="logo-area"></div>
+        </a>
         <div class="quick-area">
 
             <div class='pull-right'>
                 <ul class="info-menu right-links list-inline list-unstyled">
-                    <!-- <li>
-                        <a href="http://infactor.io/docs" target="_blank" class="balaceTop">Documentaion</a>
-                        <i class="fa fa-user"></i>
-                    </li> -->
-                    <li >
+                    <li class="doc">
                         <a href="http://infactor.io/docs" target="_blank" class="toggle">
                             <i class="fa fa-book"></i>  
                             <span>Documentation</span>
                         </a>
                     </li>
-                    <li >
-                        <a href="" class="toggle" ng-click="goToSignup()">
+                    <li class="login">
+                        <a href="/signup" class="toggle">
                             <i class="fa fa-user"></i>
                             <span>Sign Up</span>
                         </a>
@@ -63,25 +57,7 @@
                             <div class="sign-msg">We connect global Buyers, Suppliers and Financiers using InFactor Platform</div>
                         
                         <div class="content-body">
-                            <!-- <form action="" id="loginForm" class="" method="post" enctype="multipart/form-data" accept-charset="utf-8" novalidate="novalidate"> -->
-                            <!-- START -->
-                            <!-- <span ng-click="togglePasswordField()" style="color: blue">{{showHideText}}</span> -->
-                            <form name="userForm" ng-submit="submitForm()" novalidate>
-                                <!-- <div class="row">
-                                    <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg input-lg-login" id="email" type="email" placeholder=" " name="username" ng-model="username" />
-                                        <label for="email">EMAIL ID*</label>
-                                    </div>
-                                </div> -->
-                                <!-- <div class="form-group" ng-class="{ 'has-error' : userForm.email.$touched && userForm.email.$invalid }">
-                                    <div class="row">
-                                        <div class="col-xs-12 has-float-label">
-                                            <input class="form-control input-lg" id="email" name="email" type="email"  ng-model="username" placeholder=" " ng-required="true">
-                                            <label class="labelText" for="email">Email</label>
-                                            <p ng-show="userForm.email.$touched && userForm.email.$invalid" class="help-block">Invalid email, please enter valid email.</p>
-                                        </div>
-                                    </div>
-                                </div> -->
+                            <form name="userForm" ng-submit="login()" novalidate>
                                 <div class="form-group" ng-class="{ 'has-error' : (!emailFocused && userForm.email.$touched && userForm.email.$invalid && !userForm.email.$error.pattern) || (!emailFocused && userForm.email.$error.pattern)}">
                                     <div class="row">
                                         <div class="col-xs-12 has-float-label">
@@ -96,9 +72,8 @@
                                                                     || (!passwordFocused && (userForm.password.$error.minlength || userForm.password.$error.maxlength)) }">
                                     <div class="row">
                                         <div class="col-xs-12 has-float-label">
-                                                
                                             <div class = "input-group password-input-group">
-                                                <input type="{{showHideType}}" name="password" id="password"class="form-control input-lg" ng-model="password" ng-minlength="6" ng-maxlength="15" ng-focus="passwordFocused = true" ng-blur="passwordFocused = false" placeholder=" " ng-required="true"/>
+                                                <input type="{{showHideType}}" name="password" id="password" class="form-control input-lg" ng-model="password" ng-minlength="6" ng-maxlength="15" ng-focus="passwordFocused = true" ng-blur="passwordFocused = false" placeholder=" " ng-required="true"/>
                                                 <label for="password">Password</label>
                                                 <span class="input-group-addon rightroundspan" ng-click="togglePasswordField()" >
                                                 <span class="{{showHideClass}}" style="cursor:pointer"></span>
@@ -111,7 +86,7 @@
                                 </div>
                                 
                                 <div class="row text-center m-t-20">
-                                    <button type="submit" class="btn btn-primary btn-corner-login btn-lg" ng-click="login()" ng-disabled="userForm.$invalid">Sign In</button>
+                                    <button type="submit" class="btn btn-primary btn-corner-login btn-lg" ng-disabled="userForm.$invalid">Sign In</button>
                                 </div>
                             </form>
                             

@@ -14,26 +14,31 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
  '$http', '$location', 'GetPost', 'Helper', 'Upload',  function($scope, $rootScope,  
  	$http, $location, GetPost, Helper, Upload) {
 
-	var stateMap = Helper.stateMap;
-
-	/*$scope.urlMap = function(type) {
-
-		if (type == 'createInvoice') {
-			$location.path('/create-invoice');
+	GetPost.get({ url : '/startApp' }, function(err, res) {
+		if (!res.status) {
+			$rootScope.isMainLoader = true;
+			Helper.showAlert('log_in');
+			setTimeout(() => {
+				$location.path('/login');
+			}, 1000);
+		} else {
+			console.log(res);
 		}
-		$scope.dashboardUrl = {
-			buyer : '/views/buyer-dashboard.html',
-			financier : '/views/financier-dashboard.html',
-			supplier : '/views/supplier-dashboard.html',
-			supplierApproved : '/views/supplier-approved.html',
-			createInvoice : '/views/createInvoice.html',
-		};
+	});
 
-		$scope.templateUrlDashboard = $scope.dashboardUrl[type];
-	};
-
-	$scope.urlMap('supplier');*/
-
+	$scope.logOut = function () {
+		var data = { url : '/logout' };
+		GetPost.get(data, function(err, resp) {
+			if (!resp.status) {	
+				console.log('1');
+				$location.path('/login');
+			} else {
+				console.log('2');
+				$rootScope.isLoggedIn = false;
+				window.location.href = "/login";
+		}
+	});
+	}
 	$scope.date = new Date();
 	$scope.eventSources = [];
 	$scope.companyOptions = [];

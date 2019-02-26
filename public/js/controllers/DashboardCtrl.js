@@ -1,25 +1,51 @@
-angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', '$rootScope', '$http', 
-			'$location', 'GetPost', 'Helper',  function($scope, $rootScope, $http, $location, GetPost,Helper) {
+angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', '$rootScope', 
+			'$location', 'GetPost', 'Helper', '$window',
+			function($scope, $rootScope, $location, GetPost,Helper, $window) {
 
 	Helper.checkForMessage();
 
-	document.getElementById('dropdownMenu').style.display = 'none';
-	$scope.gotoDashboard = function() {
-		console.log('gotoDashboard')
-		$location.path('/dashboard');
+	GetPost.get({ url : '/startApp' }, function(err, resp) {
+		if (!resp.status) {
+			$location.path('/login');
+		} else {
+			console.log(resp);
+			$scope.urlMap(resp.data.userType);
+			$rootScope.userType = resp.data.userType;
+			$rootScope.name = resp.data.name;
+			console.log('DashboardCtrl > $rootScope.name: ', $rootScope.name);
+			$scope.getInvoices();
+		}
+	});
+	// document.getElementById('dropdownMenu').style.display = 'none';
+	$scope.showToggle = false;
+	$scope.dropdownMenuStyle = {'display':'none'};
+	$scope.toggleDropdown = function() {
+		$scope.showToggle = !$scope.showToggle;	
+		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
 	}
 
 	$scope.logOut = function () {
 		var data = { url : '/logout' };
 		GetPost.get(data, function(err, resp) {
-			if (!resp.status) {	
-				console.log('1');
+			if(err){
+				Helper.showAlert('error500');
+				setTimeout(() => {
+					$location.path('/login');
+				}, 2000);
+			}
+			Helper.showAlert('error500');
+			setTimeout(() => {
 				$location.path('/login');
-			} else {
-				console.log('2');
-				$rootScope.isLoggedIn = false;
-				window.location.href = "/login";
-		}
+			}, 2000);
+			
+		// 	if (!resp.status) {	
+		// 		$window.location.href = "/login";
+		// 		$location.path('/login');
+		// 	} else {
+		// 		console.log('2');
+		// 		$rootScope.isLoggedIn = false;
+		// 		window.location.href = "/login";
+		// }
 	});
 	}
 
@@ -37,24 +63,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 
 		$scope.templateUrlDashboard = $scope.dashboardUrl[type];
 	};
-
-	$scope.name = $rootScope.name;
-	$scope.urlMap($rootScope.userType);
-
-
-	GetPost.get({ url : '/startApp' }, function(err, resp) {
-		if (!resp.status) {
-			$location.path('/login');
-		} else {
-			console.log(resp);
-			$scope.urlMap(resp.data.userType);
-			$rootScope.userType = resp.data.userType;
-			$scope.getInvoices();
-		}
-
-    });
-
-
+	
 	GetPost.get({ url : '/getBalance' }, function(err, resp) {
 		if (resp.status) {
 			$rootScope.balance = resp.data.balance;
@@ -105,7 +114,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
     		console.log(docs);
 			$scope.dashboardData = $scope.setStatusClasses(docs.data);
 			$scope.dashboardData = docs.data;
-			$rootScope.name = docs.name;
+			// $rootScope.name = docs.name;
 			// $scope.invoiceData = $scope.dashboardData[$rootScope.mainInvoiceIndex];
 	    });
     }  

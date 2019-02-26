@@ -1,44 +1,40 @@
-angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootScope', '$http', 
-			'$location', 'GetPost', 'ngToast', 'Helper', '$window',
-			function($scope, $rootScope, $http, $location, GetPost, ngToast, Helper, $window) {
+angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootScope', 
+			'$location', 'GetPost', 'Helper', '$window',
+			function($scope, $rootScope, $location, GetPost, Helper, $window) {
 	
-	if($window.location.search){
-		$scope.isMainLoader = true;
-		let querystring = $window.location.search.substring(1);
-		querystring = querystring.split('&');
-		let paramKeys = [];
-		let paramValues = [];
-
-		for(let x of querystring){
-			x = x.split('=');
-			paramKeys.push(x[0]);
-			paramValues.push(x[1]);
-		};
-		console.log('paramKeys: ', paramKeys, 'paramValues: ',paramValues);
-		if(paramKeys[0] == 'email' && paramKeys[1] == 'verifyId'){
-			console.log('paramValues:',paramValues);
+	$rootScope.isLoggedIn = false;
+	$rootScope.isMainLoader = false;
+	if(!angular.equals($location.search(), {})){
+		console.log('inside');
+		const email = $location.search().email;
+		const verifyId = $location.search().verifyId;
+		if(email !== undefined && verifyId !== undefined){
 			let data = {
-				email : paramValues[0],
-				verifyId : paramValues[1],
+				email : email,
+				verifyId : verifyId,
 				url : '/verifyAccount'
 			}
 			GetPost.post(data, function(err, res) {
+				$rootScope.isMainLoader = true;
 				console.log(err,res);
 				if(!err){
 					Helper.createToast(res.msg, 'success');
 				} else {
 					Helper.createToast(res.error.msg, 'warning');
 				}
+				setTimeout(() => {
+					$location.url('/login');
+				}, 3000);
 			});
 		} else {
-			Helper.createToast('Trying malicious attack?', 'danger');
+			// Helper.createToast('Trying malicious attack?', 'danger');
+			$rootScope.message = 'Invalid link';
+			$rootScope.messageType = 'danger';
+			$location.url('/login');
 		}
-		setTimeout(() => {
-			console.log($rootScope.isMainLoader);
-			$rootScope.isMainLoader = true;
-			$window.location.href = '/login';
-		}, 300000);
 	}
+	
+	// }
 	Helper.checkForMessage();
 	$scope.showHideClass = 'glyphicon glyphicon-eye-open';
 	$scope.login = function() {
@@ -49,27 +45,22 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 			url : '/login'
 		}
 		console.log('LoginCtrl > login(): data = ',data);
-		GetPost.post(data, function(err, docs) {
+		 GetPost.post(data, function(err, docs) {
+			console.log('LoginCtrl > login() > login API > docs:',docs, 'err:', err,docs);
 			if(!err){
+				$rootScope.isLoggedIn = true;
 				$rootScope.message = 'You are logged in.';
 				$rootScope.messageType = 'success';
-				// Helper.createToast('You are logged in.', 'success');
-				console.log('LoginCtrl: login(): docs:',docs, 'err:', err);
-				$rootScope.userType = docs.data.userType;
+				// $rootScope.userType = docs.data.userType;
 				$location.path('/dashboard');
 			} else {
-				Helper.createToast('Please check your credentials.', 'danger');
+				Helper.createToast(docs.message.message, 'danger');
 			}
 			
-        });
+		});
 	}
 
-	$scope.goToSignup = function() {
-		// window.location.href = "/signup";
-		$location.path('/signup');		
-	};
 	$scope.isShowPassword = false;
-	// $scope.showHideText = 'SHOW';
 	$scope.showHideClass = 'glyphicon glyphicon-eye-open';
 	$scope.showHideType = 'password';
 	$scope.togglePasswordField = function() {

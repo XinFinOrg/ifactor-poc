@@ -1,4 +1,4 @@
-angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', '$rootScope', function($http, ngToast, $rootScope) {
+angular.module('HelperService', []).factory('Helper', ['ngToast', '$rootScope', function(ngToast, $rootScope) {
 
     var invoiceStatusMap = {
         "Supplier": {
@@ -215,10 +215,13 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', '$roo
             msg : 'Your payment request is submitted successfully',
             class : 'success'
         },
-
         'signup' : {
             msg : 'Congratulations, your account is created successfully',
             class : 'success'
+        },
+        'log_in' : {
+            msg: 'Please log in',
+            class : 'danger'
         },
         'submit_invoice' :{
             msg : 'Invoice is created successfully',
@@ -237,19 +240,19 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', '$roo
             class : 'success'
         },
         'ifactor_request' :{
-            msg : 'Your Factoring request is submitted successfully',
+            msg : 'Your factoring request is submitted successfully',
             class : 'info'
         },
         'error500' :{
-            msg : 'Internal Server Error',
+            msg : 'Internal server Error',
             class : 'danger'
         },
         'payment_success' : {
-            msg : 'Your Payment is Successful',
+            msg : 'Your payment is successful',
             class : 'success'            
         },
         'ifactor_proposed' : {
-            msg : 'Your Factoring Proposal is submitted successfully',
+            msg : 'Your factoring proposal is submitted successfully',
             class : 'success'            
         },
         'ifactor_rejected' : {
@@ -265,45 +268,48 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', '$roo
             class : 'success'
         },
         'rate_supplier_mandatory' : {
-            msg : 'You must rate Supplier before submit',
+            msg : 'You must rate Supplier before submitting',
             class : 'danger'
         },
         'rate_financer_mandatory' : {
-            msg : 'You must rate Financier before submit',
+            msg : 'You must rate Financier before submitting',
             class : 'danger'
         },
         'invoice_buyer' : {
-            msg : 'Buyer Name is Mandatory',
+            msg : 'Buyer name is mandatory',
             class : 'danger'
         },
         'invoice_payableDate' : {
-            msg : 'Payable Date is Mandatory',
+            msg : 'Payable date is mandatory',
             class : 'danger'
         },
         'invoiceNo' : {
-            msg : 'Invoice No is Mandatory',
+            msg : 'Invoice no is mandatory',
             class : 'danger'
         },
         'invoiceAmount' : {
-            msg : 'Invoice Amount is Mandatory',
+            msg : 'Invoice amount is mandatory',
             class : 'danger'
         },
+        
     };
 
     var createToast = function(msg, className) {
+        // console.log('helperService > createToast() > msg: ', msg, ' className: ', className);
         ngToast.create({
             className: className,
             content: msg
         });
-        return;
     };
 
     var showAlert = function(type) {
+        // console.log('helperService > showAlert() > type: ', type);
         var alert = alertData[type] || {msg : '', class : 'success'};
         createToast(alert.msg, alert.class);
     };
 
     var isObjEmpty = function(obj) {
+        // console.log('helperService > isObjEmpty() > obj: ', obj);
         for(var prop in obj) {
             if (prop == '$$hashKey') {
                 continue;
@@ -316,16 +322,25 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', '$roo
     }
 
     var checkForMessage = function() {
-        console.log('helperService.js > checkForMessage() > $rootScope.message: ',$rootScope.message, '$rootScope.messageType:', $rootScope.messageType);
+        // console.log('helperService > checkForMessage() > $rootScope.message: ',$rootScope.message, '$rootScope.messageType:', $rootScope.messageType);
         if($rootScope.message!='' && $rootScope.messageType!=''){
             createToast($rootScope.message, $rootScope.messageType);
-            // ngToast.create({
-            //     className: $rootScope.messageType, // "success", "info", "warning" or "danger"
-            //     content: $rootScope.message
-            // });
             $rootScope.message = '';
             $rootScope.messageType = '';
         }
+    }
+
+    var checkLoggedIn = function() {
+        // console.log('helperService > checkLoggedIn()');
+        GetPost.get({ url : '/startApp' }, function(err, res) {
+            console.log('2');
+            if (!res.status) {
+                $location.path('/login');
+            } else {
+                console.log(res);
+                $rootScope.userType = res.data.userType;
+            }
+        });
     }
 
     return {
@@ -337,6 +352,7 @@ angular.module('HelperService', []).factory('Helper', ['$http', 'ngToast', '$roo
         createToast : createToast,
         isObjEmpty : isObjEmpty,
         checkForMessage: checkForMessage,
+        checkLoggedIn: checkLoggedIn
     }
 
 }]);

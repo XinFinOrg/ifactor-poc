@@ -627,13 +627,14 @@ a:hover, a:focus {
 .page-topbar .notify-toggle-wrapper,
 .page-topbar .searchform,
 .page-topbar li.profile{
-    opacity: 0;
+    opacity: 1;
     margin-left:20px;
 }
 
-.page-topbar .notify-toggle-wrapper i {border: 1px solid; rgba(255,255,255,.5); border-radius: 50%; padding:5px;padding-left:6px;padding-right:6px;margin-right:10px;}
+.page-topbar .notify-toggle-wrapper i {border: 1px solid; border-radius: 50%; padding:5px;padding-left:6px;padding-right:6px;}
 
-.page-topbar .login i {border: 1px solid; rgba(255,255,255,.5); border-radius: 50%; padding:5px;padding-left:6px;padding-right:6px;margin-right:10px;}
+.page-topbar .doc i {border: 1px solid; border-radius: 50%; padding:5px;}
+.page-topbar .login i {border: 1px solid; border-radius: 50%; padding:5px 6px;}
 
 .page-topbar .message-toggle-wrapper.showopacity,
 .page-topbar .notify-toggle-wrapper.showopacity,
@@ -848,6 +849,7 @@ a:hover, a:focus {
 
 @media (max-width: 450px) {
 .profile .toggle span{display: none;}
+.profile ul.dropdown-menu {display:block;}
 .notify-toggle-wrapper .toggle span{display: none;}
 .page-topbar .quick-area .info-menu li.profile img{right:0px;}
 .page-topbar .quick-area .info-menu li.profile .dropdown-menu{right:auto;left:-122px;}
@@ -859,6 +861,7 @@ a:hover, a:focus {
 
 @media (max-width: 767px) {
 .profile .toggle span{display: none;}
+.profile ul.dropdown-menu {display:block;}
 .notify-toggle-wrapper .toggle span{display: none;}
 .page-topbar .quick-area .info-menu li.profile img{right:0px;}
 .page-topbar .quick-area .pull-left ul.info-menu{padding-right: 0px;}

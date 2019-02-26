@@ -1,10 +1,7 @@
 angular.module('ForgotPasswordCtrl', []).controller('ForgotPasswordController',['$scope', '$rootScope',
- '$http', '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
- 	$http, $location, GetPost, Helper) {
+'GetPost', 'Helper',  function($scope, $rootScope, GetPost, Helper) {
 
-	
-
-		$scope.isLoggedIn = false;
+	$rootScope.isLoggedIn = false;
 
 	$scope.forgotPassword = function() {
 		console.log('data in');
@@ -18,14 +15,7 @@ angular.module('ForgotPasswordCtrl', []).controller('ForgotPasswordController',[
 			} else {
 				Helper.createToast('Some error has occured', 'danger');
 			}
-			return resp;
 	    });
 	}
-
-	$scope.login = function() {
-		window.location.href = "/login";
-		// $location.path('/signup');		
-	};
- 
 
 }]);

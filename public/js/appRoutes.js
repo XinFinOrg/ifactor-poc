@@ -15,15 +15,10 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 	$routeProvider
 
 		// home page
-		.when('/', {
-			templateUrl: 'views/home.html',
-			controller: 'MainController'
-		})
-
-		.when('/nerds', {
-			templateUrl: 'views/nerd.html',
-			controller: 'NerdController'
-		})
+		// .when('/', {
+		// 	templateUrl: 'views/home.html',
+		// 	controller: 'MainController'
+		// })
 
 		.when('/signup', {
 			templateUrl: 'views/signup.html',

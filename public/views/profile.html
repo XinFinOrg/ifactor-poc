@@ -1,41 +1,28 @@
+<!-- START TOPBAR -->
+
 <div class="page-topbar">
         <div class="container">
-            <div class="logo-area">
-    
-            </div>
-            <div class="quick-area">
-    
+            <a href="/dashboard">
+                <div class="logo-area"></div>
+            </a>
+            <div class="quick-area" ng-show="isLoggedIn">
                 <div class='pull-right'>
                     <ul class="info-menu right-links list-inline list-unstyled">
-                        <!-- <li>
-                            <a href="http://infactor.io/docs" target="_blank" class="balaceTop">Documentaion</a>
-                            <i class="fa fa-user"></i>
-                        </li> -->
+                        
+                        <li class="balaceTop">Balance : {{balance}} XDC</li>
                         <li class="profile">
-                            <a href="#" data-toggle="dropdown" class="toggle" id="dropdownToggle">
+                            <a href="#" class="toggle" id="dropdownToggle" ng-click="toggleDropdown()">
                                 <span>{{name}}
                                     <i class="fa fa-angle-down"></i>
                                 </span>
                             </a>
-                            <ul class="dropdown-menu profile animated fadeIn" role="menu" id="dropdownMenu">
-                                <!-- <li>
-                                    <a href="#settings">
-                                        <i class="fa fa-wrench"></i>
-                                        Settings
-                                    </a>
-                                </li> -->
+                            <ul class="dropdown-menu profile animated fadeIn" role="menu" id="dropdownMenu" ng-style="dropdownMenuStyle">
                                 <li>
                                     <a href="/profile">
                                         <i class="fa fa-user"></i>
                                         Profile
                                     </a>
                                 </li>
-                                <!-- <li>
-                                    <a href="#help">
-                                        <i class="fa fa-info"></i>
-                                        Help
-                                    </a>
-                                </li>  -->
                                 <li class="last">
                                     <a href="" ng-click="logOut()">
                                         <i class="fa fa-lock"></i>
@@ -47,9 +34,9 @@
                     </ul>
                 </div>
             </div>
-    
         </div>
     </div>
+<!-- END TOPBAR -->
     
     
      <!-- START CONTAINER -->
@@ -78,110 +65,111 @@
                             <h1 class="title"><strong>Edit Profile</strong></h1>
                         </header>
                         <div class="content-body">
-                            <form name="userForm" novalidate>
-    
-                        
-                            <div class="row">
-                                <div class="col-xs-6 user_pic_wrap">
-                                    <img src="assets/images/noimage.png" height="80px" width="80px" alt="user_img" class="img-circle circle-border"
-                                    <span class="edit_pic">
-                                        <label for="imageUpload">
-                                        <input id="imageUpload" type="file" accept="image/*" name="imageUpload" class="upload-hidden"> 
-                                        </label>
-                                    </span>
-                                </div>
-                            </div>
-                            <br>
-    
-                            <div class="row">
-                                <div class="col-xs-6 has-float-label">
-                                    <div class="form-group has-error" ng-class="{ 'has-error' : (userForm.firstName.$touched && userForm.firstName.$invalid) || (userForm.firstName.$error.pattern) }">
-                                        <input class="form-control input-lg" id="firstName" name="firstName" type="text" ng-model="input.firstName" ng-pattern ="/^ [a-zA-Z\s]*$/" ng-trim="false" ng-required="true" placeholder=" ">
-                                        <label class="labelText" for="firstName">First Name</label>
-                                        <p ng-show="userForm.firstName.$touched && userForm.firstName.$invalid && !userForm.firstName.$error.pattern" class="help-block">Your first name is required.</p>
-                                        <p ng-show="userForm.firstName.$error.pattern" class="help-block">Only alphabets allowed.</p>
+                            <form name="profileForm" ng-submit="submitProfileForm()" novalidate>
+                                <!-- <div class="row">
+                                    <div class="col-xs-6 user_pic_wrap">
+                                        <img src="assets/images/noimage.png" height="80px" width="80px" alt="user_img" class="img-circle circle-border">
+                                        <span class="edit_pic">
+                                            <label for="imageUpload">
+                                            <input id="imageUpload" type="file" accept="image/*" name="imageUpload" class="upload-hidden"> 
+                                            </label>
+                                        </span>
                                     </div>
-                                </div>
-                                <div class="col-xs-6 has-float-label">
-                                    <div class="form-group has-error" ng-class="{ 'has-error' : (userForm.lastName.$touched && userForm.lastName.$invalid) || (userForm.lastName.$error.pattern) }">
-                                        <input class="form-control input-lg" id="lastName" name="lastName" type="text"  ng-model="input.lastName" ng-pattern ="/^ [a-zA-Z\s]*$/" ng-trim="false" placeholder="Last Name" ng-required="true">
-                                        <label class="labelText" for="lastName">Last Name</label>
-                                        <p ng-show="userForm.lastName.$touched && userForm.lastName.$invalid && !userForm.lastName.$error.pattern" class="help-block">Your first name is required.</p>
-                                        <p ng-show="userForm.lastName.$error.pattern" class="help-block">Only alphabets allowed.
-                                    </div>          
-                                </div>
-                            </div>
-                           
-                            <div class="row">  
-                                <div class="col-xs-6 has-float-label">  
-                                    <div class="form-group" ng-class="{ 'has-error' : userForm.email.$touched && userForm.email.$invalid }">
-                                        <input class="form-control input-lg" id="email" name="email" disabled="disabled" type="email"  ng-model="input.email" placeholder=" " ng-required="true">
-                                        <label class="labelText" for="email">Email</label>
-                                        <!-- <p ng-show="userForm.email.$touched && userForm.email.$invalid" class="help-block">Invalid email, please enter valid email.</p> -->
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 has-float-label">
-                                    <div class="form-group has-error" ng-class="{ 'has-error' : userForm.contact_no.$touched && userForm.contact_no.$invalid }">
-                                        <input class="form-control input-lg" id="contact_no" name="contact_no" ng-pattern="/^[0-9]*$/" type="contact_no"  ng-model="input.contact_no" placeholder=" " ng-required="true">
-                                        <label class="labelText" for="email">Contact No</label>
-                                        <p ng-show="userForm.contact_no.$touched && userForm.contact_no.$invalid" class="help-block">Please enter Contact No.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
+                                </div> -->
+                                <br>
     
-                            <div class="col-md-3 row text-center m-t-20">
-                                <button class="btn btn-primary btn-corner-login btn-lg" ng-click="signup()" ng-disabled="userForm.$invalid">Save</button>
-                            </div>
-                            
-    
-                            <header class="panel_header">
-                                <h1 class="title"><strong>Change Password</strong></h1><br>
-                            </header>
-    
-                            
-                            <div class="row">
-                                <div class="col-xs-6 has-float-label">
-                                    <div class="form-group has-error" ng-class="{ 'has-error' : (userForm.password.$dirty && userForm.password.$error.minlength) || (userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength) }">
-                                        <input class="form-control input-lg" id="password" name="password" type="password"  ng-model="input.password" ng-minlength="6" placeholder=" " ng-required="true">
-                                        <input type="hidden" id="changepasswordtoken" name="changepasswordtoken" value="">
-                                        <label class="labelText" for="password">Old Password</label>
-                                        <p ng-show="userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength" class="help-block">Password is required</p>
-                                        <p ng-show="userForm.password.$dirty && userForm.password.$error.minlength" class="help-block">Password too short</p>
-                                    </div>
-                                </div>    
-                                <div class="col-xs-6 has-float-label">
-                                    <div class="form-group has-error" ng-class="{ 'has-error' : (userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength) || (userForm.password.$dirty && userForm.password.$error.pattern) }">
-                                        <input class="form-control input-lg" id="password" name="password" type="password"  ng-model="input.password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/" ng-minlength="6" placeholder=" " ng-required="true">
-                                        <label class="labelText" for="password">New Password</label>
-                                        <p ng-show="userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.minlength" class="help-block">Password is required</p>
-                                        <p ng-show="userForm.password.$dirty && userForm.password.$error.pattern" class="help-block">Invalid Password</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-6 has-float-label">
-                                    <div class="form-group has-error" ng-class="{ 'has-error' : (userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.minlength) || (userForm.confirmPassword.$error.compare)}">  
-                                        <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password" ng-model="input.confirmPassword" placeholder=" " ng-required="true">
-                                        <label class="labelText" for="confirmPassword">Re-type New Password</label>
-                                        <p ng-show="userForm.confirmPassword.$touched && !userForm.confirmPassword.$dirty && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.minlength" class="help-block">Confirm password is required</p>
-                                        <p ng-show="userForm.confirmPassword.$error.compare" class="help-block">Confirm password does not match.</p>
-                                    </div>                         
-                                </div>  
-                            </div> 
-
-                            <div class="form-group" ng-class="{ 'has-error' : (userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.minlength) || (userForm.confirmPassword.$error.compare)}">
                                 <div class="row">
-                                    <div class="col-md-3 row text-center m-t-20">
-                                        <button class="btn btn-primary btn-corner-login btn-lg" ng-click="signup()" ng-disabled="userForm.$invalid">Submit</button>
-                                    </div>                           
-                                </div>  
-                            </div> 
-                            
-                             
-                            <!-- END -->
-                        </form>
+                                    <div class="col-xs-6 has-float-label">
+                                        <div class="form-group" ng-class="{ 'has-error' : (!firstNameFocused && profileForm.firstName.$touched && profileForm.firstName.$invalid && !profileForm.firstName.$error.pattern) || (!firstNameFocused && profileForm.firstName.$error.pattern)}">
+                                            <input class="form-control input-lg" id="firstName" name="firstName" ng-pattern ="/^(?! )[A-Za-z]*[ ]{0,1}[A-Za-z]*(?<! )$/" ng-trim="false" ng-focus="firstNameFocused = true" ng-blur="firstNameFocused = false" type="text" ng-model="input.firstName" ng-required="true" placeholder=" ">
+                                            <label class="labelText" for="firstName">First Name</label>
+                                            <p ng-if="!firstNameFocused && profileForm.firstName.$touched && profileForm.firstName.$invalid && !profileForm.firstName.$error.pattern" class="help-block">Your first name is required</p>
+                                            <p ng-if="profileForm.firstName.$error.pattern" class="help-block">Numbers are not allowed, no spaces at either ends too<br>Maximum two words separate by a space</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 has-float-label">
+                                        <div class="form-group" ng-class="{ 'has-error' : (!lastNameFocused && profileForm.lastName.$touched && profileForm.lastName.$invalid && !profileForm.lastName.$error.pattern) || (!lastNameFocused && profileForm.lastName.$error.pattern)}">
+                                            <input class="form-control input-lg" id="lastName" name="lastName" ng-pattern ="/^(?! )[A-Za-z]*(?<! )$/" ng-trim="false" ng-focus="lastNameFocused = true" ng-blur="lastNameFocused = false" type="text"  ng-model="input.lastName" placeholder=" " ng-required="true">
+                                            <label class="labelText" for="lastName">Last Name</label>
+                                            <p ng-if="!lastNameFocused && profileForm.lastName.$touched && profileForm.lastName.$invalid && !profileForm.lastName.$error.pattern" class="help-block">Your last name is required</p>
+                                            <p ng-if="profileForm.lastName.$error.pattern" class="help-block">Numbers are not allowed, no spaces at either ends too<br>Maximum one word</p>
+                                        </div>          
+                                    </div>
+                                </div>
+                           
+                                <div class="row">  
+                                    <div class="col-xs-6 has-float-label">  
+                                        <div class="form-group">
+                                            <input class="form-control input-lg" id="email" name="email" disabled="disabled" type="email"  ng-model="input.email">
+                                            <label class="labelText" for="email">Email</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 has-float-label">
+                                        <div class="form-group" ng-class="{ 'has-error' : !contactNoFocused && profileForm.contactNo.$error.pattern }">
+                                            <input class="form-control input-lg" id="contactNo" name="contactNo" ng-pattern="/^(?! )[0-9]*(?<! )$/" ng-trim="false" type="text" ng-model="input.contactNo"  ng-focus="contactNoFocused = true" ng-blur="contactNoFocused = false" placeholder=" ">
+                                            <label class="labelText" for="contactNo">Contact No</label>
+                                            <p ng-if="profileForm.contactNo.$error.pattern" class="help-block">Characters are not allowed, no spaces at either ends too</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 has-float-label">  
+                                        <div class="form-group">
+                                            <input class="form-control input-lg" id="address" name="address" disabled="disabled" type="text"  ng-model="input.address">
+                                            <label class="labelText" for="address">Address</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="row">
+                                    <div class="col-xs-offset-9 col-xs-3 row text-center">
+                                        <button class="btn btn-primary btn-corner-login btn-lg" type="submit" ng-disabled="profileForm.$invalid">Save</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                            <form name="passwordForm" ng-submit="submitPasswordForm()" novalidate>
+                                <header class="panel_header">
+                                    <h1 class="title"><strong>Change Password</strong></h1><br>
+                                </header> 
+                                <div class="row">
+                                    <div class="col-xs-6 has-float-label">
+                                        <div class="form-group" ng-class="{ 'has-error' : input.oldPassword == null && !oldPasswordFocused && passwordForm.oldPassword.$dirty && (passwordForm.oldPassword.$error.minlength || passwordForm.oldPassword.$error.maxlength)}">
+                                            <input class="form-control input-lg" id="oldPassword" name="oldPassword" type="password"  ng-model="input.oldPassword"
+                                                ng-focus="oldPasswordFocused = true" ng-blur = "oldPasswordFocused = false" ng-minlength="6" ng-maxlength="15" placeholder=" " ng-required="true">
+                                            <label class="labelText" for="oldPassword">Old Password</label>
+                                            <!-- <p ng-if="!passwordFocused && (userForm.password.$error.minlength || userForm.password.$error.maxlength)" class="help-block">Please check your password</p> -->
+                                            <p ng-if="input.oldPassword == null && !oldPasswordFocused && passwordForm.oldPassword.$dirty && (passwordForm.oldPassword.$error.minlength || passwordForm.oldPassword.$error.maxlength)" class="help-block">Please check your password</p>
+                                        </div>
+                                    </div>    
+                                    <div class="col-xs-6 has-float-label"> 
+                                        <div class="form-group" ng-class="{ 'has-error' :(!passwordFocused && passwordForm.password.$error.pattern) }">
+                                            <input class="form-control input-lg" id="password" name="password" type="password" ng-focus="passwordFocused = true" ng-blur="passwordFocused = false" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,15}$/" ng-model="input.password" placeholder=" " ng-required="true">
+                                            <label class="labelText" for="password">New password</label>
+                                            <p ng-if="passwordFocused || (!passwordFocused && passwordForm.password.$error.pattern)" class="help-block">
+                                                Password length should be 6-15 characters<br>
+                                                Must contain atleast one number, one character and one special character</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 has-float-label">
+                                        <div class="form-group" ng-class="{ 'has-error' :passwordForm.password.$valid && passwordForm.confirmPassword.$invalid}">  
+                                            <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password" ng-model="input.confirmPassword" ng-focus="confirmPasswordFocused = true" ng-blur="confirmPasswordFocused = false"ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,15}$/"  placeholder=" " ng-required="true">
+                                            <label class="labelText" for="confirmPassword">Confirm new Password</label>
+                                            <p ng-if="passwordForm.password.$valid && passwordForm.confirmPassword.$invalid && passwordForm.confirmPassword.$touched" class="help-block">Confirm password does not match.</p>
+                                            <!-- {{passwordForm}} -->
+                                        </div>
+                                    </div>  
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-offset-9 col-xs-3 row text-center">
+                                        <button class="btn btn-primary btn-corner-login btn-lg" type="submit" ng-disabled="passwordForm.$invalid">Save</button>
+                                    </div>
+                                </div>
+                            </form>
     
                         </div>
                     </section>

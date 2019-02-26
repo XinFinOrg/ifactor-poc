@@ -1,24 +1,19 @@
 <div class="page-topbar">
     <div class="container">
-        <div class="logo-area">
-
-        </div>
+        <a href="/">
+            <div class="logo-area"></div>
+        </a>
         <div class="quick-area">
-
             <div class='pull-right'>
                 <ul class="info-menu right-links list-inline list-unstyled">
-                    <!-- <li>
-                        <a href="http://infactor.io/docs" target="_blank" class="balaceTop">Documentaion</a>
-                        <i class="fa fa-user"></i>
-                    </li> -->
-                    <li >
+                    <li class="doc">
                         <a href="http://infactor.io/docs" target="_blank" class="toggle">
                             <i class="fa fa-book"></i>
                             <span>Documentation</span>
                         </a>
                     </li>
                     <li class="login">
-                        <a href="" class="toggle" ng-click="goToLogin()">
+                        <a href="/login" class="toggle">
                             <i class="fa fa-sign-in"></i>
                             <span>Login</span>
                         </a>                            
@@ -30,26 +25,19 @@
     </div>
 </div>
 
-    <!-- START CONTAINER -->
     <div class=" row-fluid container-fluid">
-        <!-- START CONTENT -->
         <section>
-            <div class="container wrapper main-wrapper row" style=''>
+            <div class="container wrapper main-wrapper row">
 
                 <div class='col-xs-12'>
                     <div class="page-title">
-
                         <div class="pull-left">
-                            <!-- PAGE HEADING TAG - START -->
                             <h1 class="title">&nbsp;</h1>
-                            <!-- PAGE HEADING TAG - END -->
                         </div>
 
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                <!-- MAIN CONTENT AREA STARTS -->
-
                 <div class="col-md-6 col-xs-12 sign_up_box">
                     <section class="loginbox">
                         <header class="panel_header">
@@ -59,7 +47,7 @@
                         <div class="content-body">
                             <form name="userForm" novalidate>
 
-                            <div class="form-group" ng-class="{ 'has-error' : (!firstNameFocused && userForm.firstName.$touched && userForm.firstName.$invalid && !userForm.firstName.$error.pattern) || userForm.firstName.$error.pattern}">
+                            <div class="form-group" ng-class="{ 'has-error' : (!firstNameFocused && userForm.firstName.$touched && userForm.firstName.$invalid && !userForm.firstName.$error.pattern) || (!firstNameFocused && userForm.firstName.$error.pattern)}">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
                                         <input class="form-control input-lg" id="firstName" name="firstName" ng-pattern ="/^(?! )[A-Za-z]*[ ]{0,1}[A-Za-z]*(?<! )$/" ng-trim="false" ng-focus="firstNameFocused = true" ng-blur="firstNameFocused = false" type="text" ng-model="input.firstName" ng-required="true" placeholder=" ">
@@ -69,7 +57,7 @@
                                     </div>   
                                 </div>
                             </div>
-                            <div class="form-group" ng-class="{ 'has-error' : (!lastNameFocused && userForm.lastName.$touched && userForm.lastName.$invalid && !userForm.lastName.$error.pattern) || userForm.lastName.$error.pattern}">
+                            <div class="form-group" ng-class="{ 'has-error' : (!lastNameFocused && userForm.lastName.$touched && userForm.lastName.$invalid && !userForm.lastName.$error.pattern) || (!lastNameFocused && userForm.lastName.$error.pattern)}">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
                                         <input class="form-control input-lg" id="lastName" name="lastName" ng-pattern ="/^(?! )[A-Za-z]*(?<! )$/" ng-trim="false" ng-focus="lastNameFocused = true" ng-blur="lastNameFocused = false" type="text"  ng-model="input.lastName" placeholder=" " ng-required="true">
@@ -95,22 +83,19 @@
                                         <input class="form-control input-lg" id="password" name="password" type="password" ng-focus="passwordFocused = true" ng-blur="passwordFocused = false" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,15}$/" ng-model="input.password" placeholder=" " ng-required="true">
                                         <label class="labelText" for="password">Password</label>
                                         <p ng-if="!passwordFocused && userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.pattern" class="help-block">Password is required</p>
-                                        <p ng-if="!passwordFocused && userForm.password.$error.pattern" class="help-block">
-                                            Password length should be 6-15 characters<br>
-                                            Must contain atleast one number, one character and one special character</p>
-                                        <p ng-if="passwordFocused" class="help-block">
+                                        <p ng-if="passwordFocused || (!passwordFocused && userForm.password.$error.pattern)" class="help-block">
                                             Password length should be 6-15 characters<br>
                                             Must contain atleast one number, one character and one special character</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" ng-class="{ 'has-error' : (!confirmPasswordFocused && userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid) || (!confirmPasswordFocused && userForm.confirmPassword.$error.compare)}">
+                            <div class="form-group" ng-class="{ 'has-error' : (!passwordFocused && !confirmPasswordFocused && userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid) || (!confirmPasswordFocused && !passwordFocused   && userForm.confirmPassword.$error.compare)}">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
                                         <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password"  ng-focus="confirmPasswordFocused = true" ng-blur="confirmPasswordFocused = false" ng-model="input.confirmPassword" placeholder=" " ng-required="true">
                                         <label class="labelText" for="confirmPassword">Confirm password</label>
-                                        <p ng-if="!confirmPasswordFocused && userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.compare" class="help-block">Confirm password is required</p>
-                                        <p ng-if="userForm.confirmPassword.$error.compare" class="help-block">Confirm password does not match.</p>
+                                        <p ng-if="!passwordFocused && !confirmPasswordFocused && userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.compare" class="help-block">Confirm password is required</p>
+                                        <p ng-if="!passwordFocused && userForm.confirmPassword.$error.compare" class="help-block">Confirm password does not match.</p>
                                     </div>
                                 </div>
                             </div>
@@ -161,16 +146,10 @@
                             <div class="row text-center m-t-20">
                                 <div class="col-md-12"><p class="text-center">By clicking Sign Up, you agree to InFactor's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p></div>
                             </div>
-
-                            <!-- END -->
                         </form>
-
                         </div>
                     </section>
                 </div>
-                <!-- MAIN CONTENT AREA ENDS -->
             </div>
         </section>
-        <!-- END CONTENT -->
-
     </div>

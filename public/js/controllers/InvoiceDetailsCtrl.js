@@ -2,18 +2,48 @@
 			'$location', 'GetPost', 'Helper', '$routeParams', 'ngToast', 'Upload',
 			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast, Upload) {
 
-		$scope.priceSlider = 100;
-       $scope.factorSliderOptions = {
-            floor: 50,
-            ceil: 90
-        };
+	
+	GetPost.get({ url : '/startApp' }, function(err, resp) {
+		if (!resp.status) {
+			$rootScope.isMainLoader = true;
+			$rootScope.isLoggedIn = false;
+			Helper.showAlert('log_in');
+			setTimeout(() => {
+				$location.path('/login');
+			}, 1000);
+		} else {
+			console.log('userType', $rootScope.userType, 'invoiceId', $rootScope.invoiceId);
+			$scope.urlMap(resp.data.userType);
+			$rootScope.userType = resp.data.userType;
+			console.log('invoiceId', $rootScope.invoiceId)
+			$scope.getInvoiceDetails();
+		}
+	});
 
-       $scope.chargesSliderOptions = {
-            floor: 0,
-            ceil: 5
-        };
+	$scope.logOut = function () {
+		var data = { url : '/logout' };
+		GetPost.get(data, function(err, resp) {
+			if (!resp.status) {	
+				console.log('1');
+				$location.path('/login');
+			} else {
+				console.log('2');
+				$rootScope.isLoggedIn = false;
+				window.location.href = "/login";
+		}
+	});
+	}
 
-	//PNotify.alert('Notice me, senpai!');
+	$scope.priceSlider = 100;
+	$scope.factorSliderOptions = {
+			floor: 50,
+			ceil: 90
+	};
+
+	$scope.chargesSliderOptions = {
+			floor: 0,
+			ceil: 5
+	};
 
 	$rootScope.invoiceId = $rootScope.invoiceId || $routeParams.invoiceId;
 	$scope.urlMap = function(type) {
@@ -32,18 +62,6 @@
 	$scope.getDashboardDetails = function () {
 		$location.path('./dashboard');
 	};
-
-	GetPost.get({ url : '/startApp' }, function(err, resp) {
-		if (!resp.status) {
-			$location.path('/login');
-		} else {
-			console.log('userType', $rootScope.userType, 'invoiceId', $rootScope.invoiceId);
-			$scope.urlMap(resp.data.userType);
-			$rootScope.userType = resp.data.userType;
-			console.log('invoiceId', $rootScope.invoiceId)
-			$scope.getInvoiceDetails();
-		}
-    });
 
 	$scope.gotoDashboard = function() {
 		console.log('gotoDashboard')
@@ -98,41 +116,41 @@
 	$scope.dashboardData = [];
 	$scope.invoiceData = [];
 	$scope.invoiceTxHistory = [];
-    $scope.getInvoiceDetails = function() {
-		var data = {
-			url : '/getInvoiceDetails',
-			invoiceId : $rootScope.invoiceId || $routeParams.invoiceId
-		};
-		GetPost.post(data, function(err, resp) {
-			console.log('invoiceDetails response');
-			$scope.invoiceData = resp.data.invoice;
-			$rootScope.balance = resp.data.balance;
-			$scope.invoiceTxHistory = resp.data.invoiceHistory;
-			$scope.allEvents = resp.data.otherEvents;
-			for(i = 0; i < $scope.allEvents.length; i++){
-				if ($scope.allEvents[i].args.state == undefined || $scope.allEvents[i].args.state == ""){
-					continue;
-				} else {
-					var temp = $scope.allEvents[i].args.state.split("_");
-					$scope.allEvents[i].args.state = "";
-					for(j = 0; j < temp.length; j++){
-						temp[j] = temp[j].charAt(0).toUpperCase() + temp[j].slice(1);
-						$scope.allEvents[i].args.state += temp[j] + " ";
-					}
-					// $scope.allEvents[i].args.state =  temp;
+	$scope.getInvoiceDetails = function() {
+	var data = {
+		url : '/getInvoiceDetails',
+		invoiceId : $rootScope.invoiceId || $routeParams.invoiceId
+	};
+	GetPost.post(data, function(err, resp) {
+		console.log('invoiceDetails response');
+		$scope.invoiceData = resp.data.invoice;
+		$rootScope.balance = resp.data.balance;
+		$scope.invoiceTxHistory = resp.data.invoiceHistory;
+		$scope.allEvents = resp.data.otherEvents;
+		for(i = 0; i < $scope.allEvents.length; i++){
+			if ($scope.allEvents[i].args.state == undefined || $scope.allEvents[i].args.state == ""){
+				continue;
+			} else {
+				var temp = $scope.allEvents[i].args.state.split("_");
+				$scope.allEvents[i].args.state = "";
+				for(j = 0; j < temp.length; j++){
+					temp[j] = temp[j].charAt(0).toUpperCase() + temp[j].slice(1);
+					$scope.allEvents[i].args.state += temp[j] + " ";
 				}
-				
-				
+				// $scope.allEvents[i].args.state =  temp;
 			}
-			$scope.transferEvents = resp.data.transferEvents;
-			mapInvoiceHistory($scope.invoiceTxHistory);
-			$scope.setCurrentStage();
-		});
-    }
+			
+			
+		}
+		$scope.transferEvents = resp.data.transferEvents;
+		mapInvoiceHistory($scope.invoiceTxHistory);
+		$scope.setCurrentStage();
+	});
+	}
 
 
-    var mapInvoiceHistory = function(invoiceHistory) {
-    	var tx;
+	var mapInvoiceHistory = function(invoiceHistory) {
+		var tx;
 		for (var i in invoiceHistory) {
 			tx = invoiceHistory[i];
 			switch(tx.event) {
@@ -141,8 +159,8 @@
 					tx.status = invoiceStatusMap[$scope.userType][tx.args.state];
 			}
 		}
-		//invoiceHistory.reverse();
-    };
+	//invoiceHistory.reverse();
+	};
 
 
 	$scope.getDatesDiff = function(date) {

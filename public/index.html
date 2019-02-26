@@ -10,7 +10,7 @@
     <meta content="" name="description" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon" /><!-- Favicon -->
+    <link rel="shortcut icon" href="public/assets/images/favicon.png" type="image/x-icon" /><!-- Favicon -->
     <link rel="apple-touch-icon-precomposed" href="public/assets/images/apple-touch-icon-57.png"><!-- For iPhone -->
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="public/assets/images/apple-touch-icon-114.png"><!-- For iPhone 4 Retina display -->
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="public/assets/images/apple-touch-icon-72.png"><!-- For iPad -->
@@ -49,7 +49,7 @@
 	<script src="bower_components/angular/angular.min.js"></script>
 	<script src="bower_components/angular-route/angular-route.min.js"></script>
     <script src="bower_components/angularjs-datepicker/src/js/angular-datepicker.js"></script>
-    <script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script> 
+    <script src="bower_components/jquery/dist/jquery.min.js"></script> 
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="bower_components/angularjs-slider/dist/rzslider.min.js"></script>
@@ -89,7 +89,6 @@
     <script src="js/appRoutes.js"></script>
     <script src="js/services/helperService.js"></script>
     <script src="js/services/getPostService.js"></script>
-    <script src="js/controllers/NerdCtrl.js"></script>
     <script src="js/controllers/MainCtrl.js"></script>
     <script src="js/controllers/SignUpCtrl.js"></script>
     <script src="js/controllers/LoginCtrl.js"></script>
@@ -99,7 +98,7 @@
     <script src="js/controllers/InvoiceDetailsCtrl.js"></script>
     <script src="js/controllers/CreateInvoiceCtrl.js"></script>
     <script src="js/controllers/ResetPasswordCtrl.js"></script>
-	<script src="js/services/NerdService.js"></script>
+    <script src="js/controllers/ProfileCtrl.js"></script>
 	
 </head>
 <style type="text/css">
@@ -126,182 +125,14 @@
 
 </style>
 
-<body ng-app="sampleApp" ng-controller="NerdController">
+<body ng-app="sampleApp">
     <toast style="margin-bottom: 4%"></toast>
-    <div class="ajax-loader-div" ng-show="">
+    <div class="ajax-loader-div" ng-if="isMainLoader">
         <img src="assets/images/loader1.gif" class="ajax-loader">
     </div>
-    <div class="page-topbar">
-        <div class="container">
-            <div class="logo-area" ng-click="">
-            </div>
-            <div class="quick-area" ng-show="isLoggedIn">
-                <div class='pull-right'>
-                    <ul class="info-menu right-links list-inline list-unstyled">
-                        
-                        <li class="balaceTop">Balance : {{balance}} XDC</li>
-                        <!-- <li class="notify-toggle-wrapper">
-                            <a href="#" data-toggle="dropdown" class="toggle">
-                                <i class="fa fa-bell"></i>
-                                <span>Notification</span>
-                            </a>
-    
-    
-                            <ul class="dropdown-menu notifications animated fadeIn">
-                                <li class="total">
-                                    <span class="small">You have 3 new notifications.</span>
-                                </li>
-                                <li class="list">
-    
-                                    <ul class="dropdown-menu-list list-unstyled ps-scrollbar">
-                                        <li class="unread available">
-                                            <a href="javascript:;">
-                                                <div class="notice-icon">
-                                                    <i class="fa fa-check"></i>
-                                                </div>
-                                                <div>
-                                                    <span class="name">
-                                                        <strong>Server needs to reboot</strong>
-                                                        <span class="time small">15 mins ago</span>
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="unread away">
-                                            <a href="javascript:;">
-                                                <div class="notice-icon">
-                                                    <i class="fa fa-envelope"></i>
-                                                </div>
-                                                <div>
-                                                    <span class="name">
-                                                        <strong>45 new messages</strong>
-                                                        <span class="time small">45 mins ago</span>
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class=" busy">
-                                            <a href="javascript:;">
-                                                <div class="notice-icon">
-                                                    <i class="fa fa-times"></i>
-                                                </div>
-                                                <div>
-                                                    <span class="name">
-                                                        <strong>Server IP Blocked</strong>
-                                                        <span class="time small">1 hour ago</span>
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class=" offline">
-                                            <a href="javascript:;">
-                                                <div class="notice-icon">
-                                                    <i class="fa fa-user"></i>
-                                                </div>
-                                                <div>
-                                                    <span class="name">
-                                                        <strong>10 Orders Shipped</strong>
-                                                        <span class="time small">5 hours ago</span>
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class=" offline">
-                                            <a href="javascript:;">
-                                                <div class="notice-icon">
-                                                    <i class="fa fa-user"></i>
-                                                </div>
-                                                <div>
-                                                    <span class="name">
-                                                        <strong>New Comment on blog</strong>
-                                                        <span class="time small">Yesterday</span>
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class=" available">
-                                            <a href="javascript:;">
-                                                <div class="notice-icon">
-                                                    <i class="fa fa-check"></i>
-                                                </div>
-                                                <div>
-                                                    <span class="name">
-                                                        <strong>Great Speed Notify</strong>
-                                                        <span class="time small">14th Mar</span>
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class=" busy">
-                                            <a href="javascript:;">
-                                                <div class="notice-icon">
-                                                    <i class="fa fa-times"></i>
-                                                </div>
-                                                <div>
-                                                    <span class="name">
-                                                        <strong>Team Meeting at 6PM</strong>
-                                                        <span class="time small">16th Mar</span>
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </li>
-    
-                                    </ul>
-    
-                                </li>
-    
-                                <li class="external">
-                                    <a href="javascript:;">
-                                        <span>Read All Notifications</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li> -->
 
-                        <li class="profile">
-                            <a href="#" class="toggle" id="dropdownToggle">
-                                <span>{{name}}
-                                    <i class="fa fa-angle-down"></i>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu profile animated fadeIn" role="menu" id="dropdownMenu">
-                                <!-- <li>
-                                    <a href="#settings">
-                                        <i class="fa fa-wrench"></i>
-                                        Settings
-                                    </a>
-                                </li> -->
-                                <!-- <li>
-                                    <a href="/profile">
-                                        <i class="fa fa-user"></i>
-                                        Profile
-                                    </a>
-                                </li> -->
-                                <!-- <li>
-                                    <a href="#help">
-                                        <i class="fa fa-info"></i>
-                                        Help
-                                    </a>
-                                </li>  -->
-                                <li class="last">
-                                    <a href="" ng-click="logOut()">
-                                        <i class="fa fa-lock"></i>
-                                        Logout
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-                
-
-
-		<!-- ANGULAR DYNAMIC CONTENT -->
-        <div ng-view></div>
+    <!-- ANGULAR DYNAMIC CONTENT -->
+    <div ng-view></div>
     <footer class="m-t-50">
     <div class="page-footer">
         <div class="container">            

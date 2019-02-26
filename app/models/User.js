@@ -7,11 +7,14 @@ var userSchema = mongoose.Schema({
     email : String,
     password : String,
     type : String,
-    address : String
+    address : String,
+    accountStatus: String
+
 });
 
 userSchema.methods.validPassword = function (pwd) {
     return (this.password === pwd);
 };
+
 
 module.exports = mongoose.model('user', userSchema);

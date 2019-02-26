@@ -8,7 +8,6 @@ angular.module('GetPostService', []).factory('GetPost', ['$http', '$rootScope', 
             $http.post(input.url, input)
             .then(function(resp) {
                 $rootScope.isMainLoader = false;
-                // console.log('inside getpost post')
                 /* Success */
                 console.log('GetPostService > post(): resp = ',resp);
                 if (resp.data && resp.data.status) {

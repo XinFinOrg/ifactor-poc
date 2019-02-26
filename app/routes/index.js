@@ -3,6 +3,8 @@ var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
 var passport = require('passport');
 var helper = require('./helper');
+var mailer = require('./mailer');
+var dummyData = require('./dummyData');
 var db = require('./../config/db');
 var config = require('./../config/config');
 var url = require('url');
@@ -11,14 +13,6 @@ var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var fs = require('fs');
 var PATH = require('path');
-var mailer = require('nodemailer');
-var transporter = mailer.createTransport({
-	service: 'gmail',
-	auth: {
-		user: 'infactor.xinfin@gmail.com',
-		pass: '..abcdefg..'
-	}
-	});
 var brcypt = require('bcrypt-nodejs');
 
 var web3Conf = false;
@@ -86,6 +80,130 @@ var uploadUserDocs = function(invoiceId, files, cb) {
     return cb(filePaths);
 };
 
+var getInterstAmount = function(invoice) { 
+	if (!invoice.platformCharges || invoice.platformCharges <=0) {
+		return 0;
+	}
+
+	var charges = (invoice.daysToPayout * invoice.platformCharges * 100)/30;
+	return (charges * invoice.amount)/100;
+};
+
+var processInvoiceDetails = function(invoice) {
+	invoice.invoiceAmount = !invoice.invoiceAmount ? 0 : invoice.invoiceAmount;
+	invoice.firstPayment = (!invoice.saftyPercentage || invoice.saftyPercentage <= 0) ?
+							invoice.invoiceAmount :
+							(invoice.saftyPercentage/100 * invoice.invoiceAmount);
+	invoice.charges = getInterstAmount(invoice);
+	invoice.balancePayment =  invoice.invoiceAmount - (invoice.firstPayment + invoice.charges);
+
+	invoice.daysToPayout = helper.getDatesDiff(invoice.payableDate);
+};
+
+var getInvoiceDates = function(invoiceHistory) {
+	var created = {};
+	for (var i in invoiceHistory) {
+		if (invoiceHistory[i] && invoiceHistory[i].args) {
+			created[invoiceHistory[i].args.state] = invoiceHistory[i].args.created;
+		}
+	}
+	return created;
+}
+
+var authenticate = function (req, res, next) {
+	console.log('inside authenticate');
+    passport.authenticate('local', function (err, user, info) {
+    	console.log(err, user, info)
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.send({ status: false, message: info });
+        }
+        console.log("<== " + user.email + " Logged in [" +
+                    new Date() + "] <==");
+
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            return next();
+        });
+	})(req, res, next);
+	console.log("in here 2");
+};
+
+var getFullName = function(firstName, lastName) {
+	return !firstName && !lastName ? 'Anonymous' : 
+		firstName && lastName ? firstName + ' ' + lastName :
+		firstName ? firstName : lastName;
+};
+
+
+var updateInvoiceBlockchain = async(function(invoiceId, state) {
+    try {
+	    var tx = await (web3Helper.setState(invoiceId, state));
+	    return {status : true, tx : tx};
+    } catch(e) {
+    	console.log('smart contract error : ', e);
+		return {status : false};
+    }
+});
+
+var updateInvoice = function(query, update, cb) {
+	var collection = db.getCollection('invoices');
+	collection.update(query, update, function(err, data) {
+		if (err) {
+			return cb(true, err);
+		}
+		return cb(false, data);
+	});
+};
+
+var updateUser = function(query, update, cb) {
+	var collection = db.getCollection('users');
+	collection.update(query, update, function(err, data) {
+		if (err) {
+			return cb(true, err);
+		}
+		return cb(false, data);
+	});
+};
+
+var getUsers = function(query, cb) {
+	var collection = db.getCollection('users');
+	collection.find(query).toArray(function(err, data) {
+		if (err) {
+			return cb(true, err);
+		}
+		return cb(false, data);
+	});
+};
+
+var getUserDetails = function(query, projection, cb) {
+	var collection = db.getCollection('users');
+	collection.findOne(query, projection, function(err, data) {
+		if (err) {
+			return cb(true, err);
+		}
+		return cb(false, data);
+	});
+};
+
+var getInvoices = function(query, cb) {
+	console.log('inside getInvoices');
+	console.log('user')
+	var collection = db.getCollection('invoices');
+	collection.find(query).sort({'created' : -1}).toArray(function(err, data) {
+		if (err) {
+			console.log('err', err);
+			return cb(true, err);
+		}
+		console.log('success');
+		return cb(false, data);
+	});
+};
+
 router.post('/signup', (function(req, res) {
 	let input = req.body.input;
 	var collection = db.getCollection('users');
@@ -113,41 +231,139 @@ router.post('/signup', (function(req, res) {
 					errorCode : 'DBError', msg : 'DB Error'
 				}});
 			}
-			emailVerificationMailer(input.email, input.accountStatus, req.get('host'));
+			mailer.emailVerificationMailer(input.email, input.accountStatus, req.get('host'));
 			return res.send({status : true});
 		});
 	});
 }));
 
-var emailVerificationMailer = function(email, verifyHash, host){
-	
-	// var link = "http://" + host + "/resetPassword?email="+email+"&resetId="+userHash;
-	var link = "http://" + host + "/login?email="+email+"&verifyId="+verifyHash;
+router.post('/login', authenticate, function(req, res) {
+	// console.log('abcd',req.user);
+	// let email = req.body.email;
+	// var collection = db.getCollection('users');	
+	// collection.find({email : email}).toArray(function(err, data) {
+	// 	console.log('index > login API > err: ', err, ' data: ', data);
+	// 	if (err) {
+	// 		return res.send({status : false})
+	// 	}
+	// 	return res.send({status : 'success', data : {userType : data[0].type}});
+	// });
+	return res.send({status : 'success', data : {userType : req.user.type}});
+});
 
-	
-	console.log(link);
-	var mailOptions = {
-		from: 'InFactor',
-		to: email,
-		subject: 'Account verification link for your InFactor account',
-		text: 'Please click on the following link to verify your account:'+link
-	};
-
-	transporter.sendMail(mailOptions, function(error, info){
-		if (error) {
-		  console.log(error);
-		} else {
-		  console.log('Email sent: ' + info.response);
+//forgot password logic
+router.get('/forgotPassword', function(req, res) {
+	const email = req.query.email;
+	const collection = db.getCollection('users');
+	collection.findOne({email : email}, function(err, result) {
+		if (err) {
+			return res.send({status : false, error : {
+				errorCode : 'DBError', msg : 'DB Error'}});
 		}
-	  });
-	  return;
-}
+		if (result==null) {
+			return res.send({status : false, error :
+				{errorCode : 'AccountNotFound', msg : 'Email does not exist.'}});
+		}
+		var userHash = brcypt.hashSync(result._id).split('/').join('');
+		collection.update({email : email},{$set: {'reset': userHash}}, function(){
+			if (err) {
+				return res.send({status : false, error : {
+					errorCode : 'DBError', msg : 'DB Error'}});
+			}
+		});
+		mailer.forgotPasswordMailer(email, userHash, req.get('host'));
+		return res.send({status : true});
+	});
+});
 
-var getFullName = function(firstName, lastName) {
-	return !firstName && !lastName ? 'Anonymous' : 
-		firstName && lastName ? firstName + ' ' + lastName :
-		firstName ? firstName : lastName;
-};
+router.post('/resetPassword', function(req, res){
+	console.log('resetPassword API > req.body:', req.body);
+	const resetId = req.body.resetId;
+	const email = req.body.email;
+	const password = req.body.newPassword;
+	const collection = db.getCollection('users');
+	collection.findOne({email : email}, function(error, result) {
+		if(error){
+			return res.send({status : false, error : {
+				errorCode : 'DBError', msg : 'DB Error'}});
+		}
+		if(resetId == result.reset){
+			collection.update(
+				{'email': email}, {$set: {'password': password}}, {upsert:false},
+				function(err, docs){
+					if (err) {
+						console.log(err);
+						return res.send({status : false, error : {
+							errorCode : 'DBError', msg : 'DB Error'
+						}});
+					}
+				}
+			);
+			
+			
+			return res.send({status : true});
+		}
+		else{
+			return res.send({status : false, error : {
+				errorCode : 'ResetIDError', msg : 'Your link is invalid'}});
+		}
+	});
+});
+
+router.post('/verifyAccount', function(req, res){
+	console.log('verifyAccount API > req.body:', req.body);
+	const verifyHash = req.body.verifyId;
+	const email = req.body.email;
+	const collection = db.getCollection('users');
+	collection.findOne({email : email}, function(error, result) {
+		console.log('verifyAccount API > result: ', result);
+		if(result === null){
+			return res.send({status : false, error : {
+				errorCode : 'DBError', msg : 'DB Error'}});
+		}
+		if(result.accountStatus == 'verified'){
+			console.log('verifyAccount API > already verified');
+			return res.send({status : false, error : {
+				errorCode : 'AccountAlreadyVerified', msg : 'Your account has already been verified. Redirecting you to log in page'}});
+		} else if(verifyHash == result.accountStatus){
+				console.log('verifyAccount API > verified');
+				collection.update(
+					{'email': email}, {$set: {'accountStatus': 'verified'}}, {upsert:false},
+					function(err, docs){
+						if (err) {
+							console.log('verifyAccount API > verified DB Error:', err);
+							return res.send({status : false, error : {
+								errorCode : 'DBError', msg : 'DB Error'
+							}});
+						}
+					}
+				);
+				return res.send({status : true,  msg : 'Your account has been successfully verified. Redirecting you to log in page'});
+		} else {
+				console.log('verifyAccount API > invalid link');
+				return res.send({status : false, error : {
+					errorCode : 'VerifyIDError', msg : 'Your link is invalid. Redirecting you to log in page'}});
+		}
+	});
+});
+
+router.get('/logout', function(req, res) {
+	req.logout();
+	res.clearCookie('connect.sid');
+	// res.redirect('/');
+	return res.send({status : true});
+});
+
+router.get('/startApp', function(req, res) {
+	if (!req.isAuthenticated()) {
+		console.log('startApp API > Not authenticated');
+		return res.send({status : false});
+	} else {
+		console.log('startApp API > Authenticated > req.user: ', req.user);
+		let name = req.user.firstName + ' ' + req.user.lastName;
+		return res.send({status : true, data : {userType : req.user.type, name : name}});
+	}
+});
 
 router.post('/createInvoice', imgUpload, async (function(req, res) {
 	if (!req.isAuthenticated()) {
@@ -197,36 +413,6 @@ router.post('/createInvoice', imgUpload, async (function(req, res) {
 	});
 	}
 }));
-
-var updateInvoiceBlockchain = async(function(invoiceId, state) {
-    try {
-	    var tx = await (web3Helper.setState(invoiceId, state));
-	    return {status : true, tx : tx};
-    } catch(e) {
-    	console.log('smart contract error : ', e);
-		return {status : false};
-    }
-});
-
-var updateInvoice = function(query, update, cb) {
-	var collection = db.getCollection('invoices');
-	collection.update(query, update, function(err, data) {
-		if (err) {
-			return cb(true, err);
-		}
-		return cb(false, data);
-	});
-};
-
-var updateUser = function(query, update, cb) {
-	var collection = db.getCollection('users');
-	collection.update(query, update, function(err, data) {
-		if (err) {
-			return cb(true, err);
-		}
-		return cb(false, data);
-	});
-};
 
 router.post('/approveInvoice', async (function(req, res) {
 	if (!req.isAuthenticated()) {
@@ -721,40 +907,6 @@ router.post('/postpaySupplier', async(function(req, res) {
 }
 }));
 
-var getUsers = function(query, cb) {
-	var collection = db.getCollection('users');
-	collection.find(query).toArray(function(err, data) {
-		if (err) {
-			return cb(true, err);
-		}
-		return cb(false, data);
-	});
-};
-
-var getUserDetails = function(query, cb) {
-	var collection = db.getCollection('users');
-	collection.find(query).toArray(function(err, data) {
-		if (err) {
-			return cb(true, err);
-		}
-		return cb(false, data[0]);
-	});
-};
-
-var getInvoices = function(query, cb) {
-	console.log('inside getInvoices');
-	console.log('user')
-	var collection = db.getCollection('invoices');
-	collection.find(query).sort({'created' : -1}).toArray(function(err, data) {
-		if (err) {
-			console.log('err', err);
-			return cb(true, err);
-		}
-		console.log('success');
-		return cb(false, data);
-	});
-};
-
 router.get('/getSupplierDashboard', function(req, res) {
 	if (!req.isAuthenticated()) {
 		return res.send({status : false});
@@ -822,37 +974,6 @@ router.get('/getInvoices', function(req, res) {
 }
 });
 
-var getInterstAmount = function(invoice) { 
-	if (!invoice.platformCharges || invoice.platformCharges <=0) {
-		return 0;
-	}
-
-	var charges = (invoice.daysToPayout * invoice.platformCharges * 100)/30;
-	return (charges * invoice.amount)/100;
-};
-
-var processInvoiceDetails = function(invoice) {
-	invoice.invoiceAmount = !invoice.invoiceAmount ? 0 : invoice.invoiceAmount;
-	invoice.firstPayment = (!invoice.saftyPercentage || invoice.saftyPercentage <= 0) ?
-							invoice.invoiceAmount :
-							(invoice.saftyPercentage/100 * invoice.invoiceAmount);
-	invoice.charges = getInterstAmount(invoice);
-	invoice.balancePayment =  invoice.invoiceAmount - (invoice.firstPayment + invoice.charges);
-
-	invoice.daysToPayout = helper.getDatesDiff(invoice.payableDate);
-};
-
-var getInvoiceDates = function(invoiceHistory) {
-	var created = {};
-	for (var i in invoiceHistory) {
-		if (invoiceHistory[i] && invoiceHistory[i].args) {
-			created[invoiceHistory[i].args.state] = invoiceHistory[i].args.created;
-		}
-	}
-	return created;
-}
-
-
 router.post('/getBalance', async(function(req, res) {
 	try{
 		console.log('getBalance API > start');
@@ -881,7 +1002,7 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 		if (err) {
 			return res.send({status : false, msg : data});
 		}
-		var invoiceHistory = helper.dummyTx;
+		var invoiceHistory = dummyData.dummyTx;
 		var invoice = data[0];
 		//processInvoiceDetails(invoice);
 		getUserDetails({email : invoice.supplierEmail}, async(function(err, userData) {
@@ -911,9 +1032,9 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 				//console.log('invoiceHistory', invoiceHistory)
 				return res.send(
 					{status : true, data : {invoice : invoice,
-					invoiceHistory : helper.dummyInvoiceHistory,
-					"transferEvents": helper.dummyTransferEvents,
-					"otherEvents":helper.dummyOtherEvents, "balance":0}}
+					invoiceHistory : dummyData.dummyInvoiceHistory,
+					"transferEvents": dummyData.dummyTransferEvents,
+					"otherEvents":dummyData.dummyOtherEvents, "balance":0}}
 				);
 			}
 		}));
@@ -932,220 +1053,6 @@ router.get('/getUsers', function(req, res) {
 		return res.send({status : true, data : data})
 	});
 }
-});
-
-var authenticate = function (req, res, next) {
-	console.log('inside authenticate');
-	console.log(req.body);
-    passport.authenticate('local', function (err, user, info) {
-		console.log("in here 1");
-    	console.log(err, user, info)
-        if (err) {
-        	console.log('err', err)
-            return next(err);
-        }
-        if (!user) {
-			console.log('!user, info:',info);
-            return res.send({ success: false, message: info });
-        }
-        console.log('user', user);
-        console.log('firstName', user['firstName']);
-        console.log("<== " + user.email + " Logged in [" +
-                    new Date() + "] <==");
-
-        req.logIn(user, function (err) {
-            if (err) {
-                return next(err);
-            }
-            req.auth = {};
-            req.auth.user = user;
-            req.auth.info = info;
-            return next();
-        });
-	})(req, res, next);
-	console.log("in here 2");
-};
-
-router.post('/login', authenticate, async (function(req, res) {
-	var [email, password] = [req.body.email, req.body.password];
-	var collection = db.getCollection('users');	
-	collection.find({email : email, password : password}).toArray(function(err, data) {
-		if (err || !data.length) {
-			return res.send({status : false})
-		}
-
-		var address = req.user.address;
-		var userType = req.user.type;
-		return res.send({status : 'success', data : {userType : data[0].type}});
-	});
-}));
-
-//forgot password logic
-router.get('/forgotPassword', function(req, res) {
-	const email = req.query.email;
-	const collection = db.getCollection('users');
-	collection.findOne({email : email}, function(err, result) {
-		if (err) {
-			return res.send({status : false, error : {
-				errorCode : 'DBError', msg : 'DB Error'}});
-		}
-		if (result==null) {
-			return res.send({status : false, error :
-				{errorCode : 'AccountNotFound', msg : 'Email does not exist.'}});
-		}
-		var userHash = brcypt.hashSync(result._id).split('/').join('');
-		collection.update({email : email},{$set: {'reset': userHash}}, function(){
-			if (err) {
-				return res.send({status : false, error : {
-					errorCode : 'DBError', msg : 'DB Error'}});
-			}
-		});
-		forgotPasswordMailer(email, userHash, req.get('host'));
-		return res.send({status : true});
-	});
-});
-
-var forgotPasswordMailer = function(email, userHash, host){
-	
-	// var link = "http://" + host + "/resetPassword?email="+email+"&resetId="+userHash;
-	var link = "http://" + host + "/reset-password?email="+email+"&resetId="+userHash;
-
-	
-	console.log(link);
-	var mailOptions = {
-		from: 'InFactor',
-		to: email,
-		subject: 'Reset password link for your InFactor account',
-		text: 'Here is the link to reset your password:'+link
-	};
-
-	transporter.sendMail(mailOptions, function(error, info){
-		if (error) {
-		  console.log(error);
-		} else {
-		  console.log('Email sent: ' + info.response);
-		}
-	  });
-	  return;
-}
-
-// router.get('/resetPassword', function(req, res){
-// 	const resetId = req.query.resetId;
-// 	const email = req.query.email;
-// 	console.log(resetId,email);
-// 	const collection = db.getCollection('users');
-// 	collection.findOne({email : email}, function(error, result) {
-// 		if(error){
-// 			return res.send({status : false, error : {
-// 				errorCode : 'DBError', msg : 'DB Error'}});
-// 		}
-// 		if(resetId == result.reset){
-// 			console.log('match');
-// 			// res.redirect('/reset-password',{});
-// 			res.redirect(url.format({
-// 				pathname:"/reset-password",
-// 				// ?email="+email+"&resetId="+resetId,
-// 				query: {
-// 				   'email': email,
-// 					'resetId': resetId
-// 				 }
-// 			}));
-// 		}
-// 		else{
-// 			res.redirect(url.format({
-// 				pathname:"/login"
-// 			}));
-// 		}
-// 	});
-// });
-
-router.post('/resetPassword', function(req, res){
-	console.log('resetPassword API > req.body:', req.body);
-	const resetId = req.body.resetId;
-	const email = req.body.email;
-	const password = req.body.newPassword;
-	const collection = db.getCollection('users');
-	collection.findOne({email : email}, function(error, result) {
-		if(error){
-			return res.send({status : false, error : {
-				errorCode : 'DBError', msg : 'DB Error'}});
-		}
-		if(resetId == result.reset){
-			collection.update(
-				{'email': email}, {$set: {'password': password}}, {upsert:false},
-				function(err, docs){
-					if (err) {
-						console.log(err);
-						return res.send({status : false, error : {
-							errorCode : 'DBError', msg : 'DB Error'
-						}});
-					}
-				}
-			);
-			
-			
-			return res.send({status : true});
-		}
-		else{
-			return res.send({status : false, error : {
-				errorCode : 'ResetIDError', msg : 'Your link is invalid'}});
-		}
-	});
-});
-
-router.post('/verifyAccount', function(req, res){
-	console.log('verifyAccount API > req.body:', req.body);
-	const verifyHash = req.body.verifyId;
-	const email = req.body.email;
-	const collection = db.getCollection('users');
-	collection.findOne({email : email}, function(error, result) {
-		console.log('verifyAccount API > result: ', result);
-		if(result === null){
-			return res.send({status : false, error : {
-				errorCode : 'DBError', msg : 'DB Error'}});
-		}
-		if(result.accountStatus == 'verified'){
-			console.log('verifyAccount API > already verified');
-			return res.send({status : false, error : {
-				errorCode : 'AccountAlreadyVerified', msg : 'Your account has already been verified. Redirecting you to log in page'}});
-		} else if(verifyHash == result.accountStatus){
-				console.log('verifyAccount API > verified');
-				collection.update(
-					{'email': email}, {$set: {'accountStatus': 'verified'}}, {upsert:false},
-					function(err, docs){
-						if (err) {
-							console.log('verifyAccount API > verified DB Error:', err);
-							return res.send({status : false, error : {
-								errorCode : 'DBError', msg : 'DB Error'
-							}});
-						}
-					}
-				);
-				return res.send({status : true,  msg : 'Your account has been successfully verified. Redirecting you to log in page'});
-		} else {
-				console.log('verifyAccount API > invalid link');
-				return res.send({status : false, error : {
-					errorCode : 'VerifyIDError', msg : 'Your link is invalid. Redirecting you to log in page'}});
-		}
-	});
-});
-
-router.get('/startApp', function(req, res) {
-	if (!req.isAuthenticated()) {
-		console.log('startApp api: if');
-		return res.send({status : false});
-	} else {
-		console.log('startApp api: else');
-		return res.send({status : true, data : {userType : req.user.type}});
-	}
-});
-
-router.get('/logout', function(req, res) {
-	req.logout();
-	res.clearCookie('connect.sid');
-	res.redirect('/');
-	console.log('logout aaya: ', req.isAuthenticated());
-	// return res.send({status : true});
 });
 
 router.get('/getBuyerList', function(req, res) {
@@ -1172,20 +1079,19 @@ router.get('/unlockCoinbase', function(req, res) {
 	}
 });
 
-// router.get('/getUSDPrice', function(req, res){
-// 		 helper.getUSDPrice()
-// 		 .then((data, err) => {
-// 			if(!err){
-// 				console.log('bhai',data);
-// 				return res.send({status: true, data: data});
-// 			} else {
-// 				console.log('error: ',err);
-// 				return res.send({status : false});
-// 			}
-// 		 });
-		
-	
-// });
+router.post('/getUserDetails', function(req, res){
+	console.log('getUserDetails API > start', req.body);
+	let email = req.body.email;
+	getUserDetails({email: email}, {_id: false, firstName: true, lastName: true, email: true, address: true}, function(err, data){
+		if(err) {
+			return res.send({status : false, error : err});
+		} else if(data === null){
+			return res.send({status : false, msg : 'No data found for this email address'});
+		} else {
+			return res.send({status : true, data : data});
+		}
+	});
+});
 
 router.get('*', function(req, res) {
 	res.sendfile('./public/index.html');

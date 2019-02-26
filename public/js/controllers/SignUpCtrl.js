@@ -1,8 +1,8 @@
 var SignUpCtrl = angular.module('SignUpCtrl', []).controller('SignUpController',['$scope', '$rootScope',
- '$http', '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
- 	$http, $location, GetPost, Helper) {
+ '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
+ 	$location, GetPost, Helper) {
 
-	$scope.isLoggedIn = false;
+	$rootScope.isLoggedIn = false;
 	Helper.checkForMessage();
 
 	$scope.signup = function() {
@@ -20,12 +20,6 @@ var SignUpCtrl = angular.module('SignUpCtrl', []).controller('SignUpController',
 			}
 	    });
 	}
-
-	$scope.goToLogin = function() {
-		// window.location.href = "/login";
-		$location.path('/login');		
-	};
- 
 
 }]);
 
