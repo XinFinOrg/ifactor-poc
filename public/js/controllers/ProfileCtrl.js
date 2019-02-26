@@ -11,7 +11,14 @@ angular.module('ProfileCtrl', []).controller('ProfileController', ['$scope', '$r
 				$location.path('/login');
 			}, 1000);
 		} else {
-			console.log(res);
+			console.log('$rootScope.balance', $rootScope.balance);
+			if ($rootScope.balance == undefined){
+				GetPost.get({ url : '/getBalance' }, function(err, resp) {
+					if (resp.status) {
+						$rootScope.balance = resp.data.balance;
+					}
+				});
+			}
 			$rootScope.userType = res.data.userType;
 		}
 	});
@@ -37,39 +44,6 @@ angular.module('ProfileCtrl', []).controller('ProfileController', ['$scope', '$r
 		}
 	});
 	}
-	// console.log('1');
-	// function asyncLoggedInCheck() {
-	// 	var deferred = $q.defer();
-	// 	GetPost.get({ url : '/startApp' }, function(err, res) {
-	// 		console.log('2');
-	// 		if (!res.status) {
-	// 			deferred.reject(res);
-	// 			// $location.path('/login');
-	// 		} else {
-	// 			deferred.resolve(res);
-	// 			// console.log(res);
-	// 			// $rootScope.userType = res.data.userType;
-	// 		}
-	// 	});
-	// 	return deferred.promise;
-	// }
-	// var promise = asyncLoggedInCheck();
-	// promise.then(function(res) {
-	// 	console.log('3');
-	// 	console.log(res);
-	// 	$rootScope.userType = res.data.userType;
-		
-	//   }, function() {
-	// 	$location.path('/login');
-	//   }, function(update) {
-	// 	alert('Got notification: ' + update);
-	//   });
-
-	// GetPost.post({ url : '/getUserDetails'}, function(err, res) {
-
-	// });
-	// console.log('3');
-
 
 
 }]);

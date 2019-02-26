@@ -5,6 +5,7 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 	$rootScope.isLoggedIn = false;
 	$rootScope.isMainLoader = false;
 	if(!angular.equals($location.search(), {})){
+		$rootScope.isMainLoader = true;
 		console.log('inside');
 		const email = $location.search().email;
 		const verifyId = $location.search().verifyId;
@@ -27,46 +28,48 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 				}, 3000);
 			});
 		} else {
-			// Helper.createToast('Trying malicious attack?', 'danger');
-			$rootScope.message = 'Invalid link';
-			$rootScope.messageType = 'danger';
-			$location.url('/login');
+			Helper.showAlert('link_invalid');
+			setTimeout(() => {
+				$location.url('/login');
+			}, 2000)
+		}
+	} else {
+		Helper.checkForMessage();
+		$scope.showHideClass = 'glyphicon glyphicon-eye-open';
+		$scope.login = function() {
+			console.log('LoginCtrl > login(): data ff');
+			var data = {
+				email : $scope.username,
+				password : $scope.password,
+				url : '/login'
+			}
+			console.log('LoginCtrl > login(): data = ',data);
+			GetPost.post(data, function(err, docs) {
+				console.log('LoginCtrl > login() > login API > docs:',docs, 'err:', err,docs);
+				if(!err){
+					$rootScope.isLoggedIn = true;
+					$rootScope.message = 'You are logged in.';
+					$rootScope.messageType = 'success';
+					// $rootScope.userType = docs.data.userType;
+					$location.path('/dashboard');
+				} else {
+					Helper.createToast(docs.message.message, 'danger');
+				}
+				
+			});
+		}
+
+		$scope.isShowPassword = false;
+		$scope.showHideClass = 'glyphicon glyphicon-eye-open';
+		$scope.showHideType = 'password';
+		$scope.togglePasswordField = function() {
+			$scope.isShowPassword = !$scope.isShowPassword;	
+			$scope.showHideType = $scope.isShowPassword ? 'password' : 'text';
+			$scope.showHideClass = $scope.isShowPassword ? 'glyphicon glyphicon-eye-open' : 'glyphicon glyphicon-eye-close';
 		}
 	}
 	
 	// }
-	Helper.checkForMessage();
-	$scope.showHideClass = 'glyphicon glyphicon-eye-open';
-	$scope.login = function() {
-		console.log('LoginCtrl > login(): data ff');
-		var data = {
-			email : $scope.username,
-			password : $scope.password,
-			url : '/login'
-		}
-		console.log('LoginCtrl > login(): data = ',data);
-		 GetPost.post(data, function(err, docs) {
-			console.log('LoginCtrl > login() > login API > docs:',docs, 'err:', err,docs);
-			if(!err){
-				$rootScope.isLoggedIn = true;
-				$rootScope.message = 'You are logged in.';
-				$rootScope.messageType = 'success';
-				// $rootScope.userType = docs.data.userType;
-				$location.path('/dashboard');
-			} else {
-				Helper.createToast(docs.message.message, 'danger');
-			}
-			
-		});
-	}
-
-	$scope.isShowPassword = false;
-	$scope.showHideClass = 'glyphicon glyphicon-eye-open';
-	$scope.showHideType = 'password';
-	$scope.togglePasswordField = function() {
-		$scope.isShowPassword = !$scope.isShowPassword;	
-		$scope.showHideType = $scope.isShowPassword ? 'password' : 'text';
-		$scope.showHideClass = $scope.isShowPassword ? 'glyphicon glyphicon-eye-open' : 'glyphicon glyphicon-eye-close';
-	}
+	
 
 }]);

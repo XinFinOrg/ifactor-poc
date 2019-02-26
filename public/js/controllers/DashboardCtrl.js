@@ -2,50 +2,62 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 			'$location', 'GetPost', 'Helper', '$window',
 			function($scope, $rootScope, $location, GetPost,Helper, $window) {
 
-	Helper.checkForMessage();
-
+	
 	GetPost.get({ url : '/startApp' }, function(err, resp) {
 		if (!resp.status) {
-			$location.path('/login');
+			$scope.showHeaderOptions = false;
+			$rootScope.isMainLoader = true;
+			Helper.showAlert('log_in');
+			setTimeout(() => {
+				$location.path('/login');
+			}, 1000);
 		} else {
-			console.log(resp);
+			Helper.checkForMessage();
+			$scope.showHeaderOptions = true;
+			if ($rootScope.balance == undefined){
+				GetPost.get({ url : '/getBalance' }, function(err, resp) {
+					if (resp.status) {
+						$rootScope.balance = resp.data.balance;
+					}
+				});
+			}
+			$scope.showToggle = false;
+			$scope.dropdownMenuStyle = {'display':'none'};
 			$scope.urlMap(resp.data.userType);
 			$rootScope.userType = resp.data.userType;
 			$rootScope.name = resp.data.name;
-			console.log('DashboardCtrl > $rootScope.name: ', $rootScope.name);
+			$scope.date = new Date();
+			$scope.eventSources = [];
 			$scope.getInvoices();
+			if (!$rootScope.mainInvoiceIndex) {
+				$rootScope.mainInvoiceIndex = 0;
+			}
+			
+			$scope.dashboardData = [];
+			$scope.invoiceData = [];
 		}
 	});
-	// document.getElementById('dropdownMenu').style.display = 'none';
-	$scope.showToggle = false;
-	$scope.dropdownMenuStyle = {'display':'none'};
+
+	
 	$scope.toggleDropdown = function() {
+		console.log('toggledropdown');
 		$scope.showToggle = !$scope.showToggle;	
 		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
 	}
 
 	$scope.logOut = function () {
+		$scope.showHeaderOptions = false;
 		var data = { url : '/logout' };
 		GetPost.get(data, function(err, resp) {
-			if(err){
+			$rootScope.isMainLoader = true;
+			if(resp.status){
+				Helper.showAlert('logged_out');
+			} else {
 				Helper.showAlert('error500');
-				setTimeout(() => {
-					$location.path('/login');
-				}, 2000);
 			}
-			Helper.showAlert('error500');
 			setTimeout(() => {
 				$location.path('/login');
-			}, 2000);
-			
-		// 	if (!resp.status) {	
-		// 		$window.location.href = "/login";
-		// 		$location.path('/login');
-		// 	} else {
-		// 		console.log('2');
-		// 		$rootScope.isLoggedIn = false;
-		// 		window.location.href = "/login";
-		// }
+			}, 1000);
 	});
 	}
 
@@ -64,16 +76,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 		$scope.templateUrlDashboard = $scope.dashboardUrl[type];
 	};
 	
-	GetPost.get({ url : '/getBalance' }, function(err, resp) {
-		if (resp.status) {
-			$rootScope.balance = resp.data.balance;
-		}
-    });
-
 	var invoiceStatusMap = Helper.invoiceStatusMap;
-
-	$scope.date = new Date();
-	$scope.eventSources = [];
 
 	$scope.setStatusClasses = function (data) {
 		var userType = $rootScope.userType;
@@ -88,23 +91,11 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 		return data;
 	};
 
-
-	if (!$rootScope.mainInvoiceIndex) {
-		$rootScope.mainInvoiceIndex = 0;
-	}
-	
-	$scope.dashboardData = [];
-	$scope.invoiceData = [];
-
 	$scope.userTypeUrl  = {
 		Supplier : 'getSupplierDashboard', 
 		Buyer : 'getBuyerDashboard',
 		Financer : 'getFinancerDashboard',
 	}
-
-	var setInvoices = function() {
-
-	};
 
     $scope.getInvoices = function () {
     	console.log('$scope.getInvoices: ',$rootScope.userType);
@@ -129,14 +120,11 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	};
 
     $scope.getInvoicesDetails = function (invoice, index) {	
-		console.log('ffd');
-		console.log(invoice);
-		console.log(index);
     	$rootScope.mainInvoiceIndex = index;
     	$rootScope.invoiceId = invoice.invoiceId;
     	if (invoice.state == 'draft') {
     		$rootScope.fromDashboard = true;
-    		$location.path('./create-invoice');
+    		$location.path('/create-invoice');
     	} else {
     		$location.path('/invoice-details/' + $rootScope.invoiceId);
     	}	

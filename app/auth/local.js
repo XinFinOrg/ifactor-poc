@@ -33,13 +33,13 @@ auth.use = function() {
                 return done(err);
             }
             if (!user) {
-                return done(null, false, { message: 'Account not found.' });
+                return done(null, false, { message: 'Account not found' });
             }
             if (user.accountStatus !== 'verified') {
-                return done(null, false, { message: 'Account not yet verified.' });
+                return done(null, false, { message: 'Account not yet verified' });
             }
             if (!user.validPassword(password)) {
-                return done(null, false, { message: 'Incorrect password.' });
+                return done(null, false, { message: 'Incorrect password' });
             }
             return done(null, user);
         });

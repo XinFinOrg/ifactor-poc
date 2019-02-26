@@ -244,7 +244,7 @@ angular.module('HelperService', []).factory('Helper', ['ngToast', '$rootScope', 
             class : 'info'
         },
         'error500' :{
-            msg : 'Internal server Error',
+            msg : 'Internal server error',
             class : 'danger'
         },
         'payment_success' : {
@@ -291,6 +291,26 @@ angular.module('HelperService', []).factory('Helper', ['ngToast', '$rootScope', 
             msg : 'Invoice amount is mandatory',
             class : 'danger'
         },
+        'email_sent': {
+            msg: 'Email has been sent successsfully',
+            class : 'success'
+        },
+        'account_not_found': {
+            msg: 'Account not found',
+            class: 'warning'
+        },
+        'password_changed' : {
+            msg: 'Password has been changed successsfully',
+            class: 'success'
+        },
+        'link_invalid': {
+            msg: 'Your link is invalid',
+            class: 'warning'
+        },
+        'logged_out': {
+            msg: 'You have logged out',
+            class: 'success'
+        }
         
     };
 

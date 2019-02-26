@@ -60,19 +60,6 @@
 <div class="row-fluid container-fluid">
     <!-- START CONTENT -->
     <section>
-        <!-- <div class="container wrapper main-wrapper row" style=''> -->  
-        <!-- <div>
-            <div class="col-md-9 has-float-label">
-                <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
-                </select>
-            </div>
-        </div> -->
-            <!-- <div>
-                <div class="col-md-9 has-float-label">
-                    <select class="soflow form-control input-lg" ng-model="currentStage" ng-options=" x for x in stageOptions">
-                    </select>
-                </div>
-            </div> -->
             <div class="container wrapper main-wrapper row" style=''>
             <div class='col-xs-12'>
                 <div class="page-title">
@@ -81,6 +68,11 @@
                         <!-- PAGE HEADING TAG - START -->
                         <h1 class="title"><a href="/dashboard">Buyer Dashboard</a> <span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
                         <!-- PAGE HEADING TAG - END -->
+                    </div>
+                    <div class="pull-right">
+                        <a href = "/dashboard">
+                            <button class="btn btn-primary btn-corner">Back</button>
+                        </a>
                     </div>
                 </div>
             </div>

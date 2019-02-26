@@ -16,27 +16,27 @@ angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$
 				'url' : '/resetPassword'
 			};
 			GetPost.post(data, function(err, res) {
+				$rootScope.isMainLoader = true;
 				if (err){
-					// console.log('Error:', err);
-					Helper.createToast('Some error has occured.', 'danger');
+					Helper.showAlert('error500');
 				}
 				if(res.status){
-					Helper.createToast('Password has been changed successsfully', 'success');
+					Helper.showAlert('password_changed');
 				} else if(res.error.errorCode  == "ResetIDError") {
-					Helper.createToast(res.error.msg, 'warning');
+					Helper.showAlert('link_invalid');
 				} else {
-					Helper.createToast('Some error has occured.', 'danger');
+					Helper.showAlert('error500');
 				}
 				});
 				setTimeout(() => {
-					$window.location.href = '/login';
+					$location.url('/login');
 				}, 2000)
 		}
 	} else {
-		$rootScope.message = 'Invalid link';
-		$rootScope.messageType = 'warning';
-		$location.url('/login');
-		// $window.location.href = '/login';
+		Helper.showAlert('link_invalid');
+		setTimeout(() => {
+			$location.url('/login');
+		}, 2000)
 	}
 	
 

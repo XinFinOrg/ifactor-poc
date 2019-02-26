@@ -11,8 +11,8 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
         }
     };
 }).controller('CreateInvoiceController',['$scope', '$rootScope',
- '$http', '$location', 'GetPost', 'Helper', 'Upload',  function($scope, $rootScope,  
- 	$http, $location, GetPost, Helper, Upload) {
+ '$location', 'GetPost', 'Helper', 'Upload',  function($scope, $rootScope,  
+ 	$location, GetPost, Helper, Upload) {
 
 	GetPost.get({ url : '/startApp' }, function(err, res) {
 		if (!res.status) {
@@ -23,6 +23,15 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 			}, 1000);
 		} else {
 			console.log(res);
+			GetPost.get({url : '/getBuyerList'}, function(err, docs) {
+				console.log(docs);
+				$scope.companyOptions = docs.data;
+				console.log('init : companyNameData', $scope.companyNameData)
+				if (Helper.isObjEmpty($scope.companyNameData) && $scope.companyOptions &&
+					$scope.companyOptions.length > 0) {
+					$scope.companyNameData = $scope.companyOptions[0];
+				}
+			});
 		}
 	});
 
@@ -43,17 +52,6 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 	$scope.eventSources = [];
 	$scope.companyOptions = [];
  	$scope.companyTypeOptions = Helper.companyTypeOptions();
-
-	GetPost.get({url : '/getBuyerList'}, function(err, docs) {
-		console.log(docs);
-		$scope.companyOptions = docs.data;
-		console.log('init : companyNameData', $scope.companyNameData)
-		if (Helper.isObjEmpty($scope.companyNameData) && $scope.companyOptions &&
-			$scope.companyOptions.length > 0) {
-			$scope.companyNameData = $scope.companyOptions[0];
-		}
-    });
-
 	$scope.companyNameData = {};
 	$scope.minPayableDate = new Date().toDateString();
 

@@ -258,7 +258,7 @@
 		}
 		GetPost.post(data, function(err, resp) {
 			!resp.status ? Helper.showAlert('error500') : 
-				Helper.createToast('You approved Invoice for ' + $rootScope.invoiceId, 'success');
+				Helper.createToast('You approved invoice for ' + $rootScope.invoiceId, 'success');
 			$scope.invoiceActionForm = {};
 			$scope.getInvoiceDetails();
 	    });
@@ -273,7 +273,7 @@
 		}
 		GetPost.post(data, function(err, resp) {
 			!resp.status ? Helper.showAlert('error500') : 
-				Helper.createToast('You rejected Invoice for ' + $rootScope.invoiceId, 'danger');
+				Helper.createToast('You rejected invoice for ' + $rootScope.invoiceId, 'danger');
     		// invoice_rejected
 			$scope.getInvoiceDetails();
 	    });

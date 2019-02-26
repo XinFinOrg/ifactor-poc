@@ -51,55 +51,10 @@
     background: #CCF;
 }
 </style>
-<!-- START TOPBAR -->
-<!-- 
-<div class="page-topbar">
-    <div class="container">
-        <a href="/dashboard">
-            <div class="logo-area"></div>
-        </a>
-        <div class="quick-area" ng-show="isLoggedIn">
-            <div class='pull-right'>
-                <ul class="info-menu right-links list-inline list-unstyled">
-                    
-                    <li class="balaceTop">Balance : {{balance}} XDC</li>
-                    <li class="profile">
-                        <a href="#" class="toggle" id="dropdownToggle" ng-click="toggleDropdown()">
-                            <span>{{name}}
-                                <i class="fa fa-angle-down"></i>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu profile animated fadeIn" role="menu" id="dropdownMenu" ng-style="dropdownMenuStyle">
-                            <li>
-                                <a href="/profile">
-                                    <i class="fa fa-user"></i>
-                                    Profile
-                                </a>
-                            </li>
-                            <li class="last">
-                                <a href="" ng-click="logOut()">
-                                    <i class="fa fa-lock"></i>
-                                    Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div> -->
-<!-- END TOPBAR -->
 <!-- START CONTAINER -->
 <div class="row-fluid container-fluid">
     <!-- START CONTENT -->
     <section>
-        <!-- <div>
-            <div class="col-md-9 has-float-label">
-                <select class="soflow form-control input-lg" ng-model="invoiceData.state" ng-options=" x for x in stateOptions">
-                </select>
-            </div>
-        </div> -->
         <div class="container wrapper main-wrapper row" style=''>
 
             <div class='col-xs-12'>
@@ -109,6 +64,11 @@
                         <!-- PAGE HEADING TAG - START -->
                         <h1 class="title"><a ng-href="/dashboard">Financer Dashboard</a><span class="request-details">Request Details #{{invoiceData.invoiceNo}}</span> <span class="date-details">{{invoiceData.created.invoice_created | date : "dd MMM y, hh:mm"}}</span></h1>
                         <!-- PAGE HEADING TAG - END -->
+                    </div>
+                    <div class="pull-right">
+                        <a href = "/dashboard">
+                            <button class="btn btn-primary btn-corner">Back</button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -235,28 +195,6 @@
                             </div>
 
                             <div class="clearfix"></div>
-
-                            <!-- <div class="col-md-12">
-
-                                <div class="verification-details">
-                                    <h5 class="text-uppercase">Verification Details</h5>
-                                    <div class="price-badge">
-                                        <div class="amount text-muted">Approved Transaction no : <span class="bold">#1234567898765432145, 21 Dec 2018, 16:30</span></div>
-                                    </div>
-                                    <div class="verification-details box">
-                                        <h1>A36ABGHYTWSDOP3DFRTQAZXCDCE3012A292BC1KLMNBPOTCVFS2C5F163BKLMNPH</h1></div>
-                                </div>
-
-                                <div class="verification-details">
-                                    <h5 class="text-uppercase">Factoring Details</h5>
-                                    <div class="price-badge">
-                                        <div class="amount text-muted">Amount : <span class="bold"><i class="fa fa-inr" aria-hidden="true"></i> 1,00,000</span></div>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-                                </div>
-
-                            </div> -->
-
                         </div>
                         <!-- End .row -->
                     </div>

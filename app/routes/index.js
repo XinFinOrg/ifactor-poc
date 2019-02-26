@@ -305,7 +305,7 @@ router.post('/resetPassword', function(req, res){
 		}
 		else{
 			return res.send({status : false, error : {
-				errorCode : 'ResetIDError', msg : 'Your link is invalid'}});
+				errorCode : 'ResetIDError'}});
 		}
 	});
 });
@@ -1005,7 +1005,7 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 		var invoiceHistory = dummyData.dummyTx;
 		var invoice = data[0];
 		//processInvoiceDetails(invoice);
-		getUserDetails({email : invoice.supplierEmail}, async(function(err, userData) {
+		getUserDetails({email : invoice.supplierEmail}, {},async(function(err, userData) {
 			invoice.supplierData = !err ? userData : {};
 			if (web3Conf) {
 				var allEvents = await (web3Helper.getAllEvents(invoiceId));
