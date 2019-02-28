@@ -1,6 +1,6 @@
 var SignUpCtrl = angular.module('SignUpCtrl', []).controller('SignUpController',['$scope', '$rootScope',
- '$location', 'GetPost', 'Helper',  function($scope, $rootScope,  
- 	$location, GetPost, Helper) {
+ '$location', 'GetPost', 'Helper', '$window', function($scope, $rootScope,  
+ 	$location, GetPost, Helper, $window) {
 
 	$rootScope.isLoggedIn = false;
 	Helper.checkForMessage();
@@ -8,16 +8,19 @@ var SignUpCtrl = angular.module('SignUpCtrl', []).controller('SignUpController',
 	$scope.signup = function() {
 		var data  = {input : $scope.input, url : '/signup'};
 		GetPost.post(data, function(err, resp) {
-			console.log(err, resp);
-			if (!resp.status) {
-				$rootScope.message = resp.error.msg;
-				$rootScope.messageType = 'warning';
-				$location.path('/login');
+			if (!err) {
+				$rootScope.isMainLoader = true;
+				Helper.createToast(resp.msg, 'success');
+				setTimeout(() => {
+					$location.path('/login');
+				}, 3000);
+			} else if (err && !resp.status) {
+				Helper.createToast(resp.error.msg, 'warning');
 			} else {
-				$rootScope.message = 'You have successfully signed up. Please log in.';
-				$rootScope.messageType = 'success';
-				$location.path('/login');
+				Helper.showAlert('error500');
 			}
+			$scope.input = {};
+			$scope.userForm.$setUntouched();
 	    });
 	}
 

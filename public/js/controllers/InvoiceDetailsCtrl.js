@@ -12,25 +12,35 @@
 				$location.path('/login');
 			}, 1000);
 		} else {
-			console.log('userType', $rootScope.userType, 'invoiceId', $rootScope.invoiceId);
+
+			$scope.showToggle = false;
+			$scope.dropdownMenuStyle = {'display':'none'};
+			// console.log('userType', $rootScope.userType, 'invoiceId', $rootScope.invoiceId);
 			$scope.urlMap(resp.data.userType);
 			$rootScope.userType = resp.data.userType;
-			console.log('invoiceId', $rootScope.invoiceId)
+			// console.log('invoiceId', $rootScope.invoiceId)
 			$scope.getInvoiceDetails();
 		}
 	});
 
+	$scope.toggleDropdown = function() {
+		$scope.showToggle = !$scope.showToggle;	
+		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
+	}
+
 	$scope.logOut = function () {
+		$scope.showHeaderOptions = false;
 		var data = { url : '/logout' };
 		GetPost.get(data, function(err, resp) {
-			if (!resp.status) {	
-				console.log('1');
-				$location.path('/login');
+			$rootScope.isMainLoader = true;
+			if(resp.status){
+				Helper.showAlert('logged_out');
 			} else {
-				console.log('2');
-				$rootScope.isLoggedIn = false;
-				window.location.href = "/login";
-		}
+				Helper.showAlert('error500');
+			}
+			setTimeout(() => {
+				$location.path('/login');
+			}, 1000);
 	});
 	}
 
@@ -601,7 +611,11 @@
 			supplierRatingRemark : $scope.supplierRatingRemark
 		}
 		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ratings_f2s');
+			if (!resp.status){
+				Helper.showAlert('error500');
+			} else {
+				Helper.showAlert('ratings_f2s');
+			}
 			$scope.getInvoiceDetails();
 	    });
     };
@@ -618,7 +632,11 @@
 			financerRatingRemark : $scope.financerRatingRemark
 		};
 		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ratings_s2f');
+			if (!resp.status){
+				Helper.showAlert('error500');
+			} else {
+				Helper.showAlert('ratings_s2f');
+			}
 			$scope.getInvoiceDetails();
 	    });
     };

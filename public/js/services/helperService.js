@@ -310,6 +310,18 @@ angular.module('HelperService', []).factory('Helper', ['ngToast', '$rootScope', 
         'logged_out': {
             msg: 'You have logged out',
             class: 'success'
+        },
+        'details_updated': {
+            msg: 'Your profile details have been updated',
+            class: 'success'
+        },
+        'password_changed': {
+            msg: 'Your password has been changed successfully',
+            class: 'success'
+        },
+        'incorrect_password': {
+            msg: 'Please enter your current password correct',
+            class: 'warning'
         }
         
     };

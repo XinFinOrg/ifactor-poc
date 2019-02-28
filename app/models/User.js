@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-//var crypto = require('crypto');
+var bcrypt = require('bcrypt-nodejs');
 
 var userSchema = mongoose.Schema({
 	firstName : String,
@@ -13,7 +13,7 @@ var userSchema = mongoose.Schema({
 });
 
 userSchema.methods.validPassword = function (pwd) {
-    return (this.password === pwd);
+    return bcrypt.compareSync(pwd, this.password);
 };
 
 

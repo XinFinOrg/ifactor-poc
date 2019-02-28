@@ -4,7 +4,7 @@
         <a href="/">
             <div class="logo-area"></div>
         </a>
-        <div class="quick-area">
+        <div class="quick-area" ng-show="showHeaderOptions">
 
             <div class='pull-right'>
                 <ul class="info-menu right-links list-inline list-unstyled">
@@ -54,14 +54,14 @@
                         <header class="panel_header">
                             <h1 class="title no-padd text-center">Get started</h1>
                         </header>
-                            <div class="sign-msg">We connect global Buyers, Suppliers and Financiers using InFactor Platform</div>
+                            <div class="sign-msg">We connect global Buyers, Suppliers and Financiers using InFactor platform</div>
                         
                         <div class="content-body">
                             <form name="userForm" ng-submit="login()" novalidate>
                                 <div class="form-group" ng-class="{ 'has-error' : (!emailFocused && userForm.email.$touched && userForm.email.$invalid && !userForm.email.$error.pattern) || (!emailFocused && userForm.email.$error.pattern)}">
                                     <div class="row">
                                         <div class="col-xs-12 has-float-label">
-                                            <input class="form-control input-lg" id="email" name="email" ng-pattern = "/^(?! )[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]{2,})+(?<! )$/" type="email"  ng-focus="emailFocused = true" ng-blur="emailFocused = false" ng-model="username" placeholder=" " ng-required="true">
+                                            <input class="form-control input-lg" id="email" name="email" ng-pattern = "/^(?! )[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]{2,})+(?<! )$/" type="email"  ng-focus="emailFocused = true" ng-blur="emailFocused = false" ng-model="input.email" placeholder=" " ng-required="true">
                                             <label class="labelText" for="email">Email</label>
                                             <p ng-if="!emailFocused && userForm.email.$touched && userForm.email.$invalid && !userForm.email.$error.pattern" class="help-block">Your email is required</p>
                                             <p ng-if="!emailFocused && userForm.email.$error.pattern" class="help-block">Invalid email, please enter valid email</p>
@@ -73,7 +73,7 @@
                                     <div class="row">
                                         <div class="col-xs-12 has-float-label">
                                             <div class = "input-group password-input-group">
-                                                <input type="{{showHideType}}" name="password" id="password" class="form-control input-lg" ng-model="password" ng-minlength="6" ng-maxlength="15" ng-focus="passwordFocused = true" ng-blur="passwordFocused = false" placeholder=" " ng-required="true"/>
+                                                <input type="{{showHideType}}" name="password" id="password" class="form-control input-lg" ng-model="input.password" ng-minlength="6" ng-maxlength="15" ng-focus="passwordFocused = true" ng-blur="passwordFocused = false" placeholder=" " ng-required="true"/>
                                                 <label for="password">Password</label>
                                                 <span class="input-group-addon rightroundspan" ng-click="togglePasswordField()" >
                                                 <span class="{{showHideClass}}" style="cursor:pointer"></span>

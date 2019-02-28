@@ -4,9 +4,10 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 	
 	$rootScope.isLoggedIn = false;
 	$rootScope.isMainLoader = false;
+	$rootScope.showHeaderOptions = true;
 	if(!angular.equals($location.search(), {})){
+		$rootScope.showHeaderOptions = false;
 		$rootScope.isMainLoader = true;
-		console.log('inside');
 		const email = $location.search().email;
 		const verifyId = $location.search().verifyId;
 		if(email !== undefined && verifyId !== undefined){
@@ -17,45 +18,46 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 			}
 			GetPost.post(data, function(err, res) {
 				$rootScope.isMainLoader = true;
-				console.log(err,res);
+				$rootScope.showHeaderOptions = false;
 				if(!err){
 					Helper.createToast(res.msg, 'success');
-				} else {
+				} else if (err && !res.status) {
 					Helper.createToast(res.error.msg, 'warning');
+				} else {
+					Helper.showAlert('error500');
 				}
-				setTimeout(() => {
-					$location.url('/login');
-				}, 3000);
 			});
 		} else {
 			Helper.showAlert('link_invalid');
-			setTimeout(() => {
-				$location.url('/login');
-			}, 2000)
 		}
+		setTimeout(() => {
+			$location.url('/login');
+		}, 2000)
 	} else {
 		Helper.checkForMessage();
 		$scope.showHideClass = 'glyphicon glyphicon-eye-open';
 		$scope.login = function() {
-			console.log('LoginCtrl > login(): data ff');
 			var data = {
-				email : $scope.username,
-				password : $scope.password,
+				email : $scope.input.email,
+				password : $scope.input.password,
 				url : '/login'
 			}
-			console.log('LoginCtrl > login(): data = ',data);
-			GetPost.post(data, function(err, docs) {
-				console.log('LoginCtrl > login() > login API > docs:',docs, 'err:', err,docs);
-				if(!err){
+			GetPost.post(data, function(err, resp) {
+				if (!err) {
+					$rootScope.showHeaderOptions = false;
+					$rootScope.isMainLoader = true;
 					$rootScope.isLoggedIn = true;
-					$rootScope.message = 'You are logged in.';
-					$rootScope.messageType = 'success';
-					// $rootScope.userType = docs.data.userType;
-					$location.path('/dashboard');
+					Helper.createToast(resp.msg, 'success');
+					setTimeout(() => {
+						$location.path('/dashboard');
+					}, 1000);
+				} else if (err && !resp.status) {
+					Helper.createToast(resp.error.msg, 'danger');
 				} else {
-					Helper.createToast(docs.message.message, 'danger');
+					Helper.showAlert('error500');
 				}
-				
+				$scope.input = {};
+				$scope.userForm.$setUntouched();
 			});
 		}
 

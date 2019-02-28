@@ -13,7 +13,7 @@ var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var fs = require('fs');
 var PATH = require('path');
-var brcypt = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt-nodejs');
 
 var web3Conf = false;
 if (web3Conf) {
@@ -111,29 +111,35 @@ var getInvoiceDates = function(invoiceHistory) {
 }
 
 var authenticate = function (req, res, next) {
-	console.log('inside authenticate');
+	console.log('index > authenticate()');
     passport.authenticate('local', function (err, user, info) {
-    	console.log(err, user, info)
+		console.log('index > authenticate() > passport.authenticate > err, user, info: ', err, user, info);
         if (err) {
             return next(err);
         }
         if (!user) {
-            return res.send({ status: false, message: info });
+            return res.send({
+				status: false,
+				error: {
+					msg: info 
+				}
+			});
         }
         console.log("<== " + user.email + " Logged in [" +
                     new Date() + "] <==");
 
         req.logIn(user, function (err) {
+			console.log('index > authenticate() > passport.authenticate > req.logIn > err: ', err);
             if (err) {
                 return next(err);
             }
             return next();
         });
 	})(req, res, next);
-	console.log("in here 2");
 };
 
 var getFullName = function(firstName, lastName) {
+	console.log('index > getFullName() > firstName, lastName: ', firstName, lastName);
 	return !firstName && !lastName ? 'Anonymous' : 
 		firstName && lastName ? firstName + ' ' + lastName :
 		firstName ? firstName : lastName;
@@ -141,18 +147,21 @@ var getFullName = function(firstName, lastName) {
 
 
 var updateInvoiceBlockchain = async(function(invoiceId, state) {
+	console.log('index > updateInvoiceBlockchain() > invoiceId, state: ', invoiceId, state);
     try {
 	    var tx = await (web3Helper.setState(invoiceId, state));
 	    return {status : true, tx : tx};
     } catch(e) {
-    	console.log('smart contract error : ', e);
+    	console.log('index > updateInvoiceBlockchain() > smart contract error: ', e);
 		return {status : false};
     }
 });
 
 var updateInvoice = function(query, update, cb) {
+	console.log('index > updateInvoice() > query, update: ', query, update);
 	var collection = db.getCollection('invoices');
-	collection.update(query, update, function(err, data) {
+	collection.updateOne(query, update, function(err, data) {
+		console.log('index > updateInvoice() > collection.updateOne > err, data: ', err, data);
 		if (err) {
 			return cb(true, err);
 		}
@@ -161,8 +170,10 @@ var updateInvoice = function(query, update, cb) {
 };
 
 var updateUser = function(query, update, cb) {
+	console.log('index > updateUser() > query, update: ', query, update);
 	var collection = db.getCollection('users');
-	collection.update(query, update, function(err, data) {
+	collection.updateOne(query, update, function(err, data) {
+		console.log('index > updateUser() > collection.updateOne > err, data: ', err, data);
 		if (err) {
 			return cb(true, err);
 		}
@@ -171,8 +182,10 @@ var updateUser = function(query, update, cb) {
 };
 
 var getUsers = function(query, cb) {
+	console.log('index > getUsers() > query: ', query);
 	var collection = db.getCollection('users');
 	collection.find(query).toArray(function(err, data) {
+		console.log('index > updateUser() > collection.find.toArray > err, data: ', err, data);
 		if (err) {
 			return cb(true, err);
 		}
@@ -181,8 +194,10 @@ var getUsers = function(query, cb) {
 };
 
 var getUserDetails = function(query, projection, cb) {
+	console.log('index > getUserDetails() > query, projection: ', query, projection);
 	var collection = db.getCollection('users');
 	collection.findOne(query, projection, function(err, data) {
+		console.log('index > getUserDetails() > collection.findOne > err, data: ', err, data);
 		if (err) {
 			return cb(true, err);
 		}
@@ -191,30 +206,38 @@ var getUserDetails = function(query, projection, cb) {
 };
 
 var getInvoices = function(query, cb) {
-	console.log('inside getInvoices');
-	console.log('user')
+	console.log('index > getInvoices() > query: ', query);
 	var collection = db.getCollection('invoices');
 	collection.find(query).sort({'created' : -1}).toArray(function(err, data) {
+		console.log('index > getInvoices() > collection.find > err, data: ', err, data);
 		if (err) {
-			console.log('err', err);
 			return cb(true, err);
 		}
-		console.log('success');
 		return cb(false, data);
 	});
 };
 
 router.post('/signup', (function(req, res) {
+	console.log('index > signup API > req.body: ', req.body);
 	let input = req.body.input;
 	var collection = db.getCollection('users');
-	if(input.password!==input.confirmPassword){
-		return res.send({status : false, error :
-			{errorCode : 'ConfirmPassword', msg : 'Confirm password did not match password entered.'}});
-	}
 	collection.findOne({email : input.email}, function(err, result) {
+		console.log('index > signup API > collection.findOne > err, result:', err, result);
+		if(err){
+			return res.send({
+				status : false,
+				error : {
+					msg : 'Server error, please try again'
+				}
+			});
+		}
 		if (result) {
-			return res.send({status : false, error :
-				{errorCode : 'AccountExists', msg : 'Account Already Exists'}});
+			return res.send({
+				status : false,
+				error : {
+					msg : 'Account with this email address already exists'
+				}
+			});
 		}
 
 		if (web3Conf) {
@@ -223,89 +246,234 @@ router.post('/signup', (function(req, res) {
 			input.address = 'local';
 		}
 		input.phrase = input.password;
-		input.accountStatus = brcypt.hashSync(input.email).split('/').join('A');
+		input.accountStatus = bcrypt.hashSync(input.email).split('/').join('A');
 		delete input.confirmPassword;
-		collection.save(input, function (err, docs) {
-		    if (err) {
-				return res.send({status : false, error : {
-					errorCode : 'DBError', msg : 'DB Error'
-				}});
+		bcrypt.hash(input.password, bcrypt.genSaltSync(8), null, function(err, hash) {
+			console.log('index > signup API > collection.findOne > bcrypt.hash > err, hash:', err, hash);
+			if(err){
+				return res.send({
+					status : false, 
+					error : {
+						msg : 'Server error, please try again'
+					}
+				});
 			}
-			mailer.emailVerificationMailer(input.email, input.accountStatus, req.get('host'));
-			return res.send({status : true});
+			input.password = hash;
+			mailer.emailVerificationMailer(input.email, input.accountStatus, req.get('host'), function(error, info){
+				console.log('index > signup API > ... > mailer.emailVerificationMailer > err, hash:', error, info);
+				if(!error){
+					collection.save(input, function (err, docs) {
+						console.log('index > signup API > ... > collection.save > err, docs.ops:', err, docs.ops);
+						if (err) {
+							return res.send({
+								status : false,
+								error : {
+									msg : 'Server error, please try again'
+								}
+							});
+						}
+						return res.send({ 
+							status : true,
+							msg : 'You have successfully signed up, please check your email for verification link.'
+						});
+					});
+				} else {
+					return res.send({
+						status: false,
+						error: {
+							msg: 'Server error, please try again'
+						}
+					});
+				}
+			});
+				
+			
 		});
 	});
 }));
 
 router.post('/login', authenticate, function(req, res) {
-	// console.log('abcd',req.user);
-	// let email = req.body.email;
-	// var collection = db.getCollection('users');	
-	// collection.find({email : email}).toArray(function(err, data) {
-	// 	console.log('index > login API > err: ', err, ' data: ', data);
-	// 	if (err) {
-	// 		return res.send({status : false})
-	// 	}
-	// 	return res.send({status : 'success', data : {userType : data[0].type}});
-	// });
-	return res.send({status : 'success', data : {userType : req.user.type}});
+	console.log('index > login API');
+	return res.send({
+		status : true,
+		msg : 'You are now logged in'
+	});
 });
 
 //forgot password logic
 router.get('/forgotPassword', function(req, res) {
+	console.log('index > forgotPassword API > req.query: ', req.query);
 	const email = req.query.email;
 	const collection = db.getCollection('users');
 	collection.findOne({email : email}, function(err, result) {
+		console.log('index > forgotPassword API > collection.findOne > err, result: ', err, result);
 		if (err) {
-			return res.send({status : false, error : {
-				errorCode : 'DBError', msg : 'DB Error'}});
+			return res.send({
+				status : false,
+				error : {
+					msg : 'Some error has occurred, please try again'
+				}
+			});
 		}
 		if (result==null) {
-			return res.send({status : false, error :
-				{errorCode : 'AccountNotFound', msg : 'Email does not exist.'}});
+			return res.send({
+				status : false,
+				error : {
+					msg : 'Account does not exist'
+				}
+			});
 		}
-		var userHash = brcypt.hashSync(result._id).split('/').join('');
-		collection.update({email : email},{$set: {'reset': userHash}}, function(){
-			if (err) {
-				return res.send({status : false, error : {
-					errorCode : 'DBError', msg : 'DB Error'}});
-			}
+		var userHash = bcrypt.hashSync(result._id).split('/').join('');
+		mailer.forgotPasswordMailer(email, userHash, req.get('host'), function(error, info){
+			console.log('index > forgotPassword API > collection.findOne > mailer.forgotPasswordMailer > error, info:', error, info);
+				if(!error){
+					collection.updateOne({email : email},{$set: {'reset': userHash}}, function(err, data){
+						console.log('index > forgotPassword API > collection.findOne > mailer.forgotPasswordMailer > collection.updateOne > err, data: ', err, data);
+						if (err) {
+							return res.send({
+								status : false, 
+								error : {
+									msg : 'Server error, please try again'
+								}
+							});
+						} else {
+							return res.send({
+								status : true,
+								msg: 'Please check your email for password reset link'
+							});
+						}
+						
+					});
+				} else {
+					return res.send({
+						status: false,
+						error: {
+							msg: 'Server error, please try again'
+						}
+					});
+				}
 		});
-		mailer.forgotPasswordMailer(email, userHash, req.get('host'));
-		return res.send({status : true});
 	});
 });
 
 router.post('/resetPassword', function(req, res){
-	console.log('resetPassword API > req.body:', req.body);
+	console.log('index > resetPassword API > req.body:', req.body);
 	const resetId = req.body.resetId;
 	const email = req.body.email;
 	const password = req.body.newPassword;
 	const collection = db.getCollection('users');
 	collection.findOne({email : email}, function(error, result) {
+		console.log('index > resetPassword API > collection.findOne > error, result:', error, result);
 		if(error){
-			return res.send({status : false, error : {
-				errorCode : 'DBError', msg : 'DB Error'}});
+			return res.send({
+				status : false,
+				error : {
+					msg : 'Server error, please try again'
+				}
+			});
+		}
+		if (result.reset === '' && resetId !== ''){
+			return res.send({
+				status : false, 
+				error : {
+					msg : 'You have already used this link'
+				}
+			});
 		}
 		if(resetId == result.reset){
-			collection.update(
-				{'email': email}, {$set: {'password': password}}, {upsert:false},
-				function(err, docs){
-					if (err) {
-						console.log(err);
-						return res.send({status : false, error : {
-							errorCode : 'DBError', msg : 'DB Error'
-						}});
-					}
+			bcrypt.hash(password, bcrypt.genSaltSync(8), null, function(err, hash) {
+				console.log('index > resetPassword API > collection.findOne > bcrypt.hash > err, hash:', err, hash);
+				if(err){
+					return res.send({
+						status : false, 
+						error : {
+							msg : 'Server error, please try again'
+						}
+					});
 				}
-			);
-			
-			
-			return res.send({status : true});
+				collection.updateOne({'email': email}, {$set: {'password': hash, 'reset': ''}}, {upsert:false},
+					function(err, docs){
+						console.log('index > resetPassword API > ... > bcrypt.hash > collection.updateOne > err, docs:', err, docs.ops);
+						if (err) {
+							return res.send({
+								status : false,
+								error : {
+									msg : 'Server error, please try again'
+								}
+							});
+						}
+					}
+				);
+			});
+			return res.send({
+				status : true,
+				msg: 'Password has been changed successsfully'
+			});
 		}
 		else{
-			return res.send({status : false, error : {
-				errorCode : 'ResetIDError'}});
+			return res.send({
+				status : false,
+				error : {
+					msg : 'Your link is invalid'
+				}
+			});
+		}
+	});
+});
+
+router.post('/changePassword', function(req, res){
+	console.log('index > changePassword API > req.body:', req.body);
+	const email = req.body.email;
+	const oldPassword = req.body.oldPassword;
+	const password = req.body.password;
+	const collection = db.getCollection('users');
+	collection.findOne({email : email}, function(error, result) {
+		console.log('index > changePassword API > collection.findOne > error, result: ', error, result);
+		if(error){
+			return res.send({
+				status : false,
+				error : {
+					msg : 'Server error, please try again'
+				}
+			});
+		}
+		if(bcrypt.compareSync(oldPassword, result.password)){
+			bcrypt.hash(password, bcrypt.genSaltSync(8), null, function(err, hash) {
+				console.log('index > changePassword API > collection.findOne > bcrypt.hash > err, hash: ', err, hash);
+				if(err){
+					return res.send({
+						status : false, 
+						error : {
+							msg : 'Server error, please try again'
+						}
+					});
+				}
+				collection.updateOne({email: email}, {$set: {password: hash}}, function(err, docs){
+						console.log('index > changePassword API > ... > bcrypt.hash > collection.updateOne > err, docs: ', err, docs);
+						if (err) {
+							console.log(err);
+							return res.send({
+								status : false,
+								error : {
+									msg : 'DB Error'
+								}
+							});
+						}
+					}
+				);
+				return res.send({
+					status : true,
+					msg: 'Your password has been changed successfully'
+				});
+			});
+		}
+		else{
+			return res.send({
+				status : false,
+				error : {
+					msg : 'Please enter your current password correct'
+				}
+			});
 		}
 	});
 });
@@ -327,7 +495,7 @@ router.post('/verifyAccount', function(req, res){
 				errorCode : 'AccountAlreadyVerified', msg : 'Your account has already been verified. Redirecting you to log in page'}});
 		} else if(verifyHash == result.accountStatus){
 				console.log('verifyAccount API > verified');
-				collection.update(
+				collection.updateOne(
 					{'email': email}, {$set: {'accountStatus': 'verified'}}, {upsert:false},
 					function(err, docs){
 						if (err) {
@@ -361,7 +529,7 @@ router.get('/startApp', function(req, res) {
 	} else {
 		console.log('startApp API > Authenticated > req.user: ', req.user);
 		let name = req.user.firstName + ' ' + req.user.lastName;
-		return res.send({status : true, data : {userType : req.user.type, name : name}});
+		return res.send({status : true, data : {userType : req.user.type, name : name, email: req.user.email}});
 	}
 });
 
@@ -1082,11 +1250,28 @@ router.get('/unlockCoinbase', function(req, res) {
 router.post('/getUserDetails', function(req, res){
 	console.log('getUserDetails API > start', req.body);
 	let email = req.body.email;
-	getUserDetails({email: email}, {_id: false, firstName: true, lastName: true, email: true, address: true}, function(err, data){
+	getUserDetails({email: email}, {_id: false, firstName: true, lastName: true, email: true, address: true, contactNo: true}, function(err, data){
+		console.log(err,data);
 		if(err) {
 			return res.send({status : false, error : err});
 		} else if(data === null){
 			return res.send({status : false, msg : 'No data found for this email address'});
+		} else {
+			return res.send({status : true, data : data});
+		}
+	});
+});
+
+router.post('/editUserDetails', function(req, res){
+	console.log('editUserDetails API > start', req.body);
+	let email = req.body.email;
+	let firstName = req.body.firstName;
+	let lastName = req.body.lastName;
+	let contactNo = req.body.contactNo;
+	updateUser({email: email}, {$set : {firstName: firstName, lastName: lastName, contactNo: contactNo}}, function(err, data){
+		console.log(err,data);
+		if(err) {
+			return res.send({status : false, error : err});
 		} else {
 			return res.send({status : true, data : data});
 		}

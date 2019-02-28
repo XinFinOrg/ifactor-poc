@@ -7,7 +7,7 @@ var transporter = mailer.createTransport({
 	}
     });
 
-var emailVerificationMailer = function(email, verifyHash, host){
+var emailVerificationMailer = function(email, verifyHash, host, cb){
     var link = "http://" + host + "/login?email="+email+"&verifyId="+verifyHash;
     console.log(link);
     var mailOptions = {
@@ -18,16 +18,16 @@ var emailVerificationMailer = function(email, verifyHash, host){
     };
 
     transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-        });
-        return;
+			console.log('mailer > emailVerificationMailer() > error, info :', error, info);
+			if (!error) {
+				console.log('Email sent: ' + info.response);
+			}
+			return cb(error, info);
+		});
+        
 }
 
-var forgotPasswordMailer = function(email, userHash, host){
+var forgotPasswordMailer = function(email, userHash, host, cb){
 	
 	// var link = "http://" + host + "/resetPassword?email="+email+"&resetId="+userHash;
 	var link = "http://" + host + "/reset-password?email="+email+"&resetId="+userHash;
@@ -38,17 +38,16 @@ var forgotPasswordMailer = function(email, userHash, host){
 		from: 'InFactor',
 		to: email,
 		subject: 'Reset password link for your InFactor account',
-		html: '<button>abc</button>Here is the link to reset your password:'+link
+		html: 'Here is the link to reset your password:<br>'+link
 	};
 
 	transporter.sendMail(mailOptions, function(error, info){
-		if (error) {
-		  console.log(error);
-		} else {
-		  console.log('Email sent: ' + info.response);
-		}
-	  });
-	  return;
+		console.log('mailer > forgotPasswordMailer() > error, info :', error, info);
+			if (!error) {
+				console.log('Email sent: ' + info.response);
+			}
+			return cb(error, info);
+		});
 }
 
 module.exports = {

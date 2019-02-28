@@ -5,7 +5,7 @@
             <a href="/dashboard">
                 <div class="logo-area"></div>
             </a>
-            <div class="quick-area" ng-show="isLoggedIn">
+            <div class="quick-area" ng-show="showHeaderOptions">
                 <div class='pull-right'>
                     <ul class="info-menu right-links list-inline list-unstyled">
                         
@@ -50,8 +50,14 @@
     
                         <div class="pull-left">
                             <!-- PAGE HEADING TAG - START -->
-                            <h1 class="title">&nbsp;</h1>
+                            <h1 class="title">Profile details</h1>
                             <!-- PAGE HEADING TAG - END -->
+                        </div>
+
+                        <div class="pull-right">
+                            <a href = "/dashboard">
+                                <button class="btn btn-primary btn-corner">Back</button>
+                            </a>
                         </div>
     
                     </div>
@@ -59,11 +65,8 @@
                 <div class="clearfix"></div>
                 <!-- MAIN CONTENT AREA STARTS -->
     
-                <div class="col-md-12 col-xs-12 sign_up_box">
-                    <section class="loginbox">
-                        <header class="panel_header">
-                            <h1 class="title"><strong>Edit Profile</strong></h1>
-                        </header>
+                <div class="col-xs-12">
+                    <section class="box">
                         <div class="content-body">
                             <form name="profileForm" ng-submit="submitProfileForm()" novalidate>
                                 <!-- <div class="row">
@@ -131,9 +134,12 @@
 
                             </form>
                             <form name="passwordForm" ng-submit="submitPasswordForm()" novalidate>
-                                <header class="panel_header">
-                                    <h1 class="title"><strong>Change Password</strong></h1><br>
-                                </header> 
+                                <!-- <header class="panel_header"> -->
+                                <div class="page-title">
+                                    <h3>Change Password</h3><br>
+                                </div>
+                                    
+                                <!-- </header>  -->
                                 <div class="row">
                                     <div class="col-xs-6 has-float-label">
                                         <div class="form-group" ng-class="{ 'has-error' : input.oldPassword == null && !oldPasswordFocused && passwordForm.oldPassword.$dirty && (passwordForm.oldPassword.$error.minlength || passwordForm.oldPassword.$error.maxlength)}">
@@ -158,7 +164,7 @@
                                     <div class="col-xs-6 has-float-label">
                                         <div class="form-group" ng-class="{ 'has-error' :passwordForm.password.$valid && passwordForm.confirmPassword.$invalid}">  
                                             <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password" ng-model="input.confirmPassword" ng-focus="confirmPasswordFocused = true" ng-blur="confirmPasswordFocused = false"ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,15}$/"  placeholder=" " ng-required="true">
-                                            <label class="labelText" for="confirmPassword">Confirm new Password</label>
+                                            <label class="labelText" for="confirmPassword">Confirm new password</label>
                                             <p ng-if="passwordForm.password.$valid && passwordForm.confirmPassword.$invalid && passwordForm.confirmPassword.$touched" class="help-block">Confirm password does not match.</p>
                                             <!-- {{passwordForm}} -->
                                         </div>
