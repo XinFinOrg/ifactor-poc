@@ -1,6 +1,6 @@
 var SignUpCtrl = angular.module('SignUpCtrl', []).controller('SignUpController',['$scope', '$rootScope',
- '$location', 'GetPost', 'Helper', '$window', function($scope, $rootScope,  
- 	$location, GetPost, Helper, $window) {
+ '$location', '$timeout', 'GetPost', 'Helper', '$window', function($scope, $rootScope,  
+ 	$location, $timeout, GetPost, Helper, $window) {
 
 	$rootScope.isLoggedIn = false;
 	Helper.checkForMessage();
@@ -10,12 +10,12 @@ var SignUpCtrl = angular.module('SignUpCtrl', []).controller('SignUpController',
 		GetPost.post(data, function(err, resp) {
 			if (!err) {
 				$rootScope.isMainLoader = true;
-				Helper.createToast(resp.msg, 'success');
-				setTimeout(() => {
+				Helper.createToast(resp.message, 'success');
+				$timeout(() => {
 					$location.path('/login');
 				}, 3000);
 			} else if (err && !resp.status) {
-				Helper.createToast(resp.error.msg, 'warning');
+				Helper.createToast(resp.error.message, 'warning');
 			} else {
 				Helper.showAlert('error500');
 			}

@@ -1,6 +1,6 @@
 angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootScope', 
-			'$location', 'GetPost', 'Helper', '$window',
-			function($scope, $rootScope, $location, GetPost, Helper, $window) {
+			'$location', 'GetPost', 'Helper', '$timeout', '$window',
+			function($scope, $rootScope, $location, GetPost, Helper, $timeout, $window) {
 	
 	$rootScope.isLoggedIn = false;
 	$rootScope.isMainLoader = false;
@@ -20,9 +20,9 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 				$rootScope.isMainLoader = true;
 				$rootScope.showHeaderOptions = false;
 				if(!err){
-					Helper.createToast(res.msg, 'success');
+					Helper.createToast(res.message, 'success');
 				} else if (err && !res.status) {
-					Helper.createToast(res.error.msg, 'warning');
+					Helper.createToast(res.error.message, 'warning');
 				} else {
 					Helper.showAlert('error500');
 				}
@@ -30,9 +30,9 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 		} else {
 			Helper.showAlert('link_invalid');
 		}
-		setTimeout(() => {
+		$timeout(() => {
 			$location.url('/login');
-		}, 2000)
+		}, 1000)
 	} else {
 		Helper.checkForMessage();
 		$scope.showHideClass = 'glyphicon glyphicon-eye-open';
@@ -43,21 +43,29 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 				url : '/login'
 			}
 			GetPost.post(data, function(err, resp) {
+				$rootScope.isMainLoader = true;
 				if (!err) {
 					$rootScope.showHeaderOptions = false;
-					$rootScope.isMainLoader = true;
 					$rootScope.isLoggedIn = true;
-					Helper.createToast(resp.msg, 'success');
-					setTimeout(() => {
+					Helper.createToast(resp.message, 'success');
+					$timeout(() => {
 						$location.path('/dashboard');
 					}, 1000);
-				} else if (err && !resp.status) {
-					Helper.createToast(resp.error.msg, 'danger');
 				} else {
-					Helper.showAlert('error500');
+					if (err && !resp.status) {
+						Helper.createToast(resp.error.message, 'danger');
+					} else {
+						Helper.showAlert('error500');
+					}
+					$timeout(() => {
+						$window.location.href = '/login';
+					}, 1000);
 				}
-				$scope.input = {};
-				$scope.userForm.$setUntouched();
+				
+				// $scope.input = {};
+				// $scope.userForm.$setUntouched();
+				
+				
 			});
 		}
 

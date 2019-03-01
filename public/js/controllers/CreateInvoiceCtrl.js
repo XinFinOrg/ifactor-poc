@@ -11,18 +11,19 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
         }
     };
 }).controller('CreateInvoiceController',['$scope', '$rootScope',
- '$location', 'GetPost', 'Helper', 'Upload',  function($scope, $rootScope,  
- 	$location, GetPost, Helper, Upload) {
+ '$location', '$timeout', 'GetPost', 'Helper', 'Upload',  function($scope, $rootScope,  
+ 	$location, $timeout, GetPost, Helper, Upload) {
 
 	GetPost.get({ url : '/startApp' }, function(err, res) {
 		if (!res.status) {
 			$rootScope.isMainLoader = true;
-			Helper.showAlert('log_in');
-			setTimeout(() => {
+			Helper.createToast(res.error.message, 'warning');
+			$timeout(() => {
 				$location.path('/login');
 			}, 1000);
 		} else {
-			console.log(res);
+			$rootScope.showHeaderOptions = true;
+			$rootScope.isLoggedIn = true;
 			GetPost.get({url : '/getBuyerList'}, function(err, docs) {
 				console.log(docs);
 				$scope.companyOptions = docs.data;
@@ -36,18 +37,21 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 	});
 
 	$scope.logOut = function () {
+		$scope.showHeaderOptions = false;
 		var data = { url : '/logout' };
 		GetPost.get(data, function(err, resp) {
-			if (!resp.status) {	
-				console.log('1');
-				$location.path('/login');
+			$rootScope.isMainLoader = true;
+			if(resp.status){
+				Helper.showAlert('logged_out');
 			} else {
-				console.log('2');
-				$rootScope.isLoggedIn = false;
-				window.location.href = "/login";
-		}
+				Helper.showAlert('error500');
+			}
+			$timeout(() => {
+				$location.path('/login');
+			}, 1000);
 	});
 	}
+
 	$scope.date = new Date();
 	$scope.eventSources = [];
 	$scope.companyOptions = [];
@@ -106,22 +110,6 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 		$scope.companyNameData = index >= 0 ? $scope.companyOptions[index] : {};
 	}
 
-    $scope.submitInvoice2 = function (input, type) {
-    	$scope.input.state = type;
-    	$scope.input = $scope.getBuyerData(input);
-    	console.log(input);
-
-    	var data = {
-			input : $scope.input,
-			url : '/createInvoice'
-		}
-
-		GetPost.post(data, function(err, docs) {
-			$location.path('/dashboard');
-	    });
-
-    };
-
     $scope.getDatesDiff = function(date) {
     	var date1 = date;
     	var date2 = new Date();
@@ -158,6 +146,8 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
     $scope.invoiceDocs = null;
 
     $scope.submitInvoice = function (input, type) {
+		$rootScope.isMainLoader = true;
+		$scope.showHeaderOptions = false;
 		$scope.isSubmitNowButtonDisabled = true;
     	$scope.input.state = type;
     	$scope.input = $scope.getBuyerData(input);
@@ -179,15 +169,18 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 	        }
 		})
 		.then(resp => {
-	    	console.log('submit data',resp);
-	    	if (type == 'draft') {
-				Helper.showAlert('save_invoice');
-	    	} else {
-				Helper.showAlert('submit_invoice');
-	    	}
+			if(resp.status){
+				if (type == 'draft') {
+					Helper.showAlert('save_invoice');
+				} else {
+					Helper.showAlert('submit_invoice');
+				}
+			} else { 
+				Helper.createToast(resp.error.msg, 'danger');
+			}
 			$location.path('/dashboard');
-	    }).catch(err => { 
-	        console.log(err);
+	    }).catch(err => {
+	        Helper.showAlert('error500');
 	    });
 	};
 

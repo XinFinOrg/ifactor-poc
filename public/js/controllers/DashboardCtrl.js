@@ -1,14 +1,14 @@
 angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', '$rootScope', 
-			'$location', 'GetPost', 'Helper', '$window',
-			function($scope, $rootScope, $location, GetPost,Helper, $window) {
+			'$location', '$timeout', 'GetPost', 'Helper', '$window',
+			function($scope, $rootScope, $location, $timeout, GetPost, Helper, $window) {
 
 	
 	GetPost.get({ url : '/startApp' }, function(err, resp) {
 		if (!resp.status) {
 			$scope.showHeaderOptions = false;
 			$rootScope.isMainLoader = true;
-			Helper.showAlert('log_in');
-			setTimeout(() => {
+			Helper.createToast(resp.error.message, 'warning');
+			$timeout(() => {
 				$location.path('/login');
 			}, 1000);
 		} else {
@@ -21,18 +21,18 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 					}
 				});
 			}
-			$scope.showToggle = false;
-			$scope.dropdownMenuStyle = {'display':'none'};
-			$scope.urlMap(resp.data.userType);
+			$rootScope.isMainLoader = false;
 			$rootScope.userType = resp.data.userType;
 			$rootScope.name = resp.data.name;
+			$scope.urlMap(resp.data.userType);
 			$scope.date = new Date();
 			$scope.eventSources = [];
+			$scope.showToggle = false;
+			$scope.dropdownMenuStyle = {'display':'none'};
 			$scope.getInvoices();
 			if (!$rootScope.mainInvoiceIndex) {
 				$rootScope.mainInvoiceIndex = 0;
 			}
-			
 			$scope.dashboardData = [];
 			$scope.invoiceData = [];
 		}
@@ -40,7 +40,6 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 
 	
 	$scope.toggleDropdown = function() {
-		console.log('toggledropdown');
 		$scope.showToggle = !$scope.showToggle;	
 		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
 	}
@@ -55,7 +54,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 			} else {
 				Helper.showAlert('error500');
 			}
-			setTimeout(() => {
+			$timeout(() => {
 				$location.path('/login');
 			}, 1000);
 	});
@@ -98,11 +97,8 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	}
 
     $scope.getInvoices = function () {
-    	console.log('$scope.getInvoices: ',$rootScope.userType);
     	var url = $scope.userTypeUrl[$rootScope.userType];
-    	console.log(url);
     	GetPost.get({ url : '/' + url}, function(err, docs) {
-    		console.log(docs);
 			$scope.dashboardData = $scope.setStatusClasses(docs.data);
 			$scope.dashboardData = docs.data;
 			// $rootScope.name = docs.name;

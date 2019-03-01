@@ -1,6 +1,6 @@
 angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$scope', '$rootScope',
-'GetPost', 'Helper', '$location', '$window', function($scope, $rootScope,
- 	GetPost, Helper, $location, $window) {
+'GetPost', 'Helper', '$location', '$timeout', '$window', function($scope, $rootScope,
+ 	GetPost, Helper, $location, $timeout, $window) {
 
 	$rootScope.isLoggedIn = false;
 	$rootScope.isMainLoader = true;
@@ -20,20 +20,20 @@ angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$
 				$rootScope.isMainLoader = true;
 				$rootScope.showHeaderOptions = false;
 				if (!err) {
-					Helper.createToast(resp.msg, 'success');
+					Helper.createToast(resp.message, 'success');
 				} else if (err && !resp.status) {
-					Helper.createToast(resp.error.msg, 'danger');
+					Helper.createToast(resp.error.message, 'danger');
 				} else {
 					Helper.showAlert('error500');
 				}
 			});
-			setTimeout(() => {
+			$timeout(() => {
 				$location.url('/login');
 			}, 2000)
 		}
 	} else {
 		Helper.showAlert('link_invalid');
-		setTimeout(() => {
+		$timeout(() => {
 			$location.url('/login');
 		}, 2000)
 	}

@@ -362,19 +362,6 @@ angular.module('HelperService', []).factory('Helper', ['ngToast', '$rootScope', 
         }
     }
 
-    var checkLoggedIn = function() {
-        // console.log('helperService > checkLoggedIn()');
-        GetPost.get({ url : '/startApp' }, function(err, res) {
-            console.log('2');
-            if (!res.status) {
-                $location.path('/login');
-            } else {
-                console.log(res);
-                $rootScope.userType = res.data.userType;
-            }
-        });
-    }
-
     return {
         invoiceStatusMap : invoiceStatusMap,
         stateOptions : stateOptions,
@@ -383,8 +370,7 @@ angular.module('HelperService', []).factory('Helper', ['ngToast', '$rootScope', 
         showAlert : showAlert,
         createToast : createToast,
         isObjEmpty : isObjEmpty,
-        checkForMessage: checkForMessage,
-        checkLoggedIn: checkLoggedIn
+        checkForMessage: checkForMessage
     }
 
 }]);

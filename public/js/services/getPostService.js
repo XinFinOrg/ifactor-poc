@@ -3,21 +3,21 @@ angular.module('GetPostService', []).factory('GetPost', ['$http', '$rootScope', 
         /* Post data */
         var post  = function(input, cb) {
             // var url = getUrl(input);
-            console.log('GetPostService > post(): input = ',input);
+            // console.log('GetPostService > post(): input = ',input);
             $rootScope.isMainLoader = true;
             $http.post(input.url, input)
             .then(function(resp) {
                 $rootScope.isMainLoader = false;
                 /* Success */
-                console.log('GetPostService > post(): resp = ',resp);
+                // console.log('GetPostService > post(): resp = ',resp);
                 if (resp.data && resp.data.status) {
                     return cb(0, resp.data);
                 }
                 return cb(1, resp.data);
             }, function(resp) {
                 /* Failure */
-                console.log("post: Error received for ");
-                console.log(resp.data);
+                // console.log("post: Error received for ");
+                // console.log(resp.data);
                 return cb(1);
             });
         };
@@ -31,13 +31,13 @@ angular.module('GetPostService', []).factory('GetPost', ['$http', '$rootScope', 
                 $rootScope.isMainLoader = false;
                 $rootScope.isLoggedIn = true;
                 if (!(resp.data && resp.data.status)) {
-                    console.log("get: could not get data to ");
+                    // console.log("get: could not get data to ");
                     return cb(1, resp.data);
                 }
                 return cb(0, resp.data);
             }, function(resp) {
                 /* Failure */
-                console.log("get:   Error received for ");
+                // console.log("get:   Error received for ");
 
                 return cb(1);
             });

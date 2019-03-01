@@ -1,6 +1,6 @@
 angular.module('ProfileCtrl', []).controller('ProfileController', ['$scope', '$rootScope', '$q',
-'$http', '$location', 'GetPost', 'Helper', function($scope, $rootScope, $q, 
-	$http, $location, GetPost, Helper) {
+'$http', '$location', '$timeout', 'GetPost', 'Helper', function($scope, $rootScope, $q, 
+	$http, $location, $timeout, GetPost, Helper) {
 
 	// $scope.input = {
 	// 	firstName : "",
@@ -15,8 +15,8 @@ angular.module('ProfileCtrl', []).controller('ProfileController', ['$scope', '$r
 	GetPost.get({ url : '/startApp' }, function(err, res) {
 		if (!res.status) {
 			$rootScope.isMainLoader = true;
-			Helper.showAlert('log_in');
-			setTimeout(() => {
+			Helper.createToast(res.error.message, 'warning');
+			$timeout(() => {
 				$location.path('/login');
 			}, 1000);
 		} else {
@@ -82,9 +82,9 @@ angular.module('ProfileCtrl', []).controller('ProfileController', ['$scope', '$r
 		}
 		GetPost.post(data, function(err, res) {
 			if (err){
-				Helper.createToast(res.error.msg, 'warning');
+				Helper.createToast(res.error.message, 'warning');
 			} else {
-				Helper.createToast(res.msg, 'success');
+				Helper.createToast(res.message, 'success');
 			}
 		});
 		$scope.input.oldPassword="";
@@ -103,7 +103,7 @@ angular.module('ProfileCtrl', []).controller('ProfileController', ['$scope', '$r
 			} else {
 				Helper.showAlert('error500');
 			}
-			setTimeout(() => {
+			$timeout(() => {
 				$location.path('/login');
 			}, 1000);
 		});

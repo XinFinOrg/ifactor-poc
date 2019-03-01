@@ -1,5 +1,5 @@
 angular.module('ForgotPasswordCtrl', []).controller('ForgotPasswordController',['$scope', '$rootScope',
-'GetPost', 'Helper', '$location', function($scope, $rootScope, GetPost, Helper, $location) {
+'GetPost', 'Helper', '$location', '$timeout', function($scope, $rootScope, GetPost, Helper, $location, $timeout) {
 
 	$rootScope.isLoggedIn = false;
 
@@ -9,13 +9,13 @@ angular.module('ForgotPasswordCtrl', []).controller('ForgotPasswordController',[
 		GetPost.get(data, function(err, resp) {
 			$rootScope.isMainLoader = true;
 			if (!err) {
-				Helper.createToast(resp.msg, 'success');
+				Helper.createToast(resp.message, 'success');
 			} else if (err && !resp.status) {
-				Helper.createToast(resp.error.msg, 'danger');
+				Helper.createToast(resp.error.message, 'danger');
 			} else {
 				Helper.showAlert('error500');
 			}
-			setTimeout(() => {
+			$timeout(() => {
 				$location.path('/login');
 			}, 2000);
 	    });

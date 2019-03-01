@@ -1,14 +1,14 @@
 	angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',['$scope', '$rootScope', '$http', 
-			'$location', 'GetPost', 'Helper', '$routeParams', 'ngToast', 'Upload',
-			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast, Upload) {
+			'$location', 'GetPost', 'Helper', '$routeParams', 'ngToast', 'Upload', '$timeout',
+			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast, Upload, $timeout) {
 
 	
 	GetPost.get({ url : '/startApp' }, function(err, resp) {
 		if (!resp.status) {
 			$rootScope.isMainLoader = true;
 			$rootScope.isLoggedIn = false;
-			Helper.showAlert('log_in');
-			setTimeout(() => {
+			Helper.createToast(resp.error.message, 'warning');
+			$timeout(() => {
 				$location.path('/login');
 			}, 1000);
 		} else {
@@ -38,7 +38,7 @@
 			} else {
 				Helper.showAlert('error500');
 			}
-			setTimeout(() => {
+			$timeout(() => {
 				$location.path('/login');
 			}, 1000);
 	});
