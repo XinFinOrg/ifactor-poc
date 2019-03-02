@@ -259,6 +259,7 @@ router.post('/signup', (function(req, res) {
 		input.phrase = input.password;
 		input.accountStatus = bcrypt.hashSync(input.email).split('/').join('A');
 		delete input.confirmPassword;
+		delete input.check;
 		bcrypt.hash(input.password, bcrypt.genSaltSync(8), null, function(err, hash) {
 			if(err){
 				console.log('index > signup API > collection.findOne > bcrypt.hash > err, hash:', err, hash);
