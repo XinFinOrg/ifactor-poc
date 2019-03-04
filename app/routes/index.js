@@ -15,6 +15,27 @@ var fs = require('fs');
 var PATH = require('path');
 var bcrypt = require('bcrypt-nodejs');
 
+var axios = require('axios');
+var OAuthClient = require('intuit-oauth');
+//require('dotenv').config();
+//var ngrok =  (process.env.NGROK_ENABLED==="true") ? require('ngrok'):null;
+
+/**
+ * App Variables
+ * @type {null}
+ */
+var oauth2_token_json = null,
+    redirectUri = '';
+
+
+/**
+ * Instantiate new Client
+ * @type {OAuthClient}
+ */
+
+var oauthClient = null;
+>>>>>>> infactor : quickbook integration backend apis
+
 var web3Conf = false;
 if (web3Conf) {
 	var web3Helper = require('./web3Helper');
@@ -1772,7 +1793,48 @@ router.post('/editUserDetails', function(req, res){
 	});
 });
 
+router.post('/setupQuickbook', function(req, res) {
+	if (!req.isAuthenticated()) {
+		return res.send({status : false});
+	} else {
+	    oauthClient = new OAuthClient({
+	        clientId : "Q05EwswDc0WgDcmclnYWcvWLYkCE2jkrUCO3UEWBIeHOQapU4P",
+	        clientSecret : "aEsuogKoJ8tvkoopOVWEj4UTPKZFlL0lYqVupVIP",
+	        environment : "sandbox",
+	        redirectUri : "http://localhost:3000/connect"
+	    });
+
+	    var authUri = oauthClient.authorizeUri({scope:[OAuthClient.scopes.Accounting],state:'intuit-test'});
+	    res.send({status : true, authUrl : authUri});
+	}
+});
+
+
+router.get('/connect', function(req, res) {
+    var companyID = oauthClient.getToken().realmId;
+    var url = oauthClient.environment == 'sandbox' ? OAuthClient.environment.sandbox : OAuthClient.environment.production;
+
+    oauthClient.createToken(req.url)
+       .then(function(authResponse) {
+			//var authToken = oauthClient.getToken().getToken();
+             oauth2_token_json = JSON.stringify(authResponse.getJson(), null,2);
+             console.log('oauth2_token_json', oauth2_token_json);
+		     oauthClient.makeApiCall({url: url + 'v3/company/' + companyID +'/cdc?entities=Invoice&changedSince=2015-03-02'})
+		        .then(function(authResponse1){
+		            console.log("The response for API call is :"+JSON.stringify(authResponse1));
+		            res.send(JSON.parse(authResponse1.text()));
+		        })
+		        .catch(function(e) {
+		            console.error('authResponse1', e);
+		        });
+         })
+        .catch(function(e) {
+             console.error(e);
+         });
+});
+
 router.get('*', function(req, res) {
+	console.log('load index')
 	res.sendfile('./public/index.html');
 });
 
