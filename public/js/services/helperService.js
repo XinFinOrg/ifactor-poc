@@ -272,7 +272,7 @@ angular.module('HelperService', []).factory('Helper', ['ngToast', '$rootScope', 
             class : 'danger'
         },
         'rate_financer_mandatory' : {
-            msg : 'You must rate Financier before submitting',
+            msg : 'You must rate Financer before submitting',
             class : 'danger'
         },
         'invoice_buyer' : {
