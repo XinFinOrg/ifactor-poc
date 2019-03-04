@@ -79,7 +79,64 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 
 		$scope.templateUrlDashboard = $scope.dashboardUrl[type];
 	};
-	
+
+	$scope.name = $rootScope.name;
+	$scope.urlMap($rootScope.userType);
+
+
+	GetPost.get({ url : '/startApp' }, function(err, resp) {
+		if (!resp.status) {
+			$location.path('/login');
+		} else {
+			console.log(resp);
+			$scope.urlMap(resp.data.userType);
+			$rootScope.userType = resp.data.userType;
+			$scope.getInvoices();
+		}
+    });
+
+	var openPopup = function(authUri) {
+		 window.open(authUri);
+	    /*(function() {
+	        var parameters = "location=1,width=800,height=650";
+	        parameters += ",left=" + (screen.width - 800) / 2 + ",top=" + (screen.height - 650) / 2;
+	        var win = window.open(authUri, 'connectPopup', parameters);
+	        var pollOAuth = window.setInterval(function () {
+	            try {
+	                if (win.document.URL.indexOf("code") != -1) {
+	                    window.clearInterval(pollOAuth);
+	                    win.close();
+	                    location.reload();
+	                }
+	            } catch (e) {
+	                console.log(e)
+	            }
+	        }, 100);
+	    })();*/
+	};
+
+	$scope.setupQbk = function() {
+		/*var data = {
+			url : '/postpaySupplier'
+		}*/
+		GetPost.post({ url : '/setupQuickbook' }, function(err, resp) {
+			console.log('setupQuickbook', resp)
+			if (!resp.status) {
+				Helper.showAlert('qbk-fail');
+			} else {
+				console.log('resp auth', resp.authUri);
+				//window.open('https://www.google.com', '_blank');
+				window.open(resp.authUrl, "_blank");
+			}
+	    });
+	};
+
+	GetPost.get({ url : '/getBalance' }, function(err, resp) {
+		if (resp.status) {
+			$rootScope.balance = resp.data.balance;
+		}
+    });
+
 	var invoiceStatusMap = Helper.invoiceStatusMap;
 
 	$scope.setStatusClasses = function (data) {

@@ -321,8 +321,15 @@ angular.module('HelperService', []).factory('Helper', ['ngToast', '$rootScope', 
         'incorrect_password': {
             msg: 'Please enter your current password correct',
             class: 'warning'
+        },
+        'qbk-success' : {
+            msg : 'Quickbook is Connected',
+            class : 'success'
+        },
+        'qbk-fail' : {
+            msg : 'Error Connecting Quickbook',
+            class : 'danger'
         }
-        
     };
 
     var createToast = function(msg, className) {
