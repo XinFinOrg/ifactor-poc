@@ -11,7 +11,6 @@ if (typeof web3 !== 'undefined') {
     var provider = new Web3.providers.HttpProvider("http://localhost:22001");
     web3 = new Web3(provider);
 }
-var provider = new Web3.providers.HttpProvider("http://localhost:22001");
 
     if (web3 && web3.isConnected()) {
         console.log('web3 is Connected')

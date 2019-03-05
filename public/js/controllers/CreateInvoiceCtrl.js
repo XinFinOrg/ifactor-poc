@@ -11,27 +11,37 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
         }
     };
 }).controller('CreateInvoiceController',['$scope', '$rootScope',
- '$location', '$timeout', 'GetPost', 'Helper', 'Upload',  function($scope, $rootScope,  
- 	$location, $timeout, GetPost, Helper, Upload) {
+ '$location', '$timeout', 'GetPost', 'Helper', 'Upload', '$window',  function($scope, $rootScope,  
+ 	$location, $timeout, GetPost, Helper, Upload, $window) {
 
 	GetPost.get({ url : '/startApp' }, function(err, res) {
 		if (!res.status) {
+			$rootScope.isLoggedIn = false;
+			$scope.showHeaderOptions = false;
 			$rootScope.isMainLoader = true;
 			Helper.createToast(res.error.message, 'warning');
 			$timeout(() => {
-				$location.path('/login');
+				$window.location.href = '/login';
 			}, 1000);
 		} else {
-			$rootScope.showHeaderOptions = true;
 			$rootScope.isLoggedIn = true;
+			$rootScope.isMainLoader = false;
+			$scope.showHeaderOptions = true;
+			$scope.showToggle = false;
+			$scope.dropdownMenuStyle = {'display':'none'};
+			$rootScope.userType = resp.data.userType;
+			$rootScope.name = resp.data.name;
+
+			if ($rootScope.balance == undefined){
+				GetPost.get({ url : '/getBalance' }, function(err, resp) {
+					if (resp.status) {
+						$rootScope.balance = resp.data.balance;
+					}
+				});
+			}
+
 			GetPost.get({url : '/getBuyerList'}, function(err, docs) {
-				console.log(docs);
-				$scope.companyOptions = docs.data;
-				console.log('init : companyNameData', $scope.companyNameData)
-				if (Helper.isObjEmpty($scope.companyNameData) && $scope.companyOptions &&
-					$scope.companyOptions.length > 0) {
-					$scope.companyNameData = $scope.companyOptions[0];
-				}
+				$scope.buyerList = docs.data;
 			});
 		}
 	});
@@ -47,14 +57,14 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 				Helper.showAlert('error500');
 			}
 			$timeout(() => {
-				$location.path('/login');
+				$window.location.href = '/login';
 			}, 1000);
 	});
 	}
 
 	$scope.date = new Date();
 	$scope.eventSources = [];
-	$scope.companyOptions = [];
+	$scope.buyerList = [];
  	$scope.companyTypeOptions = Helper.companyTypeOptions();
 	$scope.companyNameData = {};
 	$scope.minPayableDate = new Date().toDateString();
@@ -104,10 +114,10 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 
 	var setCompanyData = function() {
 		var input = $scope.input;
-		console.log('$scope.companyOptions')
-		var index = getArrIndexByVal($scope.companyOptions, 'email', input.buyerEmail);
-		console.log('buyer', input.buyerEmail, 'index', index, 'buyers', $scope.companyOptions)
-		$scope.companyNameData = index >= 0 ? $scope.companyOptions[index] : {};
+		console.log('$scope.buyerList')
+		var index = getArrIndexByVal($scope.buyerList, 'email', input.buyerEmail);
+		console.log('buyer', input.buyerEmail, 'index', index, 'buyers', $scope.buyerList)
+		$scope.companyNameData = index >= 0 ? $scope.buyerList[index] : {};
 	}
 
     $scope.getDatesDiff = function(date) {
@@ -151,10 +161,10 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 		$scope.isSubmitNowButtonDisabled = true;
     	$scope.input.state = type;
     	$scope.input = $scope.getBuyerData(input);
-    	if (!validateInvoice()) {
-			$scope.isSubmitNowButtonDisabled = false;
-    		return;
-    	}
+    	// if (!validateInvoice()) {
+		// 	$scope.isSubmitNowButtonDisabled = false;
+    	// 	return;
+    	// }
 
 	    Upload.upload({
 	        url: '/createInvoice',
@@ -184,16 +194,16 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 	    });
 	};
 
-	var validateInvoice = function() {
-		var invoice = $scope.input;
-		var errors = 0;
-		(!$scope.companyNameData || !$scope.companyNameData.email) ?
-			(Helper.showAlert('invoice_buyer'), errors++) : undefined;
-		!invoice.payableDate ? (errors++, Helper.showAlert('invoice_payableDate')) : undefined;
-		!invoice.invoiceNo ? (Helper.showAlert('invoiceNo'), errors++) : undefined;
-		!invoice.invoiceAmount ? (Helper.showAlert('invoiceAmount'), errors++) : undefined;
-		return !errors;
-	}
+	// var validateInvoice = function() {
+	// 	var invoice = $scope.input;
+	// 	var errors = 0;
+	// 	(!$scope.companyNameData || !$scope.companyNameData.email) ?
+	// 		(Helper.showAlert('invoice_buyer'), errors++) : undefined;
+	// 	!invoice.payableDate ? (errors++, Helper.showAlert('invoice_payableDate')) : undefined;
+	// 	!invoice.invoiceNo ? (Helper.showAlert('invoiceNo'), errors++) : undefined;
+	// 	!invoice.invoiceAmount ? (Helper.showAlert('invoiceAmount'), errors++) : undefined;
+	// 	return !errors;
+	// }
 
 	$scope.uploadImages = function (file) {
 	    Upload.upload({

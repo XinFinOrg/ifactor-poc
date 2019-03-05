@@ -75,7 +75,6 @@ angular.module('HelperService', []).factory('Helper', ['ngToast', '$rootScope', 
 
     var companyTypeOptions = function() {
         return [
-            '',
             'Major Chemicals',
             'Agricultural Chemicals',
             'Steel/Iron Ore',

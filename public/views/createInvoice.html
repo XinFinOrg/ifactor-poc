@@ -150,13 +150,14 @@ select.soflow, select.soflow-color
                             <form name="userForm" novalidate>
                                 <div class="row col-md-12">
                                     <div class="col-md-9 has-float-label">
-                                        <div class="form-group" ng-class="{ 'has-error' : !userForm.companyNameData.$touched }">
-                                            <select class="soflow form-control input-lg" ng-model="companyNameData" id="companyNameData" name="companyNameData"
-                                                ng-options="x.firstName for x in companyOptions" style="padding-top: 20px; padding-left: 18px;"
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.companyNameData.$touched && userForm.companyNameData.$invalid }">
+                                            <select class="soflow form-control input-lg" ng-model="input.companyNameData" id="companyNameData" name="companyNameData"
+                                                ng-options="x.firstName for x in buyerList" style="padding-top: 20px; padding-left: 18px;"
                                                 ng-required="true">
                                             </select>
-                                            <label class="labelText" for="companyNameData">Buyer Name</label>
-                                            <p ng-show="!userForm.companyNameData.$touched" class="help-block">Please select a buyer.</p>
+                                            <label class="labelText" for="companyNameData">Buyer name</label>
+                                            <p ng-show="!userForm.companyNameData.$touched" class="help-block">Please select a buyer</p>
+                                            <p ng-show="userForm.companyNameData.$touched && userForm.companyNameData.$invalid" class="help-block">Please select a buyer</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3 has-float-label">
@@ -165,27 +166,29 @@ select.soflow, select.soflow-color
                                                 ng-options="x for x in companyTypeOptions" style="padding-top: 20px; padding-left: 18px;"
                                                 ng-required="true">
                                             </select>
-                                            <label class="labelText" for="companyTypeOptions">Company Type</label>
-                                            <p ng-show="!userForm.companyTypeOptions.$touched" class="help-block">Please select a type.</p>
-                                            <p ng-show="userForm.companyTypeOptions.$touched && userForm.companyTypeOptions.$invalid" class="help-block">Please select a type.</p>
+                                            <label class="labelText" for="companyTypeOptions">Company type</label>
+                                            <p ng-show="!userForm.companyTypeOptions.$touched" class="help-block">Please select a type</p>
+                                            <p ng-show="userForm.companyTypeOptions.$touched && userForm.companyTypeOptions.$invalid" class="help-block">Please select a type</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row col-md-12">
-                                    <div class="col-md-6 has-float-label">                            
-                                            <!-- ng-pattern="^[a-zA-Z][a-zA-Z\s]*$"-->
-                                        <div class="form-group" ng-class="{ 'has-error' : userForm.contactName.$touched && userForm.contactName.$invalid }">
-                                            <input class="form-control input-lg" id="contactName" name="contactName" ng-pattern ="/^[a-zA-Z\s]*$/" ng-model="input.contactName" placeholder=" " ng-required="true"/>
-                                            <label class="labelText" for="contactName">Contact Name</label>
-                                            <p ng-show="userForm.contactName.$touched && userForm.contactName.$invalid" class="help-block">Your contact name is required.</p>
-                                            <p ng-show="userForm.contactName.$error.pattern" class="help-block">Only alphabets allowed.</p>
+                                    <div class="col-md-6 has-float-label">
+                                        <div class="form-group" ng-class="{ 'has-error' : (!contactNameFocused && userForm.contactName.$touched && userForm.contactName.$invalid && !userForm.contactName.$error.pattern) || (!contactNameFocused && userForm.contactName.$error.pattern)}">
+                                            <input class="form-control input-lg" id="contactName" name="contactName" ng-pattern ="/^(?! )[A-Za-z]*[ ]{0,1}[A-Za-z]*(?<! )$/" ng-model="input.contactName" ng-trim="false" ng-focus="contactNameFocused = true" ng-blur="contactNameFocused = false" placeholder=" " ng-required="true"/>
+                                            <label class="labelText" for="contactName">Contact name</label>
+                                            <p ng-if="!contactNameFocused && userForm.contactName.$touched && userForm.contactName.$invalid && !userForm.contactName.$error.pattern" class="help-block">Your name is required</p>
+                                            <p ng-if="userForm.contactName.$error.pattern" class="help-block">Numbers are not allowed, no spaces at either ends too<br>Maximum two words separate by a space</p>
+
+                                            <!-- <p ng-show="userForm.contactName.$touched && userForm.contactName.$invalid" class="help-block">Your contact name is required.</p> -->
+                                            <!-- <p ng-show="userForm.contactName.$error.pattern" class="help-block">Only alphabets allowed.</p> -->
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-3 has-float-label">
-                                        <div class="form-group" ng-class="{ 'has-error' : userForm.companyPhone.$touched && userForm.companyPhone.$invalid }">
+                                        <div class="form-group" ng-class="{ 'has-error' : (!companyPhoneFocused && userForm.companyPhone.$touched && userForm.companyPhone.$invalid && !userForm.companyPhone.$error.pattern) || (!companyPhoneFocused && userForm.companyPhone.$error.pattern)}">
                                             <div class="input-group">
-                                                <span class="input-group-addon leftroundspan border-red" style="cursor: pointer">
+                                                <span class="input-group-addon leftroundspan border-red" style="cursor: pointer" ng-style="companyPhoneFocused? style={'border-color': '#6175d6'}: {}">
                                                     <select>
                                                         <option value="+65">+65</option>
                                                         <option value="+91">+91</option>
@@ -193,19 +196,22 @@ select.soflow, select.soflow-color
                                                 </span>
                                                 
                                                 <input class="form-control input-lg roundinput" id="companyPhone" name="companyPhone" ng-model="input.companyPhone"
-                                                     ng-pattern="/^[0-9]*$/" placeholder=" " ng-required="true"/>
+                                                     ng-pattern="/^[0-9]*$/" ng-focus="companyPhoneFocused = true" ng-blur="companyPhoneFocused = false" placeholder=" " ng-required="true"/>
                                                 <label for="companyPhone" style="padding-left: 58px;">Company Phone</label>
                                             </div>
-                                            <p ng-show="userForm.companyPhone.$touched && userForm.companyPhone.$invalid" class="help-block">Your contact no is required.</p>
-                                            <p ng-show="userForm.companyPhone.$error.pattern" class="help-block">Only numbers allowed.</p>
+                                            <p ng-if="!companyPhoneFocused && userForm.companyPhone.$touched && userForm.companyPhone.$invalid && !userForm.companyPhone.$error.pattern" class="help-block">Your contact number is required</p>
+                                            <p ng-if="userForm.companyPhone.$error.pattern" class="help-block">Only numbers allowed</p>
+                                            <!-- <p ng-show="userForm.companyPhone.$touched && userForm.companyPhone.$invalid" class="help-block">Your contact no is required.</p> -->
+                                            <!-- <p ng-show="userForm.companyPhone.$error.pattern" class="help-block">Only numbers allowed.</p> -->
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-3 has-float-label">
-                                        <div class="form-group" ng-class="{ 'has-error' : userForm.companyEmail.$touched && userForm.companyEmail.$invalid }">
-                                            <input class="form-control input-lg" name="companyEmail" id="companyEmail" type="email" ng-model="input.companyEmail" placeholder=" " ng-required="true"/>
+                                        <div class="form-group" ng-class="{ 'has-error' : (!emailFocused && userForm.companyEmail.$touched && userForm.companyEmail.$invalid && !userForm.companyEmail.$error.pattern) || (!emailFocused && userForm.companyEmail.$error.pattern)}">
+                                            <input class="form-control input-lg" id="companyEmail" name="companyEmail" ng-pattern = "/^(?! )[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]{2,})+(?<! )$/" type="email"  ng-focus="emailFocused = true" ng-blur="emailFocused = false" ng-model="input.companyEmail" placeholder=" " ng-required="true">
                                             <label class="labelText" for="companyEmail">Company Email</label>
-                                            <p ng-show="userForm.companyEmail.$touched && userForm.companyEmail.$invalid" class="help-block">Invalid email, please enter valid email.</p>
+                                            <p ng-if="!emailFocused && userForm.companyEmail.$touched && userForm.companyEmail.$invalid && !userForm.companyEmail.$error.pattern" class="help-block">Your email is required</p>
+                                            <p ng-if="!emailFocused && userForm.companyEmail.$error.pattern" class="help-block">Invalid email, please enter valid email</p>
                                         </div>
                                     </div>
                                 </div>
@@ -441,8 +447,8 @@ select.soflow, select.soflow-color
 
             </div>
             <div class="pull-right marg_r_10">
-                <button type="submit" class="btn btn-primary btn-corner" ng-disabled="userForm.$invalid || userForm2.$invalid || isSubmitNowButtonDisabled" ng-click="submitInvoice(input, 'draft')">Save Now</button>
-                <button type="submit" class="btn btn-primary btn-corner" ng-disabled="userForm.$invalid || userForm2.$invalid || isSubmitNowButtonDisabled" ng-click="submitInvoice(input, 'invoice_created')">Submit
+                <button type="submit" class="btn btn-primary btn-corner" ng-disabled="userForm.$invalid || userForm2.$invalid || isSubmitNowButtonDisabled" ng-click="submitInvoice('draft')">Save Now</button>
+                <button type="submit" class="btn btn-primary btn-corner" ng-disabled="userForm.$invalid || userForm2.$invalid || isSubmitNowButtonDisabled" ng-click="submitInvoice('invoice_created')">Submit
                     Now</button>
             </div>
         </div>

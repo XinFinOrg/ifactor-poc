@@ -2,7 +2,11 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 			'$location', 'GetPost', 'Helper', '$timeout', '$window',
 			function($scope, $rootScope, $location, GetPost, Helper, $timeout, $window) {
 	
-	$rootScope.isLoggedIn = false;
+	GetPost.get({ url : '/startApp' }, function(err, resp) {
+		if (resp.status) {
+			$window.location.href = '/login';
+		}
+	});
 	$rootScope.isMainLoader = false;
 	$rootScope.showHeaderOptions = true;
 	if(!angular.equals($location.search(), {})){

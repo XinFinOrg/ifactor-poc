@@ -1,32 +1,38 @@
 	angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',['$scope', '$rootScope', '$http', 
-			'$location', 'GetPost', 'Helper', '$routeParams', 'ngToast', 'Upload', '$timeout',
-			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast, Upload, $timeout) {
+			'$location', 'GetPost', 'Helper', '$routeParams', 'ngToast', 'Upload', '$timeout', '$window',
+			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast, Upload, $timeout, $window) {
 
 	
 	GetPost.get({ url : '/startApp' }, function(err, resp) {
 		if (!resp.status) {
-			$rootScope.isMainLoader = true;
 			$rootScope.isLoggedIn = false;
+			$scope.showHeaderOptions = false;
+			$rootScope.isMainLoader = true;
 			Helper.createToast(resp.error.message, 'warning');
 			$timeout(() => {
-				$location.path('/login');
+				$window.location.href = '/login';
 			}, 1000);
 		} else {
-
+			$rootScope.isLoggedIn = true;
+			$rootScope.isMainLoader = false;
+			$scope.showHeaderOptions = true;
 			$scope.showToggle = false;
 			$scope.dropdownMenuStyle = {'display':'none'};
-			// console.log('userType', $rootScope.userType, 'invoiceId', $rootScope.invoiceId);
-			$scope.urlMap(resp.data.userType);
 			$rootScope.userType = resp.data.userType;
-			// console.log('invoiceId', $rootScope.invoiceId)
+			$rootScope.name = resp.data.name;
+
+			if ($rootScope.balance == undefined){
+				GetPost.get({ url : '/getBalance' }, function(err, resp) {
+					if (resp.status) {
+						$rootScope.balance = resp.data.balance;
+					}
+				});
+			}
+			
+			$scope.urlMap(resp.data.userType);
 			$scope.getInvoiceDetails();
 		}
 	});
-
-	$scope.toggleDropdown = function() {
-		$scope.showToggle = !$scope.showToggle;	
-		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
-	}
 
 	$scope.logOut = function () {
 		$scope.showHeaderOptions = false;
@@ -39,9 +45,14 @@
 				Helper.showAlert('error500');
 			}
 			$timeout(() => {
-				$location.path('/login');
+				$window.location.href = '/login';
 			}, 1000);
 	});
+	}
+
+	$scope.toggleDropdown = function() {
+		$scope.showToggle = !$scope.showToggle;	
+		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
 	}
 
 	$scope.priceSlider = 100;

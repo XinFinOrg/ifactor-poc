@@ -15,7 +15,6 @@ auth.init = function () {
     });
     passport.deserializeUser(function(id, done) {
         User.findById(id, function(err, user){
-            console.log('local > auth.use() > passport.deserializeUser > err, user: ', err, user);
             if(!err) done(null, user);
             else done(err, null);
         })

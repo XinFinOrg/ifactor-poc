@@ -1,25 +1,27 @@
 angular.module('ProfileCtrl', []).controller('ProfileController', ['$scope', '$rootScope', '$q',
-'$http', '$location', '$timeout', 'GetPost', 'Helper', function($scope, $rootScope, $q, 
-	$http, $location, $timeout, GetPost, Helper) {
-
-	// $scope.input = {
-	// 	firstName : "",
-	// 	lastName : "",
-	// 	email : "",
-	// 	address: "",
-	// 	contactNo : ""
-	// }
+'$http', '$location', '$timeout', 'GetPost', 'Helper', '$window', function($scope, $rootScope, $q, 
+	$http, $location, $timeout, GetPost, Helper, $window) {
 
 	let dbValues;
 
 	GetPost.get({ url : '/startApp' }, function(err, res) {
 		if (!res.status) {
+			$rootScope.isLoggedIn = false;
+			$scope.showHeaderOptions = false;
 			$rootScope.isMainLoader = true;
 			Helper.createToast(res.error.message, 'warning');
 			$timeout(() => {
-				$location.path('/login');
+				$window.location.href = '/login';
 			}, 1000);
 		} else {
+			$rootScope.isLoggedIn = true;
+			$rootScope.isMainLoader = false;
+			$scope.showHeaderOptions = true;
+			$scope.showToggle = false;
+			$scope.dropdownMenuStyle = {'display':'none'};
+			$rootScope.userType = resp.data.userType;
+			$rootScope.name = resp.data.name;
+
 			if ($rootScope.balance == undefined){
 				GetPost.get({ url : '/getBalance' }, function(err, resp) {
 					if (resp.status) {
@@ -37,14 +39,26 @@ angular.module('ProfileCtrl', []).controller('ProfileController', ['$scope', '$r
 					dbValues = angular.copy($scope.input);
 				}
 			});
-			$scope.showHeaderOptions = true;
-			$scope.showToggle = false;
-			$scope.dropdownMenuStyle = {'display':'none'};
-			$rootScope.userType = res.data.userType;
-			$rootScope.name = res.data.name;
 		}
 	});
 
+	$scope.logOut = function () {
+		$scope.showHeaderOptions = false;
+		var data = { url : '/logout' };
+		GetPost.get(data, function(err, resp) {
+			$rootScope.isMainLoader = true;
+			if(resp.status){
+				Helper.showAlert('logged_out');
+			} else {
+				Helper.showAlert('error500');
+			}
+			$timeout(() => {
+				$window.location.href = '/login';
+			}, 1000);
+		});
+
+	}
+	
 	$scope.toggleDropdown = function() {
 		$scope.showToggle = !$scope.showToggle;	
 		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
@@ -92,23 +106,5 @@ angular.module('ProfileCtrl', []).controller('ProfileController', ['$scope', '$r
 		$scope.input.confirmPassword="";
 		$scope.passwordForm.$setUntouched();
 	}
-
-	$scope.logOut = function () {
-		$scope.showHeaderOptions = false;
-		var data = { url : '/logout' };
-		GetPost.get(data, function(err, resp) {
-			$rootScope.isMainLoader = true;
-			if(resp.status){
-				Helper.showAlert('logged_out');
-			} else {
-				Helper.showAlert('error500');
-			}
-			$timeout(() => {
-				$location.path('/login');
-			}, 1000);
-		});
-
-	}
-
 
 }]);

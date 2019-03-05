@@ -75,7 +75,7 @@
                                             <div class = "input-group password-input-group">
                                                 <input type="{{showHideType}}" name="password" id="password" class="form-control input-lg" ng-model="input.password" ng-minlength="6" ng-maxlength="15" ng-focus="passwordFocused = true" ng-blur="passwordFocused = false" placeholder=" " ng-required="true"/>
                                                 <label for="password">Password</label>
-                                                <span class="input-group-addon rightroundspan" ng-click="togglePasswordField()" >
+                                                <span class="input-group-addon rightroundspan border-red" ng-click="togglePasswordField()" ng-style="passwordFocused? style={'border-color': '#6175d6'}: {}">
                                                 <span class="{{showHideClass}}" style="cursor:pointer"></span>
                                                     </span>
                                             </div>

@@ -2,7 +2,11 @@ angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$
 'GetPost', 'Helper', '$location', '$timeout', '$window', function($scope, $rootScope,
  	GetPost, Helper, $location, $timeout, $window) {
 
-	$rootScope.isLoggedIn = false;
+	GetPost.get({ url : '/startApp' }, function(err, resp) {
+		if (resp.status) {
+			$window.location.href = '/home';
+		}
+	});
 	$rootScope.isMainLoader = true;
 	$rootScope.showHeaderOptions = true;
 	const email = $location.search().email;

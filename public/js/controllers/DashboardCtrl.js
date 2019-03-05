@@ -5,15 +5,22 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	
 	GetPost.get({ url : '/startApp' }, function(err, resp) {
 		if (!resp.status) {
+			$rootScope.isLoggedIn = false;
 			$scope.showHeaderOptions = false;
 			$rootScope.isMainLoader = true;
 			Helper.createToast(resp.error.message, 'warning');
 			$timeout(() => {
-				$location.path('/login');
+				$window.location.href = '/login';
 			}, 1000);
 		} else {
-			Helper.checkForMessage();
+			$rootScope.isLoggedIn = true;
+			$rootScope.isMainLoader = false;
 			$scope.showHeaderOptions = true;
+			$scope.showToggle = false;
+			$scope.dropdownMenuStyle = {'display':'none'};
+			$rootScope.userType = resp.data.userType;
+			$rootScope.name = resp.data.name;
+
 			if ($rootScope.balance == undefined){
 				GetPost.get({ url : '/getBalance' }, function(err, resp) {
 					if (resp.status) {
@@ -21,15 +28,12 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 					}
 				});
 			}
-			$rootScope.isMainLoader = false;
-			$rootScope.userType = resp.data.userType;
-			$rootScope.name = resp.data.name;
-			$scope.urlMap(resp.data.userType);
+			
 			$scope.date = new Date();
 			$scope.eventSources = [];
-			$scope.showToggle = false;
-			$scope.dropdownMenuStyle = {'display':'none'};
+			$scope.urlMap(resp.data.userType);
 			$scope.getInvoices();
+			Helper.checkForMessage();
 			if (!$rootScope.mainInvoiceIndex) {
 				$rootScope.mainInvoiceIndex = 0;
 			}
@@ -37,12 +41,6 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 			$scope.invoiceData = [];
 		}
 	});
-
-	
-	$scope.toggleDropdown = function() {
-		$scope.showToggle = !$scope.showToggle;	
-		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
-	}
 
 	$scope.logOut = function () {
 		$scope.showHeaderOptions = false;
@@ -55,10 +53,17 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 				Helper.showAlert('error500');
 			}
 			$timeout(() => {
-				$location.path('/login');
+				$window.location.href = '/login';
 			}, 1000);
 	});
 	}
+
+	
+	$scope.toggleDropdown = function() {
+		$scope.showToggle = !$scope.showToggle;	
+		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
+	}
+
 
 	$scope.urlMap = function(type) {
 		if (type == 'createInvoice') {
