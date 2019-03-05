@@ -2,12 +2,12 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 			'$location', 'GetPost', 'Helper', '$timeout', '$window',
 			function($scope, $rootScope, $location, GetPost, Helper, $timeout, $window) {
 	
-	GetPost.get({ url : '/startApp' }, function(err, resp) {
-		if (resp.status) {
+	GetPost.get({ url : '/startApp' }, function(err, res) {
+		if (res.status) {
 			var data = { url : '/logout' };
-			GetPost.get(data, function(err, resp) {
+			GetPost.get(data, function(err, res) {
 				$rootScope.isMainLoader = true;
-				if(resp.status){
+				if(res.status){
 					Helper.showAlert('logged_out');
 				} else {
 					Helper.showAlert('error500');
@@ -58,18 +58,18 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 				password : $scope.input.password,
 				url : '/login'
 			}
-			GetPost.post(data, function(err, resp) {
+			GetPost.post(data, function(err, res) {
 				$rootScope.isMainLoader = true;
 				if (!err) {
 					$rootScope.showHeaderOptions = false;
 					$rootScope.isLoggedIn = true;
-					Helper.createToast(resp.message, 'success');
+					Helper.createToast(res.message, 'success');
 					$timeout(() => {
 						$location.path('/dashboard');
 					}, 1000);
 				} else {
-					if (err && !resp.status) {
-						Helper.createToast(resp.error.message, 'danger');
+					if (err && !res.status) {
+						Helper.createToast(res.error.message, 'danger');
 					} else {
 						Helper.showAlert('error500');
 					}

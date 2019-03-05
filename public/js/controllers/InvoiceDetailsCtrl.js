@@ -3,12 +3,12 @@
 			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast, Upload, $timeout, $window) {
 
 	
-	GetPost.get({ url : '/startApp' }, function(err, resp) {
-		if (!resp.status) {
+	GetPost.get({ url : '/startApp' }, function(err, res) {
+		if (!res.status) {
 			$rootScope.isLoggedIn = false;
 			$scope.showHeaderOptions = false;
 			$rootScope.isMainLoader = true;
-			Helper.createToast(resp.error.message, 'warning');
+			Helper.createToast(res.error.message, 'warning');
 			$timeout(() => {
 				$window.location.href = '/login';
 			}, 1000);
@@ -18,18 +18,18 @@
 			$scope.showHeaderOptions = true;
 			$scope.showToggle = false;
 			$scope.dropdownMenuStyle = {'display':'none'};
-			$rootScope.userType = resp.data.userType;
-			$rootScope.name = resp.data.name;
+			$rootScope.userType = res.data.userType;
+			$rootScope.name = res.data.name;
 
 			if ($rootScope.balance == undefined){
-				GetPost.get({ url : '/getBalance' }, function(err, resp) {
-					if (resp.status) {
-						$rootScope.balance = resp.data.balance;
+				GetPost.get({ url : '/getBalance' }, function(err, res) {
+					if (res.status) {
+						$rootScope.balance = res.data.balance;
 					}
 				});
 			}
 			
-			$scope.urlMap(resp.data.userType);
+			$scope.urlMap(res.data.userType);
 			$scope.getInvoiceDetails();
 		}
 	});
@@ -37,9 +37,9 @@
 	$scope.logOut = function () {
 		$scope.showHeaderOptions = false;
 		var data = { url : '/logout' };
-		GetPost.get(data, function(err, resp) {
+		GetPost.get(data, function(err, res) {
 			$rootScope.isMainLoader = true;
-			if(resp.status){
+			if(res.status){
 				Helper.showAlert('logged_out');
 			} else {
 				Helper.showAlert('error500');
@@ -142,12 +142,12 @@
 		url : '/getInvoiceDetails',
 		invoiceId : $rootScope.invoiceId || $routeParams.invoiceId
 	};
-	GetPost.post(data, function(err, resp) {
+	GetPost.post(data, function(err, res) {
 		console.log('invoiceDetails response');
-		$scope.invoiceData = resp.data.invoice;
-		$rootScope.balance = resp.data.balance;
-		$scope.invoiceTxHistory = resp.data.invoiceHistory;
-		$scope.allEvents = resp.data.otherEvents;
+		$scope.invoiceData = res.data.invoice;
+		$rootScope.balance = res.data.balance;
+		$scope.invoiceTxHistory = res.data.invoiceHistory;
+		$scope.allEvents = res.data.otherEvents;
 		for(i = 0; i < $scope.allEvents.length; i++){
 			if ($scope.allEvents[i].args.state == undefined || $scope.allEvents[i].args.state == ""){
 				continue;
@@ -163,7 +163,7 @@
 			
 			
 		}
-		$scope.transferEvents = resp.data.transferEvents;
+		$scope.transferEvents = res.data.transferEvents;
 		mapInvoiceHistory($scope.invoiceTxHistory);
 		$scope.setCurrentStage();
 	});
@@ -238,9 +238,9 @@
 			invoiceId : $rootScope.invoiceId,
 			invoiceAmount : $scope.invoiceData.invoiceAmount
 		}
-		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_request');
-    		console.log(resp);
+		GetPost.post(data, function(err, res) {
+			!res.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_request');
+    		console.log(res);
     		// 'ifactor_request'
 			$scope.getInvoiceDetails();
 	    });
@@ -257,8 +257,8 @@
 			remark : $scope.proposalActionForm.remark
 		}
 		
-		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposal_rejected');
+		GetPost.post(data, function(err, res) {
+			!res.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposal_rejected');
 			$scope.getInvoiceDetails();
 	    });
 
@@ -277,8 +277,8 @@
 			invoiceId : $rootScope.invoiceId,
 			buyerInvoiceRemark : $scope.invoiceActionForm.remark
 		}
-		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : 
+		GetPost.post(data, function(err, res) {
+			!res.status ? Helper.showAlert('error500') : 
 				Helper.createToast('You approved invoice for ' + $rootScope.invoiceId, 'success');
 			$scope.invoiceActionForm = {};
 			$scope.getInvoiceDetails();
@@ -292,8 +292,8 @@
 			url : '/rejectInvoice',
 			invoiceId : $rootScope.invoiceId
 		}
-		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : 
+		GetPost.post(data, function(err, res) {
+			!res.status ? Helper.showAlert('error500') : 
 				Helper.createToast('You rejected invoice for ' + $rootScope.invoiceId, 'danger');
     		// invoice_rejected
 			$scope.getInvoiceDetails();
@@ -321,8 +321,8 @@
 			buyerAddress : $scope.invoiceData.buyerAddress,
 			invoiceAmount : $scope.invoiceData.invoiceAmount
 		}
-		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('payment_success');
+		GetPost.post(data, function(err, res) {
+			!res.status ? Helper.showAlert('error500') : Helper.showAlert('payment_success');
 			$scope.getInvoiceDetails();
 	    });
 
@@ -354,13 +354,13 @@
 				input :	$scope.acceptFactoringForm,
 				ifactorProposalDocs : ifactorProposalDocs
 	        }
-	    }).then(function (resp) {
+	    }).then(function (res) {
 			console.log($scope.ifactorProposalDocs);
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposed');
+			!res.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposed');
 			$scope.factorFlags.proceedIfactorRequest = false;
 			$scope.getInvoiceDetails();
-	    }, function (resp) {
-	        console.log('Error status: ' + resp.status);
+	    }, function (res) {
+	        console.log('Error status: ' + res.status);
 	    }, function (evt) {
 	        //console.log(evt);
 	    });
@@ -379,8 +379,8 @@
 			invoiceId : $rootScope.invoiceId,
 			remark : $scope.proposalActionForm.remark
 		}
-		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_rejected');
+		GetPost.post(data, function(err, res) {
+			!res.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_rejected');
 			$scope.factorFlags.proceedIfactorRequest = false;
 			$scope.factorFlags.rejectIfactorRequest = false;
     		// 'ifactor_rejected'
@@ -394,8 +394,8 @@
 				invoiceId : $rootScope.invoiceId,
 				remark : $scope.proposalActionForm.remark
 		}
-		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposal_accepted');
+		GetPost.post(data, function(err, res) {
+			!res.status ? Helper.showAlert('error500') : Helper.showAlert('ifactor_proposal_accepted');
 			$scope.getInvoiceDetails();
 	    });
 	};
@@ -409,8 +409,8 @@
 			financerAddress : $scope.invoiceData.financerAddress,
 			buyerAddress : $scope.invoiceData.buyerAddress
 		}
-		GetPost.post(data, function(err, resp) {
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('payment_success');
+		GetPost.post(data, function(err, res) {
+			!res.status ? Helper.showAlert('error500') : Helper.showAlert('payment_success');
     		// 'ifactor_prepaid'
 			$scope.getInvoiceDetails();
 	    });
@@ -424,9 +424,9 @@
 			financerAddress : $scope.invoiceData.financerAddress,
 			buyerAddress : $scope.invoiceData.buyerAddress
 		}
-		GetPost.post(data, function(err, resp) {
-    		console.log(resp);
-			!resp.status ? Helper.showAlert('error500') : Helper.showAlert('payment_success');
+		GetPost.post(data, function(err, res) {
+    		console.log(res);
+			!res.status ? Helper.showAlert('error500') : Helper.showAlert('payment_success');
     		// 'completed'
 			$scope.getInvoiceDetails();
 	    });
@@ -621,8 +621,8 @@
 			supplierRatings : $scope.supplierRatings,
 			supplierRatingRemark : $scope.supplierRatingRemark
 		}
-		GetPost.post(data, function(err, resp) {
-			if (!resp.status){
+		GetPost.post(data, function(err, res) {
+			if (!res.status){
 				Helper.showAlert('error500');
 			} else {
 				Helper.showAlert('ratings_f2s');
@@ -642,8 +642,8 @@
 			financerRatings : $scope.financerRatings,
 			financerRatingRemark : $scope.financerRatingRemark
 		};
-		GetPost.post(data, function(err, resp) {
-			if (!resp.status){
+		GetPost.post(data, function(err, res) {
+			if (!res.status){
 				Helper.showAlert('error500');
 			} else {
 				Helper.showAlert('ratings_s2f');

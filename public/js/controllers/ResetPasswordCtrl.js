@@ -2,12 +2,12 @@ angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$
 'GetPost', 'Helper', '$location', '$timeout', '$window', function($scope, $rootScope,
  	GetPost, Helper, $location, $timeout, $window) {
 
-	GetPost.get({ url : '/startApp' }, function(err, resp) {
-		if (resp.status) {
+	GetPost.get({ url : '/startApp' }, function(err, res) {
+		if (res.status) {
 			var data = { url : '/logout' };
-			GetPost.get(data, function(err, resp) {
+			GetPost.get(data, function(err, res) {
 				$rootScope.isMainLoader = true;
-				if(resp.status){
+				if(res.status){
 					Helper.showAlert('logged_out');
 				} else {
 					Helper.showAlert('error500');
@@ -31,13 +31,13 @@ angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$
 				'resetId': resetId,
 				'url' : '/resetPassword'
 			};
-			GetPost.post(data, function(err, resp) {
+			GetPost.post(data, function(err, res) {
 				$rootScope.isMainLoader = true;
 				$rootScope.showHeaderOptions = false;
 				if (!err) {
-					Helper.createToast(resp.message, 'success');
-				} else if (err && !resp.status) {
-					Helper.createToast(resp.error.message, 'danger');
+					Helper.createToast(res.message, 'success');
+				} else if (err && !res.status) {
+					Helper.createToast(res.error.message, 'danger');
 				} else {
 					Helper.showAlert('error500');
 				}

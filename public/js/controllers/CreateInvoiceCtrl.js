@@ -29,13 +29,13 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 			$scope.showHeaderOptions = true;
 			$scope.showToggle = false;
 			$scope.dropdownMenuStyle = {'display':'none'};
-			$rootScope.userType = resp.data.userType;
-			$rootScope.name = resp.data.name;
+			$rootScope.userType = res.data.userType;
+			$rootScope.name = res.data.name;
 
 			if ($rootScope.balance == undefined){
-				GetPost.get({ url : '/getBalance' }, function(err, resp) {
-					if (resp.status) {
-						$rootScope.balance = resp.data.balance;
+				GetPost.get({ url : '/getBalance' }, function(err, res) {
+					if (res.status) {
+						$rootScope.balance = res.data.balance;
 					}
 				});
 			}
@@ -49,9 +49,9 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 	$scope.logOut = function () {
 		$scope.showHeaderOptions = false;
 		var data = { url : '/logout' };
-		GetPost.get(data, function(err, resp) {
+		GetPost.get(data, function(err, res) {
 			$rootScope.isMainLoader = true;
-			if(resp.status){
+			if(res.status){
 				Helper.showAlert('logged_out');
 			} else {
 				Helper.showAlert('error500');
@@ -178,15 +178,15 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 	        	grnDocs : $scope.grnDocs
 	        }
 		})
-		.then(resp => {
-			if(resp.status){
+		.then(res => {
+			if(res.status){
 				if (type == 'draft') {
 					Helper.showAlert('save_invoice');
 				} else {
 					Helper.showAlert('submit_invoice');
 				}
 			} else { 
-				Helper.createToast(resp.error.msg, 'danger');
+				Helper.createToast(res.error.msg, 'danger');
 			}
 			$location.path('/dashboard');
 	    }).catch(err => {
@@ -212,10 +212,10 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
             headers: { 'Content-Type': 'multipart/form-data' },
             arrayKey : '',
 	        data:{file:file}
-	    }).then(function (resp) {
-	    	console.log(resp);
-	    }, function (resp) {
-	        console.log('Error status: ' + resp.status);
+	    }).then(function (res) {
+	    	console.log(res);
+	    }, function (res) {
+	        console.log('Error status: ' + res.status);
 	    }, function (evt) { 
 	        console.log(evt);
 	        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);

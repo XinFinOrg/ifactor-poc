@@ -30,12 +30,12 @@ var SignUpCtrl = angular.module('SignUpCtrl', []).controller('SignUpController',
 		}
 	});
 
-	GetPost.get({ url : '/startApp' }, function(err, resp) {
-		if (resp.status) {
+	GetPost.get({ url : '/startApp' }, function(err, res) {
+		if (res.status) {
 			var data = { url : '/logout' };
-			GetPost.get(data, function(err, resp) {
+			GetPost.get(data, function(err, res) {
 				$rootScope.isMainLoader = true;
-				if(resp.status){
+				if(res.status){
 					Helper.showAlert('logged_out');
 				} else {
 					Helper.showAlert('error500');
@@ -50,15 +50,15 @@ var SignUpCtrl = angular.module('SignUpCtrl', []).controller('SignUpController',
 	Helper.checkForMessage();
 	$scope.signup = function() {
 		var data  = {input : $scope.input, url : '/signup'};
-		GetPost.post(data, function(err, resp) {
+		GetPost.post(data, function(err, res) {
 			if (!err) {
 				$rootScope.isMainLoader = true;
-				Helper.createToast(resp.message, 'success');
+				Helper.createToast(res.message, 'success');
 				$timeout(() => {
 					$location.path('/login');
 				}, 3000);
-			} else if (err && !resp.status) {
-				Helper.createToast(resp.error.message, 'warning');
+			} else if (err && !res.status) {
+				Helper.createToast(res.error.message, 'warning');
 			} else {
 				Helper.showAlert('error500');
 			}

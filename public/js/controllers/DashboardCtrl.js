@@ -3,12 +3,12 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 			function($scope, $rootScope, $location, $timeout, GetPost, Helper, $window) {
 
 	
-	GetPost.get({ url : '/startApp' }, function(err, resp) {
-		if (!resp.status) {
+	GetPost.get({ url : '/startApp' }, function(err, res) {
+		if (!res.status) {
 			$rootScope.isLoggedIn = false;
 			$scope.showHeaderOptions = false;
 			$rootScope.isMainLoader = true;
-			Helper.createToast(resp.error.message, 'warning');
+			Helper.createToast(res.error.message, 'warning');
 			$timeout(() => {
 				$window.location.href = '/login';
 			}, 1000);
@@ -18,20 +18,20 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 			$scope.showHeaderOptions = true;
 			$scope.showToggle = false;
 			$scope.dropdownMenuStyle = {'display':'none'};
-			$rootScope.userType = resp.data.userType;
-			$rootScope.name = resp.data.name;
+			$rootScope.userType = res.data.userType;
+			$rootScope.name = res.data.name;
 
 			if ($rootScope.balance == undefined){
-				GetPost.get({ url : '/getBalance' }, function(err, resp) {
-					if (resp.status) {
-						$rootScope.balance = resp.data.balance;
+				GetPost.get({ url : '/getBalance' }, function(err, res) {
+					if (res.status) {
+						$rootScope.balance = res.data.balance;
 					}
 				});
 			}
 			
 			$scope.date = new Date();
 			$scope.eventSources = [];
-			$scope.urlMap(resp.data.userType);
+			$scope.urlMap(res.data.userType);
 			$scope.getInvoices();
 			Helper.checkForMessage();
 			if (!$rootScope.mainInvoiceIndex) {
@@ -45,9 +45,9 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 	$scope.logOut = function () {
 		$scope.showHeaderOptions = false;
 		var data = { url : '/logout' };
-		GetPost.get(data, function(err, resp) {
+		GetPost.get(data, function(err, res) {
 			$rootScope.isMainLoader = true;
-			if(resp.status){
+			if(res.status){
 				Helper.showAlert('logged_out');
 			} else {
 				Helper.showAlert('error500');

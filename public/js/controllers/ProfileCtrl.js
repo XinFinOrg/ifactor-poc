@@ -19,13 +19,13 @@ angular.module('ProfileCtrl', []).controller('ProfileController', ['$scope', '$r
 			$scope.showHeaderOptions = true;
 			$scope.showToggle = false;
 			$scope.dropdownMenuStyle = {'display':'none'};
-			$rootScope.userType = resp.data.userType;
-			$rootScope.name = resp.data.name;
+			$rootScope.userType = res.data.userType;
+			$rootScope.name = res.data.name;
 
 			if ($rootScope.balance == undefined){
-				GetPost.get({ url : '/getBalance' }, function(err, resp) {
-					if (resp.status) {
-						$rootScope.balance = resp.data.balance;
+				GetPost.get({ url : '/getBalance' }, function(err, res) {
+					if (res.status) {
+						$rootScope.balance = res.data.balance;
 					}
 				});
 			}
@@ -45,9 +45,9 @@ angular.module('ProfileCtrl', []).controller('ProfileController', ['$scope', '$r
 	$scope.logOut = function () {
 		$scope.showHeaderOptions = false;
 		var data = { url : '/logout' };
-		GetPost.get(data, function(err, resp) {
+		GetPost.get(data, function(err, res) {
 			$rootScope.isMainLoader = true;
-			if(resp.status){
+			if(res.status){
 				Helper.showAlert('logged_out');
 			} else {
 				Helper.showAlert('error500');
