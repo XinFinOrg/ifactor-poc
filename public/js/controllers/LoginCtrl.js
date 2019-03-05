@@ -4,9 +4,21 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 	
 	GetPost.get({ url : '/startApp' }, function(err, resp) {
 		if (resp.status) {
-			$window.location.href = '/login';
+			var data = { url : '/logout' };
+			GetPost.get(data, function(err, resp) {
+				$rootScope.isMainLoader = true;
+				if(resp.status){
+					Helper.showAlert('logged_out');
+				} else {
+					Helper.showAlert('error500');
+				}
+				$timeout(() => {
+					$window.location.href = '/login';
+				}, 1000);
+			});
 		}
 	});
+	
 	$rootScope.isMainLoader = false;
 	$rootScope.showHeaderOptions = true;
 	if(!angular.equals($location.search(), {})){

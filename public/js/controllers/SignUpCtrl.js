@@ -32,10 +32,21 @@ var SignUpCtrl = angular.module('SignUpCtrl', []).controller('SignUpController',
 
 	GetPost.get({ url : '/startApp' }, function(err, resp) {
 		if (resp.status) {
-			$window.location.href = '/signup';
+			var data = { url : '/logout' };
+			GetPost.get(data, function(err, resp) {
+				$rootScope.isMainLoader = true;
+				if(resp.status){
+					Helper.showAlert('logged_out');
+				} else {
+					Helper.showAlert('error500');
+				}
+				$timeout(() => {
+					$window.location.href = '/signup';
+				}, 1000);
+			});
 		}
 	});
-	
+
 	Helper.checkForMessage();
 	$scope.signup = function() {
 		var data  = {input : $scope.input, url : '/signup'};

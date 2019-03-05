@@ -4,7 +4,18 @@ angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$
 
 	GetPost.get({ url : '/startApp' }, function(err, resp) {
 		if (resp.status) {
-			$window.location.href = '/home';
+			var data = { url : '/logout' };
+			GetPost.get(data, function(err, resp) {
+				$rootScope.isMainLoader = true;
+				if(resp.status){
+					Helper.showAlert('logged_out');
+				} else {
+					Helper.showAlert('error500');
+				}
+				$timeout(() => {
+					$window.location.href = '/home';
+				}, 1000);
+			});
 		}
 	});
 	$rootScope.isMainLoader = true;
