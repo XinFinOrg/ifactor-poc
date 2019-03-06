@@ -1633,7 +1633,7 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 			var invoiceHistory = dummyData.dummyTx;
 			var invoice = data[0];
 			//processInvoiceDetails(invoice);
-			getUserDetails({email : invoice.supplierEmail}, {_id:0, email: 1, contactNo:1, firstName:1, lastName:1, type:1},async(function(err, userData) {
+			getUserDetails({email : invoice.buyerEmail || ''}, {_id:0, email: 1, contactNo:1, firstName:1, lastName:1, type:1, address: 1},async(function(err, userData) {
 				if (err) {
 					console.log('index > getInvoiceDetails API > getInvoices > getUserDetails > err, userData: ', err, userData);
 					return res.send({
@@ -1643,7 +1643,7 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 						}
 					});
 				} else {
-					invoice.supplierData = !err ? userData : {};
+					invoice.buyerData = !err ? userData : {};
 					if (web3Conf) {
 						var allEvents = await (web3Helper.getAllEvents(invoiceId));
 						helper.processEvents(allEvents, invoice);
