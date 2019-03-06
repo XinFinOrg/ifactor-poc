@@ -144,10 +144,12 @@
 	};
 	GetPost.post(data, function(err, res) {
 		console.log('invoiceDetails response');
-		$scope.invoiceData = res.data.invoice;
-		$rootScope.balance = res.data.balance;
-		$scope.invoiceTxHistory = res.data.invoiceHistory;
-		$scope.allEvents = res.data.otherEvents;
+		$scope.invoiceData = resp.data.invoice;
+		$scope.invoiceData.buyerAddress = resp.data.invoice.buyerData ? resp.data.invoice.buyerData.address : "";
+
+		$rootScope.balance = resp.data.balance;
+		$scope.invoiceTxHistory = resp.data.invoiceHistory;
+		$scope.allEvents = resp.data.otherEvents;
 		for(i = 0; i < $scope.allEvents.length; i++){
 			if ($scope.allEvents[i].args.state == undefined || $scope.allEvents[i].args.state == ""){
 				continue;
@@ -327,11 +329,7 @@
 	    });
 
 	};
-
-
 	/***************************financer api*************************/
-	
-
 	// used
 	$scope.acceptFactoringForm = {
 		platformCharges : 0,
