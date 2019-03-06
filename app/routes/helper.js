@@ -64,9 +64,21 @@ var processEvents = function(allEvents, invoice) {
     }
 };
 
+let formatDate = (date) => {
+    var dd = date.getDate();
+    var mm = date.getMonth()+1; 
+    var yyyy = date.getFullYear(); 
+    if(dd < 10) {
+        dd = '0' + dd;
+    } if(mm < 10) {
+        mm = '0' + mm
+    }
+    return yyyy + '-' + mm + '-' + dd;
+}
+
 var prepareQbkInvoice = function(invoice) {
     var input = {
-        state : 'create_invoice',
+        state : 'invoice_created',
         qbkInvoiceId : invoice.Id,
         invoiceNo : invoice.DocNumber,
         invoiceAmount : invoice.DocNumber,
@@ -82,38 +94,33 @@ var prepareQbkInvoice = function(invoice) {
         "companyEmail" : invoice.BillEmail.Address,
         "purchaseTitle" : 'Quickbook #' + invoice.DocNumber,
         "purchaseNo" : invoice.DocNumber,
-        "purchaseDate" : invoice.MetaData.CreateTime,
+        "purchaseDate" : formatDate(new Date(invoice.MetaData.CreateTime)),
         "purchaseAmount": invoice.TotalAmt,
         "purchaseDocs":"",
         "payableDate": invoice.DueDate,
         "invoiceNo": invoice.DocNumber,
-        "invoiceDate": invoice.MetaData.CreateTime,
+        "invoiceDate": formatDate(new Date(invoice.MetaData.CreateTime)),
         "invoiceAmount": invoice.TotalAmt,
         "invoiceDocs":"",
         "grnNo":"GRN1234",
         "grnDate":"",
         "grnDocs":"",
         //"state": #as per createInvoice => new
-        "grnAmount":"0"
+        "grnAmount":"0",
+        "source" : "Quickbook"
     };
     return input;
 };
 
 let arrayToObject = (arr, key) => {
     var result = Object.assign(...arr.map(x =>({[x[key]]:x})));
-    //var result = a.reduce((obj, v)=> {obj[v[key]] = v; return obj} , {})
-    //console.log('arrayToObject:', result);
     return result;
 }
-/*var a = [
-    {a : 10, name  : "atul"},
-    {a : 10, name  : "vijay"}
-];
-arrayToObject(a, 'name');*/
 
 module.exports = {
     processEvents : processEvents,
     getDatesDiff : getDatesDiff,
     prepareQbkInvoice : prepareQbkInvoice,
-    arrayToObject : arrayToObject
+    arrayToObject : arrayToObject,
+    formatDate : formatDate
 }
