@@ -34,7 +34,6 @@ var oauth2_token_json = null,
  */
 
 var oauthClient = null;
->>>>>>> infactor : quickbook integration backend apis
 
 var web3Conf = false;
 if (web3Conf) {
@@ -1819,10 +1818,81 @@ router.get('/connect', function(req, res) {
 			//var authToken = oauthClient.getToken().getToken();
              oauth2_token_json = JSON.stringify(authResponse.getJson(), null,2);
              console.log('oauth2_token_json', oauth2_token_json);
-		     oauthClient.makeApiCall({url: url + 'v3/company/' + companyID +'/cdc?entities=Invoice&changedSince=2015-03-02'})
+		     oauthClient.makeApiCall({url: url + 'v3/company/' + companyID +'/cdc?entities=Invoice, Customer&changedSince=2015-03-02'})
 		        .then(function(authResponse1){
-		            console.log("The response for API call is :"+JSON.stringify(authResponse1));
-		            res.send(JSON.parse(authResponse1.text()));
+		            //console.log(JSON.stringify(authResponse1.getJson()));
+		            //console.log("The response for API call is :"+JSON.stringify(authResponse1));
+		            //res.send(JSON.parse(authResponse1.text()));
+		            var ar = JSON.stringify(authResponse1.getJson());
+		            //AuthResponse1 = JSON.parse(authResponse1.text());
+		            console.log('auth Response', JSON.parse(ar));
+		            authResponse1 = authResponse1.getJson();
+		            console.log('auth Response', JSON.stringify(authResponse1.CDCResponse[0].QueryResponse));
+					var invoices = authResponse1.CDCResponse[0].QueryResponse[0].Invoice;
+					var customers = authResponse1.CDCResponse[0].QueryResponse[1].Customer;
+					console.log('invoices', JSON.stringify(invoices));
+					console.log('customers', JSON.stringify(customers));
+					//convert customers array to object
+		            //console.log("?????????????", authResponse1);
+					var customersObj = helper.arrayToObject(customers, 'Id');
+					console.log('customers', customersObj);
+					console.log('invoices', invoices);
+
+					var inputs = [];
+					for (var i in invoices) {
+						//process Quickbook invoices and Cutomers
+						var invoice = invoices[i];
+						var customer = customersObj[invoice['CustomerRef']['value']];
+						if (!invoice.BillEmail || !invoice.BillEmail.Address) {
+							var bill = {
+								Address : customer.PrimaryEmailAddr ? customer.PrimaryEmailAddr.Address : false
+							};
+							invoice.BillEmail = bill;
+						}
+
+						//create invoice object
+						var input = helper.prepareQbkInvoice(invoice);
+						input.supplierEmail = req.user.email;
+						input.supplierName = getFullName(req.user.firstName, req.user.lastName);
+						input.supplierAddress = req.user.address;
+						input.invoiceId = uniqid();
+						input.created = Date.now();
+
+						var tx;
+						if (web3Conf && input.state == 'invoice_created') {
+							try {
+								//web3Helper.addInvoiceEvent(function(err, result) {});
+								tx = await (web3Helper.addInvoice(input));
+								input.createHash = tx;
+							} catch(e) {
+								console.log('index > createInvoice API > Smart contract error: ', e);
+								return res.send({
+									status : false,
+									error : {
+										message : 'Smart contract error'
+									}
+								});
+							}
+						}
+						inputs.push(input);
+					}
+					console.log('invoices', inputs);
+					var collection = db.getCollection('invoices');
+					collection.insert(inputs, function (err, docs) {
+						if (err) {
+							console.log('index > createInvoice API > uploadUserDocs > collection.update > err, docs: ',err, docs);
+							return res.send({
+								status : false,
+								error : {
+									message : 'Server error, please try again'
+								}
+							});
+						}
+						return res.send({
+							status : true
+						});
+					});
+
 		        })
 		        .catch(function(e) {
 		            console.error('authResponse1', e);
