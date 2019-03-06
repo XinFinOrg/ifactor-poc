@@ -3,9 +3,10 @@ angular.module('ForgotPasswordCtrl', []).controller('ForgotPasswordController',[
 
 	GetPost.get({ url : '/startApp' }, function(err, res) {
 		if (res.status) {
+			$rootScope.isMainLoader = true;
+			$scope.showHeaderOptions = false;
 			var data = { url : '/logout' };
 			GetPost.get(data, function(err, res) {
-				$rootScope.isMainLoader = true;
 				if(res.status){
 					Helper.showAlert('logged_out');
 				} else {
@@ -15,6 +16,9 @@ angular.module('ForgotPasswordCtrl', []).controller('ForgotPasswordController',[
 					$window.location.href = '/forgot-password';
 				}, 1000);
 			});
+		} else {
+			$rootScope.isMainLoader = false;
+			$scope.showHeaderOptions = true;
 		}
 	});
 

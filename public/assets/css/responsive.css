@@ -3,7 +3,7 @@
 .invoice-supplier-buy {
     font-size: 20px;
     margin-bottom: 15px;
-    margin-top: 8px;
+    margin-top: 15px;
     color: #6175D6;
 }
 .marg_t-20 {
@@ -256,7 +256,6 @@ label.dropdown:after {
 }
 .label-invoice {
     margin-bottom: 7px;
-    color: #b2b1b1;
 }
 .marg_r_10 {
     margin-right: 10px;

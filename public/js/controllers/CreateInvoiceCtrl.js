@@ -62,6 +62,11 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 	});
 	}
 
+	$scope.toggleDropdown = function() {
+		$scope.showToggle = !$scope.showToggle;	
+		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
+	}
+
 	$scope.date = new Date();
 	$scope.eventSources = [];
 	$scope.buyerList = [];
@@ -155,12 +160,12 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
     $scope.grnDocs  = null;
     $scope.invoiceDocs = null;
 
-    $scope.submitInvoice = function (input, type) {
+    $scope.submitInvoice = function (type) {
 		$rootScope.isMainLoader = true;
 		$scope.showHeaderOptions = false;
 		$scope.isSubmitNowButtonDisabled = true;
     	$scope.input.state = type;
-    	$scope.input = $scope.getBuyerData(input);
+    	$scope.input = $scope.getBuyerData($scope.input);
     	// if (!validateInvoice()) {
 		// 	$scope.isSubmitNowButtonDisabled = false;
     	// 	return;

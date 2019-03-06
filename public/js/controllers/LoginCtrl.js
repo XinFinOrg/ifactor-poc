@@ -4,9 +4,10 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 	
 	GetPost.get({ url : '/startApp' }, function(err, res) {
 		if (res.status) {
+			$rootScope.isMainLoader = true;
+			$scope.showHeaderOptions = false;
 			var data = { url : '/logout' };
 			GetPost.get(data, function(err, res) {
-				$rootScope.isMainLoader = true;
 				if(res.status){
 					Helper.showAlert('logged_out');
 				} else {
@@ -16,11 +17,12 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 					$window.location.href = '/login';
 				}, 1000);
 			});
+		} else {
+			$rootScope.isMainLoader = false;
+			$rootScope.showHeaderOptions = true;
 		}
 	});
 	
-	$rootScope.isMainLoader = false;
-	$rootScope.showHeaderOptions = true;
 	if(!angular.equals($location.search(), {})){
 		$rootScope.showHeaderOptions = false;
 		$rootScope.isMainLoader = true;
