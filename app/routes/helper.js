@@ -64,7 +64,56 @@ var processEvents = function(allEvents, invoice) {
     }
 };
 
+var prepareQbkInvoice = function(invoice) {
+    var input = {
+        state : 'create_invoice',
+        qbkInvoiceId : invoice.Id,
+        invoiceNo : invoice.DocNumber,
+        invoiceAmount : invoice.DocNumber,
+        items : invoice.Line,
+        taxDetails : invoice.TxnTaxDetail,
+        taxAmount : invoice.TxnTaxDetail.TotalTax,
+        "companyName" : invoice.CustomerRef.name,
+        "companyType" :"Automotive Aftermarket",
+        "buyerEmail" : invoice.BillEmail.Address,
+        //"buyerAddress" : #get address from buyer,
+        "contactName" : invoice.CustomerRef.name,
+        "companyPhone" : "",
+        "companyEmail" : invoice.BillEmail.Address,
+        "purchaseTitle" : 'Quickbook #' + invoice.DocNumber,
+        "purchaseNo" : invoice.DocNumber,
+        "purchaseDate" : invoice.MetaData.CreateTime,
+        "purchaseAmount": invoice.TotalAmt,
+        "purchaseDocs":"",
+        "payableDate": invoice.DueDate,
+        "invoiceNo": invoice.DocNumber,
+        "invoiceDate": invoice.MetaData.CreateTime,
+        "invoiceAmount": invoice.TotalAmt,
+        "invoiceDocs":"",
+        "grnNo":"GRN1234",
+        "grnDate":"",
+        "grnDocs":"",
+        //"state": #as per createInvoice => new
+        "grnAmount":"0"
+    };
+    return input;
+};
+
+let arrayToObject = (arr, key) => {
+    var result = Object.assign(...arr.map(x =>({[x[key]]:x})));
+    //var result = a.reduce((obj, v)=> {obj[v[key]] = v; return obj} , {})
+    //console.log('arrayToObject:', result);
+    return result;
+}
+/*var a = [
+    {a : 10, name  : "atul"},
+    {a : 10, name  : "vijay"}
+];
+arrayToObject(a, 'name');*/
+
 module.exports = {
     processEvents : processEvents,
     getDatesDiff : getDatesDiff,
+    prepareQbkInvoice : prepareQbkInvoice,
+    arrayToObject : arrayToObject
 }
