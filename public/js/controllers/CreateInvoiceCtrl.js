@@ -164,39 +164,43 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 		$rootScope.isMainLoader = true;
 		$scope.showHeaderOptions = false;
 		$scope.isSubmitNowButtonDisabled = true;
-    	$scope.input.state = type;
-    	$scope.input = $scope.getBuyerData($scope.input);
+		$scope.input.state = type;
+		$scope.input = $scope.getBuyerData($scope.input);
+		
     	// if (!validateInvoice()) {
 		// 	$scope.isSubmitNowButtonDisabled = false;
     	// 	return;
     	// }
 
-	    Upload.upload({
-	        url: '/createInvoice',
-            method : 'POST',
-            headers: { 'Content-Type': 'multipart/form-data' },
-            arrayKey : '',
-	        data : {
-	        	input : $scope.input,
-	        	poDocs : $scope.poDocs,
-	        	invoiceDocs : $scope.invoiceDocs,
-	        	grnDocs : $scope.grnDocs
-	        }
-		})
-		.then(res => {
-			if(res.status){
-				if (type == 'draft') {
-					Helper.showAlert('save_invoice');
-				} else {
-					Helper.showAlert('submit_invoice');
+		$timeout(()=>{
+			Upload.upload({
+				url: '/createInvoice',
+				method : 'POST',
+				headers: { 'Content-Type': 'multipart/form-data' },
+				arrayKey : '',
+				data : {
+					input : $scope.input,
+					poDocs : $scope.poDocs,
+					invoiceDocs : $scope.invoiceDocs,
+					grnDocs : $scope.grnDocs
 				}
-			} else { 
-				Helper.createToast(res.error.msg, 'danger');
-			}
-			$location.path('/dashboard');
-	    }).catch(err => {
-	        Helper.showAlert('error500');
-	    });
+			})
+			.then(res => {
+				if(res.status){
+					if (type == 'draft') {
+						Helper.showAlert('save_invoice');
+					} else {
+						Helper.showAlert('submit_invoice');
+					}
+				} else { 
+					Helper.createToast(res.error.msg, 'danger');
+				}
+				$location.path('/dashboard');
+			}).catch(err => {
+				Helper.showAlert('error500');
+			});
+		}, 1000);
+	    
 	};
 
 	// var validateInvoice = function() {
