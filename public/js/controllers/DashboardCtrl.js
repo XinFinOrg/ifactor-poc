@@ -116,7 +116,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 		/*var data = {
 			url : '/postpaySupplier'
 		}*/
-		GetPost.post({ url : '/setupQuickbook' }, function(err, resp) {
+		GetPost.post({ url : '/quickbook/setupQuickbook' }, function(err, resp) {
 			console.log('setupQuickbook', resp)
 			if (!resp.status) {
 				Helper.showAlert('qbk-fail');
