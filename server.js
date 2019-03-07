@@ -12,6 +12,8 @@ var mongoStore = require('connect-mongo')(session);
 
 var index = require('./app/routes/index');
 var users = require('./app/routes/users');
+var quickbook = require('./app/routes/quickbook');
+
 var db = require('./app/config/db');
 var config = require('./app/config/config');
 ENV = config.ENV;
@@ -67,6 +69,7 @@ app.use(express.static(__dirname + '/public')); // set the static files location
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/quickbook', quickbook);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
