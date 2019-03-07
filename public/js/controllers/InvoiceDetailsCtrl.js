@@ -142,7 +142,7 @@
 		url : '/getInvoiceDetails',
 		invoiceId : $rootScope.invoiceId || $routeParams.invoiceId
 	};
-	GetPost.post(data, function(err, res) {
+	GetPost.post(data, function(err, resp) {
 		console.log('invoiceDetails response');
 		$scope.invoiceData = resp.data.invoice;
 		$scope.invoiceData.buyerAddress = resp.data.invoice.buyerData ? resp.data.invoice.buyerData.address : "";
@@ -165,7 +165,7 @@
 			
 			
 		}
-		$scope.transferEvents = res.data.transferEvents;
+		$scope.transferEvents = resp.data.transferEvents;
 		mapInvoiceHistory($scope.invoiceTxHistory);
 		$scope.setCurrentStage();
 	});
