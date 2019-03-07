@@ -1809,17 +1809,33 @@ router.post('/setupQuickbook', function(req, res) {
 });
 
 
-router.get('/connect', function(req, res) {
+router.get('/connect', async(function(req, res) {
     var companyID = oauthClient.getToken().realmId;
     var url = oauthClient.environment == 'sandbox' ? OAuthClient.environment.sandbox : OAuthClient.environment.production;
 
+	var collection = db.getCollection("erp-sync");
+	var result, lastUpdate;
+    try {
+		result = await (collection.findOne({source : 'quickbook'}));
+		console.log('quickbook db result', result);
+		if (result) {
+			lastUpdate = result.lastUpdate;
+		} else {
+			lastUpdate = "2015-03-02";
+		}
+    } catch(e) {
+    	lastUpdate = "2010-01-01";
+    	console.log('error', e);
+    }
+    console.log("lastUpdate", lastUpdate);
+
     oauthClient.createToken(req.url)
-       .then(function(authResponse) {
+       .then(async (function(authResponse) {
 			//var authToken = oauthClient.getToken().getToken();
              oauth2_token_json = JSON.stringify(authResponse.getJson(), null,2);
              console.log('oauth2_token_json', oauth2_token_json);
-		     oauthClient.makeApiCall({url: url + 'v3/company/' + companyID +'/cdc?entities=Invoice, Customer&changedSince=2015-03-02'})
-		        .then(function(authResponse1){
+		     oauthClient.makeApiCall({url: url + 'v3/company/' + companyID +'/cdc?entities=Invoice, Customer&changedSince=' + lastUpdate})
+		        .then(async (function(authResponse1){
 		            //console.log(JSON.stringify(authResponse1.getJson()));
 		            //console.log("The response for API call is :"+JSON.stringify(authResponse1));
 		            //res.send(JSON.parse(authResponse1.text()));
@@ -1874,11 +1890,34 @@ router.get('/connect', function(req, res) {
 								});
 							}
 						}
-						inputs.push(input);
+						//inputs.push(input);
+
+						//ops.push({ updateOne: { filter: {key:"value3"}, update: { { $setOnInsert:{/*...*/} } } }, { upsert:true } });
+						inputs.push({
+							updateOne: {
+							filter: {invoiceId : input.invoiceId, source : 'quickbook'},
+							update: {"$setOnInsert" : input},
+							upsert:true}
+						});
 					}
 					console.log('invoices', inputs);
+					if (!inputs.length) {
+						return res.send({status : false, msg : "No invoices to sync"});
+					}
 					var collection = db.getCollection('invoices');
-					collection.insert(inputs, function (err, docs) {
+					try {
+						result = await (collection.bulkWrite(inputs, {ordered:false}));
+						console.log('insert invoices', result);
+						collection = db.getCollection('erp-sync');
+						var today = helper.formatDate(new Date());
+						result = await (collection.update({source : 'quickbook'}, {$set : {lastUpdate : today}}, {upsert : true}));
+						console.log('update date', result);
+						return res.send({status : true})
+					} catch(e) {
+						console.log('insert invoices error', e);
+						return res.send({status : false})
+					}
+					/*collection.insert(inputs, function (err, docs) {
 						if (err) {
 							console.log('index > createInvoice API > uploadUserDocs > collection.update > err, docs: ',err, docs);
 							return res.send({
@@ -1891,17 +1930,17 @@ router.get('/connect', function(req, res) {
 						return res.send({
 							status : true
 						});
-					});
+					});*/
 
-		        })
+		        }))
 		        .catch(function(e) {
 		            console.error('authResponse1', e);
 		        });
-         })
+         }))
         .catch(function(e) {
              console.error(e);
          });
-});
+}));
 
 router.get('*', function(req, res) {
 	console.log('load index')
