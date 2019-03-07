@@ -17,7 +17,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 var axios = require('axios');
 var OAuthClient = require('intuit-oauth');
-//require('dotenv').config();
+require('dotenv').config();
 //var ngrok =  (process.env.NGROK_ENABLED==="true") ? require('ngrok'):null;
 
 /**
@@ -1818,10 +1818,10 @@ router.post('/setupQuickbook', function(req, res) {
 		return res.send({status : false});
 	} else {
 	    oauthClient = new OAuthClient({
-	        clientId : "Q05EwswDc0WgDcmclnYWcvWLYkCE2jkrUCO3UEWBIeHOQapU4P",
-	        clientSecret : "aEsuogKoJ8tvkoopOVWEj4UTPKZFlL0lYqVupVIP",
-	        environment : "sandbox",
-	        redirectUri : "http://localhost:3000/connect"
+	        clientId : process.ENV.clientId,
+	        clientSecret : process.ENV.clientSecret,
+	        environment : process.ENV.environment,
+	        redirectUri : process.ENV.redirectUri
 	    });
 
 	    var authUri = oauthClient.authorizeUri({scope:[OAuthClient.scopes.Accounting],state:'intuit-test'});
@@ -1838,17 +1838,15 @@ router.get('/connect', async(function(req, res) {
 	var result, lastUpdate;
     try {
 		result = await (collection.findOne({source : 'quickbook'}));
-		console.log('quickbook db result', result);
 		if (result) {
 			lastUpdate = result.lastUpdate;
 		} else {
-			lastUpdate = "2015-03-02";
+			lastUpdate = "2010-01-01";
 		}
     } catch(e) {
     	lastUpdate = "2010-01-01";
     	console.log('error', e);
     }
-    console.log("lastUpdate", lastUpdate);
 
     oauthClient.createToken(req.url)
        .then(async (function(authResponse) {
@@ -1857,27 +1855,14 @@ router.get('/connect', async(function(req, res) {
              console.log('oauth2_token_json', oauth2_token_json);
 		     oauthClient.makeApiCall({url: url + 'v3/company/' + companyID +'/cdc?entities=Invoice, Customer&changedSince=' + lastUpdate})
 		        .then(async (function(authResponse1){
-		            //console.log(JSON.stringify(authResponse1.getJson()));
-		            //console.log("The response for API call is :"+JSON.stringify(authResponse1));
-		            //res.send(JSON.parse(authResponse1.text()));
 		            var ar = JSON.stringify(authResponse1.getJson());
-		            //AuthResponse1 = JSON.parse(authResponse1.text());
-		            console.log('auth Response', JSON.parse(ar));
 		            authResponse1 = authResponse1.getJson();
-		            console.log('auth Response', JSON.stringify(authResponse1.CDCResponse[0].QueryResponse));
 					var invoices = authResponse1.CDCResponse[0].QueryResponse[0].Invoice;
 					var customers = authResponse1.CDCResponse[0].QueryResponse[1].Customer;
-					console.log('invoices', JSON.stringify(invoices));
-					console.log('customers', JSON.stringify(customers));
-					//convert customers array to object
-		            //console.log("?????????????", authResponse1);
 					var customersObj = helper.arrayToObject(customers, 'Id');
-					console.log('customers', customersObj);
-					console.log('invoices', invoices);
 
 					var inputs = [];
 					for (var i in invoices) {
-						//process Quickbook invoices and Cutomers
 						var invoice = invoices[i];
 						var customer = customersObj[invoice['CustomerRef']['value']];
 						if (!invoice.BillEmail || !invoice.BillEmail.Address) {
@@ -1896,9 +1881,8 @@ router.get('/connect', async(function(req, res) {
 						input.created = Date.now();
 
 						var tx;
-						if (web3Conf && input.state == 'invoice_created') {
+						/*if (web3Conf && input.state == 'invoice_created') {
 							try {
-								//web3Helper.addInvoiceEvent(function(err, result) {});
 								tx = await (web3Helper.addInvoice(input));
 								input.createHash = tx;
 							} catch(e) {
@@ -1910,10 +1894,8 @@ router.get('/connect', async(function(req, res) {
 									}
 								});
 							}
-						}
-						//inputs.push(input);
+						}*/
 
-						//ops.push({ updateOne: { filter: {key:"value3"}, update: { { $setOnInsert:{/*...*/} } } }, { upsert:true } });
 						inputs.push({
 							updateOne: {
 							filter: {invoiceId : input.invoiceId, source : 'quickbook'},
@@ -1921,38 +1903,22 @@ router.get('/connect', async(function(req, res) {
 							upsert:true}
 						});
 					}
-					console.log('invoices', inputs);
+
 					if (!inputs.length) {
 						return res.send({status : false, msg : "No invoices to sync"});
 					}
+
 					var collection = db.getCollection('invoices');
 					try {
 						result = await (collection.bulkWrite(inputs, {ordered:false}));
-						console.log('insert invoices', result);
 						collection = db.getCollection('erp-sync');
 						var today = helper.formatDate(new Date());
 						result = await (collection.update({source : 'quickbook'}, {$set : {lastUpdate : today}}, {upsert : true}));
-						console.log('update date', result);
 						return res.send({status : true})
 					} catch(e) {
 						console.log('insert invoices error', e);
 						return res.send({status : false})
 					}
-					/*collection.insert(inputs, function (err, docs) {
-						if (err) {
-							console.log('index > createInvoice API > uploadUserDocs > collection.update > err, docs: ',err, docs);
-							return res.send({
-								status : false,
-								error : {
-									message : 'Server error, please try again'
-								}
-							});
-						}
-						return res.send({
-							status : true
-						});
-					});*/
-
 		        }))
 		        .catch(function(e) {
 		            console.error('authResponse1', e);
