@@ -10,11 +10,12 @@ var auth = module.exports;
 auth.init = function () {
     console.log("inside auth.init");
     passport.serializeUser(function(user, done) {
-        console.log('local > auth.use() > passport.serializeUser > user, done: ', user, done);
+        //console.log('local > auth.use() > passport.serializeUser > user, done: ', user, done);
         done(null, user._id);
     });
     passport.deserializeUser(function(id, done) {
         User.findById(id, function(err, user){
+            //console.log('local > auth.use() > passport.deserializeUser > err, user: ', err, user);
             if(!err) done(null, user);
             else done(err, null);
         })
@@ -28,7 +29,7 @@ auth.use = function() {
     },
     function(email, password, done) {
         User.findOne({ email: email}, function(err, user) {
-            console.log('local > auth.use() > passport.use > err, user: ', err, user);
+            //console.log('local > auth.use() > passport.use > err, user: ', err, user);
             if (err) {
                 return done(err);
             }
