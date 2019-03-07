@@ -4248,3 +4248,14 @@ table.dataTable.display tbody tr:first-child td {
 .btn-blockchain{
     cursor: default !important;
 }
+
+._720kb-datepicker-calendar i {
+    position: relative !important;
+    right: 0px !important;
+    top: 0px !important;
+    color: #ffffff !important
+}
+
+.date-input{
+    display: flex !important;
+}
