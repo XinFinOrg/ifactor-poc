@@ -124,11 +124,11 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 				console.log('resp auth', resp.authUri);
 				//window.open('https://www.google.com', '_blank');
 
-		        var parameters = "location=1,width=800,height=650";
+		        var parameters = "channelmode=1,width=800,height=650";
 		        parameters += ",left=" + (screen.width - 800) / 2 + ",top=" + (screen.height - 650) / 2;
 		        //var win = window.open(authUri, 'connectPopup', parameters);
-				//$window.open(resp.authUrl, "_self");
-				openPopup(authUrl)
+				$window.open(resp.authUrl, '', parameters);
+				//openPopup(authUrl)
 			}
 	    });
 	};
