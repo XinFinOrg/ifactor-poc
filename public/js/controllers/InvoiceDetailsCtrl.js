@@ -162,8 +162,6 @@
 				}
 				// $scope.allEvents[i].args.state =  temp;
 			}
-			
-			
 		}
 		$scope.transferEvents = resp.data.transferEvents;
 		mapInvoiceHistory($scope.invoiceTxHistory);
