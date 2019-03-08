@@ -1,6 +1,6 @@
 	angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',['$scope', '$rootScope', '$http', 
-			'$location', 'GetPost', 'Helper', '$routeParams', 'ngToast', 'Upload', '$timeout', '$window',
-			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast, Upload, $timeout, $window) {
+			'$location', 'GetPost', 'Helper', '$routeParams', 'ngToast', 'Upload', '$timeout', '$window', '$document',
+			function($scope, $rootScope, $http, $location, GetPost,Helper, $routeParams, ngToast, Upload, $timeout, $window, $document) {
 
 	
 	GetPost.get({ url : '/startApp' }, function(err, res) {
@@ -143,7 +143,7 @@
 		invoiceId : $rootScope.invoiceId || $routeParams.invoiceId
 	};
 	GetPost.post(data, function(err, resp) {
-		console.log('invoiceDetails response');
+		console.log('invoiceDetails response', resp);
 		$scope.invoiceData = resp.data.invoice;
 		$scope.invoiceData.buyerAddress = resp.data.invoice.buyerData ? resp.data.invoice.buyerData.address : "";
 
@@ -166,6 +166,7 @@
 		$scope.transferEvents = resp.data.transferEvents;
 		mapInvoiceHistory($scope.invoiceTxHistory);
 		$scope.setCurrentStage();
+		$scope.makeItemTable(resp.data.invoice);
 	});
 	}
 
@@ -646,6 +647,37 @@
 			}
 			$scope.getInvoiceDetails();
 	    });
-    };
+		};
+		
+		$scope.makeItemTable = function(invoiceData){
+			console.log('targets', invoiceData, invoiceData.items.length);
+			$scope.items = [];
+			let total = { qty: 0, tax:0, total:0};
+			for(let i = 0; i < invoiceData.items.length; i++){
+				console.log('a');
+				if(invoiceData.items[i].DetailType !== 'SalesItemLineDetail'){
+					continue;
+				} else {
+					let currentItem = invoiceData.items[i];
+					let item = {};
+					console.log('currentItem:',currentItem);
+					item.desc = (currentItem.Description==undefined)? 'Not provided': currentItem.Description;
+					item.qty = currentItem.SalesItemLineDetail.Qty;
+					total.qty += item.qty;
+					item.rate = currentItem.SalesItemLineDetail.UnitPrice;
+					item.tax = invoiceData.taxDetails.TaxLine[i*2].Amount + invoiceData.taxDetails.TaxLine[(i*2)+1].Amount;
+					total.tax += item.tax;
+					item.total = (item.qty*item.rate) + item.tax;
+					total.total += item.total;
+					$scope.items.push(item);
+					console.log('item:',item);
+					console.log('total:',total);
+				}
+			}
+
+			$scope.total = total;
+			console.log('$scope.items:',$scope.items);
+
+		}
 
 }]);

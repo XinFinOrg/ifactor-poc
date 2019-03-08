@@ -4259,3 +4259,17 @@ table.dataTable.display tbody tr:first-child td {
 .date-input{
     display: flex !important;
 }
+
+.setup-quickbook{
+    margin-right: 5px; 
+}
+
+.btn-quickbook{
+    background-color: #35c73d;
+    color: #ffffff
+}
+
+.btn-quickbook:hover{
+    background-color: #22a229;
+    color: #ffffff
+}
