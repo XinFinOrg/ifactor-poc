@@ -141,6 +141,39 @@ font-size: 13px;
                                 </div>
                             </div>
 
+                            <div class="col-md-12">
+                                <table id="itemTable"class="table">
+                                    <thead>
+                                        <tr>
+                                        <th>Description</th>
+                                        <th>Qty</th>
+                                        <th>Rate</th>
+                                        <th>Total tax</th>
+                                        <th>Total amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="x in items">
+                                            <td>{{ x.desc }}</td>
+                                            <td>{{ x.qty }}</td>
+                                            <td>${{ x.rate }}</td>
+                                            <td>${{ x.tax }}</td>
+                                            <td>${{ x.total }}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            <td><strong>{{ total.qty }}</strong></td>
+                                            <td> - </td>
+                                            <td><strong>${{ total.tax }}</strong></td>
+                                            <td><strong>${{ total.total }}</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+
                             <div class="col-lg-4 col-sm-4 col-xs-12">
                                 <div class="price-pack">
                                     <div class="head no-bottom-padd">

@@ -4260,10 +4260,16 @@ table.dataTable.display tbody tr:first-child td {
     display: flex !important;
 }
 
-.date-label{
-    left: 16px !important;
+.setup-quickbook{
+    margin-right: 5px; 
 }
 
-.div-datepicker{
-    height: 65px;
+.btn-quickbook{
+    background-color: #35c73d;
+    color: #ffffff
+}
+
+.btn-quickbook:hover{
+    background-color: #22a229;
+    color: #ffffff
 }
