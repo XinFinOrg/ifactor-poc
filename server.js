@@ -10,9 +10,11 @@ var passport = require('passport');
 var session = require('express-session');
 var mongoStore = require('connect-mongo')(session);
 
+require('dotenv').config();
+
 var index = require('./app/routes/index');
 var users = require('./app/routes/users');
-var quickbook = require('./app/routes/quickbook');
+//var quickbook = require('./app/routes/quickbook');
 
 var db = require('./app/config/db');
 var config = require('./app/config/config');
@@ -69,7 +71,7 @@ app.use(express.static(__dirname + '/public')); // set the static files location
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/quickbook', quickbook);
+//app.use('/quickbook', quickbook);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -83,10 +85,10 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  console.log(err);
   // render the error page
   res.status(err.status || 500);
-  res.send('error');
+  res.send({'error' :  err});
 });
 
 
