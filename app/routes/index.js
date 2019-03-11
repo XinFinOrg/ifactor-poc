@@ -18,6 +18,9 @@ var bcrypt = require('bcrypt-nodejs');
 var axios = require('axios');
 var OAuthClient = require('intuit-oauth');
 require('dotenv').config();
+
+var quickbook = require('./quickbook');
+router.use('/quickbook', quickbook);
 //var ngrok =  (process.env.NGROK_ENABLED==="true") ? require('ngrok'):null;
 
 /**
