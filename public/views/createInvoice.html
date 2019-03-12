@@ -153,25 +153,23 @@ select.soflow, select.soflow-color
                             <form name="userForm" novalidate>
                                 <div class="row">
                                     <div class="col-md-9 has-float-label">
-                                        <div class="form-group" ng-class="{ 'has-error' : userForm.companyNameData.$touched && userForm.companyNameData.$invalid }">
+                                        <div class="form-group" ng-class="{ 'has-error' : !companyNameDataFocused && userForm.companyNameData.$touched && userForm.companyNameData.$pristine}">
                                             <select class="soflow form-control input-lg" ng-model="companyNameData" id="companyNameData" name="companyNameData"
-                                                ng-options="x.firstName for x in buyerList" style="padding-top: 20px; padding-left: 18px;"
+                                                ng-options="x.firstName for x in buyerList" style="padding-top: 20px; padding-left: 18px;" ng-focus="companyNameDataFocused = true" ng-blur = "companyNameDataFocused = false"
                                                 ng-required="true">
                                             </select>
                                             <label class="labelText" for="companyNameData">Buyer name</label>
-                                            <p ng-show="!userForm.companyNameData.$touched" class="help-block">Please select a buyer</p>
-                                            <p ng-show="userForm.companyNameData.$touched && userForm.companyNameData.$invalid" class="help-block">Please select a buyer</p>
+                                            <p ng-show="(!userForm.companyNameData.$touched || (userForm.companyNameData.$touched && userForm.companyNameData.$pristine)) && !companyNameDataFocused" class="help-block">Please select a buyer</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3 has-float-label">
-                                        <div class="form-group" ng-class="{ 'has-error' : userForm.companyTypeOptions.$touched && userForm.companyTypeOptions.$invalid }">
+                                        <div class="form-group" ng-class="{ 'has-error' : !companyTypeOptionsFocused && userForm.companyTypeOptions.$touched && userForm.companyTypeOptions.$pristine }">
                                             <select class="soflow form-control input-lg" ng-model="input.companyType" id="companyTypeOptions" name="companyTypeOptions"
-                                                ng-options="x for x in companyTypeOptions" style="padding-top: 20px; padding-left: 18px;"
+                                                ng-options="x for x in companyTypeOptions" style="padding-top: 20px; padding-left: 18px;"  ng-focus="companyTypeOptionsFocused = true" ng-blur = "companyTypeOptionsFocused = false"
                                                 ng-required="true">
                                             </select>
                                             <label class="labelText" for="companyTypeOptions">Company type</label>
-                                            <p ng-show="!userForm.companyTypeOptions.$touched" class="help-block">Please select a type</p>
-                                            <p ng-show="userForm.companyTypeOptions.$touched && userForm.companyTypeOptions.$invalid" class="help-block">Please select a type</p>
+                                            <p ng-show="(!userForm.companyTypeOptions.$touched || (userForm.companyTypeOptions.$touched && userForm.companyTypeOptions.$pristine)) && !companyTypeOptionsFocused" class="help-block">Please select a type</p>
                                         </div>
                                     </div>
                                 </div>
@@ -181,10 +179,7 @@ select.soflow, select.soflow-color
                                             <input class="form-control input-lg" id="contactName" name="contactName" ng-pattern ="/^(?! )[A-Za-z]*[ ]{0,1}[A-Za-z]*(?<! )$/" ng-model="input.contactName" ng-trim="false" ng-focus="contactNameFocused = true" ng-blur="contactNameFocused = false" placeholder=" " ng-required="true"/>
                                             <label class="labelText" for="contactName">Contact name</label>
                                             <p ng-if="!contactNameFocused && userForm.contactName.$touched && userForm.contactName.$invalid && !userForm.contactName.$error.pattern" class="help-block">Name is required</p>
-                                            <p ng-if="userForm.contactName.$error.pattern" class="help-block">Numbers are not allowed, no spaces at either ends too<br>Maximum two words separate by a space</p>
-
-                                            <!-- <p ng-show="userForm.contactName.$touched && userForm.contactName.$invalid" class="help-block">Your contact name is required.</p> -->
-                                            <!-- <p ng-show="userForm.contactName.$error.pattern" class="help-block">Only alphabets allowed.</p> -->
+                                            <p ng-if="userForm.contactName.$error.pattern" class="help-block">Numbers are not allowed, no spaces at either end too<br>Maximum two words separate by a space</p>
                                         </div>
                                     </div>
                                     
@@ -198,7 +193,7 @@ select.soflow, select.soflow-color
                                                     </select>
                                                 </span>
                                                 
-                                                <input class="form-control input-lg roundinput" id="companyPhone" name="companyPhone" ng-model="input.companyPhone"
+                                                <input class="form-control input-lg roundinput" id="companyPhone" name="companyPhone" ng-model="input.companyPhone" ng-trim="false"
                                                      ng-pattern="/^[0-9]*$/" ng-focus="companyPhoneFocused = true" ng-blur="companyPhoneFocused = false" placeholder=" " ng-required="true"/>
                                                 <label for="companyPhone" style="padding-left: 58px;">Company phone</label>
                                             </div>
@@ -213,7 +208,7 @@ select.soflow, select.soflow-color
                                         <div class="form-group" ng-class="{ 'has-error' : (!emailFocused && userForm.companyEmail.$touched && userForm.companyEmail.$invalid && !userForm.companyEmail.$error.pattern)
                                                                 || (!emailFocused && userForm.companyEmail.$error.pattern)}">
                                             <input class="form-control input-lg" id="companyEmail" name="companyEmail" ng-pattern = "/^(?! )[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]{2,})+(?<! )$/"
-                                            type="email"  ng-focus="emailFocused = true" ng-blur="emailFocused = false" ng-model="input.companyEmail" placeholder=" " ng-required="true">
+                                            type="text"  ng-focus="emailFocused = true" ng-blur="emailFocused = false" ng-model="input.companyEmail" ng-trim="false" placeholder=" " ng-required="true">
                                             <label class="labelText" for="companyEmail">Company email</label>
                                             <p ng-if="!emailFocused && userForm.companyEmail.$touched && userForm.companyEmail.$invalid && !userForm.companyEmail.$error.pattern" class="help-block">Email is required</p>
                                             <p ng-if="!emailFocused && userForm.companyEmail.$error.pattern" class="help-block">Invalid email, please enter valid email</p>
@@ -239,77 +234,79 @@ select.soflow, select.soflow-color
                                 <div class="col-md-9 has-float-label">
                                     <div class="form-group" ng-class="{ 'has-error' : (!purchaseTitleFocused && userForm2.purchaseTitle.$touched && userForm2.purchaseTitle.$invalid && !userForm.purchaseTitle.$error.pattern)
                                     || (!purchaseTitleFocused && userForm2.purchaseTitle.$error.pattern) }">
-                                        <input class="form-control input-lg" id="purchaseTitle" name="purchaseTitle" ng-model="input.purchaseTitle" 
-                                        ng-pattern="/^[a-z\d\-_\s]+$/i" ng-focus="purchaseTitleFocused = true" ng-blur="purchaseTitleFocused = false" placeholder=" " ng-required="true"/>
+                                        <input class="form-control input-lg" id="purchaseTitle" name="purchaseTitle" ng-model="input.purchaseTitle" ng-trim="false"
+                                        ng-pattern="/^(?! )[A-Za-z\d\-_\s]+(?<! )$/" ng-focus="purchaseTitleFocused = true" ng-blur="purchaseTitleFocused = false" placeholder=" " ng-required="true"/>
                                         <label class="labelText" for="purchaseTitle">PO title</label>
-                                        <p ng-show="!purchaseTitleFocused && userForm2.purchaseTitle.$touched && userForm2.purchaseTitle.$invalid && !userForm.purchaseTitle.$error.pattern" class="help-block">PO title is required</p>
-                                        <p ng-show="!purchaseTitleFocused && userForm2.purchaseTitle.$error.pattern" class="help-block">Only alphanumerics allowed</p>
+                                        <p ng-show="!purchaseTitleFocused && userForm2.purchaseTitle.$touched && userForm2.purchaseTitle.$invalid && !userForm2.purchaseTitle.$error.pattern" class="help-block">PO title is required</p>
+                                        <p ng-show="userForm2.purchaseTitle.$error.pattern" class="help-block">Invalid character found</p>
                                     </div>
                                 </div>
                                 
                                 <div class="col-md-3 has-float-label">
                                     <div class="form-group" ng-class="{ 'has-error' : !payableDateFocused && userForm2.payableDate.$touched && userForm2.payableDate.$invalid }">
-                                        <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control">
-                                            <div class="input-group input-group-error-position-fix">
-                                                <input class="form-control input-lg" ng-model="input.payableDate" name="payableDate" id="payableDate" type="text"
-                                                ng-focus="payableDateFocused = true" ng-blur="payableDateFocused = false" placeholder="" ng-required="true"/>
-                                                <label for="payableDate">Payable date</label>
-                                                <span class="input-group-addon rightroundspan border-red" style="cursor: pointer" ng-style="payableDateFocused? style={'border-color': '#6175d6'}: {}">
-                                                    <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
-                                                </span>
-                                            </div>
-                                        </datepicker>
-                                        <p ng-show="!payableDateFocused && userForm2.payableDate.$touched && userForm2.payableDate.$invalid" class="help-block" style="margin-top: 0px !important">Date is required</p>
+                                        <div class="div-datepicker">
+                                            <datepicker date-format="yyyy-MM-dd" date-min-limit="{{minPayableDate}}" selector="form-control">
+                                                <div class="input-group input-group-error-position-fix">
+                                                    <input class="form-control input-lg" ng-model="input.payableDate" name="payableDate" id="payableDate" type="text"
+                                                    ng-focus="payableDateFocused = true" ng-blur="payableDateFocused = false" placeholder="" ng-required="true"/>
+                                                    <label for="payableDate" class="date-label">Payable date</label>
+                                                    <span class="input-group-addon rightroundspan border-red" style="cursor: pointer" ng-style="payableDateFocused? style={'border-color': '#6175d6'}: {}">
+                                                        <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
+                                                    </span>
+                                                </div>
+                                            </datepicker>
+                                        </div>
+                                        <p ng-show="!payableDateFocused && userForm2.payableDate.$touched && userForm2.payableDate.$invalid" class="help-block">Date is required</p>
                                         
                                     </div>
                                 </div>
                                 
-                            <!-- </div> -->
-                            <!-- <div class="row"> -->
+                            </div>
+                            <div class="row">
                                 
                                 <div class="col-md-3 has-float-label">
                                     <div class="form-group" ng-class="{ 'has-error' : (!purchaseNoFocused && userForm2.purchaseNo.$touched && userForm2.purchaseNo.$invalid) || (!purchaseNoFocused && userForm2.purchaseNo.$error.pattern) }">
-                                        <input class="form-control input-lg" ng-model="input.purchaseNo" name="purchaseNo" id="purchaseNo" ng-pattern="/^[a-z\d\-_\s]+$/i"
+                                        <input class="form-control input-lg" ng-model="input.purchaseNo" name="purchaseNo" id="purchaseNo" ng-pattern="/^(?! )[A-Za-z\d\-_]+(?<! )$/" ng-trim="false"
                                         ng-focus="purchaseNoFocused = true" ng-blur="purchaseNoFocused = false" placeholder=" " ng-required="true"/>
                                         <label class="labelText" for="purchaseNo">PO number</label>
                                         <p ng-show="!purchaseNoFocused && userForm2.purchaseNo.$touched && userForm2.purchaseNo.$invalid && !userForm2.purchaseNo.$error.pattern" class="help-block">PO number is required</p>
-                                        <p ng-show="userForm2.purchaseNo.$error.pattern" class="help-block">Only alphanumerics allowed</p>
+                                        <p ng-show="userForm2.purchaseNo.$error.pattern" class="help-block">Invalid character found, no spaces allowed at either end</p>
                                     </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
                                     <div class="form-group" ng-class="{ 'has-error' : !purchaseDateFocused && userForm2.purchaseDate.$touched && userForm2.purchaseDate.$invalid }">
-                                        <datepicker date-format="yyyy-MM-dd" selector="form-control">
-                                            <div class="input-group input-group-error-position-fix">
-                                                <input class="form-control input-lg" ng-model="input.purchaseDate" name="purchaseDate" id="purchaseDate" 
-                                                ng-focus="purchaseDateFocused = true" ng-blur="purchaseDateFocused = false" ng-required="true"/>
-                                                <label for="purchaseDate">PO date</label>
-                                                <span class="input-group-addon rightroundspan border-red" style="cursor: pointer" ng-style="purchaseDateFocused? style={'border-color': '#6175d6'}: {}">
-                                                    <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
-                                                </span> 
-                                            </div>
-                                        </datepicker>
+                                        <div class="div-datepicker">
+                                            <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                                                <div class="input-group input-group-error-position-fix">
+                                                    <input class="form-control input-lg" ng-model="input.purchaseDate" name="purchaseDate" id="purchaseDate"
+                                                    ng-focus="purchaseDateFocused = true" ng-blur="purchaseDateFocused = false" ng-required="true"/>
+                                                    <label for="purchaseDate" class="date-label">PO date</label>
+                                                    <span class="input-group-addon rightroundspan border-red" style="cursor: pointer" ng-style="purchaseDateFocused? style={'border-color': '#6175d6'}: {}">
+                                                        <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
+                                                    </span> 
+                                                </div>
+                                            </datepicker>
+                                        </div>
                                         
-                                        <p ng-show="!purchaseDateFocused && userForm2.purchaseDate.$touched && userForm2.purchaseDate.$invalid" class="help-block" style="margin-top: 0px !important">Date is required.</p>
+                                        <p ng-show="!purchaseDateFocused && userForm2.purchaseDate.$touched && userForm2.purchaseDate.$invalid" class="help-block">Date is required</p>
                                     </div> 
                                 </div>
                                 <div class="col-md-3 has-float-label labelText">
-                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.purchaseAmount.$touched && userForm2.purchaseAmount.$invalid }">
+                                    <div class="form-group" ng-class="{ 'has-error' : !purchaseAmountFocused && userForm2.purchaseAmount.$touched && userForm2.purchaseAmount.$invalid }">
                                             <div class="input-group input-group-error-position-fix">
-                                                <span class="input-group-addon leftroundspan border-red" style="cursor: pointer">
+                                                <span class="input-group-addon leftroundspan border-red" style="cursor: pointer"  ng-style="purchaseAmountFocused? style={'border-color': '#6175d6'}: {}">
                                                     <i class="fa fa-lg fa-dollar input-group-icon-position-fix"></i>
                                                 </span>
-                                                <input class="form-control input-lg roundinput" ng-pattern="/^[1-9][0-9]*$/" placeholder=" " name="purchaseAmount" id="purchaseAmount" ng-model="input.purchaseAmount" ng-required="true"/>
-                                                <label for="purchaseAmount" style="padding-left: 15px;">Amount</label>
+                                                <input class="form-control input-lg roundinput" ng-pattern="/^[1-9][0-9]*$/" placeholder=" " ng-trim="false"
+                                                ng-focus="purchaseAmountFocused = true" ng-blur="purchaseAmountFocused =false" name="purchaseAmount"
+                                                id="purchaseAmount" ng-model="input.purchaseAmount" ng-required="true"/>
+                                                <label for="purchaseAmount" style="padding-left: 25px;">Amount</label>
                                             </div>
-                                        <p ng-show="userForm2.purchaseAmount.$touched && userForm2.purchaseAmount.$invalid" class="help-block" style="margin-top: 0px !important">Amount is required.</p>
-                                        <p ng-show="userForm2.purchaseAmount.$error.pattern" class="help-block">Only numbers allowed.</p>
+                                        <p ng-show="!purchaseAmountFocused && userForm2.purchaseAmount.$touched && userForm2.purchaseAmount.$invalid && !userForm2.purchaseAmount.$error.pattern" class="help-block">Amount is required</p>
+                                        <p ng-show="userForm2.purchaseAmount.$error.pattern" class="help-block">Amount cannot be negative</p>
                                     </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <!-- <button type="button" class="btn btn-default btn-icon btn-round">
-                                                <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
-                                    </button> -->
-
                                     <div class="myLabel">
                                         <input type="file" ngf-select="ngf-select" ng-model="poDocs" name="file"
                                             ngf-pattern="'image/*,application/pdf'" accept="image/*, application/pdf"
@@ -317,7 +314,6 @@ select.soflow, select.soflow-color
                                         <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse
                                             File</span>
                                     </div>
-                                    <img style="width:20px;" ngf-thumbnail="poDocs || '/assets/images/apple-touch-icon-72.png'" />
                                     <div>(Optional)</div>
                                     <i ng-show="poDocs.$error.required">*required</i><br>
                                     <i ng-show="poDocs.$error.maxSize">File too large
@@ -329,47 +325,48 @@ select.soflow, select.soflow-color
                             <div class="row">
                                 <div class="col-md-12 label-invoice">Invoice</div>
                                 <div class="col-md-3 has-float-label">
-                                        <div class="form-group" ng-class="{ 'has-error' : userForm2.invoiceNo.$touched && userForm2.invoiceNo.$invalid }">
-                                                <input class="form-control input-lg" ng-model="input.invoiceNo" name="invoiceNo" id="invoiceNo" ng-pattern="/^[a-z\d\-_\s]+$/i" placeholder=" " ng-required="true"/>
-                                                <label class="labelText" for="invoiceNo">Invoice No</label>
-                                                <p ng-show="userForm2.invoiceNo.$touched && userForm2.invoiceNo.$invalid" class="help-block">Invoice number is required.</p>
-                                                <p ng-show="userForm2.invoiceNo.$error.pattern" class="help-block">Only alphanumerics allowed.</p>
+                                        <div class="form-group" ng-class="{ 'has-error' : !invoiceNoFocused && userForm2.invoiceNo.$touched && userForm2.invoiceNo.$invalid }">
+                                                <input class="form-control input-lg" ng-model="input.invoiceNo" name="invoiceNo" id="invoiceNo" ng-pattern="/^(?! )[A-Za-z\d\-_]+(?<! )$/" ng-trim="false"
+                                                ng-focus="invoiceNoFocused = true" ng-blur="invoiceNoFocused =false" placeholder=" " ng-required="true"/>
+                                                <label class="labelText" for="invoiceNo">Invoice no</label>
+                                                <p ng-show="!invoiceNoFocused && userForm2.invoiceNo.$touched && userForm2.invoiceNo.$invalid && !userForm2.invoiceNo.$error.pattern" class="help-block">Invoice number is required</p>
+                                                <p ng-show="userForm2.invoiceNo.$error.pattern" class="help-block">Invalid character found, no spaces allowed at either end</p>
                                             </div>
                                     
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.invoiceDate.$touched && userForm2.invoiceDate.$invalid }">
-                                        <datepicker date-format="yyyy-MM-dd" selector="form-control">
-                                            <div class="input-group input-group-error-position-fix">
-                                                <input class="form-control input-lg" ng-model="input.invoiceDate" name="invoiceDate" id="invoiceDate" ng-required="true"/>
-                                                <label for="invoiceDate">Invoice Date</label>
-                                                <span class="input-group-addon rightroundspan border-red" style="cursor: pointer">
-                                                    <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
-                                                </span> 
-                                            </div>
-                                        </datepicker>
+                                    <div class="form-group" ng-class="{ 'has-error' : !invoiceDateFocused && userForm2.invoiceDate.$touched && userForm2.invoiceDate.$invalid }">
                                         
-                                        <p ng-show="userForm2.invoiceDate.$touched && userForm2.invoiceDate.$invalid" class="help-block" style="margin-top: 0px !important">Date is required.</p>
+                                        <div class="div-datepicker">
+                                            <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                                                <div class="input-group input-group-error-position-fix">
+                                                    <input class="form-control input-lg" ng-model="input.invoiceDate" name="invoiceDate" id="invoiceDate"
+                                                    ng-focus="invoiceDateFocused = true" ng-blur="invoiceDateFocused =false" ng-required="true"/>
+                                                    <label for="invoiceDate" class="date-label">Invoice date</label>
+                                                    <span class="input-group-addon rightroundspan border-red" style="cursor: pointer" ng-style="invoiceDateFocused? style={'border-color': '#6175d6'}: {}">
+                                                        <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
+                                                    </span> 
+                                                </div>
+                                            </datepicker>
+                                        </div>
+                                        <p ng-show="!invoiceDateFocused && userForm2.invoiceDate.$touched && userForm2.invoiceDate.$invalid" class="help-block">Date is required</p>
                                     </div> 
                                 </div>
                                 <div class="col-md-3 has-float-label labelText">
-                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.invoiceAmount.$touched && userForm2.invoiceAmount.$invalid }">
+                                    <div class="form-group" ng-class="{ 'has-error' : !invoiceAmountFocused && userForm2.invoiceAmount.$touched && userForm2.invoiceAmount.$invalid }">
                                             <div class="input-group input-group-error-position-fix">
-                                                <span class="input-group-addon leftroundspan border-red" style="cursor: pointer">
+                                                <span class="input-group-addon leftroundspan border-red" style="cursor: pointer" ng-style="invoiceAmountFocused? style={'border-color': '#6175d6'}: {}">
                                                     <i class="fa fa-lg fa-dollar input-group-icon-position-fix"></i>
                                                 </span>
-                                                <input class="form-control input-lg roundinput" ng-pattern="/^[1-9][0-9]*$/" placeholder=" " name="invoiceAmount" id="invoiceAmount" ng-model="input.invoiceAmount" ng-required="true"/>
-                                                <label for="purchaseAmount" style="padding-left: 15px;">Amount</label>
+                                                <input class="form-control input-lg roundinput" ng-pattern="/^[1-9][0-9]*$/" placeholder=" " name="invoiceAmount" id="invoiceAmount"
+                                                ng-focus="invoiceAmountFocused = true" ng-blur="invoiceAmountFocused =false" ng-model="input.invoiceAmount" ng-required="true"/>
+                                                <label for="purchaseAmount" style="padding-left: 25px;">Amount</label>
                                             </div>
-                                        <p ng-show="userForm2.invoiceAmount.$touched && userForm2.invoiceAmount.$invalid" class="help-block" style="margin-top: 0px !important">Amount is required.</p>
+                                        <p ng-show="!invoiceAmountFocused && userForm2.invoiceAmount.$touched && userForm2.invoiceAmount.$invalid" class="help-block">Amount is required</p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3 has-float-label">
-                                    <!-- <button type="button" class="btn btn-default btn-icon btn-round">
-                                                <i class="fa fa-cloud-upload"></i> &nbsp; <span>Browse File</span>
-                                    </button> -->
-
                                     <div class="myLabel">
                                         <input type="file" ngf-select="ngf-select" ng-model="invoiceDocs" name="file"
                                             ngf-pattern="'image/*,application/pdf'" accept="image/*,,application/pdf"
@@ -377,7 +374,6 @@ select.soflow, select.soflow-color
                                         <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse
                                             File</span>
                                     </div>
-                                    <img style="width:20px;" ngf-thumbnail="invoiceDocs || '/assets/images/apple-touch-icon-72.png'" />
                                     <div>(Optional)</div>
                                     <i ng-show="invoiceDocs.$error.required">*required</i><br>
                                     <i ng-show="invoiceDocs.$error.maxSize">File too large
@@ -388,26 +384,29 @@ select.soflow, select.soflow-color
                             <div class="row">
                                 <div class="col-md-12 label-invoice">GRN</div>
                                 <div class="col-md-3 has-float-label">
-                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.grnNo.$touched && userForm2.grnNo.$invalid }">
-                                        <input class="form-control input-lg" ng-model="input.grnNo" name="grnNo" id="grnNo" ng-pattern="/^[a-z\d\-_\s]+$/i" placeholder=" " ng-required="true"/>
-                                        <label class="labelText" for="grnNo">GRN No</label>
-                                        <p ng-show="userForm2.grnNo.$touched && userForm2.grnNo.$invalid" class="help-block">GRN is required.</p>
-                                        <p ng-show="userForm2.grnNo.$error.pattern" class="help-block">Only alphanumerics allowed.</p>
+                                    <div class="form-group" ng-class="{ 'has-error' :!grnNoFocused && userForm2.grnNo.$touched && userForm2.grnNo.$invalid }">
+                                        <input class="form-control input-lg" ng-model="input.grnNo" name="grnNo" id="grnNo" ng-pattern="/^(?! )[A-Za-z\d\-_]+(?<! )$/" ng-trim="false"
+                                        ng-focus="grnNoFocused = true" ng-blur="grnNoFocused =false" placeholder=" " ng-required="true"/>
+                                        <label class="labelText" for="grnNo">GRN no</label>
+                                        <p ng-show="!grnNoFocused && userForm2.grnNo.$touched && userForm2.grnNo.$invalid && !userForm2.grnNo.$error.pattern" class="help-block">GRN is required</p>
+                                        <p ng-show="userForm2.grnNo.$error.pattern" class="help-block">Invalid character found, no spaces allowed at either end</p>
                                     </div>
                                 </div>
                                 <div class="col-md-3 has-float-label">
-                                    <div class="form-group" ng-class="{ 'has-error' : userForm2.grnDate.$touched && userForm2.grnDate.$invalid }">
-                                        <datepicker date-format="yyyy-MM-dd" selector="form-control">
-                                            <div class="input-group input-group-error-position-fix">
-                                                <input class="form-control input-lg" ng-model="input.grnDate" name="grnDate" id="grnDate" ng-required="true"/>
-                                                <label for="grnDate">GRN Date</label>
-                                                <span class="input-group-addon rightroundspan border-red" style="cursor: pointer">
-                                                    <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
-                                                </span> 
-                                            </div>
-                                        </datepicker>
-                                        
-                                        <p ng-show="userForm2.grnDate.$touched && userForm2.grnDate.$invalid" class="help-block" style="margin-top: 0px !important">Date is required.</p>
+                                    <div class="form-group" ng-class="{ 'has-error' : !grnDateFocused && userForm2.grnDate.$touched && userForm2.grnDate.$invalid }">
+                                        <div class="div-datepicker">
+                                            <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                                                <div class="input-group input-group-error-position-fix">
+                                                    <input class="form-control input-lg" ng-model="input.grnDate" name="grnDate" id="grnDate"
+                                                    ng-focus="grnDateFocused = true" ng-blur="grnDateFocused =false" ng-required="true"/>
+                                                    <label for="grnDate" class="date-label">GRN date</label>
+                                                    <span class="input-group-addon rightroundspan border-red" style="cursor: pointer">
+                                                        <i class="fa fa-lg fa-calendar input-group-icon-position-fix"></i>
+                                                    </span> 
+                                                </div>
+                                            </datepicker>
+                                        </div>
+                                        <p ng-show="!grnDateFocused && userForm2.grnDate.$touched && userForm2.grnDate.$invalid" class="help-block">Date is required</p>
                                     </div> 
                                 </div>
                                 <!-- <div class="col-md-3 has-float-label">
@@ -427,7 +426,6 @@ select.soflow, select.soflow-color
                                         <i class="fa fa-cloud-upload" style="padding-left: 5px"></i> <span style="padding-left: 5px;">Browse
                                             File</span>
                                     </div>
-                                    <img style="width:20px;" ngf-thumbnail="grnDocs || '/assets/images/apple-touch-icon-72.png'" />
                                     <div>(Optional)</div>
                                     <i ng-show="grnDocs.$error.required">*required</i><br>
                                     <i ng-show="grnDocs.$error.maxSize">File too large

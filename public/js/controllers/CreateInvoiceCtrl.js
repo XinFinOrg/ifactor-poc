@@ -1,4 +1,31 @@
-angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) {
+const app = angular.module('CreateInvoiceCtrl', []);
+app.directive('isNumber', function () {
+	return {
+		require: 'ngModel',
+		link: function (scope, element, attrs, ngModel) {	
+    	element.bind("keydown keypress", function (event) {
+          if(event.which === 32) {
+            event.returnValue = false;
+            return false;
+          }
+       }); 
+			scope.$watch(attrs.ngModel, function(newValue,oldValue) {
+                var arr = String(newValue).split("");
+                if (arr.length === 0) return;
+                if (arr.length === 1 && (arr[0] == '-' || arr[0] === '.' )) return;
+                if (arr.length === 2 && newValue === '-.') return;
+                if (isNaN(newValue)) {
+                    //scope.wks.number = oldValue;
+                    ngModel.$setViewValue(oldValue);
+    								ngModel.$render();
+                }
+            });
+          
+		}
+	};
+});
+
+app.directive('date', function (dateFilter) {
     return {
         require:'ngModel',
         link:function (scope, elm, attrs, ctrl) {
@@ -10,7 +37,8 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
             });
         }
     };
-}).controller('CreateInvoiceController',['$scope', '$rootScope',
+});
+app.controller('CreateInvoiceController',['$scope', '$rootScope',
  '$location', '$timeout', 'GetPost', 'Helper', 'Upload', '$window',  function($scope, $rootScope,  
  	$location, $timeout, GetPost, Helper, Upload, $window) {
 
@@ -43,6 +71,47 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 			GetPost.get({url : '/getBuyerList'}, function(err, docs) {
 				$scope.buyerList = docs.data;
 			});
+
+			if ($rootScope.fromDashboard) {
+				$scope.getInvoice($rootScope.invoiceId);
+				$rootScope.fromDashboard = false;
+			}
+			
+			//upload file
+			$scope.poDocs = null;
+			$scope.grnDocs  = null;
+			$scope.invoiceDocs = null;
+			$scope.date = new Date();
+			$scope.eventSources = [];
+			$scope.buyerList = [];
+			$scope.companyTypeOptions = Helper.companyTypeOptions();
+			$scope.companyNameData = {};
+			$scope.minPayableDate = new Date().toDateString();
+			$scope.dashboardData = [];
+			$scope.input = {
+				companyName : "",
+				companyType : "",
+				buyerEmail : "",
+				buyerAddress : "",
+				contactName : "",
+				companyPhone : "",
+				companyEmail : "",
+				purchaseTitle : "",
+				purchaseNo : "",
+				purchaseDate : "",
+				purchaseAmount :"" ,
+				purchaseDocs : "",
+				payableDate : "",
+				invoiceNo : "",
+				invoiceDate : "",
+				invoiceAmount : "",
+				invoiceDocs : "",
+				grnNo : "",
+				grnDate : "",	
+				grnDocs : "",
+				state : "",
+				grnAmount : 0
+			};
 		}
 	});
 
@@ -66,40 +135,6 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 		$scope.showToggle = !$scope.showToggle;	
 		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
 	}
-
-	$scope.date = new Date();
-	$scope.eventSources = [];
-	$scope.buyerList = [];
- 	$scope.companyTypeOptions = Helper.companyTypeOptions();
-	$scope.companyNameData = {};
-	$scope.minPayableDate = new Date().toDateString();
-
-    $scope.input = {
-    	companyName : "",
-		companyType : "",
-		buyerEmail : "",
-		buyerAddress : "",
-		contactName : "",
-		companyPhone : "",
-		companyEmail : "",
-		purchaseTitle : "",
-		purchaseNo : "",
-		purchaseDate : "",
-		purchaseAmount :"" ,
-		purchaseDocs : "",
-		payableDate : "",
-		invoiceNo : "",
-		invoiceDate : "",
-		invoiceAmount : "",
-		invoiceDocs : "",
-		grnNo : "",
-		grnDate : "",	
-		grnDocs : "",
-		state : "",
-		grnAmount : 0
-		//buyerId
-		//supplierId
-    };
 
     $scope.getBuyerData = function(input) {
 		input.buyerEmail = $scope.companyNameData.email;
@@ -138,27 +173,29 @@ angular.module('CreateInvoiceCtrl', []).directive('date', function (dateFilter) 
 	    }
 	};
 
-	$scope.dashboardData = [];
-    $scope.getInvoices = function () {
+    // $scope.getInvoices = function () {
+    // 	var data = {
+	// 		url : '/getSupplierDashboard'
+	// 	}
+    // 	GetPost.get(data, function(err, docs) {
+    // 		console.log(docs);
+	// 		$scope.input = docs.data[$rootScope.mainInvoiceIndex];
+	// 		setCompanyData();
+	//     });
+	// }
+	
+	$scope.getInvoice = function (invoiceId) {
     	var data = {
-			url : '/getSupplierDashboard'
+			url : '/getInvoice',
+			invoiceId: invoiceId
 		}
-    	GetPost.get(data, function(err, docs) {
-    		console.log(docs);
-			$scope.input = docs.data[$rootScope.mainInvoiceIndex];
+    	GetPost.post(data, function(err, doc) {
+    		console.log('target',doc);
+			// $scope.input = doc.data[$rootScope.mainInvoiceIndex];
+			$scope.input = doc;
 			setCompanyData();
 	    });
     }
-
-    if ($rootScope.fromDashboard) {
-    	$scope.getInvoices();
-    	$rootScope.fromDashboard = false;
-    }
-    
-    //upload file
-    $scope.poDocs = null;
-    $scope.grnDocs  = null;
-    $scope.invoiceDocs = null;
 
     $scope.submitInvoice = function (type) {
 		$rootScope.isMainLoader = true;

@@ -143,7 +143,7 @@
 		invoiceId : $rootScope.invoiceId || $routeParams.invoiceId
 	};
 	GetPost.post(data, function(err, res) {
-		console.log('invoiceDetails response');
+		console.log('invoiceDetails response', res);
 		$scope.invoiceData = res.data.invoice;
 		$rootScope.balance = res.data.balance;
 		$scope.invoiceTxHistory = res.data.invoiceHistory;

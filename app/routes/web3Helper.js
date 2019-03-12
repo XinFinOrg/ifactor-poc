@@ -32,25 +32,6 @@ var createAccount = function(phrase) {
     return web3.personal.newAccount();
 }
 
-
-var getAccounts = function() {
-    console.log(web3.eth.accounts);
-    return web3.eth.accounts;
-};
-
-
-var unlock = function (address, phrase) {
-    return new Promise((resolve, reject) => {
-        web3.personal.unlockAccount(address, phrase, function (error, result) {
-            if (!error) {
-                resolve(address);
-            } else {
-                reject(err);
-            }
-        });
-    })
-}
-
 var unlockSync = function(address, phrase) {
     return web3.personal.unlockAccount(address, phrase);
 };
@@ -58,27 +39,6 @@ var unlockSync = function(address, phrase) {
 var unlockCoinbase = function() {
     return web3.personal.unlockAccount(web3.eth.coinbase, "", 1000000);
 };
-
-var etherTransfer = function(addressTo, value=1) {
-    return new Promise((resolve, reject) => {
-        web3.eth.sendTransaction({
-            to: addressTo,
-            value: web3.toWei(value, "ether"),
-            from: web3.eth.coinbase
-        }, function (err, success) {
-            if (!err) {
-                resolve('success');
-            } else {
-                console.log('etherTransfer', err)
-                reject(err);
-            }
-        });
-    })
-}
-
-var getEthBalance = function(address) {
-    return web3.eth.getBalance(address);
-}
 
 var selectContractInstance = (contractBuild) => {
   return new Promise(res => {
@@ -153,11 +113,6 @@ var postpayFactoring = async (function(invoiceId, amount) {
     return mm;
 });
 
-var getState = async (function(invoiceId) {
-    var mm = await (contractInstance.getState.call(invoiceId));
-    return mm;
-});
-
 var setState = async (function(invoiceId, state) {
     unlockDefaultAccount();
     var mm = await (contractInstance.setState(invoiceId, state, Date.now(),
@@ -191,11 +146,6 @@ var buyTokens = async (function(address, amount) {
     return mm;
 });
 
-var getAmount = async (function(invoiceId){
-    var mm = await (contractInstance.getAmount.call(invoiceId));
-    return mm;
-});
-
 var getInterestAmount = async (function(invoiceId){
     var mm = await (contractInstance.getInterestAmount.call(invoiceId));
     return mm;
@@ -210,36 +160,6 @@ var getPostpayAmount = async (function(invoiceId){
 
 var getPrepayAmount = async (function(invoiceId){
     var mm = await (contractInstance.getPrepayAmount.call(invoiceId));
-    return mm;
-});
-
-var getAddresses = async (function(invoiceId){
-    var mm = await (contractInstance.getAddresses(invoiceId));
-    return mm;
-});
-
-var getFinancer = async (function(invoiceId){
-    var mm = await (contractInstance.getFinancer(invoiceId));
-    return mm;
-});
-
-var getSupplier = async (function(invoiceId){
-    var mm = await (contractInstance.getSupplier(invoiceId));
-    return mm;
-});
-
-var getBuyer = async (function(invoiceId){
-    var mm = await (contractInstance.getBuyer(invoiceId));
-    return mm;
-});
-
-var getProps = async (function(invoiceId){
-    var mm = await (contractInstance.getProps(invoiceId));
-    return mm;
-});
-
-var getInvoiceAmount = async (function(invoiceId){
-    var mm = await (contractInstance.getInvoiceAmount.call(invoiceId));
     return mm;
 });
 
@@ -340,54 +260,6 @@ var getAllEvents = async(function(invoiceId) {
     return allEvents;
 });
 
-var getInvoiceHistory = function(invoiceId, cb) {
-    var allEvents = contractInstance.invoiceHistory({
-            from: web3.eth.coinbase,
-            gas: 70000000
-        },{
-            fromBlock: 0,
-            toBlock: 'latest'
-        }
-    );
-
-    allEvents.get(function(err,result) {
-    if(!err) {
-        var result = result.filter(tx => tx.args && tx.args.invoiceId == invoiceId);
-        return cb(false, result);
-    }
-        return cb(true);
-    });
-};
-
-var getTransferEvents = function(invoiceId, cb) {
-    var allEvents = contractInstance.Transfer({
-            from: web3.eth.coinbase,
-            gas: 70000000
-        },{
-            fromBlock: 0,
-            toBlock: 'latest'
-        }
-    );
-
-    allEvents.get(function(err,result) {
-    if(!err) {
-        //var result = result.filter(tx => tx.args && tx.args.invoiceId == invoiceId);
-        return cb(false, result);
-    }
-        return cb(true);
-    });
-};
-
-var addInvoiceEvent = function(invoiceId, cb) {
-    return contractInstance.createInvoice({}).get(function(err, res) {
-        if(!err) {
-            var result = result.filter(tx => tx.args && tx.args._invoice_id == invoiceId);
-            return cb(false, result);
-        }
-        return cb(true);
-    })
-};
-
 var getAllEvents2 = function(invoiceId, cb) {
     web3.eth.filter({
       from: 1,
@@ -422,37 +294,21 @@ var getAllEvents2 = function(invoiceId, cb) {
 //buyTokens("0x00b1a1e50b50443cb18dcbd624e115be46c10131", 100000)
 module.exports = {
     createAccount : createAccount,
-    unlock : unlock,
     unlockSync : unlockSync,
-    etherTransfer : etherTransfer,
-    getEthBalance : getEthBalance,
     addInvoice : addInvoice,
     factoringProposal : factoringProposal,
     prepayFactoring : prepayFactoring,
     payInvoice : payInvoice,
     postpayFactoring : postpayFactoring,
-    getState : getState,
     setState : setState,
     buyTokens : buyTokens,
-    getAmount : getAmount,
     getInterestAmount : getInterestAmount,
-    getInvoiceHistory : getInvoiceHistory,
     getAllEvents : getAllEvents,
-    getTransferEvents : getTransferEvents,
     getPostpayAmount : getPostpayAmount,
     getPrepayAmount : getPrepayAmount,
-    getAddresses : getAddresses,
-    getInvoiceAmount : getInvoiceAmount,
     getBalance : getBalance,
     sendTokens : sendTokens,
-    getSupplier : getSupplier,
-    getBuyer : getBuyer,
-    getFinancer : getFinancer,
-    addInvoiceEvent : addInvoiceEvent,
-    getProps : getProps,
-    getEthBalance : getEthBalance,
     requestFactoring : requestFactoring,
-    getAccounts : getAccounts,
     getProposalAcceptedEvent : getProposalAcceptedEvent,
     setPayoutDays : setPayoutDays,
     unlockCoinbase : unlockCoinbase

@@ -4259,3 +4259,11 @@ table.dataTable.display tbody tr:first-child td {
 .date-input{
     display: flex !important;
 }
+
+.date-label{
+    left: 16px !important;
+}
+
+.div-datepicker{
+    height: 65px;
+}

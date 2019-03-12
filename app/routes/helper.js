@@ -32,6 +32,7 @@ var getDatesDiff = function(date, d2) {
 };
 
 var processEvents = function(allEvents, invoice) {
+    console.log('helper > processEvents() > allEvents, invoice: ', allEvents, invoice);
     var event, ev;
     for (var i in allEvents) {
         event = allEvents[i];
