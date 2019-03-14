@@ -65,6 +65,11 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 			controller: 'CreateInvoiceController'	
 		})
 
+		.when('/quickbook/connect', {
+			templateUrl: 'views/home.html',
+			controller: 'QuickbookConnectController'
+		})
+
 		.otherwise({
 			templateUrl: 'views/home.html',
 			controller: 'MainController'
