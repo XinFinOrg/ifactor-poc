@@ -80,7 +80,7 @@ remark | String | Yes
     "status" : true
   }
 ```
-## Rejcct Invoice Details
+## Reject Invoice Details
 
 Reject the invoice details.
 
@@ -106,7 +106,7 @@ remark | String | Yes
 ```
 ## Initiate Factoring
 
-Lists invoice for fatcoring. This endpoints sends notification to all financers available on the platform for factoring.
+Lists invoice for factoring. This endpoints sends notification to all financers available on the platform for factoring.
 
 ### HTTP Request
 
@@ -128,7 +128,7 @@ remark | String | Yes
     "status" : true
   }
 ```
-## Propose Factoirng
+## Propose Factoring
 
 This endpoint enables financer to propose factoring solution to supplier by filling a simple form.
 
@@ -138,9 +138,9 @@ Parameters | Description
 --------- | -------- | --------- 
 invoiceAmount | Total factoring amount
 platformCharges | Interest Rate/Month (typical 0.5-2%)
-saftyPercentage | This defines the percentage of factoring amount to be kept as saftey (typically 15-20%) 
+safteyPercentage | This defines the percentage of factoring amount to be kept as saftey (typically 15-20%) 
 
-Factoring amount is paid to supplier in 2 steps. Safty Percentage defines the amount to be paid in second(final) payment.
+Factoring amount is paid to supplier in 2 steps. Saftey Percentage defines the amount to be paid in second(final) payment.
 
 ### HTTP Request
 
@@ -153,7 +153,7 @@ Parameters | Arguments | Required
 invoiceId | String | Yes
 invoiceAmount | Integer | Yes
 platformCharges | Integer | Yes
-saftyPercentage | Integer | Yes
+safteyPercentage | Integer | Yes
 payableDate | Date | Yes
 
 ### Response Details
@@ -215,7 +215,7 @@ invoiceId | String | Yes
 
 ## Pay Invoice
 
-This enpoint enables Buyer to Transfer invoice amount to financer.
+This endpoint enables buyer to transfer invoice amount to financer.
 
 ### HTTP Request
 
@@ -241,7 +241,7 @@ financerAddress | String | Yes
 ```
 ## Prepay Supplier
 
-This enpoint enables Financer to Transfer first payment amount to supplier.
+This endpoint enables financer to transfer first payment amount to supplier.
 
 ### HTTP Request
 
@@ -268,7 +268,7 @@ financerAddress | String | Yes
 ```
 ## Postpay Supplier
 
-This enpoint enables Financer to Transfer final payment amount to supplier.
+This endpoint enables Financer to Transfer final payment amount to supplier.
 
 ### HTTP Request
 

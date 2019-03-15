@@ -4,7 +4,7 @@ This section list api endpoints to rate financer and supplier to each other.
 
 ## Rate Financer
 
-This api endpoint enables Supplier to rate financer.
+This api endpoint enables supplier to rate financer.
 
 ### HTTP Request
 
@@ -29,7 +29,7 @@ financerRatingRemark | String | No
 ```
 ## Rate Supplier
 
-This api endpoint enables Financer to rate Supplier.
+This api endpoint enables financer to rate supplier.
 
 ### HTTP Request
 
