@@ -1,5 +1,5 @@
-const app = angular.module('CreateInvoiceCtrl', []);
-app.directive('isNumber', function () {
+const CreateInvoiceModule = angular.module('CreateInvoiceCtrl', []);
+CreateInvoiceModule.directive('isNumber', function () {
 	return {
 		require: 'ngModel',
 		link: function (scope, element, attrs, ngModel) {	
@@ -25,7 +25,7 @@ app.directive('isNumber', function () {
 	};
 });
 
-app.directive('date', function (dateFilter) {
+CreateInvoiceModule.directive('date', function (dateFilter) {
     return {
         require:'ngModel',
         link:function (scope, elm, attrs, ctrl) {
@@ -38,7 +38,7 @@ app.directive('date', function (dateFilter) {
         }
     };
 });
-app.controller('CreateInvoiceController',['$scope', '$rootScope',
+CreateInvoiceModule.controller('CreateInvoiceController',['$scope', '$rootScope',
  '$location', '$timeout', 'GetPost', 'Helper', 'Upload', '$window',  function($scope, $rootScope,  
  	$location, $timeout, GetPost, Helper, Upload, $window) {
 
