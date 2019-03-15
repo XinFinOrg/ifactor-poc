@@ -21,7 +21,6 @@ angular.module('InvoiceDetailsCtrl', []).controller('InvoiceDetailsController',[
 			$scope.dropdownMenuStyle = {'display':'none'};
 			$rootScope.userType = res.data.userType;
 			$rootScope.name = res.data.name;
-
 			if ($rootScope.balance == undefined){
 				GetPost.get({ url : '/getBalance' }, function(err, res) {
 					if (res.status) {

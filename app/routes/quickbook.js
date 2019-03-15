@@ -45,7 +45,7 @@ router.post('/setupQuickbook', function(req, res) {
 	}
 });
 
-router.get('/connectBook', async(function(req, res) {
+router.get('/connect', async(function(req, res) {
     var companyID = oauthClient.getToken().realmId;
     var url = oauthClient.environment == 'sandbox' ? OAuthClient.environment.sandbox : OAuthClient.environment.production;
 
