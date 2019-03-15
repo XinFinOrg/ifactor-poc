@@ -1,4 +1,6 @@
-angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$scope', '$rootScope',
+const ResetPasswordModule = angular.module('ResetPasswordCtrl', []);
+
+ResetPasswordModule.controller('ResetPasswordController',['$scope', '$rootScope',
 'GetPost', 'Helper', '$location', '$timeout', '$window', function($scope, $rootScope,
  	GetPost, Helper, $location, $timeout, $window) {
 
@@ -52,7 +54,4 @@ angular.module('ResetPasswordCtrl', []).controller('ResetPasswordController',['$
 			$location.url('/login');
 		}, 2000)
 	}
-	
-
-
 }]);

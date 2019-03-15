@@ -135,8 +135,7 @@
                                     <div class="form-group" ng-class="{ 'has-error' : input.oldPassword == null && !oldPasswordFocused && passwordForm.oldPassword.$dirty && (passwordForm.oldPassword.$error.minlength || passwordForm.oldPassword.$error.maxlength)}">
                                         <input class="form-control input-lg" id="oldPassword" name="oldPassword" type="password"  ng-model="input.oldPassword"
                                             ng-focus="oldPasswordFocused = true" ng-blur = "oldPasswordFocused = false" ng-minlength="6" ng-maxlength="15" placeholder=" " ng-required="true">
-                                        <label class="labelText" for="oldPassword">Old Password</label>
-                                        <!-- <p ng-if="!passwordFocused && (userForm.password.$error.minlength || userForm.password.$error.maxlength)" class="help-block">Please check your password</p> -->
+                                        <label class="labelText" for="oldPassword">Old password</label>
                                         <p ng-if="input.oldPassword == null && !oldPasswordFocused && passwordForm.oldPassword.$dirty && (passwordForm.oldPassword.$error.minlength || passwordForm.oldPassword.$error.maxlength)" class="help-block">Please check your password</p>
                                     </div>
                                 </div>    
@@ -152,11 +151,16 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 has-float-label">
-                                    <div class="form-group" ng-class="{ 'has-error' :passwordForm.password.$valid && passwordForm.confirmPassword.$invalid}">  
-                                        <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password" ng-model="input.confirmPassword" ng-focus="confirmPasswordFocused = true" ng-blur="confirmPasswordFocused = false"ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,15}$/"  placeholder=" " ng-required="true">
+                                    <div class="form-group" ng-class="{ 'has-error' : (!passwordFocused && !confirmPasswordFocused && passwordForm.password.$valid && passwordForm.confirmPassword.$touched && passwordForm.confirmPassword.$invalid)
+                                    || (!confirmPasswordFocused && !passwordFocused   && passwordForm.confirmPassword.$error.compare)}">
+                                        <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password" ng-focus="confirmPasswordFocused = true" ng-blur="confirmPasswordFocused = false"
+                                        ng-model="input.confirmPassword" placeholder=" " ng-required="true">
                                         <label class="labelText" for="confirmPassword">Confirm new password</label>
-                                        <p ng-if="passwordForm.password.$valid && passwordForm.confirmPassword.$invalid && passwordForm.confirmPassword.$touched" class="help-block">Confirm password does not match.</p>
-                                        <!-- {{passwordForm}} -->
+                                        <p ng-if="!passwordFocused && !confirmPasswordFocused && passwordForm.password.$valid && passwordForm.confirmPassword.$touched
+                                            && passwordForm.confirmPassword.$invalid && !passwordForm.confirmPassword.$error.compare" class="help-block">
+                                            Confirm password is required
+                                        </p>
+                                        <p ng-if="!passwordFocused && passwordForm.confirmPassword.$error.compare" class="help-block">Confirm password does not match.</p>
                                     </div>
                                 </div>  
                             </div>

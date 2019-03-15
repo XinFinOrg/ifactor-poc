@@ -27,6 +27,7 @@ angular.module('ForgotPasswordCtrl', []).controller('ForgotPasswordController',[
 		var data  = {url : url};
 		GetPost.get(data, function(err, res) {
 			$rootScope.isMainLoader = true;
+			$scope.showHeaderOptions = false;
 			if (!err) {
 				Helper.createToast(res.message, 'success');
 			} else if (err && !res.status) {

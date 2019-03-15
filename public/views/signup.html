@@ -3,7 +3,7 @@
         <a href="/">
             <div class="logo-area"></div>
         </a>
-        <div class="quick-area">
+        <div class="quick-area" ng-show="showHeaderOptions">
             <div class='pull-right'>
                 <ul class="info-menu right-links list-inline list-unstyled">
                     <li class="doc">
@@ -80,7 +80,8 @@
                             <div class="form-group" ng-class="{ 'has-error' : (!passwordFocused && userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.pattern) || (!passwordFocused && userForm.password.$error.pattern) }">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg" id="password" name="password" type="password" ng-focus="passwordFocused = true" ng-blur="passwordFocused = false" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,15}$/" ng-model="input.password" placeholder=" " ng-required="true">
+                                        <input class="form-control input-lg" id="password" name="password" type="password" ng-focus="passwordFocused = true" ng-blur="passwordFocused = false"
+                                        ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,15}$/" ng-model="input.password" placeholder=" " ng-required="true">
                                         <label class="labelText" for="password">Password</label>
                                         <p ng-if="!passwordFocused && userForm.password.$touched && userForm.password.$invalid && !userForm.password.$error.pattern" class="help-block">Password is required</p>
                                         <p ng-if="passwordFocused || (!passwordFocused && userForm.password.$error.pattern)" class="help-block">
@@ -92,7 +93,8 @@
                             <div class="form-group" ng-class="{ 'has-error' : (!passwordFocused && !confirmPasswordFocused && userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid) || (!confirmPasswordFocused && !passwordFocused   && userForm.confirmPassword.$error.compare)}">
                                 <div class="row">
                                     <div class="col-xs-12 has-float-label">
-                                        <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password"  ng-focus="confirmPasswordFocused = true" ng-blur="confirmPasswordFocused = false" ng-model="input.confirmPassword" placeholder=" " ng-required="true">
+                                        <input class="form-control input-lg" id="confirmPassword" name="confirmPassword" type="password" ng-compare="password" ng-focus="confirmPasswordFocused = true" ng-blur="confirmPasswordFocused = false"
+                                        ng-model="input.confirmPassword" placeholder=" " ng-required="true">
                                         <label class="labelText" for="confirmPassword">Confirm password</label>
                                         <p ng-if="!passwordFocused && !confirmPasswordFocused && userForm.confirmPassword.$touched && userForm.confirmPassword.$invalid && !userForm.confirmPassword.$error.compare" class="help-block">Confirm password is required</p>
                                         <p ng-if="!passwordFocused && userForm.confirmPassword.$error.compare" class="help-block">Confirm password does not match.</p>
