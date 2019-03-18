@@ -136,7 +136,7 @@ CreateInvoiceModule.controller('CreateInvoiceController',['$scope', '$rootScope'
 		$scope.dropdownMenuStyle = $scope.showToggle ? {'display':'block'} : {'display':'none'};
 	}
 
-    $scope.getBuyerData = function(input) {
+    var getBuyerData = function(input) {
 		input.buyerEmail = $scope.companyNameData.email;
 		input.buyerAddress = $scope.companyNameData.address;
 		input.companyName = $scope.companyNameData.firstName;
@@ -202,7 +202,7 @@ CreateInvoiceModule.controller('CreateInvoiceController',['$scope', '$rootScope'
 		$scope.showHeaderOptions = false;
 		$scope.isSubmitNowButtonDisabled = true;
 		$scope.input.state = type;
-		$scope.input = $scope.getBuyerData($scope.input);
+		$scope.input = getBuyerData($scope.input);
 		
     	// if (!validateInvoice()) {
 		// 	$scope.isSubmitNowButtonDisabled = false;
