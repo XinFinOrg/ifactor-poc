@@ -30,7 +30,7 @@ var getFullName = function(firstName, lastName) {
 };
 
 router.post('/setupQuickbook', function(req, res) {
-	console.log("start : quickbook")
+	console.log("start : quickbook");
 	if (!req.isAuthenticated()) {
 		return res.send({status : false});
 	} else {
@@ -69,7 +69,7 @@ router.get('/connect', async(function(req, res) {
              oauth2_token_json = JSON.stringify(authResponse.getJson(), null,2);
 		     oauthClient.makeApiCall({url: url + 'v3/company/' + companyID +'/cdc?entities=Invoice, Customer&changedSince=' + lastUpdate})
 		        .then(async (function(authResponse1){
-		            var ar = JSON.stringify(authResponse1.getJson());
+		            // var ar = JSON.stringify(authResponse1.getJson());
 		            authResponse1 = authResponse1.getJson();
 		            var changedSince = authResponse1.time;
 					var invoices = authResponse1.CDCResponse[0].QueryResponse[0].Invoice;
@@ -79,7 +79,7 @@ router.get('/connect', async(function(req, res) {
 					var inputs = [];
 					for (var i in invoices) {
 						var invoice = invoices[i];
-						var customer = customersObj[invoice['CustomerRef']['value']];
+						var customer = customersObj[invoice.CustomerRef['value']];
 						if (!invoice.BillEmail || !invoice.BillEmail.Address) {
 							var bill = {
 								Address : customer.PrimaryEmailAddr ? customer.PrimaryEmailAddr.Address : false
@@ -132,7 +132,7 @@ router.get('/connect', async(function(req, res) {
 						collection = db.getCollection('erp-sync');
 						var today = changedSince || helper.formatDate(new Date());
 						result = await (collection.update({source : 'quickbook'}, {$set : {lastUpdate : today}}, {upsert : true}));
-						return res.send({status : true})
+						return res.send({status : true, authResponse: authResponse1})
 					} catch(e) {
 						console.log('insert invoices error', e);
 						return res.send({status : false})

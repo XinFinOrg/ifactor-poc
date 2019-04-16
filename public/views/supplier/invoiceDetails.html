@@ -38,7 +38,7 @@ font-size: 13px;
             <div class='pull-right'>
                 <ul class="info-menu right-links list-inline list-unstyled">
                     
-                    <li class="balaceTop">Balance : {{balance}} XDC</li>
+                    <li class="balanceTop">Balance : {{balance}} XDC</li>
                     <li class="profile">
                         <a href="#" class="toggle" id="dropdownToggle" ng-click="toggleDropdown()">
                             <span>{{name}}
@@ -148,8 +148,7 @@ font-size: 13px;
                                         <th>Description</th>
                                         <th>Qty</th>
                                         <th>Rate</th>
-                                        <th>Total tax</th>
-                                        <th>Total amount</th>
+                                        <th>Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -157,7 +156,6 @@ font-size: 13px;
                                             <td>{{ x.desc }}</td>
                                             <td>{{ x.qty }}</td>
                                             <td>${{ x.rate }}</td>
-                                            <td>${{ x.tax }}</td>
                                             <td>${{ x.total }}</td>
                                         </tr>
                                     </tbody>
@@ -166,9 +164,13 @@ font-size: 13px;
                                             <td><strong>Total</strong></td>
                                             <td><strong>{{ total.qty }}</strong></td>
                                             <td> - </td>
-                                            <td><strong>${{ total.tax }}</strong></td>
                                             <td><strong>${{ total.total }}</strong></td>
                                         </tr>
+                                        <tr>
+                                            <td><strong>Total tax</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><strong>${{ total.tax }}</strong></td>
                                     </tfoot>
                                 </table>
                             </div>
@@ -575,7 +577,7 @@ font-size: 13px;
                                     <div>
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <textarea style="height: 150px !important;" ng-model="proposalActionForm.remark" class="form-control input-lg labelText" id="description" placeholder="Remark*"></textarea>
+                                                    <textarea style="height: 150px !important;" ng-model="proposalActionForm.remark" class="form-control input-lg labelText" id="description" placeholder="Remark"></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group form-group-bottom">

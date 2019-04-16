@@ -957,7 +957,7 @@ a:hover, a:focus {
 /*----------------------------------------
   footer
 ------------------------------------------*/
-.balaceTop{
+.balanceTop{
     font-size: 14px;
     color:#fff;
 }
@@ -4269,7 +4269,15 @@ table.dataTable.display tbody tr:first-child td {
     color: #ffffff
 }
 
-.btn-quickbook:hover{
+.btn-quickbook:hover, .btn-quickbook:active, .btn-quickbook:focus{
     background-color: #22a229;
     color: #ffffff
+}
+
+.date-label{
+    left: 16px !important;
+}
+
+.div-datepicker{
+    height: 65px;
 }

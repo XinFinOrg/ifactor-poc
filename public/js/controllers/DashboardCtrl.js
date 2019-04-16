@@ -80,20 +80,7 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 		$scope.templateUrlDashboard = $scope.dashboardUrl[type];
 	};
 
-	$scope.name = $rootScope.name;
 	$scope.urlMap($rootScope.userType);
-
-
-	GetPost.get({ url : '/startApp' }, function(err, resp) {
-		if (!resp.status) {
-			$location.path('/login');
-		} else {
-			console.log(resp);
-			$scope.urlMap(resp.data.userType);
-			$rootScope.userType = resp.data.userType;
-			$scope.getInvoices();
-		}
-    });
 
 	var openPopup = function(authUri) {
 	        var parameters = "location=1,width=800,height=650";
@@ -121,11 +108,11 @@ angular.module('DashboardCtrl', []).controller('DashboardController',['$scope', 
 			if (!resp.status) {
 				Helper.showAlert('qbk-fail');
 			} else {
-				console.log('resp auth', resp.authUri);
-				//window.open('https://www.google.com', '_blank');
+				console.log('resp auth', resp.authUrl);
+				$rootScope.quickbookURL = resp.authUrl;
+				// $location.path('/quickbook/connect');
 		        var parameters = "channelmode=1,width=800,height=650";
 		        parameters += ",left=" + (screen.width - 800) / 2 + ",top=" + (screen.height - 650) / 2;
-		        //var win = window.open(authUri, 'connectPopup', parameters);
 				$window.open(resp.authUrl, '', parameters);
 				//openPopup(authUrl)
 			}

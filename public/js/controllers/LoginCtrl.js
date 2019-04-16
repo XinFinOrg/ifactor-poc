@@ -70,6 +70,7 @@ angular.module('LoginCtrl', []).controller('LoginController',['$scope', '$rootSc
 						$location.path('/dashboard');
 					}, 1000);
 				} else {
+					$rootScope.showHeaderOptions = false;
 					if (err && !res.status) {
 						Helper.createToast(res.error.message, 'danger');
 					} else {

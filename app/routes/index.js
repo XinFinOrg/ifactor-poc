@@ -640,7 +640,6 @@ router.post('/createInvoice', imgUpload, async (function(req, res) {
 		var tx;
 		if (web3Conf && input.state == 'invoice_created') {
 			try {
-				//web3Helper.addInvoiceEvent(function(err, result) {});
 				tx = await (web3Helper.addInvoice(input));
 				input.createHash = tx;
 			} catch(e) {
@@ -1475,6 +1474,28 @@ router.get('/getSupplierDashboard', function(req, res) {
 	}
 });
 
+router.post('/getInvoice', function(req, res) {
+	console.log('index > getInvoice API > req.body: ', req.body);
+	const invoiceId = req.body.invoiceId;
+	const collection = db.getCollection('invoices');
+	const query = {'invoiceId': invoiceId};
+	collection.findOne(query, function(err, data) {
+		if (err) {
+			console.log('index > getInvoice API > collection.findOne > query, err, data: ', query, err, data);
+			return res.send({
+				status : false,
+				error : {
+					message : 'Some error has occurred, please try again'
+				}
+			});
+		}
+		return res.send({ 
+			status : true,
+			data: data
+		});
+	});
+});
+
 router.get('/getBuyerDashboard', function(req, res) {
 	console.log('index > getBuyerDashboard API');
 	if (!req.isAuthenticated()) {
@@ -1616,7 +1637,7 @@ router.post('/getInvoiceDetails', async(function(req, res) {
 			var invoiceHistory = dummyData.dummyTx;
 			var invoice = data[0];
 			//processInvoiceDetails(invoice);
-			getUserDetails({email : invoice.buyerEmail || ''}, {},async(function(err, userData) {
+			getUserDetails({email : invoice.buyerEmail || ''}, {_id:0, email: 1, contactNo:1, firstName:1, lastName:1, type:1, address: 1},async(function(err, userData) {
 				if (err) {
 					console.log('index > getInvoiceDetails API > getInvoices > getUserDetails > err, userData: ', err, userData);
 					return res.send({
