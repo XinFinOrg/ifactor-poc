@@ -295,33 +295,34 @@ router.post('/signup', (function(req, res) {
 				});
 			}
 			input.password = hash;
-			mailer.emailVerificationMailer(input.email, input.accountStatus, req.get('host'), function(error, info){
-				if(!error){
-					collection.save(input, function (err, docs) {
-						if (err) {
-							console.log('index > signup API > ... > mailer.emailVerificationMailer > collection.save > err, docs.ops:', err, docs.ops);
-							return res.send({
-								status : false,
-								error : {
-									message : 'Server error, please try again'
-								}
-							});
-						}
-						return res.send({ 
-							status : true,
-							message : 'You have successfully signed up, please check your email for verification link.'
-						});
-					});
-				} else {
-					console.log('index > signup API > ... > mailer.emailVerificationMailer > error, info:', error, info);
+			collection.save(input, function (err, docs) {
+				if (err) {
+					console.log('index > signup API > ... > mailer.emailVerificationMailer > collection.save > err, docs.ops:', err, docs.ops);
 					return res.send({
-						status: false,
-						error: {
-							message: 'Server error, please try again'
+						status : false,
+						error : {
+							message : 'Server error, please try again'
 						}
 					});
 				}
+				return res.send({ 
+					status : true,
+					message : 'You have successfully signed up, please check your email for verification link.'
+				});
 			});
+			// mailer.emailVerificationMailer(input.email, input.accountStatus, req.get('host'), function(error, info){
+			// 	if(!error){
+					
+			// 	} else {
+			// 		console.log('index > signup API > ... > mailer.emailVerificationMailer > error, info:', error, info);
+			// 		return res.send({
+			// 			status: false,
+			// 			error: {
+			// 				message: 'Server error, please try again'
+			// 			}
+			// 		});
+			// 	}
+			// });
 				
 			
 		});
