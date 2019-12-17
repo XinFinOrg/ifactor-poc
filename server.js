@@ -19,7 +19,7 @@ var authLocal = require('./app/auth/local');
 var port = process.env.PORT || 6001; // set our port
 var url = 'mongodb://localhost:27017/ifactor';
 if (ENV == 'dev') {
-  url = 'mongodb://localhost:27017/ifactor';
+  url = 'mongodb://localhost:27017/sdrifactor';
 }
 
 
