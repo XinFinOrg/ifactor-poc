@@ -1,6 +1,6 @@
 var config = require('./config');
 ENV = config.ENV;
-var url = 'mongodb://localhost:27743/ifactor';
+var url = 'mongodb://localhost:27017/ifactor';
 if (ENV == 'dev') {
   var url = 'mongodb://localhost:27017/ifactor';
 }

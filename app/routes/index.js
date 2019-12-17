@@ -21,7 +21,7 @@ var transporter = mailer.createTransport({
 	});
 var brcypt = require('bcrypt-nodejs');
 
-var web3Conf = false;
+var web3Conf = true;
 if (web3Conf) {
 	var web3Helper = require('./web3Helper');
 }
@@ -589,7 +589,7 @@ router.post('/payInvoice', async (function(req, res) {
 }
 }));
 
-router.post('/buyTokens', function(req, res) {
+router.post('/buyTokens', async(function(req, res) {
 	if (!req.isAuthenticated()) {
 		return res.send({status : false});
 	} else { 
@@ -609,7 +609,7 @@ router.post('/buyTokens', function(req, res) {
 		return res.send({status : false, error : 'blockchain error'});
 	}
 }
-});
+}));
 
 router.post('/prepaySupplier', async(function(req, res) {
 	if (!req.isAuthenticated()) {
